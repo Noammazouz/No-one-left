@@ -1,10 +1,12 @@
 #pragma once
 
-class PuseGame
+#include "Menu.h"
+
+class PauseGame : public Menu
 {
 public:
-	PuseGame() = default;
-	~PuseGame() = default;
+	PauseGame() = default;
+	~PauseGame() = default;
 
 	// Initialize the game
 	void initialize();
