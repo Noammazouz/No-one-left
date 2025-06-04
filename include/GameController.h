@@ -5,6 +5,7 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <stack>
 #include "Map.h"
 #include "Player.h"
 #include "Bombs.h"
@@ -14,7 +15,7 @@
 #include "UpdateableObject.h"
 #include "StaticObject.h"
 #include "GameObject.h"
-#include "Menu.h"
+#include "Screen.h"
 #include "Scoreboard.h"
 #include "Explosion.h"
 
@@ -55,7 +56,7 @@ private:
 	sf::Sound m_sound;
 	Map m_board;
 	Player m_player;
-	Menu m_menu;
+	std::stack<Screen> m_screen;
 	Scoreboard m_scoreboard;
 
 	int m_level;

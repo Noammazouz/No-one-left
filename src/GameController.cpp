@@ -6,20 +6,24 @@
 //-----------------------------------------------------------------------------
 GameController::GameController()
 	: m_timer(sf::seconds(0))
-{}
+{
+	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+	m_window.create(sf::VideoMode(desktop.width * WINDOW_RATIO, desktop.height * WINDOW_RATIO), "No One Left");
+	m_screen.push(screen)
+}
 
 //-----------------------------------------------------------------------------
 void GameController::newGame()
 {
 	handleMusicTransition(false);
-	m_menu.draw();
+	m_screen.top().activate();
 	runLevel();
 }
 
 //-----------------------------------------------------------------------------
 void GameController::runLevel()
 {
-	m_window.create(sf::VideoMode(WIDTH, HEIGHT), "No One Left");
+	
 	handleMusicTransition(true);
 	m_scoreboard.updateScore(0);
 

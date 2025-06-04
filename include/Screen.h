@@ -5,10 +5,10 @@
 #include <SFML/Graphics.hpp>
 
 //-----class section-----
-class Menu
+class Screen
 {
 public:
-	Menu() = default;
+	Screen() = default;
 	void draw();
 
 private:

@@ -2,11 +2,11 @@
 
 #include "MoveBehavior.h"
 
-class AxesMoveBehavior : public MoveBehavior
+class AxisMoveBehavior : public MoveBehavior
 {
 public:
-	AxesMoveBehavior() = default;
-	virtual ~AxesMoveBehavior() = default;
+	AxisMoveBehavior() = default;
+	virtual ~AxisMoveBehavior() = default;
 
 	// Override the move method
 	virtual void Move(sf::Vector2f playerLoc) override;
