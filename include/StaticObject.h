@@ -1,7 +1,9 @@
 #pragma once
 
+//-----include section-----
 #include "GameObject.h"
 
+//-----class section-----
 class StaticObject : public GameObject
 {
 public:

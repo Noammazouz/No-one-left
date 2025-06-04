@@ -1,8 +1,9 @@
 #pragma once
 
+//-----include section-----
 #include "GameObject.h"
 
-
+//-----class section-----
 class UpdateableObject : public GameObject
 {
 public:

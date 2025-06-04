@@ -1,9 +1,10 @@
 #pragma once
-#include "ResourcesManager.h"
 
+//-----include section-----
+#include "ResourcesManager.h"
 #include <SFML/Graphics.hpp>
 
-
+//-----class section-----
 class Scoreboard
 {
 public:

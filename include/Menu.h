@@ -1,7 +1,10 @@
 #pragma once 
+
+//-----include section-----
 #include <vector>
 #include <SFML/Graphics.hpp>
 
+//-----class section-----
 class Menu
 {
 public:

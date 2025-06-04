@@ -1,5 +1,6 @@
 #pragma once
 
+//-----include section-----
 #include <SFML/Graphics.hpp>
 #include "Const.h"
 
@@ -10,6 +11,7 @@ class Player;
 class Wall;
 class Guard;
 
+//-----class section-----
 class GameObject
 {
 public:

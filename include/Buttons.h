@@ -1,6 +1,9 @@
 #pragma once
 
+//-----include section-----
+#include <SFML/Graphics.hpp>
 
+//-----class section-----
 class Buttons
 {
 public:

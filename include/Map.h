@@ -1,4 +1,6 @@
 #pragma once 
+
+//-----include section-----
 #include <iostream>
 #include <vector>
 #include <string>
@@ -8,7 +10,7 @@
 
 class Player;
 
-
+//-----class section-----
 class Map
 {
 public:

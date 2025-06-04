@@ -1,8 +1,10 @@
 #pragma once
 
-#include "ItemesToCollect.h"
+//-----include section-----
+#include "ItemsToCollect.h"
 
-class RemoveEnemy : public ItemesToCollect
+//-----class section-----
+class RemoveEnemy : public ItemsToCollect
 {
 public:
 	RemoveEnemy(sf::Vector2f position, const sf::Texture& texture, float CELL_WIDTH, float CELL_HEIGHT);

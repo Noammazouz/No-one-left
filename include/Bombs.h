@@ -1,7 +1,8 @@
 #pragma once
 
+//-----include section-----
 #include "UpdateableObject.h"
-
+//-----class section-----
 
 class Bombs : public UpdateableObject
 {
@@ -20,4 +21,3 @@ private:
 	sf::Time m_timer;
 	bool m_isExploded=false;
 };
-

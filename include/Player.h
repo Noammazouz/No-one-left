@@ -1,13 +1,18 @@
 #pragma once
+
+//-----include section-----
 #include "UpdateableObject.h"
 
 class GameObject;
 
+
+//-----class section-----
 class Player : public UpdateableObject
 {
 public:
 	Player();
 	Player(sf::Vector2f position, const sf::Texture& texture, float CELL_WIDTH, float CELL_HEIGHT);
+	~Player() = default;
 
 	virtual void update(sf::Time deltaTime) override;
 	virtual void setDirection(sf::Vector2f position) override;
@@ -25,8 +30,6 @@ public:
 	static int getLife();
 	const Present& getPresent() const;
 	void setPresent(Present present);
-
-	~Player() = default;
 
 private:
 	bool checkDeriction();

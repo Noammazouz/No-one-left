@@ -1,5 +1,6 @@
 #pragma once
 
+//-----include section-----
 #include <vector> 
 #include <string>
 #include <SFML/Graphics.hpp>
@@ -7,7 +8,7 @@
 #include "Map.h"
 #include "Player.h"
 #include "Bombs.h"
-#include "Guard.h"
+#include "Enemy.h"
 #include "ResourcesManager.h"
 #include "Const.h"
 #include "UpdateableObject.h"
@@ -17,13 +18,14 @@
 #include "Scoreboard.h"
 #include "Explosion.h"
 
+//-----class section-----
 class GameController
 {
 public:
 	GameController();
 	void newGame();
-private:
 
+private:
 	void runLevel();
 	void drawWindow();
 	void move(sf::Clock& clock);

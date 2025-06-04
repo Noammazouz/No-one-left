@@ -1,9 +1,10 @@
 #pragma once
 
+//-----include section-----
 #include <vector>
 #include <string>
 
-
+//-----constants section-----
 const int HEIGHT = 900;
 const int WIDTH = 1602;
 const int END_GAME = 0;
@@ -23,6 +24,7 @@ const float BOMB_TIME = 4.f;
 const int NUM_OF_EXPLOSION = 5;
 const float ADDED_TIME = 10.f;
 
+//-----enums section-----
 enum Direction 
 {
 	UP,

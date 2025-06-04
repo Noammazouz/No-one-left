@@ -1,7 +1,9 @@
 #pragma once
 
+//-----include section-----
 #include "Menu.h"
 
+//-----class section-----
 class PauseGame : public Menu
 {
 public:

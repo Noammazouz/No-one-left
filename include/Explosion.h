@@ -1,7 +1,9 @@
 #pragma once
+
+//-----include section-----
 #include "UpdateableObject.h"
 
-
+//-----class section-----
 class Explosion : public UpdateableObject
 {
 public:

@@ -1,10 +1,15 @@
 #pragma once
+
+//-----constants section-----
 #include "UpdateableObject.h"
 
+//-----class section-----
 class Enemy : public UpdateableObject
 {
 public:
 	Enemy(sf::Vector2f position, const sf::Texture& texture, float CELL_WIDTH, float CELL_HEIGHT);
+	~Enemy() = default;
+
 	void update(sf::Time deltaTime) override;
 	void setDirection(sf::Vector2f position) override;
 
@@ -18,7 +23,6 @@ public:
 	static int getNumOfStartingGuards();
 	static int getNumOfGuardsAlive();
 
-	~Enemy();
 private:
 	//void checktimer();
 

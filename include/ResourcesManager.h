@@ -1,10 +1,12 @@
 #pragma once
 
+//-----include section-----
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <unordered_map>
 
+//-----class section-----
 class ResourcesManager 
 {
 public:
