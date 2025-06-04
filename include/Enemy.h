@@ -18,6 +18,12 @@ public:
 	virtual void explosionCollide(Explosion& otherobject) override;
 	virtual void playerCollide(Player& otherObject) override;
 	virtual void setFreezing(bool freeze) override;
+	virtual void Display() {};
+
+	void PerformAttack();
+	void PerformMove();
+	void SetMoveBehavior(unique_ptr<MoveBehavior>	pMoveBehavior);
+	void SetAttackBehavior(unique_ptr<AttackBehavior>	pAttackBehavior);
 
 	static void resetNumOfGuards();
 	static int getNumOfStartingGuards();
@@ -25,7 +31,8 @@ public:
 
 private:
 	//void checktimer();
-
+	unique_ptr<AttackBehavior>	pAttackBehavior_;
+	unique_ptr<MoveBehavior>	pMoveBehavior_;
 	static int m_num_of_guards;
 	static int m_num_of_guards_alive;
 	bool m_freeze = false;
