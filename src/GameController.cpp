@@ -319,7 +319,7 @@ void GameController::handleLoadingLevel(sf::Clock& clock)
 {
 	m_movingObj.clear();
 	m_staticObj.clear();
-	if (m_board.loadLevel(m_level) == END_GAME)
+	if (m_map.loadLevel(m_level) == END_GAME)
 	{
 		m_win = true;
 		calculateScore();
@@ -327,7 +327,7 @@ void GameController::handleLoadingLevel(sf::Clock& clock)
 		return;
 	}
 	Guard::resetNumOfGuards();
-	m_board.LoadBoard(m_movingObj, m_staticObj, m_player);
+	m_map.LoadBoard(m_movingObj, m_staticObj, m_player);
 
 	m_timer = sf::seconds(120);
 	clock.restart();
@@ -395,11 +395,6 @@ void GameController::handlePresents()
 		break;
 
 	}
-	case FREEZE:
-	{
-		freezeGuard();
-		break;
-	}
 	}
 	m_player.setPresent(DEFAULT);
 }
@@ -410,7 +405,7 @@ void GameController::removeGuard()
 	if (Guard::getNumOfGuardsAlive() != 0)
 	{
 		srand(time(NULL));
-		int index = rand() % Guard::getNumOfGuardsAlive();
+		int index = rand() % Enemy::getNumOfGuardsAlive();
 		m_movingObj[index]->setLife(true);
 	}
 }

@@ -54,7 +54,7 @@ private:
 	sf::RenderWindow m_window;
 	sf::Time m_timer;
 	sf::Sound m_sound;
-	Map m_board;
+	Map m_map;
 	Player m_player;
 	std::stack<Screen> m_screen;
 	Scoreboard m_scoreboard;
