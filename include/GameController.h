@@ -43,7 +43,6 @@ private:
 	void handleMuting();
 	void handleSocreboard();
 	void handlePresents();
-	void freezeGuard();
 	void removeGuard();
 	void addTime();
 	void lostWindow();
