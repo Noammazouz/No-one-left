@@ -7,10 +7,10 @@
 class RemoveEnemy : public ItemsToCollect
 {
 public:
-	RemoveEnemy(sf::Vector2f position, const sf::Texture& texture, float CELL_WIDTH, float CELL_HEIGHT);
+	RemoveEnemy(sf::Vector2f position, const sf::Texture& texture);
 
 	virtual void collide(GameObject& otherObject) override;
-	virtual void guardCollide(Guard& otherObject) override;
+	virtual void enemyCollide(Enemy& otherObject) override;
 	virtual void playerCollide(Player& otherObject) override;
 	virtual void explosionCollide(Explosion& otherobject) override;
 

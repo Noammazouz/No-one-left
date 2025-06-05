@@ -1,15 +1,15 @@
 //-----include section-----
 #include <cstdlib>
 #include <iostream>
-#include "GameController.h"
+#include "Controller.h"
 
 //-----main section-----
 int main()
 {
 	try
 	{
-		GameController gameController;
-		gameController.newGame();
+		Controller Controller;
+		Controller.run();
 	}
 	catch (const std::exception& generalError)
 	{

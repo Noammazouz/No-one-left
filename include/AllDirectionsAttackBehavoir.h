@@ -10,5 +10,6 @@ public:
 	void Attack()
 	{
 		//shoot to all directions
+		//dsafdfasdf
 	}
 };

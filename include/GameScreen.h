@@ -1,6 +1,6 @@
 #pragma once
 
-//-----include section-----
+#include "Screen.h"
 #include <vector> 
 #include <string>
 #include <SFML/Graphics.hpp>
@@ -15,20 +15,24 @@
 #include "UpdateableObject.h"
 #include "StaticObject.h"
 #include "GameObject.h"
-#include "Screen.h"
 #include "Scoreboard.h"
 #include "Explosion.h"
 
-//-----class section-----
-class GameController
+class GameScreen : public Screen
 {
 public:
-	GameController();
-	void newGame();
+	GameScreen();
+	~GameScreen() = default;
+
+	void draw(sf::RenderWindow& window) override;
+	virtual void activate(sf::Clock& clockin, int& m_currrentScreen) override;
+	virtual void run(sf::RenderWindow& window, int& m_currrentScreen) override;
+	virtual void handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow& window) {};
+	virtual void initButtons(GameState buttonAmmout) {};
 
 private:
-	void runLevel();
-	void drawWindow();
+	//void runLevel();
+	//void drawWindow();
 	void move(sf::Clock& clock);
 	void handleCollision();
 	void setbomb();
@@ -40,7 +44,7 @@ private:
 	void checkExpo();
 	void checkVaildDraw();
 	void handleLoadingLevel(sf::Clock& clock);
-	void handleMusicTransition(bool toGameplay);
+	//void handleMusicTransition(bool toGameplay);
 	void handleMuting();
 	void handleSocreboard();
 	void handlePresents();
@@ -48,7 +52,8 @@ private:
 	void addTime();
 	void lostWindow();
 	void winWindow();
-	void handleKeyPressed(sf::Event::KeyEvent event);
+	//void handleKeyPressed(sf::Event::KeyEvent event);
+
 
 
 	sf::RenderWindow m_window;
@@ -56,11 +61,8 @@ private:
 	sf::Sound m_sound;
 	Map m_map;
 	Player m_player;
-	std::stack<Screen> m_screen;
 	Scoreboard m_scoreboard;
 
-	int m_level;
-	bool m_inGameplay = false;
 	bool m_win = false;
 	std::vector<std::unique_ptr<UpdateableObject>> m_movingObj;
 	std::vector<std::unique_ptr<StaticObject>> m_staticObj;

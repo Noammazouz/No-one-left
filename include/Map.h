@@ -16,8 +16,7 @@ class Map
 {
 public:
 	Map()=default;
-	void loadFromCSV(const std::string& filename,
-		std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player);
+	void loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player);
 	void draw();
 private:
 	std::vector<std::string> m_level;
