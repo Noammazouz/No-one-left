@@ -14,7 +14,7 @@ public:
 	void setDirection(sf::Vector2f position) override;
 
 	void collide(GameObject& otherObject) override;
-	void guardCollide(Guard& otherObject) override;
+	void guardCollide(Enemy& otherObject) override;
 	void explosionCollide(Explosion& otherobject) override;
 	void playerCollide(Player& otherObject) override;
 	void setFreezing(bool freeze) override;

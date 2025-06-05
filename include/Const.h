@@ -3,6 +3,48 @@
 //-----include section-----
 #include <vector>
 #include <string>
+#include <map>
+
+//-----enums section-----
+enum Direction
+{
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT
+};
+
+//enum ScreenButtons 
+//{
+//	START_GAME,
+//	HELP,
+//	EXIT,
+//	BACK
+//};
+
+enum Present
+{
+	TIME,
+	KILL,
+	FREEZE,
+	DEFAULT
+};
+
+enum GameState
+{
+	START,
+	HELP,
+	GAME,
+	PUASE
+};
+
+enum ScreenType
+{
+	START_SCREEN,
+	HELP_SCREEN,
+	GAME_SCREEN,
+	END_SCREEN
+};
 
 //-----constants section-----
 const int HEIGHT = 900;
@@ -24,28 +66,10 @@ const float BOMB_TIME = 4.f;
 const int NUM_OF_EXPLOSION = 5;
 const float ADDED_TIME = 10.f;
 const float WINDOW_RATIO = 0.92f;
-
-//-----enums section-----
-enum Direction 
+const std::map<GameState, std::vector<std::string> > GAME_BUTTONS = 
 {
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT
-};
-
-enum ScreenButtons 
-{
-	START_GAME,
-	HELP,
-	EXIT,
-	BACK
-};
-
-enum Present
-{
-	TIME,
-	KILL,
-	FREEZE,
-	DEFAULT
+	{START, {"Start", "Help", "Exit"}},
+	{HELP, {"Back"}},
+	{GAME, {"Pause"}},
+	{PUASE, {"Resume", "Help"}}
 };

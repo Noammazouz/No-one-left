@@ -17,7 +17,7 @@ public:
 	virtual void setDirection(sf::Vector2f position) override;
 
 	virtual void collide(GameObject& otherObject) override;
-	virtual void guardCollide(Guard& otherObject) override;
+	virtual void guardCollide(Enemy& otherObject) override;
 	virtual void explosionCollide(Explosion& otherobject) override;
 
 	void setWin(bool win);

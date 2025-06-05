@@ -4,10 +4,10 @@
 #include <SFML/Graphics.hpp>
 
 //-----class section-----
-class Buttons
+class Button
 {
 public:
-	Buttons(sf::RenderWindow& window, const sf::Font& font);
+	Button(sf::RenderWindow& window, const sf::Font& font);
 
 	void draw();
 	void update(sf::Time deltaTime);

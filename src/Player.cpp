@@ -58,7 +58,7 @@ void Player::collide(GameObject& otherObject)
 	otherObject.playerCollide(*this);
 }
 //-------------------------------------
-void Player::guardCollide(Guard& /*otherObject*/)
+void Player::guardCollide(Enemy& /*otherObject*/)
 {
 }
 //-------------------------------------
