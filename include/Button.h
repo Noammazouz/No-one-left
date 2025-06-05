@@ -29,9 +29,6 @@ public:
 
 	const char getButtonType() const;
 
-	void setIsOnIt(bool isOnIt);
-	bool getIsOnIt() const;
-
 	sf::RectangleShape makeButtonRectangle() const;
 	void draw(sf::RenderWindow& window, char buttonType) const;
 

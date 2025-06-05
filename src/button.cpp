@@ -54,18 +54,6 @@ sf::RectangleShape Button::makeButtonRectangle() const
 
 	buttonRectangle.setPosition(m_position);
 
-	//Change outline color based on hover state
-	if (m_isOnIt)
-	{
-		buttonRectangle.setOutlineColor(sf::Color::Red); //Highlight color when hovered
-		buttonRectangle.setOutlineThickness(7);         //Thicker outline when hovered
-	}
-	else
-	{
-		buttonRectangle.setOutlineColor(sf::Color::Black);
-		buttonRectangle.setOutlineThickness(2.5);
-	}
-
 	buttonRectangle.setFillColor(sf::Color(0, 0, 0, 0));
 	buttonRectangle.setTexture(NULL);
 
@@ -83,8 +71,8 @@ void Button::draw(sf::RenderWindow& window, char buttonType) const
 
 	//create text for the button
 	sf::Text buttonText;
-	buttonText.setFont(ResourceManager::getInstance().GetTextFont());   //Set the font
-	buttonText.setString(getStartMenuButtonStringByChar(buttonType));  //Set the text
+	buttonText.setFont(ResourcesManager::getInstance().getFont());   //Set the font
+	//buttonText.setString(getStartMenuButtonStringByChar(buttonType));  //Set the text
 	buttonText.setCharacterSize(FONT_CHARACTERS_SIZE);                //Text size
 	buttonText.setFillColor(sf::Color::Black);                       //Text color
 
@@ -108,15 +96,3 @@ const char Button::getButtonType() const
 }
 
 
-//-----------------------------------------------------------------------------
-void Button::setIsOnIt(bool isOnIt)
-{
-	m_isOnIt = isOnIt;
-}
-
-
-//-----------------------------------------------------------------------------
-bool Button::getIsOnIt() const
-{
-	return m_isOnIt;
-}
