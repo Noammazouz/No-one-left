@@ -14,7 +14,6 @@
 #include <memory>
 #include <vector>
 
-
 //-----class section-----
 class Button
 {
