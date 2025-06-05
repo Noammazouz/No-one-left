@@ -1,13 +1,13 @@
 #pragma once
 
 //-----include section-----
-#include "Menu.h"
+#include "Screen.h"
 
 //-----class section-----
-class HelpMenu : public Menu
+class OpenScreen : public Screen
 {
 public:
-	HelpMenu(sf::RenderWindow& window, const sf::Font& font, const sf::Texture& texture);
+	OpenScreen(sf::RenderWindow& window, const sf::Font& font, const sf::Texture& texture);
 
 	virtual void draw() override;
 	virtual void update(sf::Time deltaTime) override;

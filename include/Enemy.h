@@ -2,6 +2,8 @@
 
 //-----constants section-----
 #include "UpdateableObject.h"
+#include "AttackBehavior.h"
+#include "MoveBehavior.h"
 
 //-----class section-----
 class Enemy : public UpdateableObject
@@ -18,6 +20,12 @@ public:
 	virtual void explosionCollide(Explosion& otherobject) override;
 	virtual void playerCollide(Player& otherObject) override;
 	virtual void setFreezing(bool freeze) override;
+	virtual void Display() {};
+
+	void PerformAttack();
+	void PerformMove();
+	void SetMoveBehavior(std::unique_ptr<MoveBehavior>	pMoveBehavior);
+	void SetAttackBehavior(std::unique_ptr<AttackBehavior>	pAttackBehavior);
 
 	static void resetNumOfGuards();
 	static int getNumOfStartingGuards();
@@ -25,7 +33,8 @@ public:
 
 private:
 	//void checktimer();
-
+	std::unique_ptr<AttackBehavior>	pAttackBehavior_;
+	std::unique_ptr<MoveBehavior>	pMoveBehavior_;
 	static int m_num_of_guards;
 	static int m_num_of_guards_alive;
 	bool m_freeze = false;

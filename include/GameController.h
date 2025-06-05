@@ -5,6 +5,7 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <stack>
 #include "Map.h"
 #include "Player.h"
 #include "Bombs.h"
@@ -14,7 +15,7 @@
 #include "UpdateableObject.h"
 #include "StaticObject.h"
 #include "GameObject.h"
-#include "Menu.h"
+#include "Screen.h"
 #include "Scoreboard.h"
 #include "Explosion.h"
 
@@ -43,7 +44,6 @@ private:
 	void handleMuting();
 	void handleSocreboard();
 	void handlePresents();
-	void freezeGuard();
 	void removeGuard();
 	void addTime();
 	void lostWindow();
@@ -54,9 +54,9 @@ private:
 	sf::RenderWindow m_window;
 	sf::Time m_timer;
 	sf::Sound m_sound;
-	Map m_board;
+	Map m_map;
 	Player m_player;
-	Menu m_menu;
+	std::stack<Screen> m_screen;
 	Scoreboard m_scoreboard;
 
 	int m_level;

@@ -1,13 +1,15 @@
 //-----include section-----
 #include <cstdlib>
 #include <iostream>
+#include "GameController.h"
 
 //-----main section-----
 int main()
 {
 	try
 	{
-		std::cout << "Hello, World!" << std::endl;
+		GameController gameController;
+		gameController.newGame();
 	}
 	catch (const std::exception& generalError)
 	{
