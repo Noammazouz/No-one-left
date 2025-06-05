@@ -117,7 +117,7 @@ void GameController::move(sf::Clock& clock)
 	m_player.update(deltaTime);
 	for (const auto& movingObj : m_movingObj)
 	{
-		if (index < Guard::getNumOfGuardsAlive())
+		if (index < Enemy::getNumOfEnemiesAlive())
 		{
 			movingObj->setDirection(m_player.getPosition());
 		}
@@ -151,22 +151,22 @@ void GameController::handleCollision()
 		}
 	}
 
-	for (int guard = 0; guard < Guard::getNumOfGuardsAlive(); ++guard)
+	for (int enemy = 0; enemy < Enemy::getNumOfEnemiesAlive(); ++enemy)
 	{
-		if (m_player.checkCollision(*m_movingObj[guard]))
+		if (m_player.checkCollision(*m_movingObj[enemy]))
 		{
 			m_sound.setBuffer(ResourcesManager::getInstance().getSound("hit"));
 			m_sound.setVolume(100.f);
 			m_sound.play();
-			m_player.collide(*m_movingObj[guard]);
+			m_player.collide(*m_movingObj[enemy]);
 			resetLevel();
 			break;
 		}
 	}
 
-	for (int moveObj = 0; moveObj < (Guard::getNumOfGuardsAlive() - 1); ++moveObj)
+	for (int moveObj = 0; moveObj < (Enemy::getNumOfEnemiesAlive() - 1); ++moveObj)
 	{
-		for (int nextMoveObj = moveObj + 1; nextMoveObj < Guard::getNumOfGuardsAlive(); ++nextMoveObj)
+		for (int nextMoveObj = moveObj + 1; nextMoveObj < Enemy::getNumOfEnemiesAlive(); ++nextMoveObj)
 		{
 			if (m_movingObj[moveObj]->checkCollision(*m_movingObj[nextMoveObj]))
 			{
@@ -195,7 +195,7 @@ void GameController::handleErasing()
 //-----------------------------------------------------------------------------
 void GameController::explosion()
 {
-	auto bomb = Guard::getNumOfGuardsAlive();
+	auto bomb = Enemy::getNumOfEnemiesAlive();
 
 	for (; bomb < m_movingObj.size(); bomb++)
 	{
@@ -217,19 +217,19 @@ void GameController::calculateScore()
 {
 	int points = 0;
 	points += ENDING_LEVEL;
-	points += (Guard::getNumOfStartingGuards() * POINT_FOR_GUARD);
-	points += (std::abs(Guard::getNumOfGuardsAlive() - Guard::getNumOfStartingGuards()) * KILL_GUARD);
+	points += (Enemy::getNumOfStartingEnemies() * POINT_FOR_ENEMY);
+	points += (std::abs(Enemy::getNumOfEnemiesAlive() - Enemy::getNumOfStartingEnemies()) * KILL_ENEMY);
 	m_player.setScore(points);
 }
 
 //-----------------------------------------------------------------------------
 void GameController::resetLevel()
 {
-	for (int index = 0; index < Guard::getNumOfGuardsAlive(); ++index)
+	for (int index = 0; index < Enemy::getNumOfEnemiesAlive(); ++index)
 	{
 		m_movingObj[index]->setPosition(m_movingObj[index]->getStartingPosition());
 	}
-	for (int index = Guard::getNumOfGuardsAlive(); index < m_movingObj.size(); ++index)
+	for (int index = Enemy::getNumOfEnemiesAlive(); index < m_movingObj.size(); ++index)
 	{
 		m_movingObj[index]->setLife(true);
 	}
@@ -269,11 +269,11 @@ void GameController::checkExpo()
 	auto explosion = m_movingObj.size() - NUM_OF_EXPLOSION;
 	for (; explosion < m_movingObj.size(); explosion++)
 	{
-		for (int guard = 0; guard < Guard::getNumOfGuardsAlive(); guard++)
+		for (int enemy = 0; enemy < Enemy::getNumOfEnemiesAlive(); enemy++)
 		{
-			if (m_movingObj[explosion]->checkCollision(*m_movingObj[guard]))
+			if (m_movingObj[explosion]->checkCollision(*m_movingObj[enemy]))
 			{
-				m_movingObj[explosion]->collide(*m_movingObj[guard]);
+				m_movingObj[explosion]->collide(*m_movingObj[enemy]);
 
 			}
 		}
@@ -325,8 +325,8 @@ void GameController::handleLoadingLevel(sf::Clock& clock)
 		m_scoreboard.updateScore(m_player.getScore());
 		return;
 	}
-	Guard::resetNumOfGuards();
-	m_map.LoadBoard(m_movingObj, m_staticObj, m_player);
+	Enemy::resetNumOfEnemies();
+	//m_map.LoadBoard(m_movingObj, m_staticObj, m_player);
 
 	m_timer = sf::seconds(120);
 	clock.restart();
@@ -401,10 +401,10 @@ void GameController::handlePresents()
 //-----------------------------------------------------------------------------
 void GameController::removeGuard()
 {
-	if (Guard::getNumOfGuardsAlive() != 0)
+	if (Enemy::getNumOfEnemiesAlive() != 0)
 	{
 		srand(time(NULL));
-		int index = rand() % Enemy::getNumOfGuardsAlive();
+		int index = rand() % Enemy::getNumOfEnemiesAlive();
 		m_movingObj[index]->setLife(true);
 	}
 }

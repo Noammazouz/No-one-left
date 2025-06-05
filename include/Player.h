@@ -10,14 +10,14 @@ class Player : public UpdateableObject
 {
 public:
 	Player();
-	Player(sf::Vector2f position, const sf::Texture& texture, float CELL_WIDTH, float CELL_HEIGHT);
+	Player(sf::Vector2f position, const sf::Texture& texture);
 	~Player() = default;
 
 	virtual void update(sf::Time deltaTime) override;
 	virtual void setDirection(sf::Vector2f position) override;
 
 	virtual void collide(GameObject& otherObject) override;
-	virtual void guardCollide(Guard& otherObject) override;
+	virtual void enemyCollide(Enemy& otherObject) override;
 	virtual void explosionCollide(Explosion& otherobject) override;
 
 	void setWin(bool win);

@@ -35,7 +35,6 @@ public:
 	sf::RectangleShape makeButtonRectangle() const;
 	void draw(sf::RenderWindow& window, char buttonType) const;
 
-
 private:
 	char m_buttonType;
 	sf::Vector2f m_position;
