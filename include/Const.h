@@ -5,8 +5,8 @@
 #include <string>
 
 //-----constants section-----
-const int HEIGHT = 900;
-const int WIDTH = 1602;
+const int HEIGHT = 1283;
+const int WIDTH = 1600;
 const int END_GAME = 0;
 const int BOARD_STARTING_X = WIDTH / 5;
 const int BOARD_STARTING_Y = HEIGHT / 10;
