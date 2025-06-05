@@ -13,8 +13,7 @@ ResourcesManager::ResourcesManager()
 
 //------------------------------------------------------------------------------
 ResourcesManager::~ResourcesManager()
-{
-}
+{}
 
 //------------------------------------------------------------------------------
 ResourcesManager& ResourcesManager::getInstance()
@@ -25,50 +24,7 @@ ResourcesManager& ResourcesManager::getInstance()
 
 //------------------------------------------------------------------------------
 void ResourcesManager::show() const
-{
-}
-
-//------------------------------------------------------------------------------
-//void ResourcesManager::loadTexture()
-//{
-//    std::vector<std::pair<std::string, std::string>> textures =
-//    {
-//        {"door", "Door.png"},
-//        {"guard", "Guard.png"},
-//        {"player", "Robot.png"},
-//        {"rock", "Rock.png"},
-//        {"wall", "wall.png"},
-//        {"empty", "empty.png"},
-//        {"menu", "menu.png"},
-//        {"backround", "helpBackground.png"},
-//        {"start game", "start game.png"},
-//        {"exit", "exit.png"},
-//        {"help", "help.png"},
-//        {"return", "return.png"},
-//        {"explation", "help screen.png"},
-//        {"bomb", "bomb.png"},
-//        {"freeze", "freeze.png"},
-//        {"explosion", "Explosion.png"},
-//        {"add time", "add_time.png"},
-//        {"add life", "m_medkit.png"},
-//        {"kill guard", "o_water.png"},
-//        {"game over", "lose_screen.png"},
-//        {"win", "win_screen.png"}
-//    };
-//
-//    for (const auto& [name, filePath] : textures)
-//    {
-//        sf::Texture texture;
-//        if (!texture.loadFromFile(filePath))
-//        {
-//            std::cout << "Failed to load texture " << filePath << std::endl;
-//        }
-//
-//        // Insert the texture into the unordered_map
-//        m_textures[name] = texture;
-//
-//    }
-//}
+{}
 
 //------------------------------------------------------------------------------
 const sf::Texture& ResourcesManager::getTexture(std::string name) const
@@ -77,6 +33,60 @@ const sf::Texture& ResourcesManager::getTexture(std::string name) const
     if (it == m_textures.end())
     {
         std::cout << "Could not find texture: " << name << std::endl;
+    }
+}
+
+//------------------------------------------------------------------------------
+void ResourcesManager::loadTexture()
+{
+    std::vector<std::pair<std::string, std::string>> textures =
+    {
+        {"background","background.png"},
+        {"wall","wall.png"}
+        /*{"guard", "Guard.png"},
+        {"player", "Robot.png"},
+        {"rock", "Rock.png"},
+        {"wall", "wall.png"},
+        {"empty", "empty.png"},
+        {"menu", "menu.png"},
+        {"backround", "helpBackground.png"},
+        {"start game", "start game.png"},
+        {"exit", "exit.png"},
+        {"help", "help.png"},
+        {"return", "return.png"},
+        {"explation", "help screen.png"},
+        {"bomb", "bomb.png"},
+        {"freeze", "freeze.png"},
+        {"explosion", "Explosion.png"},
+        {"add time", "add_time.png"},
+        {"add life", "m_medkit.png"},
+        {"kill guard", "o_water.png"},
+        {"game over", "lose_screen.png"},
+        {"win", "win_screen.png"}*/
+    };
+
+    for (const auto& [name, filePath] : textures)
+    {
+        sf::Texture texture;
+        if (!texture.loadFromFile(filePath))
+        {
+            std::cout << "Failed to load texture " << filePath << std::endl;
+        }
+
+        // Insert the texture into the unordered_map
+        m_textures.emplace(name, std::move(texture));
+
+    }
+}
+
+//------------------------------------------------------------------------------
+const sf::Texture& ResourcesManager::getTexture(std::string& name) const
+{
+    auto it = m_textures.find(name);
+    {
+        std::cerr << "ERROR: Texture \"" << name << "\" was not found.\n";
+        static sf::Texture dummy;
+        return dummy;  // or throw
     }
     return it->second;
 }
@@ -139,7 +149,6 @@ void ResourcesManager::initializeFont()
     if (!m_font.loadFromFile("ARCADE_N.TTF"))
     {
         throw std::runtime_error("Failed to load font ARCADE_N.TTF (the font)");
-        //std::cerr << "Error loading font" << std::endl;
     }
 }
 

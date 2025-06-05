@@ -5,8 +5,8 @@
 #include <string>
 
 //-----constants section-----
-const int WINDOW_HEIGHT = 900;
-const int WINDOW_WIDTH = 1602;
+const int WINDOW_HEIGHT = 1283;
+const int WINDOW_WIDTH = 1600;
 const float BUTTON_WIDTH = 300;
 const float BUTTON_HEIGHT = 100;
 const float BUTTON_SPACING = 40.f;

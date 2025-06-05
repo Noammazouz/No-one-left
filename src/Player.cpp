@@ -1,27 +1,31 @@
+//-----include section-----
 #include "Player.h"
 #include <iostream>
 
-
+//-----functions section------
+//-----------------------------------------------------------------------------
+//Defines the static members.
 int Player::m_lives = NUM_OF_LIVES;
-//---------------------------------
 int Player::m_score = 0;
-//---------------------------------
+
+//-----------------------------------------------------------------------------
 Player::Player()
 	: UpdateableObject(), m_present(DEFAULT)
-{
-}
-//-------------------------------------
+{}
+
+//-----------------------------------------------------------------------------
 Player::Player(sf::Vector2f position, const sf::Texture& texture, float CELL_WIDTH, float CELL_HEIGHT)
 	: UpdateableObject(position, texture, CELL_WIDTH, CELL_HEIGHT), m_present(DEFAULT)
-{
-}
-//-------------------------------------
+{}
+
+//-----------------------------------------------------------------------------
 void Player::update(sf::Time deltaTime)
 {
 	this->setPrevLocation(this->getPosition());
 	this->updatePosition(m_direction * PLAYER_SPEED * deltaTime.asSeconds());
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 void Player::setDirection(sf::Vector2f /*position*/)
 {
 	if (checkDeriction())
@@ -52,70 +56,78 @@ void Player::setDirection(sf::Vector2f /*position*/)
 		m_direction = sf::Vector2f(0, 0);
 	}
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 void Player::collide(GameObject& otherObject)
 {
 	otherObject.playerCollide(*this);
 }
 //-------------------------------------
 void Player::guardCollide(Guard& /*otherObject*/)
-{
-}
-//-------------------------------------
+{}
+
+//-----------------------------------------------------------------------------
 void Player::explosionCollide(Explosion& /*otherobject*/)
 {
 	this->setPosition(this->getStartingPosition());
 	decLife();
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 void Player::decLife()
 {
 	m_lives--;
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 int Player::getLife()
 {
 	return m_lives;
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 void Player::setWin(bool win)
 {
 	m_win = win;
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 bool Player::getWin() const
 {
 	return m_win;
 }
-//-----------------------------
+
+//-----------------------------------------------------------------------------
 const Present& Player::getPresent() const
 {
 	return m_present;
 }
-//-------------------------------
+
+//-----------------------------------------------------------------------------
 void Player::setPresent(Present present)
 {
 	m_present = present;
 }
-//-------------------------------------
+
+//------------------------------------------------------------------------------
 void Player::incLife()
 {
-	if (m_lives < NUM_OF_LIVES)
-	{
-		m_lives++;
-	}
+	if (m_lives < NUM_OF_LIVES) m_lives++;
 }
-//-------------------------------------
+
+//------------------------------------------------------------------------------
 int Player::getScore()
 {
 	return m_score;
 }
-//----------------------------
+
+//------------------------------------------------------------------------------
 void Player::setScore(int score)
 {
 	m_score += score;
 }
-//-------------------------------------
+
+//------------------------------------------------------------------------------
 bool Player::checkDeriction()
 {
 	return sf::Keyboard::isKeyPressed(sf::Keyboard::Left) ||
