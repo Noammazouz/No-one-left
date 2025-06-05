@@ -29,6 +29,7 @@ void ResourcesManager::show() const
 //------------------------------------------------------------------------------
 const sf::Texture& ResourcesManager::getTexture(std::string name) const
 {
+	std::cout << "Getting texture: " << name << std::endl;
     auto it = m_textures.find(name);
     if (it == m_textures.end())
     {
@@ -155,7 +156,7 @@ sf::SoundBuffer& ResourcesManager::getSound(std::string name)
     auto it = m_music.find(name);
     if (it == m_music.end())
     {
-        std::cout << "Could not find sound: " << name << std::endl;
+       // std::cout << "Could not find sound: " << name << std::endl;
     }
     return it->second;
 }
