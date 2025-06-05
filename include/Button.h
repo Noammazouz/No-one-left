@@ -1,6 +1,7 @@
 #pragma once
 
 //-----include section-----
+
 #include "Const.h"
 #include "ResourcesManager.h"
 
@@ -28,14 +29,11 @@ public:
 	void setSize();
 
 	const char getButtonType() const;
-
 	sf::RectangleShape makeButtonRectangle() const;
 	void draw(sf::RenderWindow& window, char buttonType) const;
-
-
+  
 private:
 	char m_buttonType;
 	sf::Vector2f m_position;
 	sf::Vector2f m_size;
-	bool m_isOnIt = false;
 };

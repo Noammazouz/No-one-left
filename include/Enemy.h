@@ -9,14 +9,14 @@
 class Enemy : public UpdateableObject
 {
 public:
-	Enemy(sf::Vector2f position, const sf::Texture& texture, float CELL_WIDTH, float CELL_HEIGHT);
+	Enemy(sf::Vector2f position, const sf::Texture& texture);
 	~Enemy() = default;
 
 	void update(sf::Time deltaTime) override;
 	void setDirection(sf::Vector2f position) override;
 
 	virtual void collide(GameObject& otherObject) override;
-	virtual void guardCollide(Guard& otherObject) override;
+	virtual void enemyCollide(Enemy& otherObject) override;
 	virtual void explosionCollide(Explosion& otherobject) override;
 	virtual void playerCollide(Player& otherObject) override;
 	virtual void setFreezing(bool freeze) override;
@@ -27,16 +27,16 @@ public:
 	void SetMoveBehavior(std::unique_ptr<MoveBehavior>	pMoveBehavior);
 	void SetAttackBehavior(std::unique_ptr<AttackBehavior>	pAttackBehavior);
 
-	static void resetNumOfGuards();
-	static int getNumOfStartingGuards();
-	static int getNumOfGuardsAlive();
+	static void resetNumOfEnemies();
+	static int getNumOfStartingEnemies();
+	static int getNumOfEnemiesAlive();
 
 private:
 	//void checktimer();
 	std::unique_ptr<AttackBehavior>	pAttackBehavior_;
 	std::unique_ptr<MoveBehavior>	pMoveBehavior_;
-	static int m_num_of_guards;
-	static int m_num_of_guards_alive;
+	static int m_num_of_enemies;
+	static int m_num_of_enemies_alive;
 	bool m_freeze = false;
 
 	sf::Vector2f m_direction;

@@ -1,6 +1,5 @@
 //-----include section-----
 #include "Player.h"
-#include <iostream>
 
 //-----functions section------
 //-----------------------------------------------------------------------------
@@ -14,8 +13,8 @@ Player::Player()
 {}
 
 //-----------------------------------------------------------------------------
-Player::Player(sf::Vector2f position, const sf::Texture& texture, float CELL_WIDTH, float CELL_HEIGHT)
-	: UpdateableObject(position, texture, CELL_WIDTH, CELL_HEIGHT), m_present(DEFAULT)
+Player::Player(sf::Vector2f position, const sf::Texture& texture)
+	//: UpdateableObject(position, texture), m_present(DEFAULT)
 {}
 
 //-----------------------------------------------------------------------------
@@ -26,7 +25,7 @@ void Player::update(sf::Time deltaTime)
 }
 
 //-----------------------------------------------------------------------------
-void Player::setDirection(sf::Vector2f /*position*/)
+void Player::setDirection(sf::Vector2f position)
 {
 	if (checkDeriction())
 	{
@@ -62,8 +61,9 @@ void Player::collide(GameObject& otherObject)
 {
 	otherObject.playerCollide(*this);
 }
-//-------------------------------------
-void Player::guardCollide(Guard& /*otherObject*/)
+
+//-----------------------------------------------------------------------------
+void Player::enemyCollide(Enemy& /*otherObject*/)
 {}
 
 //-----------------------------------------------------------------------------
@@ -131,7 +131,7 @@ void Player::setScore(int score)
 bool Player::checkDeriction()
 {
 	return sf::Keyboard::isKeyPressed(sf::Keyboard::Left) ||
-		sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
-		sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
-		sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
+		   sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
+		   sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
+		   sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
 }
