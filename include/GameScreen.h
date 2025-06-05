@@ -31,7 +31,7 @@ public:
 	virtual void initButtons(GameState buttonAmmout) {};
 
 private:
-	void runLevel();
+	//void runLevel();
 	//void drawWindow();
 	void move(sf::Clock& clock);
 	void handleCollision();
@@ -44,7 +44,7 @@ private:
 	void checkExpo();
 	void checkVaildDraw();
 	void handleLoadingLevel(sf::Clock& clock);
-	void handleMusicTransition(bool toGameplay);
+	//void handleMusicTransition(bool toGameplay);
 	void handleMuting();
 	void handleSocreboard();
 	void handlePresents();
@@ -52,7 +52,7 @@ private:
 	void addTime();
 	void lostWindow();
 	void winWindow();
-	void handleKeyPressed(sf::Event::KeyEvent event);
+	//void handleKeyPressed(sf::Event::KeyEvent event);
 
 
 

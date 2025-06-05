@@ -12,7 +12,7 @@ public:
 	virtual void update(sf::Time deltaTime) override;
 	virtual void setDirection(sf::Vector2f position) override;
 	virtual void collide(GameObject& otherObject) override;
-	virtual void enemyCollide(Enemy& otherObject) override;
+	//virtual void enemyCollide(Enemy& otherObject) override;
 
 	sf::Time getTimer() const override;
 	bool getExpo() const override;

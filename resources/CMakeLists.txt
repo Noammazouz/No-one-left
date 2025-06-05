@@ -1,1 +1,5 @@
 ﻿configure_file ("ARCADE_N.TTF" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("background.png" ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
+configure_file ("Level1.csv" ${CMAKE_CURRENT_SOURCE_DIR} COPYONLY)
+configure_file ("Rwall.png" ${CMAKE_CURRENT_SOURCE_DIR} COPYONLY)
+configure_file ("wall.png" ${CMAKE_CURRENT_SOURCE_DIR} COPYONLY)

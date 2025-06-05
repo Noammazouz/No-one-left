@@ -15,33 +15,29 @@ class Enemy;
 class GameObject
 {
 public:
-	GameObject();
-	GameObject(const sf::Texture& texture, sf::Vector2f pos);
+	GameObject() = default;
+	//GameObject(const sf::Texture& texture, sf::Vector2f pos);
 	virtual ~GameObject() = default;
 
 	sf::FloatRect getBounds() const;
 
-	virtual void draw(sf::RenderWindow& window);
-	virtual sf::Vector2f getPosition() const;
+	virtual void draw(sf::RenderWindow& window) {};
+	virtual sf::Vector2f getPosition() const { return sf::Vector2f(); };
 	virtual void collide(GameObject& otherObject) = 0;
-	virtual void playerCollide(Player& otherObject);
-<<<<<<< HEAD
-	virtual void guardCollide(Enemy& otherObject) = 0;
-=======
+	virtual void playerCollide(Player& otherObject) {};
 	virtual void enemyCollide(Enemy& otherObject) = 0;
->>>>>>> ebd655d612b4d4a5151048c1ea5ab80f03a4dc05
-	virtual void explosionCollide(Explosion& otherobject);
+	virtual void explosionCollide(Explosion& otherobject) {};
 
-	void setPosition(const sf::Vector2f& position);
-	bool isDead() const;
-	void setLife(const bool life);
+	void setPosition(const sf::Vector2f& position) {};
+	bool isDead() const {};
+	void setLife(const bool life) {};
 
 protected:
-	void updatePosition(sf::Vector2f direction);
-	void mirrorImage(sf::Vector2f direction);
+	void updatePosition(sf::Vector2f direction) {};
+	void mirrorImage(sf::Vector2f direction) {};
 
 private:
-	void setSprite(sf::Vector2f pos);
+	void setSprite(sf::Vector2f pos) {};
 
 	sf::Sprite m_pic;
 	float m_cell_size[2];

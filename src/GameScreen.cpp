@@ -14,13 +14,13 @@ void GameScreen::run(sf::RenderWindow& window, int& m_currrentScreen)
 	/*m_view.setCenter(m_player->getPos());
 	m_view.setCenter(clampViewPosition(worldBounds));
 	window.setView(m_view);*/
-	runLevel();
+	//runLevel();
 }
 //---------
 void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 {
 	handleMusicTransition(true);
-	m_scoreboard.updateScore(0);
+	//m_scoreboard.updateScore(0);
 
 	//sf::Clock clock;
 	handleLoadingLevel(clock);
@@ -34,7 +34,7 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 
 		m_player.setDirection(sf::Vector2f());
 
-		for (auto event = sf::Event{}; m_window.pollEvent(event);)
+		/*for (auto event = sf::Event{}; m_window.pollEvent(event);)
 		{
 			switch (event.type)
 			{
@@ -47,7 +47,7 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 				break;
 			}
 			}
-		}
+		}*/
 
 		move(clock);
 		handleCollision();
@@ -86,7 +86,7 @@ void GameScreen::draw(sf::RenderWindow& window)
 	ResourcesManager& resources = ResourcesManager::getInstance();
 	sf::Sprite backround;
 
-	backround.setTexture(resources.getTexture("backround"));
+	backround.setTexture(resources.getTexture("background"));
 	window.draw(backround);
 
 	//for (const auto& staticObj : m_staticObj)
@@ -309,7 +309,7 @@ void GameScreen::handleLoadingLevel(sf::Clock& clock)
 	m_staticObj.clear();
 
 	//Enemy::resetNumOfGuards();
-	m_map.LoadCsv(m_movingObj, m_staticObj, m_player);
+	m_map.loadFromCSV(/*m_movingObj,*/ m_staticObj, m_player);
 
 	m_timer = sf::seconds(120);
 	//clock.restart();

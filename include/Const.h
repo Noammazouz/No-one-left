@@ -71,7 +71,6 @@ const float BOMB_TIME = 4.f;
 const int NUM_OF_EXPLOSION = 5;
 const float ADDED_TIME = 10.f;
 const float WINDOW_RATIO = 0.92f;
-<<<<<<< HEAD
 const std::map<GameState, std::vector<std::string> > GAME_BUTTONS = 
 {
 	{START, {"Start", "Help", "Exit"}},
@@ -79,36 +78,7 @@ const std::map<GameState, std::vector<std::string> > GAME_BUTTONS =
 	{GAME, {"Pause"}},
 	{PUASE, {"Resume", "Help"}}
 };
-=======
-const std::string NEW_GAME_BUTTON_NAME = "New Game";
-const std::string HELP_BUTTON_NAME = "HELP";
-const std::string EXIT_BUTTON_NAME = "Exit Game";
-const char START_MENU_INDENTIFIER[START_WINDOW_BUTTONS_NUM] = { 'N', 'H', 'E' };
 
-//-----enums section-----
-enum Direction 
-{
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT
-};
-
-enum ScreenButtons 
-{
-	START_GAME,
-	HELP,
-	EXIT,
-	BACK
-};
-
-enum Present
-{
-	TIME,
-	KILL,
-	FREEZE,
-	DEFAULT
-};
 
 //-----------------------------------------------------------------------------
 //std::string getStartMenuButtonStringByChar(char buttonType)
@@ -140,4 +110,3 @@ enum Present
 //
 //	return false;
 //}
->>>>>>> ebd655d612b4d4a5151048c1ea5ab80f03a4dc05

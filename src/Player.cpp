@@ -14,7 +14,7 @@ Player::Player()
 
 //-----------------------------------------------------------------------------
 Player::Player(sf::Vector2f position, const sf::Texture& texture)
-	: UpdateableObject(position, texture), m_present(DEFAULT)
+	//: UpdateableObject(position, texture), m_present(DEFAULT)
 {}
 
 //-----------------------------------------------------------------------------
@@ -61,20 +61,12 @@ void Player::collide(GameObject& otherObject)
 {
 	otherObject.playerCollide(*this);
 }
-<<<<<<< HEAD
-//-------------------------------------
-void Player::guardCollide(Enemy& /*otherObject*/)
-{
-}
-//-------------------------------------
-=======
 
 //-----------------------------------------------------------------------------
 void Player::enemyCollide(Enemy& /*otherObject*/)
 {}
 
 //-----------------------------------------------------------------------------
->>>>>>> ebd655d612b4d4a5151048c1ea5ab80f03a4dc05
 void Player::explosionCollide(Explosion& /*otherobject*/)
 {
 	this->setPosition(this->getStartingPosition());
