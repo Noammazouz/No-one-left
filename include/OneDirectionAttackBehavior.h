@@ -1,7 +1,9 @@
 #pragma once
 
+//-----includes section-----
 #include "AttackBehavior.h"
 
+//-----class section-----
 class OneDirectionAttackBehavior : public AttackBehavior
 {
 public:
