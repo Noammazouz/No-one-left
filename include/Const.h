@@ -5,11 +5,16 @@
 #include <string>
 
 //-----constants section-----
-const int HEIGHT = 1283;
-const int WIDTH = 1600;
+const int WINDOW_HEIGHT = 1283;
+const int WINDOW_WIDTH = 1600;
+const float BUTTON_WIDTH = 300;
+const float BUTTON_HEIGHT = 100;
+const float BUTTON_SPACING = 40.f;
+const int START_WINDOW_BUTTONS_NUM = 3;
+const int FONT_CHARACTERS_SIZE = 26;
 const int END_GAME = 0;
-const int BOARD_STARTING_X = WIDTH / 5;
-const int BOARD_STARTING_Y = HEIGHT / 10;
+const int BOARD_STARTING_X = WINDOW_WIDTH / 5;
+const int BOARD_STARTING_Y = WINDOW_HEIGHT / 10;
 const float PLAYER_SPEED = 200.f;
 const float GUARD_SPEED = 125.f;
 const int NUM_OF_BUTTON = 4;
@@ -24,6 +29,10 @@ const float BOMB_TIME = 4.f;
 const int NUM_OF_EXPLOSION = 5;
 const float ADDED_TIME = 10.f;
 const float WINDOW_RATIO = 0.92f;
+const std::string NEW_GAME_BUTTON_NAME = "New Game";
+const std::string HELP_BUTTON_NAME = "HELP";
+const std::string EXIT_BUTTON_NAME = "Exit Game";
+const char START_MENU_INDENTIFIER[START_WINDOW_BUTTONS_NUM] = { 'N', 'H', 'E' };
 
 //-----enums section-----
 enum Direction 
@@ -49,3 +58,34 @@ enum Present
 	FREEZE,
 	DEFAULT
 };
+
+//-----------------------------------------------------------------------------
+//std::string getStartMenuButtonStringByChar(char buttonType)
+//{
+//	switch (buttonType)
+//	{
+//	case 'N':
+//		return NEW_GAME_BUTTON_NAME;
+//	case 'H':
+//		return HELP_BUTTON_NAME;
+//	case 'E':
+//		return EXIT_BUTTON_NAME;
+//	}
+//}
+
+
+//-----------------------------------------------------------------------------
+//This function check if the mouse is in the bounds of the button or the cell
+//that called to this function.
+//bool CheckLimits(const sf::Vector2f mousePosition,
+//	const sf::Vector2f buttonCellPos,
+//	const sf::Vector2f buttonCellSize)
+//{
+//	if (buttonCellPos.x < mousePosition.x && buttonCellPos.x + buttonCellSize.x > mousePosition.x &&
+//		buttonCellPos.y < mousePosition.y && buttonCellPos.y + buttonCellSize.y > mousePosition.y)
+//	{
+//		return true;
+//	}
+//
+//	return false;
+//}

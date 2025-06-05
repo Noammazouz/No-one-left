@@ -27,6 +27,16 @@ void ResourcesManager::show() const
 {}
 
 //------------------------------------------------------------------------------
+const sf::Texture& ResourcesManager::getTexture(std::string name) const
+{
+    auto it = m_textures.find(name);
+    if (it == m_textures.end())
+    {
+        std::cout << "Could not find texture: " << name << std::endl;
+    }
+}
+
+//------------------------------------------------------------------------------
 void ResourcesManager::loadTexture()
 {
     std::vector<std::pair<std::string, std::string>> textures =
@@ -138,8 +148,7 @@ void ResourcesManager::initializeFont()
 {
     if (!m_font.loadFromFile("ARCADE_N.TTF"))
     {
-		throw std::runtime_error("Failed to load font ARCADE_N.TTF (the font)");
-        //std::cerr << "Error loading font" << std::endl;
+        throw std::runtime_error("Failed to load font ARCADE_N.TTF (the font)");
     }
 }
 
