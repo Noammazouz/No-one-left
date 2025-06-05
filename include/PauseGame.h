@@ -1,10 +1,10 @@
 #pragma once
 
 //-----include section-----
-#include "Menu.h"
+#include "Screen.h"
 
 //-----class section-----
-class PauseGame : public Menu
+class PauseGame : public Screen
 {
 public:
 	PauseGame() = default;

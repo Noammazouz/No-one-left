@@ -338,7 +338,7 @@ void GameController::handleMusicTransition(bool toGameplay)
 {
 	if (toGameplay && !m_inGameplay)
 	{
-		ResourcesManager::getInstance().getMusic("menu").stop();
+		ResourcesManager::getInstance().getMusic("screen").stop();
 		if (ResourcesManager::getInstance().getMusic("game").getStatus() != sf::Music::Playing)
 		{
 			ResourcesManager::getInstance().getMusic("game").play();
@@ -348,12 +348,12 @@ void GameController::handleMusicTransition(bool toGameplay)
 	else if (!toGameplay && m_inGameplay)
 	{
 		ResourcesManager::getInstance().getMusic("game").stop();
-		ResourcesManager::getInstance().getMusic("menu").play();
+		ResourcesManager::getInstance().getMusic("screen").play();
 		m_inGameplay = false;
 	}
 	else
 	{
-		ResourcesManager::getInstance().getMusic("menu").play();
+		ResourcesManager::getInstance().getMusic("screen").play();
 	}
 }
 

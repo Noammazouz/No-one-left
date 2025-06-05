@@ -26,7 +26,7 @@ private:
 	void initializeMusic();
 	void initializeFont();
 
-	sf::Music m_menuMusic;
+	sf::Music m_screenMusic;
 	sf::Music m_gameMusic;
 	sf::Font m_font;
 	std::unordered_map<std::string, sf::SoundBuffer> m_music;
