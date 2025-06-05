@@ -1,7 +1,6 @@
 //-----include section-----
 #include "GameController.h"
 
-
 //-----functions section------
 //-----------------------------------------------------------------------------
 GameController::GameController()

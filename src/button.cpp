@@ -1,7 +1,6 @@
 //-----include section-----
 #include "Button.h"
 
-
 //-----functions section------
 //-----------------------------------------------------------------------------
 Button::Button(char buttonName) : m_buttonType(buttonName)
@@ -9,13 +8,11 @@ Button::Button(char buttonName) : m_buttonType(buttonName)
 	setSize();  //Initialize size when button is created
 }
 
-
 //-----------------------------------------------------------------------------
 sf::Vector2f Button::getPosition() const
 {
 	return m_position;
 }
-
 
 //-----------------------------------------------------------------------------
 void Button::setPosition(int place)
@@ -32,20 +29,17 @@ void Button::setPosition(int place)
 	m_position.y = startingY + (BUTTON_HEIGHT + BUTTON_SPACING) * place;
 }
 
-
 //-----------------------------------------------------------------------------
 sf::Vector2f Button::getSize() const
 {
 	return m_size;
 }
 
-
 //-----------------------------------------------------------------------------
 void Button::setSize()
 {
 	m_size = sf::Vector2f(BUTTON_WIDTH, BUTTON_HEIGHT);
 }
-
 
 //-----------------------------------------------------------------------------
 sf::RectangleShape Button::makeButtonRectangle() const
@@ -71,7 +65,6 @@ sf::RectangleShape Button::makeButtonRectangle() const
 
 	return buttonRectangle;
 }
-
 
 //-----------------------------------------------------------------------------
 //This function draw each button.
@@ -100,20 +93,17 @@ void Button::draw(sf::RenderWindow& window, char buttonType) const
 	window.draw(buttonText);
 }
 
-
 //-----------------------------------------------------------------------------
 const char Button::getButtonType() const
 {
 	return m_buttonType;
 }
 
-
 //-----------------------------------------------------------------------------
 void Button::setIsOnIt(bool isOnIt)
 {
 	m_isOnIt = isOnIt;
 }
-
 
 //-----------------------------------------------------------------------------
 bool Button::getIsOnIt() const
