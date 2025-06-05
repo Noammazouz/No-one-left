@@ -11,7 +11,9 @@ class ResourcesManager
 {
 public:
 	~ResourcesManager();
+
 	static ResourcesManager& getInstance();
+
 	const sf::Texture& getTexture(std::string name) const;
 	sf::Music& getMusic(std::string name);
 	const sf::Font& getFont() const;
@@ -27,7 +29,7 @@ private:
 	void initializeFont();
 
 	sf::Music m_screenMusic;
-	sf::Music m_gameMusic;
+	//sf::Music m_gameMusic;
 	sf::Font m_font;
 	std::unordered_map<std::string, sf::SoundBuffer> m_music;
 	std::unordered_map<std::string, sf::Texture> m_textures;

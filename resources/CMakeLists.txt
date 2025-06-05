@@ -1,1 +1,1 @@
-﻿#configure_file ("Wall.png" ${CMAKE_BINARY_DIR} COPYONLY)
+﻿configure_file ("ARCADE_N.TTF" ${CMAKE_BINARY_DIR} COPYONLY)
