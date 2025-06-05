@@ -2,8 +2,8 @@
 
 //-----include section-----
 #include "UpdateableObject.h"
-//-----class section-----
 
+//-----class section-----
 class Bombs : public UpdateableObject
 {
 public:

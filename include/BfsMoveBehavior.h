@@ -1,7 +1,9 @@
 #pragma once
 
+//-----include section-----
 #include "MoveBehavior.h"
 
+//-----class section-----
 class BfsMoveBehavior : public MoveBehavior
 {
 public:
