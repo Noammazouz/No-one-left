@@ -16,7 +16,7 @@ class GameObject
 {
 public:
 	GameObject();
-	GameObject(const sf::Texture& texture, sf::Vector2f pos, float CELL_WIDTH, float CELL_HEIGHT);
+	GameObject(const sf::Texture& texture, sf::Vector2f pos);
 	virtual ~GameObject() = default;
 
 	sf::FloatRect getBounds() const;
@@ -25,7 +25,11 @@ public:
 	virtual sf::Vector2f getPosition() const;
 	virtual void collide(GameObject& otherObject) = 0;
 	virtual void playerCollide(Player& otherObject);
+<<<<<<< HEAD
 	virtual void guardCollide(Enemy& otherObject) = 0;
+=======
+	virtual void enemyCollide(Enemy& otherObject) = 0;
+>>>>>>> ebd655d612b4d4a5151048c1ea5ab80f03a4dc05
 	virtual void explosionCollide(Explosion& otherobject);
 
 	void setPosition(const sf::Vector2f& position);

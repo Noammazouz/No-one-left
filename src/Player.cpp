@@ -1,28 +1,31 @@
+//-----include section-----
 #include "Player.h"
-#include <iostream>
 
-
+//-----functions section------
+//-----------------------------------------------------------------------------
+//Defines the static members.
 int Player::m_lives = NUM_OF_LIVES;
-//---------------------------------
 int Player::m_score = 0;
-//---------------------------------
+
+//-----------------------------------------------------------------------------
 Player::Player()
 	: UpdateableObject(), m_present(DEFAULT)
-{
-}
-//-------------------------------------
-Player::Player(sf::Vector2f position, const sf::Texture& texture, float CELL_WIDTH, float CELL_HEIGHT)
-	: UpdateableObject(position, texture, CELL_WIDTH, CELL_HEIGHT), m_present(DEFAULT)
-{
-}
-//-------------------------------------
+{}
+
+//-----------------------------------------------------------------------------
+Player::Player(sf::Vector2f position, const sf::Texture& texture)
+	: UpdateableObject(position, texture), m_present(DEFAULT)
+{}
+
+//-----------------------------------------------------------------------------
 void Player::update(sf::Time deltaTime)
 {
 	this->setPrevLocation(this->getPosition());
 	this->updatePosition(m_direction * PLAYER_SPEED * deltaTime.asSeconds());
 }
-//-------------------------------------
-void Player::setDirection(sf::Vector2f /*position*/)
+
+//-----------------------------------------------------------------------------
+void Player::setDirection(sf::Vector2f position)
 {
 	if (checkDeriction())
 	{
@@ -52,74 +55,91 @@ void Player::setDirection(sf::Vector2f /*position*/)
 		m_direction = sf::Vector2f(0, 0);
 	}
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 void Player::collide(GameObject& otherObject)
 {
 	otherObject.playerCollide(*this);
 }
+<<<<<<< HEAD
 //-------------------------------------
 void Player::guardCollide(Enemy& /*otherObject*/)
 {
 }
 //-------------------------------------
+=======
+
+//-----------------------------------------------------------------------------
+void Player::enemyCollide(Enemy& /*otherObject*/)
+{}
+
+//-----------------------------------------------------------------------------
+>>>>>>> ebd655d612b4d4a5151048c1ea5ab80f03a4dc05
 void Player::explosionCollide(Explosion& /*otherobject*/)
 {
 	this->setPosition(this->getStartingPosition());
 	decLife();
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 void Player::decLife()
 {
 	m_lives--;
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 int Player::getLife()
 {
 	return m_lives;
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 void Player::setWin(bool win)
 {
 	m_win = win;
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 bool Player::getWin() const
 {
 	return m_win;
 }
-//-----------------------------
+
+//-----------------------------------------------------------------------------
 const Present& Player::getPresent() const
 {
 	return m_present;
 }
-//-------------------------------
+
+//-----------------------------------------------------------------------------
 void Player::setPresent(Present present)
 {
 	m_present = present;
 }
-//-------------------------------------
+
+//------------------------------------------------------------------------------
 void Player::incLife()
 {
-	if (m_lives < NUM_OF_LIVES)
-	{
-		m_lives++;
-	}
+	if (m_lives < NUM_OF_LIVES) m_lives++;
 }
-//-------------------------------------
+
+//------------------------------------------------------------------------------
 int Player::getScore()
 {
 	return m_score;
 }
-//----------------------------
+
+//------------------------------------------------------------------------------
 void Player::setScore(int score)
 {
 	m_score += score;
 }
-//-------------------------------------
+
+//------------------------------------------------------------------------------
 bool Player::checkDeriction()
 {
 	return sf::Keyboard::isKeyPressed(sf::Keyboard::Left) ||
-		sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
-		sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
-		sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
+		   sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
+		   sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
+		   sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
 }
