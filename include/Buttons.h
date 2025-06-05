@@ -1,32 +1,44 @@
 #pragma once
 
 //-----include section-----
+#include "Const.h"
+#include "ResourcesManager.h"
+
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+#include <iostream>
+#include <cstdlib>
+#include <string>
+#include <cctype>
+#include <fstream>
+#include <memory>
+#include <vector>
+
 
 //-----class section-----
-class Buttons
+class Button
 {
 public:
-	Buttons(sf::RenderWindow& window, const sf::Font& font);
+	Button(char buttonType);
 
-	void draw();
-	void update(sf::Time deltaTime);
-	void handleInput();
+	sf::Vector2f getPosition() const;
+	void setPosition(int place);
 
-	bool isButtonPressed(int buttonIndex) const;
+	sf::Vector2f getSize() const;
+	void setSize();
+
+	const char getButtonType() const;
+
+	void setIsOnIt(bool isOnIt);
+	bool getIsOnIt() const;
+
+	sf::RectangleShape makeButtonRectangle() const;
+	void draw(sf::RenderWindow& window, char buttonType) const;
+
 
 private:
-	static const int BUTTON_WIDTH = 200;
-	static const int BUTTON_HEIGHT = 50;
-
-	static const int BUTTON_SPACING = 10;
-
-	static const int BUTTON_X = 100;
-	static const int BUTTON_Y = 100;
-
-	static const int BUTTON_TEXT_SIZE = 24;
-
-	static const sf::Color BUTTON_COLOR;
-	static const sf::Color BUTTON_HOVER_COLOR;
-	static const sf::Color BUTTON_PRESSED_COLOR;
+	char m_buttonType;
+	sf::Vector2f m_position;
+	sf::Vector2f m_size;
+	bool m_isOnIt = false;
 };
