@@ -9,14 +9,14 @@ class Explosion;
 class Presents;
 class Player;
 class Wall;
-class Guard;
+class Enemy;
 
 //-----class section-----
 class GameObject
 {
 public:
 	GameObject();
-	GameObject(const sf::Texture& texture, sf::Vector2f pos, float CELL_WIDTH, float CELL_HEIGHT);
+	GameObject(const sf::Texture& texture, sf::Vector2f pos);
 	virtual ~GameObject() = default;
 
 	sf::FloatRect getBounds() const;
@@ -25,7 +25,7 @@ public:
 	virtual sf::Vector2f getPosition() const;
 	virtual void collide(GameObject& otherObject) = 0;
 	virtual void playerCollide(Player& otherObject);
-	virtual void guardCollide(Guard& otherObject) = 0;
+	virtual void enemyCollide(Enemy& otherObject) = 0;
 	virtual void explosionCollide(Explosion& otherobject);
 
 	void setPosition(const sf::Vector2f& position);

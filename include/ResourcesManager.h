@@ -14,6 +14,7 @@ public:
 
 	static ResourcesManager& getInstance();
 
+
 	const sf::Texture& getTexture(std::string& name) const;
 	sf::Music& getMusic(std::string name);
 	const sf::Font& getFont() const;

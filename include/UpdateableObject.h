@@ -8,7 +8,7 @@ class UpdateableObject : public GameObject
 {
 public:
 	UpdateableObject();
-	UpdateableObject(sf::Vector2f position, const sf::Texture& texture, float CELL_WIDTH, float CELL_HEIGHT);
+	UpdateableObject(sf::Vector2f position, const sf::Texture& texture);
 
 	virtual sf::Vector2f getStartingPosition() const;
 	virtual void setFreezing(bool freeze);
