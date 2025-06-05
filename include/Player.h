@@ -5,7 +5,6 @@
 
 class GameObject;
 
-
 //-----class section-----
 class Player : public UpdateableObject
 {

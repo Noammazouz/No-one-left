@@ -34,7 +34,7 @@ enum Direction
 	RIGHT
 };
 
-enum menuButtons 
+enum ScreenButtons 
 {
 	START_GAME,
 	HELP,
