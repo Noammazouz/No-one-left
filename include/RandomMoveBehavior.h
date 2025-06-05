@@ -1,7 +1,9 @@
 #pragma once
 
+//-----includes section-----
 #include "MoveBehavior.h"
 
+//-----class section-----
 class RandomMoveBehavior : public MoveBehavior
 {
 public:
