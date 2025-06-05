@@ -1,6 +1,7 @@
 #pragma once
 
 //-----include section-----
+
 #include "Const.h"
 #include "ResourcesManager.h"
 
@@ -13,6 +14,7 @@
 #include <fstream>
 #include <memory>
 #include <vector>
+
 
 //-----class section-----
 class Button
@@ -34,5 +36,4 @@ private:
 	char m_buttonType;
 	sf::Vector2f m_position;
 	sf::Vector2f m_size;
-	bool m_isOnIt = false;
 };

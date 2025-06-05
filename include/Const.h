@@ -3,6 +3,48 @@
 //-----include section-----
 #include <vector>
 #include <string>
+#include <map>
+
+//-----enums section-----
+enum Direction
+{
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT
+};
+
+//enum ScreenButtons 
+//{
+//	START_GAME,
+//	HELP,
+//	EXIT,
+//	BACK
+//};
+
+enum Present
+{
+	TIME,
+	KILL,
+	FREEZE,
+	DEFAULT
+};
+
+enum GameState
+{
+	START,
+	HELP,
+	GAME,
+	PUASE
+};
+
+enum ScreenType
+{
+	START_SCREEN,
+	HELP_SCREEN,
+	GAME_SCREEN,
+	END_SCREEN
+};
 
 //-----constants section-----
 const int WINDOW_HEIGHT = 1283;
@@ -29,35 +71,14 @@ const float BOMB_TIME = 4.f;
 const int NUM_OF_EXPLOSION = 5;
 const float ADDED_TIME = 10.f;
 const float WINDOW_RATIO = 0.92f;
-const std::string NEW_GAME_BUTTON_NAME = "New Game";
-const std::string HELP_BUTTON_NAME = "HELP";
-const std::string EXIT_BUTTON_NAME = "Exit Game";
-const char START_MENU_INDENTIFIER[START_WINDOW_BUTTONS_NUM] = { 'N', 'H', 'E' };
-
-//-----enums section-----
-enum Direction 
+const std::map<GameState, std::vector<std::string> > GAME_BUTTONS = 
 {
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT
+	{START, {"Start", "Help", "Exit"}},
+	{HELP, {"Back"}},
+	{GAME, {"Pause"}},
+	{PUASE, {"Resume", "Help"}}
 };
 
-enum ScreenButtons 
-{
-	START_GAME,
-	HELP,
-	EXIT,
-	BACK
-};
-
-enum Present
-{
-	TIME,
-	KILL,
-	FREEZE,
-	DEFAULT
-};
 
 //-----------------------------------------------------------------------------
 //std::string getStartMenuButtonStringByChar(char buttonType)
