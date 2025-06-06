@@ -31,7 +31,6 @@ void Screen::handleKeyPressed(sf::Event::KeyEvent event, int& currrentScreen, sf
 {
 	if (event.code == sf::Keyboard::Escape)
 	{
-		window.close();
 		currrentScreen = int(START_SCREEN);
 		return;
 	}

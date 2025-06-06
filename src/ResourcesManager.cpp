@@ -49,7 +49,6 @@ void ResourcesManager::loadTexture()
         /*{"guard", "Guard.png"},
         {"player", "Robot.png"},
         {"rock", "Rock.png"},
-        {"wall", "wall.png"},
         {"empty", "empty.png"},
         {"menu", "menu.png"},
         {"backround", "helpBackground.png"},

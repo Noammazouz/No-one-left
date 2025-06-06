@@ -20,65 +20,43 @@ void GameScreen::run(sf::RenderWindow& window, int& m_currrentScreen)
 void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 {
 	handleMusicTransition(true);
-	//m_scoreboard.updateScore(0);
 
-	//sf::Clock clock;
 	handleLoadingLevel(clock);
 
-	/*while (m_window.isOpen())
+
+	m_player.setDirection(sf::Vector2f());
+
+
+	move(clock);
+	handleCollision();
+	explosion();
+	handleErasing();
+	handleSocreboard();
+	if (m_player.getWin())
 	{
-		m_window.clear();
-
-		
-		m_window.display();*/
-
-		m_player.setDirection(sf::Vector2f());
-
-		/*for (auto event = sf::Event{}; m_window.pollEvent(event);)
+		m_sound.setBuffer(ResourcesManager::getInstance().getSound("door"));
+		m_sound.setVolume(100.f);
+		m_sound.setPlayingOffset(sf::seconds(0.95f));
+		m_sound.play();
+		calculateScore();
+		handleLoadingLevel(clock);
+		if (m_win)
 		{
-			switch (event.type)
-			{
-			case sf::Event::Closed:
-				m_window.close();
-				break;
-			case sf::Event::KeyPressed:
-			{
-				handleKeyPressed(event.key);
-				break;
-			}
-			}
-		}*/
-
-		move(clock);
-		handleCollision();
-		explosion();
-		handleErasing();
-		handleSocreboard();
-		if (m_player.getWin())
-		{
-			m_sound.setBuffer(ResourcesManager::getInstance().getSound("door"));
-			m_sound.setVolume(100.f);
-			m_sound.setPlayingOffset(sf::seconds(0.95f));
-			m_sound.play();
-			calculateScore();
-			handleLoadingLevel(clock);
-			if (m_win)
-			{
-				winWindow();
-				//break;
-			}
-		}
-		if (m_player.getLife() == END_GAME)
-		{
-			lostWindow();
+			winWindow();
 			//break;
 		}
-		else if (m_timer.asSeconds() <= 0.f)
-		{
-			m_player.decLife();
-			handleLoadingLevel(clock);
-		}
-	//}
+	}
+	if (m_player.getLife() == END_GAME)
+	{
+		lostWindow();
+		//break;
+	}
+	else if (m_timer.asSeconds() <= 0.f)
+	{
+		m_player.decLife();
+		handleLoadingLevel(clock);
+	}
+
 }
 //-------------------------------------
 void GameScreen::draw(sf::RenderWindow& window)

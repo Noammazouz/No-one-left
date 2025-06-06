@@ -32,4 +32,5 @@ void Controller::initScreen()
 {
 	//m_screens.push_back(std::make_unique<StartScreen>());
 	m_screens.push_back(std::make_unique<GameScreen>());
+	//m_screens.push_back(std::make_unique<HelpScreen>());
 }
