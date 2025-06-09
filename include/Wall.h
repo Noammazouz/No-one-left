@@ -7,7 +7,7 @@
 class Wall : public StaticObject
 {
 public:
-	Wall(sf::Vector2f position, const sf::Texture& texture);
+	Wall(const sf::Texture& texture, const sf::Vector2f& position, float width, float height);
 
 	virtual void collide(GameObject& otherObject) override;
 	virtual void explosionCollide(Explosion& otherobject)override;
