@@ -20,20 +20,21 @@
 class Button
 {
 public:
-	Button(char buttonType);
+	Button(std::string buttonType);
 
 	sf::Vector2f getPosition() const;
 	void setPosition(int place);
 
 	sf::Vector2f getSize() const;
 	void setSize();
-
-	const char getButtonType() const;
+	sf::FloatRect getBounds() const;
+	const std::string getButtonType() const;
 	sf::RectangleShape makeButtonRectangle() const;
-	void draw(sf::RenderWindow& window, char buttonType) const;
+	void draw(sf::RenderWindow& window);
   
 private:
-	char m_buttonType;
+	std::string m_buttonType;
+	sf::Sprite m_buttonSprite;
 	sf::Vector2f m_position;
 	sf::Vector2f m_size;
 };

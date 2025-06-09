@@ -8,7 +8,7 @@ Controller::Controller()
 	: m_currentScreen(int(START_SCREEN))
 {
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-	m_window.create(sf::VideoMode(desktop.width * WINDOW_RATIO, desktop.height * WINDOW_RATIO), "No One Left");
+	m_window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "No One Left");
 	initScreen();
 }
 

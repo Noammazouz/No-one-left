@@ -4,17 +4,16 @@
 
 GameScreen::GameScreen()
 {
-	//initBotton();
+	initButtons();
 }
 //-------------------------------------
 void GameScreen::run(sf::RenderWindow& window, int& m_currrentScreen)
 {
 	handleMusicTransition(false);
 	Screen::run(window, m_currrentScreen);
-	/*m_view.setCenter(m_player->getPos());
+	/*m_view.setCenter(m_player.getPos());
 	m_view.setCenter(clampViewPosition(worldBounds));
 	window.setView(m_view);*/
-	//runLevel();
 }
 //---------
 void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
@@ -59,12 +58,23 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 
 }
 //-------------------------------------
-void GameScreen::draw(sf::RenderWindow& window)
+void GameScreen::initButtons()
 {
 	ResourcesManager& resources = ResourcesManager::getInstance();
+	//m_buttons.addButton(Button(sf::Vector2f(0.05f, 0.15f), sf::Vector2f(0.9f, 0.1f), resources.getTexture("pause"), resources.getTexture("play"), PAUSE));
+}
+//-------------------------------------
+void GameScreen::draw(sf::RenderWindow& window)
+{
+	sf::Texture texure = ResourcesManager::getInstance().getTexture("background");
+	//texure.setRepeated(true); // Enable texture repeating
 	sf::Sprite backround;
 
-	backround.setTexture(resources.getTexture("background"));
+	backround.setTexture(texure);
+	/*backround.setScale(
+		static_cast<float>(window.getSize().x) / backround.getTexture()->getSize().x,
+		static_cast<float>(window.getSize().y) / backround.getTexture()->getSize().y
+	);*/
 	window.draw(backround);
 
 	//for (const auto& staticObj : m_staticObj)
@@ -78,11 +88,12 @@ void GameScreen::draw(sf::RenderWindow& window)
 	//	movingObj->draw(m_window);
 	//}
 
-	m_player.draw(m_window);
+	m_player.draw(window);
 	//window.draw(m_scoreboard.getLevel());
 	//window.draw(m_scoreboard.getScore());
 	//window.draw(m_scoreboard.getTime());
 	//window.draw(m_scoreboard.getLives());
+	//m_buttons.draw(window);
 }
 //-------------------------------------
 void GameScreen::move(sf::Clock& clock)
@@ -191,18 +202,6 @@ void GameScreen::calculateScore()
 	points += (Enemy::getNumOfStartingGuards() * POINT_FOR_GUARD);
 	points += (std::abs(Enemy::getNumOfGuardsAlive() - Enemy::getNumOfStartingGuards()) * KILL_GUARD);
 	m_player.setScore(points);*/
-}
-//-------------------------------------
-void GameScreen::resetLevel()
-{
-	/*for (int index = 0; index < Enemy::getNumOfGuardsAlive(); ++index)
-	{
-		m_movingObj[index]->setPosition(m_movingObj[index]->getStartingPosition());
-	}
-	for (int index = Enemy::getNumOfGuardsAlive(); index < m_movingObj.size(); ++index)
-	{
-		m_movingObj[index]->setLife(true);
-	}*/
 }
 //-------------------------------------
 void GameScreen::setExpoDirection(int index)
