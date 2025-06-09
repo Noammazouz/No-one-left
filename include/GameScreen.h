@@ -28,11 +28,10 @@ public:
 	virtual void activate(sf::Clock& clockin, int& m_currrentScreen) override;
 	virtual void run(sf::RenderWindow& window, int& m_currrentScreen) override;
 	virtual void handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow& window) {};
-	virtual void initButtons(GameState buttonAmmout) {};
+protected:
+	void initButtons() override;
 
 private:
-	//void runLevel();
-	//void drawWindow();
 	void move(sf::Clock& clock);
 	void handleCollision();
 	void setbomb();
@@ -44,15 +43,12 @@ private:
 	void checkExpo();
 	void checkVaildDraw();
 	void handleLoadingLevel(sf::Clock& clock);
-	//void handleMusicTransition(bool toGameplay);
-	void handleMuting();
 	void handleSocreboard();
 	void handlePresents();
 	void removeGuard();
 	void addTime();
 	void lostWindow();
 	void winWindow();
-	//void handleKeyPressed(sf::Event::KeyEvent event);
 
 
 
