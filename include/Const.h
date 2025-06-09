@@ -14,13 +14,12 @@ enum Direction
 	RIGHT
 };
 
-//enum ScreenButtons 
-//{
-//	START_GAME,
-//	HELP,
-//	EXIT,
-//	BACK
-//};
+enum ScreenButtons 
+{
+	START_GAME,
+	HELP,
+	EXIT
+};
 
 enum Present
 {
@@ -30,13 +29,13 @@ enum Present
 	DEFAULT
 };
 
-enum GameState
-{
-	START,
-	HELP,
-	GAME,
-	PUASE
-};
+//enum GameState
+//{
+//	START,
+//	HELP,
+//	GAME,
+//	PUASE
+//};
 
 enum ScreenType
 {
@@ -73,13 +72,13 @@ const float BOMB_TIME = 4.f;
 const int NUM_OF_EXPLOSION = 5;
 const float ADDED_TIME = 10.f;
 const float WINDOW_RATIO = 0.92f;
-const std::map<GameState, std::vector<std::string> > GAME_BUTTONS = 
-{
-	{START, {"Start", "Help", "Exit"}},
-	{HELP, {"Back"}},
-	{GAME, {"Pause"}},
-	{PUASE, {"Resume", "Help"}}
-};
+//const std::map<GameState, std::vector<std::string> > GAME_BUTTONS = 
+//{
+//	{START, {"Start", "Help", "Exit"}},
+//	{HELP, {"Back"}},
+//	{GAME, {"Pause"}},
+//	{PUASE, {"Resume", "Help"}}
+//};
 
 
 //-----------------------------------------------------------------------------

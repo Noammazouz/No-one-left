@@ -66,17 +66,15 @@ void GameScreen::initButtons()
 //-------------------------------------
 void GameScreen::draw(sf::RenderWindow& window)
 {
+	sf::Sprite backround;
 	sf::Texture texure = ResourcesManager::getInstance().getTexture("background");
 	texure.setRepeated(true); // Enable texture repeating
-	sf::Sprite backround;
+	texure.setSmooth(true); // Enable texture smoothing for better quality
+
 
 	
 	backround.setTexture(texure);
-	backround.setTextureRect(sf::IntRect(0, 0, MAP_WIDTH, MAP_HEIGHT)); // Set the texture rectangle to cover the entire window
-	/*backround.setScale(
-		static_cast<float>(window.getSize().x) / backround.getTexture()->getSize().x,
-		static_cast<float>(window.getSize().y) / backround.getTexture()->getSize().y
-	);*/
+	backround.setTextureRect(sf::IntRect(0, 0, MAP_WIDTH, MAP_HEIGHT));
 	window.draw(backround);
 
 	//for (const auto& staticObj : m_staticObj)
