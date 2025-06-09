@@ -18,7 +18,7 @@ public:
 	virtual void run(sf::RenderWindow& window, int& m_currrentScreen);
 
 protected:
-	virtual void handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow& window) = 0;
+	virtual void handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow& window, int& screenState) = 0;
 	virtual void initButtons() = 0;
 	void handleMuting(int currrentScreen);
 	void handleKeyPressed(sf::Event::KeyEvent event, int& currrentScreen, sf::RenderWindow& window);

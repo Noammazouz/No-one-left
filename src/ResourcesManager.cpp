@@ -29,13 +29,13 @@ void ResourcesManager::show() const
 //------------------------------------------------------------------------------
 const sf::Texture& ResourcesManager::getTexture(std::string name) const
 {
-	std::cout << "Getting texture: " << name << std::endl;
+	//std::cout << "Getting texture: " << name << std::endl;
     auto it = m_textures.find(name);
     if (it == m_textures.end())
     {
         std::cout << "Could not find texture: " << name << std::endl;
     }
-
+	//std::cout << "Found texture: " << name << std::endl;
     return it->second;
 }
 
@@ -45,7 +45,11 @@ void ResourcesManager::loadTexture()
     std::vector<std::pair<std::string, std::string>> textures =
     {
         {"background","background.png"},
-        {"wall","wall.png"}
+        {"wall","wall.png"},
+        {"startScreen", "startScreen.png"},
+        {"start game", "start game.png"},
+        {"exit", "exit.png"},
+        {"help", "help.png"}
         /*{"guard", "Guard.png"},
         {"player", "Robot.png"},
         {"rock", "Rock.png"},
@@ -155,7 +159,7 @@ sf::SoundBuffer& ResourcesManager::getSound(std::string name)
     auto it = m_music.find(name);
     if (it == m_music.end())
     {
-       // std::cout << "Could not find sound: " << name << std::endl;
+        std::cout << "Could not find sound: " << name << std::endl;
     }
     return it->second;
 }

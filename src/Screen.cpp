@@ -14,7 +14,7 @@ void Screen::run(sf::RenderWindow& window, int& currrentScreen)
 		}
 		case sf::Event::MouseButtonReleased:
 		{
-			handleMouseClick(window.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y }), window);
+			handleMouseClick(window.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y }), window, currrentScreen);
 			break;
 		}
 		case sf::Event::KeyPressed:
