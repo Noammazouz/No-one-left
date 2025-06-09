@@ -33,7 +33,7 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
     }
 }
 
-void SetEnemies()
+void Map::SetEnemies()
 {
 
 }

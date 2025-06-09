@@ -8,7 +8,7 @@ Controller::Controller()
 	: m_currentScreen(int(START_SCREEN))
 {
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-	m_window.create(sf::VideoMode(desktop.width * WINDOW_RATIO, desktop.height * WINDOW_RATIO), "No One Left");
+	m_window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "No One Left");
 	initScreen();
 }
 
@@ -32,4 +32,5 @@ void Controller::initScreen()
 {
 	//m_screens.push_back(std::make_unique<StartScreen>());
 	m_screens.push_back(std::make_unique<GameScreen>());
+	//m_screens.push_back(std::make_unique<HelpScreen>());
 }

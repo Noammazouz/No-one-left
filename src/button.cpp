@@ -3,7 +3,7 @@
 
 //-----functions section------
 //-----------------------------------------------------------------------------
-Button::Button(char buttonName) : m_buttonType(buttonName)
+Button::Button(std::string buttonName) : m_buttonType(buttonName)
 {
 	setSize();  //Initialize size when button is created
 }
@@ -38,7 +38,7 @@ sf::Vector2f Button::getSize() const
 //-----------------------------------------------------------------------------
 void Button::setSize()
 {
-	m_size = sf::Vector2f(BUTTON_WIDTH, BUTTON_HEIGHT);
+	//m_size = sf::Vector2f(BUTTON_WIDTH, BUTTON_HEIGHT);
 }
 
 //-----------------------------------------------------------------------------
@@ -56,7 +56,7 @@ sf::RectangleShape Button::makeButtonRectangle() const
 
 //-----------------------------------------------------------------------------
 //This function draw each button.
-void Button::draw(sf::RenderWindow& window, char buttonType) const
+void Button::draw(sf::RenderWindow& window)
 {
 	//create a rectangle for the button
 	sf::RectangleShape button = makeButtonRectangle();
@@ -82,7 +82,7 @@ void Button::draw(sf::RenderWindow& window, char buttonType) const
 }
 
 //-----------------------------------------------------------------------------
-const char Button::getButtonType() const
+const std::string Button::getButtonType() const
 {
 	return m_buttonType;
 }
