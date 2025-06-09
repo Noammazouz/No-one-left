@@ -1,4 +1,4 @@
-type, textureKey, x, y, width, height
+type,textureKey,x,y,width,height
 wall,wall,0,0,32,32
 wall,wall,32,0,32,32
 wall,wall,64,0,32,32

@@ -21,7 +21,9 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 	handleMusicTransition(true);
 
 	handleLoadingLevel(clock);
-
+	if (m_staticObj.empty()) {
+		std::cerr << "[WARN] No static objects were loaded—are you sure your CSV has entries?\n";
+	}
 
 	m_player.setDirection(sf::Vector2f());
 
@@ -78,7 +80,10 @@ void GameScreen::draw(sf::RenderWindow& window)
 		static_cast<float>(window.getSize().y) / backround.getTexture()->getSize().y
 	);*/
 	window.draw(backround);
-
+	for (auto& obj : m_staticObj)
+	{
+		obj->draw(window);
+	}
 	//for (const auto& staticObj : m_staticObj)
 	//{
 	//	staticObj->draw(m_window);
