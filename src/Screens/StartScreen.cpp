@@ -7,7 +7,6 @@ StartScreen::StartScreen()
 
 void StartScreen::draw(sf::RenderWindow& window)
 {
-	std::cout << "Drawing StartScreen" << std::endl;
 	// Draw the background
 	sf::Texture backgroundTexture = ResourcesManager::getInstance().getTexture("startScreen");
 	backgroundTexture.setSmooth(true);
@@ -17,7 +16,6 @@ void StartScreen::draw(sf::RenderWindow& window)
 	// Draw buttons
 	for (auto& button : m_buttons)
 	{
-		std::cout << "Drawing button: " << std::endl;
 		button.draw(window);
 	}
 	// Display the contents of the window
