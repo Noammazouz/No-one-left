@@ -9,7 +9,7 @@ GameScreen::GameScreen()
 //-------------------------------------
 void GameScreen::run(sf::RenderWindow& window, int& m_currrentScreen)
 {
-	handleMusicTransition(false);
+	//handleMusicTransition(false);
 	Screen::run(window, m_currrentScreen);
 	/*m_view.setCenter(m_player.getPos());
 	m_view.setCenter(clampViewPosition(worldBounds));
@@ -18,6 +18,11 @@ void GameScreen::run(sf::RenderWindow& window, int& m_currrentScreen)
 //---------
 void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 {
+	if (m_paused)
+	{
+		handleMusicTransition(false);
+		return;
+	}
 	handleMusicTransition(true);
 
 	handleLoadingLevel(clock);
@@ -41,14 +46,14 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 		handleLoadingLevel(clock);
 		if (m_win)
 		{
-			winWindow();
-			//break;
+			m_currrentScreen = WIN_SCREEN;
+			return;
 		}
 	}
 	if (m_player.getLife() == END_GAME)
 	{
-		lostWindow();
-		//break;
+		m_currrentScreen = LOSE_SCREEN;
+		return;
 	}
 	else if (m_timer.asSeconds() <= 0.f)
 	{
@@ -57,12 +62,21 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 	}
 
 }
+
 //-------------------------------------
 void GameScreen::initButtons()
 {
-	ResourcesManager& resources = ResourcesManager::getInstance();
-	//m_buttons.addButton(Button(sf::Vector2f(0.05f, 0.15f), sf::Vector2f(0.9f, 0.1f), resources.getTexture("pause"), resources.getTexture("play"), PAUSE));
+	sf::Vector2f pos(WINDOW_WIDTH - ResourcesManager::getInstance().getTexture("pause").getSize().x / 2, ResourcesManager::getInstance().getTexture("pause").getSize().y / 2);
+	m_buttons.emplace_back("pause", pos);
+	//m_buttons.push_back(button);
+	std::vector<std::string> buttonNames = { "resume", "exit" };
+	for (int index = 0; index < buttonNames.size(); ++index)
+	{
+		sf::Vector2f position(static_cast<float>(WINDOW_WIDTH / 2), static_cast<float>(WINDOW_HEIGHT / 5 + 300 * index));
+		m_buttons.emplace_back(buttonNames[index], position);
+	}
 }
+
 //-------------------------------------
 void GameScreen::draw(sf::RenderWindow& window)
 {
@@ -89,11 +103,19 @@ void GameScreen::draw(sf::RenderWindow& window)
 	//}
 
 	m_player.draw(window);
+	
 	//window.draw(m_scoreboard.getLevel());
 	//window.draw(m_scoreboard.getScore());
 	//window.draw(m_scoreboard.getTime());
 	//window.draw(m_scoreboard.getLives());
-	//m_buttons.draw(window);
+	if(m_paused)
+	{
+		drawButtons(window);
+	}
+	else
+	{
+		m_buttons[0].draw(window);
+	}
 }
 //-------------------------------------
 void GameScreen::move(sf::Clock& clock)
@@ -301,29 +323,7 @@ void GameScreen::handleSocreboard()
 	m_scoreboard.updateLives(m_player.getLife());
 	m_scoreboard.updateScore(m_player.getScore());*/
 }
-void GameScreen::handlePresents()
-{
-	/*switch (m_player.getPresent())
-	{
-	case TIME:
-	{
-		addTime();
-		break;
-	}
-	case KILL:
-	{
-		removeGuard();
-		break;
 
-	}
-	case FREEZE:
-	{
-		freezeGuard();
-		break;
-	}
-	}
-	m_player.setPresent(DEFAULT);*/
-}
 //------------------------
 void GameScreen::removeGuard()
 {
@@ -334,12 +334,14 @@ void GameScreen::removeGuard()
 		m_movingObj[index]->setLife(true);
 	}*/
 }
+
 //------------------------
 void GameScreen::addTime()
 {
 	/*m_timer += sf::seconds(ADDED_TIME);
 	m_scoreboard.updateTime(m_timer);*/
 }
+
 //------------------------
 void GameScreen::lostWindow()
 {
@@ -357,6 +359,7 @@ void GameScreen::lostWindow()
 	//sf::sleep(sf::seconds(2));
 	//m_window.close();
 }
+
 //------------------------
 void GameScreen::winWindow()
 {
@@ -374,4 +377,16 @@ void GameScreen::winWindow()
 	//m_window.display();
 	//sf::sleep(sf::seconds(3));
 	//m_window.close();
+}
+
+//------------------------
+void GameScreen::handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow& window, int& screenState)
+{
+	for (int index = 0; index < m_buttons.size(); ++index)
+	{
+		if (m_buttons[index].getBounds().contains(clickPos))
+		{
+			m_paused = !m_paused;
+		}
+	}
 }

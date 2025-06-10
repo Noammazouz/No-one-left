@@ -32,6 +32,7 @@ void Screen::handleKeyPressed(sf::Event::KeyEvent event, int& currrentScreen, sf
 	if (event.code == sf::Keyboard::Escape)
 	{
 		currrentScreen = int(START_SCREEN);
+		handleMusicTransition(false);
 		return;
 	}
 	
@@ -40,18 +41,6 @@ void Screen::handleKeyPressed(sf::Event::KeyEvent event, int& currrentScreen, sf
 		handleMuting(currrentScreen);
 	}
 }
-
-//void Screen::handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow& window)
-//{
-//	for(auto& button : m_buttons)
-//	{
-//		if (button.getGlobalBounds().contains(clickPos))
-//		{
-//			button.onClick(window);
-//			return;
-//		}
-//	}
-//}
 
 //-----------------------------
 void Screen::handleMusicTransition(bool toGameplay)
@@ -97,6 +86,15 @@ void Screen::handleMuting(int currrentScreen)
 	else
 	{
 		ResourcesManager::getInstance().getMusic(musicStatus).play();
+	}
+}
+
+//---------------------------------------------------------------------
+void Screen::drawButtons(sf::RenderWindow& window)
+{
+	for (auto& button : m_buttons)
+	{
+		button.draw(window);
 	}
 }
 

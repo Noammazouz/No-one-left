@@ -3,9 +3,9 @@
 
 //-----functions section------
 //-----------------------------------------------------------------------------
-Button::Button(std::string buttonName, int size, sf::Vector2f pos) : m_buttonType(buttonName)
+Button::Button(std::string buttonName, sf::Vector2f pos) : m_buttonType(buttonName)
 {
-	setSprite(size, pos);  //Initialize size when button is created
+	setSprite(pos);  //Initialize size when button is created
 }
 
 ////-----------------------------------------------------------------------------
@@ -36,7 +36,7 @@ Button::Button(std::string buttonName, int size, sf::Vector2f pos) : m_buttonTyp
 //}
 
 //-----------------------------------------------------------------------------
-void Button::setSprite(int size, sf::Vector2f pos)
+void Button::setSprite(sf::Vector2f pos)
 {
 	m_buttonSprite.setTexture(ResourcesManager::getInstance().getTexture(m_buttonType));
 	m_buttonSprite.setOrigin(static_cast<float>(m_buttonSprite.getTexture()->getSize().x) / 2.0f, static_cast<float>(m_buttonSprite.getTexture()->getSize().y) / 2.0f);
