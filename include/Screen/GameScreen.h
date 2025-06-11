@@ -27,7 +27,8 @@ public:
 	void draw(sf::RenderWindow& window) override;
 	virtual void activate(sf::Clock& clockin, int& m_currrentScreen) override;
 	virtual void run(sf::RenderWindow& window, int& m_currrentScreen) override;
-	virtual void handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow& window, int& screenState) override {};
+	virtual void handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow& window, int& screenState) override;
+
 protected:
 	void initButtons() override;
 
@@ -39,12 +40,10 @@ private:
 	void explosion();
 	void calculateScore();
 	void setExpoDirection(int index);
-	void resetLevel();
 	void checkExpo();
 	void checkVaildDraw();
 	void handleLoadingLevel(sf::Clock& clock);
 	void handleSocreboard();
-	void handlePresents();
 	void removeGuard();
 	void addTime();
 	void lostWindow();
@@ -60,6 +59,7 @@ private:
 	Scoreboard m_scoreboard;
 
 	bool m_win = false;
+	bool m_paused = false;
 	std::vector<std::unique_ptr<UpdateableObject>> m_movingObj;
 	std::vector<std::unique_ptr<StaticObject>> m_staticObj;
 };

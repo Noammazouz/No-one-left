@@ -29,9 +29,10 @@ enum Present
 	DEFAULT
 };
 
-//enum GameState
+//enum GameButtons
 //{
-//	START,
+//	PAUSE,
+//  RESUME,
 //	HELP,
 //	GAME,
 //	PUASE
@@ -42,7 +43,8 @@ enum ScreenType
 	START_SCREEN,
 	HELP_SCREEN,
 	GAME_SCREEN,
-	END_SCREEN
+	WIN_SCREEN,
+	LOSE_SCREEN
 };
 
 //-----constants section-----
