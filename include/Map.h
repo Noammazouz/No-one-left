@@ -8,6 +8,7 @@
 #include "UpdateableObject.h"
 #include "StaticObject.h"
 #include "Player.h"
+#include "Wall.h"
 
 class Player;
 

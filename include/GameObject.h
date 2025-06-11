@@ -16,12 +16,15 @@ class GameObject
 {
 public:
 	GameObject() = default;
-	//GameObject(const sf::Texture& texture, sf::Vector2f pos);
+	GameObject(const sf::Texture& texture,
+		const sf::Vector2f& position,
+		float width,
+		float height);
 	virtual ~GameObject() = default;
 
 	sf::FloatRect getBounds() const;
 
-	virtual void draw(sf::RenderWindow& window) {};
+	virtual void draw(sf::RenderWindow& window) ;
 	virtual sf::Vector2f getPosition() const { return sf::Vector2f(); };
 	virtual void collide(GameObject& otherObject) = 0;
 	virtual void playerCollide(Player& otherObject) {};
