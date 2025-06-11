@@ -1,5 +1,6 @@
 #pragma once
 
+//-----include section-----
 #include "Screen.h"
 #include <vector> 
 #include <string>
@@ -18,6 +19,7 @@
 #include "Scoreboard.h"
 #include "Explosion.h"
 
+//-----class section-----
 class GameScreen : public Screen
 {
 public:
@@ -48,7 +50,6 @@ private:
 	void addTime();
 	void lostWindow();
 	void winWindow();
-
 
 
 	sf::RenderWindow m_window;

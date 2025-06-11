@@ -5,9 +5,8 @@
 #include <sstream>
 #include <stdlib.h>
 
-
-
-
+//-----functions section------
+//-----------------------------------------------------------------------------
 void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player)
 {
     std::ifstream file("Level1.csv");
@@ -95,8 +94,6 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
     //    
     //}
 
-
+//-----------------------------------------------------------------------------
 void Map::SetEnemies()
-{
-
-}
+{}

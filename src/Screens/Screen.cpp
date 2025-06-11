@@ -1,6 +1,8 @@
+//-----include section-----
 #include "Screen.h"
 
-
+//-----functions section------
+//-----------------------------------------------------------------------------
 void Screen::run(sf::RenderWindow& window, int& currrentScreen)
 {
 	for (auto event = sf::Event{}; window.pollEvent(event);)
@@ -26,7 +28,7 @@ void Screen::run(sf::RenderWindow& window, int& currrentScreen)
 	}
 }
 
-//---------------------------------
+//-----------------------------------------------------------------------------
 void Screen::handleKeyPressed(sf::Event::KeyEvent event, int& currrentScreen, sf::RenderWindow& window)
 {
 	if (event.code == sf::Keyboard::Escape)
@@ -42,7 +44,7 @@ void Screen::handleKeyPressed(sf::Event::KeyEvent event, int& currrentScreen, sf
 	}
 }
 
-//-----------------------------
+//-----------------------------------------------------------------------------
 void Screen::handleMusicTransition(bool toGameplay)
 {
 	if (toGameplay && !m_inGameplay)
@@ -66,7 +68,7 @@ void Screen::handleMusicTransition(bool toGameplay)
 	}
 }
 
-//-------------------------------------
+//-----------------------------------------------------------------------------
 void Screen::handleMuting(int currrentScreen)
 {
 	std::string musicStatus;
@@ -89,7 +91,7 @@ void Screen::handleMuting(int currrentScreen)
 	}
 }
 
-//---------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void Screen::drawButtons(sf::RenderWindow& window)
 {
 	for (auto& button : m_buttons)
@@ -97,4 +99,3 @@ void Screen::drawButtons(sf::RenderWindow& window)
 		button.draw(window);
 	}
 }
-

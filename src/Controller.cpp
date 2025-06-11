@@ -1,7 +1,6 @@
 //-----include section-----
 #include "Controller.h"
 
-
 //-----functions section------
 //-----------------------------------------------------------------------------
 Controller::Controller()

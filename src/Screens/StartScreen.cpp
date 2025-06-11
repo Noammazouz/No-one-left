@@ -1,11 +1,14 @@
+//-----includes section-----
 #include "StartScreen.h"
 
+//-----functions section------
+//-----------------------------------------------------------------------------
 StartScreen::StartScreen()
 {
 	initButtons();
 }
 
-//---------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void StartScreen::draw(sf::RenderWindow& window)
 {
 	sf::Texture backgroundTexture = ResourcesManager::getInstance().getTexture("startScreen");
@@ -16,13 +19,13 @@ void StartScreen::draw(sf::RenderWindow& window)
 	drawButtons(window);
 }
 
-//---------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void StartScreen::activate(sf::Clock& clockin, int& m_currrentScreen)
 {
 
 }
 
-//---------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void StartScreen::initButtons()
 {
 	std::vector<std::string> buttonNames = { "start game", "help", "exit"};
@@ -33,7 +36,7 @@ void StartScreen::initButtons()
 	}
 }
 
-//---------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void StartScreen::handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow& window, int& screenState)
 {
 	for (int index = 0; index < m_buttons.size(); ++index)
