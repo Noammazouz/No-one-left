@@ -23,6 +23,7 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 		handleMusicTransition(false);
 		return;
 	}
+
 	handleMusicTransition(true);
 
 	handleLoadingLevel(clock);
