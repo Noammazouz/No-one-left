@@ -18,7 +18,7 @@ void Controller::run()
 	sf::Clock clock;
 	while (m_window.isOpen())
 	{
-		clock.restart();
+		//clock.restart();
 		m_window.clear();
 		m_screens[m_currentScreen]->draw(m_window);
 		m_window.display();
