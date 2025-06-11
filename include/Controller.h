@@ -8,7 +8,6 @@
 #include "Screen.h"
 #include "StartScreen.h"
 #include "HelpScreen.h"
-#include "PauseGame.h"
 #include "GameScreen.h"
 
 //-----class section-----

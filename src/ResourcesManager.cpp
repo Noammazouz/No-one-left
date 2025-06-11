@@ -49,7 +49,9 @@ void ResourcesManager::loadTexture()
         {"startScreen", "startScreen.png"},
         {"start game", "start game.png"},
         {"exit", "exit.png"},
-        {"help", "help.png"}
+        {"help", "help.png"},
+        {"pause", "pauseButton.png"},
+        {"resume", "start game.png"}
         /*{"guard", "Guard.png"},
         {"player", "Robot.png"},
         {"rock", "Rock.png"},

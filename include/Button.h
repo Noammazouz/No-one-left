@@ -20,7 +20,9 @@
 class Button
 {
 public:
-	Button(std::string buttonType, int size, sf::Vector2f pos);
+
+	Button() = default;	
+	Button(std::string buttonType, sf::Vector2f pos);
 
 	/*sf::Vector2f getPosition() const;
 	void setPosition(int place);*/
@@ -33,7 +35,7 @@ public:
 	void draw(sf::RenderWindow& window);
   
 private:
-	void setSprite(int size, sf::Vector2f pos);
+	void setSprite(sf::Vector2f pos);
 	std::string m_buttonType;
 	sf::Sprite m_buttonSprite;
 	sf::Vector2f m_position;

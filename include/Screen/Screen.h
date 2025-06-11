@@ -20,6 +20,7 @@ public:
 protected:
 	virtual void handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow& window, int& screenState) = 0;
 	virtual void initButtons() = 0;
+	virtual void drawButtons(sf::RenderWindow& window);
 	void handleMuting(int currrentScreen);
 	void handleKeyPressed(sf::Event::KeyEvent event, int& currrentScreen, sf::RenderWindow& window);
 	void handleMusicTransition(bool toGameplay);
