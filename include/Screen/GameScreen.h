@@ -42,18 +42,20 @@ private:
 	void setExpoDirection(int index);
 	void checkExpo();
 	void checkVaildDraw();
-	void handleLoadingLevel(sf::Clock& clock);
+	void handleLoadingLevel();
 	void handleSocreboard();
 	void removeGuard();
 	void addTime();
 	void lostWindow();
 	void winWindow();
-
+	sf::Vector2f clampViewPosition(const sf::FloatRect& bounds);
 
 
 	sf::RenderWindow m_window;
 	sf::Time m_timer;
 	sf::Sound m_sound;
+	sf::View m_view;
+	sf::FloatRect worldBounds;
 	Map m_map;
 	Player m_player;
 	Scoreboard m_scoreboard;

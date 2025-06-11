@@ -29,14 +29,12 @@ enum Present
 	DEFAULT
 };
 
-//enum GameButtons
-//{
-//	PAUSE,
-//  RESUME,
-//	HELP,
-//	GAME,
-//	PUASE
-//};
+enum GameButtons
+{
+	PAUSE,
+    RESUME,
+	_HELP
+};
 
 enum ScreenType
 {
@@ -74,6 +72,10 @@ const float BOMB_TIME = 4.f;
 const int NUM_OF_EXPLOSION = 5;
 const float ADDED_TIME = 10.f;
 const float WINDOW_RATIO = 0.92f;
+const std::string MENU_MUSIC = "menu";
+const std::string GAME_MUSIC = "game";
+
+
 //const std::map<GameState, std::vector<std::string> > GAME_BUTTONS = 
 //{
 //	{START, {"Start", "Help", "Exit"}},

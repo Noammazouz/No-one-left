@@ -29,12 +29,13 @@ public:
 	static int getLife();
 	const Present& getPresent() const;
 	void setPresent(Present present);
+	sf::Vector2f getPos() const { return m_pic.getPosition(); }
 
 private:
 	bool checkDeriction();
 
 	sf::Vector2f m_direction;
-
+	sf::RectangleShape m_pic;
 	static int m_lives;
 	static int m_score;
 	bool m_win = false;
