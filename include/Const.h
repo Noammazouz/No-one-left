@@ -74,7 +74,7 @@ const float ADDED_TIME = 10.f;
 const float WINDOW_RATIO = 0.92f;
 const std::string MENU_MUSIC = "menu";
 const std::string GAME_MUSIC = "game";
-
+const std::string RETURN_BUTTON = "return";
 
 //const std::map<GameState, std::vector<std::string> > GAME_BUTTONS = 
 //{

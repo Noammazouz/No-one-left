@@ -24,6 +24,8 @@ void Controller::run()
 		m_window.display();
 		m_screens[m_currentScreen]->activate(clock, m_currentScreen);
 		m_screens[m_currentScreen]->run(m_window, m_currentScreen);
+		if (m_currentScreen  != HELP_SCREEN)
+		m_screens[HELP_SCREEN]->setPreviousScreen(m_currentScreen);
 	}
 }
 

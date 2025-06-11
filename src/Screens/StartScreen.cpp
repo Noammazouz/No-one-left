@@ -20,7 +20,6 @@ void StartScreen::draw(sf::RenderWindow& window)
 //---------------------------------------------------------------
 void StartScreen::activate(sf::Clock& clockin, int& m_currrentScreen)
 {
-
 }
 
 //---------------------------------------------------------------

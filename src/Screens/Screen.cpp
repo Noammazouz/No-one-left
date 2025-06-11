@@ -3,27 +3,34 @@
 
 void Screen::run(sf::RenderWindow& window, int& currrentScreen)
 {
+
 	for (auto event = sf::Event{}; window.pollEvent(event);)
 	{
 		switch (event.type)
 		{
-		case sf::Event::Closed:
-		{
-			window.close();
-			break;
-		}
-		case sf::Event::MouseButtonReleased:
-		{
-			handleMouseClick(window.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y }), window, currrentScreen);
-			break;
-		}
-		case sf::Event::KeyPressed:
-		{
-			handleKeyPressed(event.key, currrentScreen, window);
-			break;
-		}
+			case sf::Event::Closed:
+			{
+				window.close();
+				break;
+			}
+			case sf::Event::MouseButtonReleased:
+			{
+				handleMouseClick(window.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y }), window, currrentScreen);
+				break;
+			}
+			case sf::Event::KeyPressed:
+			{
+				handleKeyPressed(event.key, currrentScreen, window);
+				break;
+			}
 		}
 	}
+}
+
+void Screen::setPreviousScreen(int previousScreen)
+{
+	m_previousScreen = previousScreen;
+	//std::cout << "Previous screen set to: " << previousScreen << std::endl;
 }
 
 //---------------------------------
