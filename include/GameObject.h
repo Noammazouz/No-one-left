@@ -3,6 +3,7 @@
 //-----include section-----
 #include <SFML/Graphics.hpp>
 #include "Const.h"
+#include "ResourcesManager.h"
 
 class Door;
 class Explosion;
@@ -15,7 +16,7 @@ class Enemy;
 class GameObject
 {
 public:
-	GameObject() = default;
+	GameObject();
 	GameObject(const sf::Texture& texture, const sf::Vector2f& position,
 			   float width, float height);
 	virtual ~GameObject() = default;
@@ -24,21 +25,23 @@ public:
 
 	virtual void draw(sf::RenderWindow& window) ;
 	virtual sf::Vector2f getPosition() const { return sf::Vector2f(); };
-	virtual void collide(GameObject& otherObject) = 0;
-	virtual void playerCollide(Player& otherObject) {};
-	virtual void enemyCollide(Enemy& otherObject) = 0;
-	virtual void explosionCollide(Explosion& otherobject) {};
 
 	void setPosition(const sf::Vector2f& position) {};
+	sf::Vector2f getObjPosition() const;
 	bool isDead() const {};
 	void setLife(const bool life) {};
 
+	virtual void setRotation(sf::Vector2f direction);
+
 protected:
-	void updatePosition(sf::Vector2f direction) {};
+	void updatePosition(sf::Vector2f direction);
 	void mirrorImage(sf::Vector2f direction) {};
 
 private:
 	void setSprite(sf::Vector2f pos) {};
+	bool checkDirection();
+	sf::Vector2f m_direction;
+	float m_targetAngle = 0.f; // add this to private section
 
 	sf::Sprite m_pic;
 	float m_cell_size[2];

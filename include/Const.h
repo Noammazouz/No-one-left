@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <SFML/Graphics.hpp>
 
 //-----enums section-----
 enum Direction
@@ -71,10 +72,15 @@ const float DEFUALT_HEIGHT = 32.f;
 const float BOMB_TIME = 4.f;
 const int NUM_OF_EXPLOSION = 5;
 const float ADDED_TIME = 10.f;
-const float WINDOW_RATIO = 0.92f;
+const float WINDOW_RATIO = 0.85f;
+const float ROTATION_SPEED = 150.f; // degrees per second
 const std::string MENU_MUSIC = "menu";
 const std::string GAME_MUSIC = "game";
 const std::string RETURN_BUTTON = "return";
+//const auto RIGHT_PRESSED = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
+//const auto LEFT_PRESSED = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
+//const auto UP_PRESSED = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
+//const auto DOWN_PRESSED = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
 
 //const std::map<GameState, std::vector<std::string> > GAME_BUTTONS = 
 //{
@@ -83,7 +89,6 @@ const std::string RETURN_BUTTON = "return";
 //	{GAME, {"Pause"}},
 //	{PUASE, {"Resume", "Help"}}
 //};
-
 
 //-----------------------------------------------------------------------------
 //std::string getStartMenuButtonStringByChar(char buttonType)
@@ -98,7 +103,6 @@ const std::string RETURN_BUTTON = "return";
 //		return EXIT_BUTTON_NAME;
 //	}
 //}
-
 
 //-----------------------------------------------------------------------------
 //This function check if the mouse is in the bounds of the button or the cell

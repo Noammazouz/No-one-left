@@ -4,6 +4,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "UpdateableObject.h"
+#include "ResourcesManager.h"
 //#include "CollisionFactory.h"
 #include "Enemy.h"
 #include "Wall.h"
@@ -23,10 +24,6 @@ public:
 	virtual void update(sf::Time deltaTime) override;
 	virtual void setDirection(sf::Vector2f position) /*override*/;
 
-	virtual void collide(GameObject& otherObject) override;
-	virtual void enemyCollide(Enemy& otherObject) override;
-	virtual void explosionCollide(Explosion& otherobject) override;
-
 	void setWin(bool win);
 	bool getWin() const;
     int getScore();
@@ -35,14 +32,16 @@ public:
 	void incLife();
 	static int getLife();
 	sf::Vector2f getPos() const;
-	void draw(sf::RenderWindow& window);
+	//void draw(sf::RenderWindow& window);
 
 private:
-	bool checkDeriction();
+	bool checkDirection();
 
 	sf::Vector2f m_direction;
-	sf::RectangleShape m_pic;
+	//sf::RectangleShape m_pic;
 	static int m_lives;
 	static int m_score;
 	bool m_win = false;
+
+	float m_targetAngle = 0.f; // add this to private section
 };

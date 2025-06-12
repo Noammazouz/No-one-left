@@ -7,6 +7,7 @@ GameScreen::GameScreen()
 	: worldBounds(0.f, 0.f, MAP_WIDTH, MAP_HEIGHT)
 {
 	initButtons();
+	handleLoadingLevel();
 }
 
 //-----------------------------------------------------------------------------
@@ -29,8 +30,9 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 
 	handleMusicTransition(true);
 
-	handleLoadingLevel();
-	if (m_staticObj.empty()) {
+
+	if (m_staticObj.empty()) 
+	{
 		std::cerr << "[WARN] No static objects were loaded—are you sure your CSV has entries?\n";
 	}
 
@@ -42,6 +44,7 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 	explosion();
 	handleErasing();
 	handleSocreboard();
+
 	if (m_player.getWin())
 	{
 		m_sound.setBuffer(ResourcesManager::getInstance().getSound("door"));
@@ -55,12 +58,12 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 			return;
 		}
 	}
+
 	if (m_player.getLife() == END_GAME)
 	{
 		m_currrentScreen = LOSE_SCREEN;
 		return;
 	}
-
 }
 
 //-----------------------------------------------------------------------------
@@ -79,33 +82,30 @@ void GameScreen::initButtons()
 	}
 }
 
-
 //-----------------------------------------------------------------------------
 void GameScreen::draw(sf::RenderWindow& window)
 {
-
 	// Draw game world
 	sf::Sprite backround;
 	sf::Texture texure = ResourcesManager::getInstance().getTexture("background");
 	texure.setRepeated(true);
-	texure.setSmooth(true);
 
 	backround.setTexture(texure);
 	backround.setTextureRect(sf::IntRect(0, 0, MAP_WIDTH, MAP_HEIGHT));
 	window.draw(backround);
 
-	for (auto& obj : m_staticObj)
+	for (auto& obj : m_staticObj) 
 		obj->draw(window);
 
+	std::cout << "Before [INFO] Drawing player at position: " << m_player.getPosition().x << ", " << m_player.getPosition().y << "\n";
 	m_player.draw(window);
+	std::cout << "After [INFO] Drawing player at position: " << m_player.getPosition().x << ", " << m_player.getPosition().y << "\n";
 
 	// Switch to default view to draw UI
 	window.setView(window.getDefaultView());
 
-	if (m_paused)
-		drawButtons(window); // Menu buttons
-	else
-		m_buttons[PAUSE].draw(window); // Only pause button
+	if (m_paused) drawButtons(window); // Menu buttons
+	else m_buttons[PAUSE].draw(window); // Only pause button
 }
 
 //-----------------------------------------------------------------------------
@@ -124,7 +124,6 @@ void GameScreen::move(sf::Clock& clock)
 		movingObj->update(deltaTime);
 		index++;
 	}*/
-	
 }
 
 //-----------------------------------------------------------------------------

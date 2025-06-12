@@ -13,7 +13,6 @@ void StartScreen::draw(sf::RenderWindow& window)
 {
 	window.setView(window.getDefaultView());
 	sf::Texture backgroundTexture = ResourcesManager::getInstance().getTexture("startScreen");
-	backgroundTexture.setSmooth(true);
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
 	sf::Sprite backgroundSprite(backgroundTexture);
 	backgroundSprite.setScale(desktop.width * WINDOW_RATIO / backgroundTexture.getSize().x, 

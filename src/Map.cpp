@@ -1,6 +1,7 @@
 //-----include section-----
 #include "Map.h"
 #include "ResourcesManager.h"
+#include "Player.h"
 #include <fstream>
 #include <sstream>
 #include <stdlib.h>
@@ -15,16 +16,18 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
         return;
     }
 
-    auto trim = [&](std::string s) {
+    auto trim = [&](std::string s) 
+    {
         // remove leading/trailing whitespace (including '\r')
         while (!s.empty() && std::isspace((unsigned char)s.front())) s.erase(s.begin());
         while (!s.empty() && std::isspace((unsigned char)s.back()))  s.pop_back();
         return s;
-        };
+    };
 
     std::string line;
     bool firstLine = true;
-    while (std::getline(file, line)) {
+    while (std::getline(file, line)) 
+    {
         line = trim(line);
         if (line.empty()) continue;
 
@@ -33,19 +36,22 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
         {
             std::istringstream ss(line);
             std::string field;
-            while (std::getline(ss, field, ',')) {
+            while (std::getline(ss, field, ',')) 
+            {
                 tokens.push_back(trim(field));
             }
         }
 
         // skip the header row
-        if (firstLine && tokens.size() > 0 && tokens[0] == "type") {
+        if (firstLine && tokens.size() > 0 && tokens[0] == "type") 
+        {
             firstLine = false;
             continue;
         }
         firstLine = false;
 
-        if (tokens.size() != 6) {
+        if (tokens.size() != 6) 
+        {
             std::cerr << "[WARN] expected 6 fields but got "
                 << tokens.size() << " in: " << line << "\n";
             continue;
@@ -69,6 +75,10 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
         }
         // … handle other types …
     }
+
+	 // ensure smooth scaling
+	player = Player(sf::Vector2f(0, 0), // default position, will be set later
+        ResourcesManager::getInstance().getTexture("Player"));
 }
     //std::ifstream file("Level1.csv");
     //if (!file) { /* error */ return; }

@@ -15,10 +15,6 @@ public:
 	void update(sf::Time deltaTime) override;
 	void setDirection(sf::Vector2f position) /*override*/;
 
-	virtual void collide(GameObject& otherObject) override;
-	virtual void enemyCollide(Enemy& otherObject) override;
-	virtual void explosionCollide(Explosion& otherobject) override;
-	virtual void playerCollide(Player& otherObject) override;
 	virtual void Display() {};
 
 	void PerformAttack();

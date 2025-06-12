@@ -11,15 +11,17 @@ int Player::m_score = 0;
 Player::Player()
 	: UpdateableObject()
 {
-	m_pic.setSize(sf::Vector2f(50.f, 50.f));
+	/*m_pic.setSize(sf::Vector2f(50.f, 50.f));
 	m_pic.setPosition(sf::Vector2f(500.f, 500.f));
 	m_pic.setOutlineThickness(5.f);
 	m_pic.setFillColor(sf::Color::Black);
+
+    m_pic.setOrigin(m_pic.getSize().x / 2.f, m_pic.getSize().y / 2.f);*/
 }
 
 //-----------------------------------------------------------------------------
 Player::Player(sf::Vector2f position, const sf::Texture& texture)
-	//: UpdateableObject(position, texture)
+	: UpdateableObject(sf::Vector2f(100.f, 100.f), texture)
 {}
 
 //-----------------------------------------------------------------------------
@@ -27,13 +29,13 @@ void Player::update(sf::Time deltaTime)
 {
 	this->setPrevLocation(this->getPosition());
 	this->updatePosition(m_direction * PLAYER_SPEED * deltaTime.asSeconds());
-	m_pic.move(m_direction * PLAYER_SPEED * deltaTime.asSeconds());
+	//m_pic.move(m_direction * PLAYER_SPEED * deltaTime.asSeconds());
 }
 
 //-----------------------------------------------------------------------------
 void Player::setDirection(sf::Vector2f position)
 {
-	if (checkDeriction())
+	if (checkDirection())
 	{
 		// Get the current key being pressed and update movement
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
@@ -54,29 +56,86 @@ void Player::setDirection(sf::Vector2f position)
 		{
 			m_direction = sf::Vector2f(0, 1);
 		}
+
+		//this->setRotation(m_direction);
 	}
 	else
 	{
 		// If no movement keys are pressed, stop the player
 		m_direction = sf::Vector2f(0, 0);
 	}
+
+	this->setRotation(m_direction);
 }
 
-//-----------------------------------------------------------------------------
-void Player::collide(GameObject& otherObject)
-{
-	otherObject.playerCollide(*this);
-}
+//void Player::setDirection(sf::Vector2f position)
+//{
+//	static sf::Clock rotationClock; // Clock persists across calls
+//	float deltaTime = rotationClock.restart().asSeconds();
+//
+//	const auto right = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
+//	const auto left = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
+//	const auto up = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
+//	const auto down = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
+//
+//	if (checkDeriction())
+//	{
+//		if (left)
+//		{
+//			m_direction = sf::Vector2f(-1, 0);
+//			m_targetAngle = 270.f;
+//		}
+//		else if (right)
+//		{
+//			m_direction = sf::Vector2f(1, 0);
+//			m_targetAngle = 90.f;
+//		}
+//		else if (up)
+//		{
+//			m_direction = sf::Vector2f(0, -1);
+//			m_targetAngle = 0.f;
+//		}
+//		else if (down)
+//		{
+//			m_direction = sf::Vector2f(0, 1);
+//			m_targetAngle = 180.f;
+//		}
+//		//else if (up && right)
+//		//{
+//		//	m_direction = sf::Vector2f(0, -0.5f);
+//		//	m_targetAngle = 45.f; // Maintain current angle
+//		//}
+//	}
+//	else
+//	{
+//		m_direction = sf::Vector2f(0, 0);
+//	}
+//
+//	// --- Smooth rotation towards m_targetAngle ---
+//	float currentAngle = m_pic.getRotation();
+//
+//	// Normalize angle difference to [-180, 180]
+//	float deltaAngle = std::fmod(m_targetAngle - currentAngle + 540.f, 360.f) - 180.f;
+//
+//	// Compute step
+//	float rotationStep = ROTATION_SPEED * deltaTime;
+//
+//	// Apply smooth turn
+//	if (std::abs(deltaAngle) < rotationStep)
+//		currentAngle = m_targetAngle;
+//	else
+//		currentAngle += (deltaAngle > 0 ? 1 : -1) * rotationStep;
+//
+//	m_pic.setRotation(currentAngle);
+//}
 
-//-----------------------------------------------------------------------------
-void Player::enemyCollide(Enemy& /*otherObject*/)
-{}
-
-//-----------------------------------------------------------------------------
-void Player::explosionCollide(Explosion& /*otherobject*/)
+//------------------------------------------------------------------------------
+bool Player::checkDirection()
 {
-	//this->setPosition(this->getStartingPosition());
-	decLife();
+	return sf::Keyboard::isKeyPressed(sf::Keyboard::Left) ||
+		   sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
+		   sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
+		   sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
 }
 
 //-----------------------------------------------------------------------------
@@ -106,7 +165,7 @@ bool Player::getWin() const
 //-----------------------------------------------------------------------------
 sf::Vector2f Player::getPos() const
 {
-	return m_pic.getPosition();
+	return getObjPosition();
 }
 
 //------------------------------------------------------------------------------
@@ -128,20 +187,11 @@ void Player::setScore(int score)
 }
 
 //------------------------------------------------------------------------------
-bool Player::checkDeriction()
-{
-	return sf::Keyboard::isKeyPressed(sf::Keyboard::Left) ||
-		   sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
-		   sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
-		   sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
-}
-
-//------------------------------------------------------------------------------
-void Player::draw(sf::RenderWindow& window)
-{
-	// Draw the player rectangle
-	window.draw(m_pic);
-}
+//void Player::draw(sf::RenderWindow& window)
+//{
+//	// Draw the player rectangle
+//	//window.draw(m_pic);
+//}
 
 //------------------------------------------------------------------------------
 
