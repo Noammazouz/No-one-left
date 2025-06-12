@@ -3,6 +3,11 @@
 
 //-----functions section------
 //-----------------------------------------------------------------------------
+Screen::Screen()
+{
+}
+
+//-----------------------------------------------------------------------------
 void Screen::run(sf::RenderWindow& window, int& currrentScreen)
 {
 
@@ -29,10 +34,10 @@ void Screen::run(sf::RenderWindow& window, int& currrentScreen)
 	}
 }
 
+//-------------------------------------------------------------
 void Screen::setPreviousScreen(int previousScreen)
 {
 	m_previousScreen = previousScreen;
-	//std::cout << "Previous screen set to: " << previousScreen << std::endl;
 }
 
 //-----------------------------------------------------------------------------

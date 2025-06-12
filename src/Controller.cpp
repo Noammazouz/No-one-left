@@ -34,6 +34,6 @@ void Controller::initScreen()
     m_screens.push_back(std::make_unique<StartScreen>());
 	m_screens.push_back(std::make_unique<HelpScreen>());
 	m_screens.push_back(std::make_unique<GameScreen>());
-	/*m_screens.push_back(std::make_unique<WinScreen>());
-	m_screens.push_back(std::make_unique<EndScreen>());*/
+	m_screens.push_back(std::make_unique<WinScreen>());
+	m_screens.push_back(std::make_unique<LoseScreen>());
 }
