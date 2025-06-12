@@ -11,7 +11,7 @@
 class Screen
 {
 public:
-	Screen() = default;
+	Screen();
 	virtual ~Screen() = default;
 	virtual void draw(sf::RenderWindow& window) = 0;
 	virtual void activate(sf::Clock& clockin, int& m_currrentScreen) = 0;

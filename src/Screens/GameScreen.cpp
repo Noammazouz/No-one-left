@@ -6,6 +6,11 @@ GameScreen::GameScreen()
 	: worldBounds(0.f, 0.f, MAP_WIDTH, MAP_HEIGHT)
 {
 	initButtons();
+	handleLoadingLevel();
+	if (m_staticObj.empty()) 
+	{
+		std::cerr << "[WARN] No static objects were loaded—are you sure your CSV has entries?\n";
+	}
 }
 //-------------------------------------
 void GameScreen::run(sf::RenderWindow& window, int& m_currrentScreen)
@@ -25,11 +30,6 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 	}
 
 	handleMusicTransition(true);
-
-	handleLoadingLevel();
-	if (m_staticObj.empty()) {
-		std::cerr << "[WARN] No static objects were loaded—are you sure your CSV has entries?\n";
-	}
 
 	m_player.setDirection(sf::Vector2f());
 

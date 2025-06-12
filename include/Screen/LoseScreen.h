@@ -4,7 +4,7 @@
 
 class LoseScreen : public Screen {
 public:
-	LoseScreen() = default;
+	LoseScreen();
 	virtual void draw(sf::RenderWindow& window) override;
 	virtual void activate(sf::Clock& clockin, int& m_currrentScreen) override;
 protected:
