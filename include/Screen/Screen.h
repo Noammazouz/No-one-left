@@ -16,6 +16,7 @@ public:
 	virtual void draw(sf::RenderWindow& window) = 0;
 	virtual void activate(sf::Clock& clockin, int& m_currrentScreen) = 0;
 	virtual void run(sf::RenderWindow& window, int& m_currrentScreen);
+	void setPreviousScreen(int previousScreen);
 
 protected:
 	virtual void handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow& window, int& screenState) = 0;
@@ -26,6 +27,7 @@ protected:
 	void handleMusicTransition(bool toGameplay);
 
 	bool m_inGameplay = false;
+	int m_previousScreen;
 	std::vector<Button> m_buttons;
 
 };
