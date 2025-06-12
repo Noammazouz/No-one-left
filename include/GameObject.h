@@ -16,10 +16,8 @@ class GameObject
 {
 public:
 	GameObject() = default;
-	GameObject(const sf::Texture& texture,
-		const sf::Vector2f& position,
-		float width,
-		float height);
+	GameObject(const sf::Texture& texture, const sf::Vector2f& position,
+			   float width, float height);
 	virtual ~GameObject() = default;
 
 	sf::FloatRect getBounds() const;

@@ -3,7 +3,8 @@
 
 //-----functions section------
 //-----------------------------------------------------------------------------
-GameObject::GameObject(const sf::Texture& texture, const sf::Vector2f& position, float width, float height)
+GameObject::GameObject(const sf::Texture& texture, const sf::Vector2f& position, 
+                       float width, float height)
 {
     m_pic.setTexture(texture);
     m_pic.setPosition(position);

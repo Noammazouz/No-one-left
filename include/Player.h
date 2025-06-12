@@ -1,8 +1,14 @@
 #pragma once
 
 //-----include section-----
+#include <iostream>
 #include <SFML/Graphics.hpp>
 #include "UpdateableObject.h"
+//#include "CollisionFactory.h"
+#include "Enemy.h"
+#include "Wall.h"
+#include "Bombs.h"
+#include "Explosion.h"
 
 class GameObject;
 

@@ -142,3 +142,48 @@ void Player::draw(sf::RenderWindow& window)
 	// Draw the player rectangle
 	window.draw(m_pic);
 }
+
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//void Plyer::registerCollision()
+//{
+//	static bool registered = false;
+//	if (registered) return; //only register once
+//
+//	auto& factory = CollisionFactory::getInstance();
+//
+//	//register the collision handlers
+//	factory.registerSymetricCollision<Player, Enemy>([](Player& player, Enemy& enemy) { 
+//		Player& p = static_cast<Player&>(player);
+//		std::cout << "Player hit by Enemy!" << std::endl;
+//		p.decLife();
+//		p.setPosition(p.getStartingPosition());
+//	});
+//
+//	factory.registerSymetricCollision<Player, Wall>([](Player& player, Wall& wall) { 
+//		Player& p = static_cast<Player&>(player);
+//		std::cout << "Player hit a Wall!" << std::endl;
+//		p.setPosition(p.getPrevLocation()); // revert to previous position
+//	});
+//
+//	factory.registerSymetricCollision<Player, Explosion>([](Player& player, Explosion& explosion) { 
+//		Player& p = static_cast<Player&>(player);
+//		std::cout << "Player hit an Explosion!" << std::endl;
+//		p.decLife();
+//		p.setPosition(p.getStartingPosition());
+//	});
+//
+//	registered = true;
+//	std::cout << "Player collisions registered." << std::endl;
+//}
+
+//------------------------------------------------------------------------------
+//Auto-regiteration helper - runs when first Player is created.
+//static bool g_playerColliosionRegistered = []()
+//{
+//	Player::registerCollision();
+//	return true;
+//}
