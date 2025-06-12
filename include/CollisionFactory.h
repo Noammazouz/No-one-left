@@ -6,15 +6,6 @@
 #include <string>
 #include <typeinfo>
 #include <typeindex>
-#include <memory>
-
-// Base interface for collision handlers
-class ICollisionHandler
-{
-public:
-    virtual ~ICollisionHandler() = default;
-    virtual void handle(GameObject& object1, GameObject& object2) = 0;
-};
 
 // Exception for unknown collisions
 struct UnknownCollision : public std::runtime_error
@@ -32,12 +23,13 @@ public:
     // Singleton access
     static CollisionFactory& getInstance();
 
-    // Unique pointer type for collision handlers
+    // Function pointer type for collision handlers
+    using CollisionHandler = void (*)(GameObject&, GameObject&);
     using CollisionKey = std::pair<std::type_index, std::type_index>;
 
-    // Factory methods
+    // Template method for type-safe registration
     template<typename T1, typename T2>
-    void registerSymmetricCollision(std::unique_ptr<ICollisionHandler> handler);
+    void registerTypedCollision(void (*handler)(T1&, T2&));
 
     // Process collision (main factory method)
     void processCollision(GameObject& object1, GameObject& object2);
@@ -55,21 +47,34 @@ private:
     CollisionFactory& operator=(const CollisionFactory&) = delete;
 
     // Internal methods
-    ICollisionHandler* lookup(const std::type_index& class1, const std::type_index& class2) const;
-    void registerCollisionInternal(const std::type_index& type1, const std::type_index& type2, std::unique_ptr<ICollisionHandler> handler);
+    CollisionHandler lookup(const std::type_index& class1, const std::type_index& class2) const;
+    void registerCollisionInternal(const std::type_index& type1, const std::type_index& type2, CollisionHandler handler);
 
     // Factory storage
-    std::map<CollisionKey, std::unique_ptr<ICollisionHandler>> m_collisionMap;
+    std::map<CollisionKey, CollisionHandler> m_collisionMap;
 };
 
-// Template implementations
+// Template implementation
 template<typename T1, typename T2>
-void CollisionFactory::registerSymmetricCollision(std::unique_ptr<ICollisionHandler> handler)
+void CollisionFactory::registerTypedCollision(void (*handler)(T1&, T2&))
 {
-    // For unique_ptr, we can only register one direction unless we clone
-    // This is a limitation of unique_ptr - it can't be copied
-    registerCollisionInternal(typeid(T1), typeid(T2), std::move(handler));
-    
-    // Note: Cannot register reverse direction with same handler due to unique_ptr move semantics
-    // Would need a separate handler instance or a different approach
+    // Create wrapper that does the casting automatically
+    auto wrapper = [handler](GameObject& obj1, GameObject& obj2) {
+        // Cast to the correct types (we know this is safe because of how we registered)
+        if (typeid(obj1) == typeid(T1)) {
+            // obj1 is T1, obj2 is T2
+            T1& typed1 = static_cast<T1&>(obj1);
+            T2& typed2 = static_cast<T2&>(obj2);
+            handler(typed1, typed2);
+        } else {
+            // obj1 is T2, obj2 is T1 (symmetric)
+            T1& typed1 = static_cast<T1&>(obj2);
+            T2& typed2 = static_cast<T2&>(obj1);
+            handler(typed1, typed2);
+        }
+    };
+
+    // Register both directions
+    registerCollisionInternal(typeid(T1), typeid(T2), wrapper);
+    registerCollisionInternal(typeid(T2), typeid(T1), wrapper);
 } 
