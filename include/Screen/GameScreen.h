@@ -17,12 +17,12 @@
 #include "GameObject.h"
 #include "Scoreboard.h"
 #include "Explosion.h"
+#include "CollisionFactory.h"
 
 class GameScreen : public Screen
 {
 public:
 	GameScreen();
-	~GameScreen() = default;
 
 	void draw(sf::RenderWindow& window) override;
 	virtual void activate(sf::Clock& clockin, int& m_currrentScreen) override;
@@ -46,8 +46,6 @@ private:
 	void handleSocreboard();
 	void removeGuard();
 	void addTime();
-	void lostWindow();
-	void winWindow();
 	sf::Vector2f clampViewPosition(const sf::FloatRect& bounds);
 
 

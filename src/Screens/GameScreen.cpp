@@ -126,11 +126,12 @@ void GameScreen::move(sf::Clock& clock)
 //-------------------------------------
 void GameScreen::handleCollision()
 {
+	auto& collisionHandler = CollisionFactory::getInstance();
 	/*for (const auto& staticObj : m_staticObj)
 	{
 		if (m_player.checkCollision(*staticObj))
 		{
-			m_player.collide(*staticObj);
+			collisionHandler;
 		}
 	}
 
@@ -142,7 +143,7 @@ void GameScreen::handleCollision()
 		{
 			if (movingObj->checkCollision(*staticObj))
 			{
-				movingObj->collide(*staticObj);
+				collisionHandler;
 			}
 		}
 	}
@@ -154,8 +155,7 @@ void GameScreen::handleCollision()
 			m_sound.setBuffer(ResourcesManager::getInstance().getSound("hit"));
 			m_sound.setVolume(100.f);
 			m_sound.play();
-			m_player.collide(*m_movingObj[guard]);
-			resetLevel();
+			collisionHandler;
 			break;
 		}
 	}
@@ -166,7 +166,7 @@ void GameScreen::handleCollision()
 		{
 			if (m_movingObj[moveObj]->checkCollision(*m_movingObj[nextMoveObj]))
 			{
-				m_movingObj[moveObj]->collide(*m_movingObj[nextMoveObj]);
+				collisionHandler;
 			}
 		}
 	}*/
@@ -295,8 +295,8 @@ void GameScreen::handleLoadingLevel()
 	m_movingObj.clear();
 	m_staticObj.clear();
 
-	m_map.loadFromCSV(/*m_movingObj,*/ m_staticObj, m_player);
-
+	m_map.loadFromCSV(m_staticObj, m_player);
+	//m_map.loadMovingObj(m_movingObj);
 	m_timer = sf::seconds(120);
 }
 
@@ -326,43 +326,6 @@ void GameScreen::addTime()
 {
 	/*m_timer += sf::seconds(ADDED_TIME);
 	m_scoreboard.updateTime(m_timer);*/
-}
-
-//------------------------
-void GameScreen::lostWindow()
-{
-	//// to do a Lost board
-	//ResourcesManager::getInstance().getMusic("game").stop();
-	//m_sound.setBuffer(ResourcesManager::getInstance().getSound("loss"));
-	//m_sound.setVolume(100.f);
-	//m_sound.play();
-
-	//sf::Sprite lostWindow;
-	//lostWindow.setTexture(ResourcesManager::getInstance().getTexture("game over"));
-	//m_window.clear();
-	//m_window.draw(lostWindow);
-	//m_window.display();
-	//sf::sleep(sf::seconds(2));
-	//m_window.close();
-}
-
-//------------------------
-void GameScreen::winWindow()
-{
-	//// to do a win board
-	//ResourcesManager::getInstance().getMusic("game").stop();
-	//m_sound.setBuffer(ResourcesManager::getInstance().getSound("win"));
-	//m_sound.setVolume(100.f);
-	//m_sound.play();
-
-	//sf::Sprite winWindow;
-	//winWindow.setTexture(ResourcesManager::getInstance().getTexture("win"));
-	//m_window.clear();
-	//m_window.draw(winWindow);
-	//m_window.draw(m_scoreboard.getScore());
-	//m_window.display();
-	//sf::sleep(sf::seconds(3));
-	//m_window.close();
 }
 
 //------------------------

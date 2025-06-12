@@ -10,29 +10,29 @@ CollisionFactory& CollisionFactory::getInstance()
 //-----Factory Methods-----
 void CollisionFactory::processCollision(GameObject& object1, GameObject& object2)
 {
-    auto handler = lookup(typeid(object1), typeid(object2));
+    auto* handler = lookup(typeid(object1), typeid(object2));
     if (!handler)
     {
         throw UnknownCollision(object1, object2);
     }
-    handler(object1, object2);
+    handler->handle(object1, object2);
 }
 
 //-----Internal Methods-----
-CollisionFactory::CollisionHandler CollisionFactory::lookup(const std::type_index& class1, const std::type_index& class2) const
+ICollisionHandler* CollisionFactory::lookup(const std::type_index& class1, const std::type_index& class2) const
 {
     auto mapEntry = m_collisionMap.find(std::make_pair(class1, class2));
     if (mapEntry == m_collisionMap.end())
     {
         return nullptr;
     }
-    return mapEntry->second;
+    return mapEntry->second.get();
 }
 
-void CollisionFactory::registerCollisionInternal(const std::type_index& type1, const std::type_index& type2, CollisionHandler handler)
+void CollisionFactory::registerCollisionInternal(const std::type_index& type1, const std::type_index& type2, std::unique_ptr<ICollisionHandler> handler)
 {
     CollisionKey key = std::make_pair(type1, type2);
-    m_collisionMap[key] = handler;
+    m_collisionMap[key] = std::move(handler);
 }
 
 //-----Utility Methods-----
