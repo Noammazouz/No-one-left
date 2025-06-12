@@ -9,7 +9,7 @@ int Player::m_score = 0;
 
 //-----------------------------------------------------------------------------
 Player::Player()
-	: UpdateableObject(), m_present(DEFAULT)
+	: UpdateableObject()
 {
 	m_pic.setSize(sf::Vector2f(50.f, 50.f));
 	m_pic.setPosition(sf::Vector2f(500.f, 500.f));
@@ -19,7 +19,7 @@ Player::Player()
 
 //-----------------------------------------------------------------------------
 Player::Player(sf::Vector2f position, const sf::Texture& texture)
-	//: UpdateableObject(position, texture), m_present(DEFAULT)
+	//: UpdateableObject(position, texture)
 {}
 
 //-----------------------------------------------------------------------------
@@ -104,15 +104,9 @@ bool Player::getWin() const
 }
 
 //-----------------------------------------------------------------------------
-const Present& Player::getPresent() const
+sf::Vector2f Player::getPos() const
 {
-	return m_present;
-}
-
-//-----------------------------------------------------------------------------
-void Player::setPresent(Present present)
-{
-	m_present = present;
+	return m_pic.getPosition();
 }
 
 //------------------------------------------------------------------------------
@@ -140,4 +134,11 @@ bool Player::checkDeriction()
 		   sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
 		   sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
 		   sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
+}
+
+//------------------------------------------------------------------------------
+void Player::draw(sf::RenderWindow& window)
+{
+	// Draw the player rectangle
+	window.draw(m_pic);
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 //-----include section-----
+#include <SFML/Graphics.hpp>
 #include "UpdateableObject.h"
 
 class GameObject;
@@ -27,9 +28,8 @@ public:
 	void decLife();
 	void incLife();
 	static int getLife();
-	const Present& getPresent() const;
-	void setPresent(Present present);
-	sf::Vector2f getPos() const { return m_pic.getPosition(); }
+	sf::Vector2f getPos() const;
+	void draw(sf::RenderWindow& window);
 
 private:
 	bool checkDeriction();
@@ -39,6 +39,4 @@ private:
 	static int m_lives;
 	static int m_score;
 	bool m_win = false;
-
-	Present m_present;
 };
