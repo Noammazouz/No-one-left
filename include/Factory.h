@@ -30,6 +30,7 @@ public:
 		if (!m_map.contains(t)) return nullptr;
 		return m_map.at(t)(position);
 	}
+
 private:
 	static std::map<std::string, createFunc>& getRegistry();
 	Factory() = default;
