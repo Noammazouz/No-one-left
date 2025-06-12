@@ -34,7 +34,6 @@ public:
 	}
 
 private:
-	static std::map<std::string, createFunc>& getRegistry();
 	Factory() = default;
 	Factory(const Factory&) = delete;
 	void operator=(const Factory&) = delete;

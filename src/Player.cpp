@@ -1,5 +1,6 @@
 //-----include section-----
 #include "Player.h"
+#include "Factory.h"
 
 //-----functions section------
 //-----------------------------------------------------------------------------

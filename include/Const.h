@@ -46,6 +46,17 @@ enum ScreenType
 	LOSE_SCREEN
 };
 
+enum ObjectType
+{
+	PLAYER,
+	ENEMY,
+	BULLET,
+	BOMB,
+	TREE,
+	BUILDING,
+	EXPLOSION
+};
+
 //-----constants section-----
 const int WINDOW_HEIGHT = 900;
 const int WINDOW_WIDTH = 1602;
