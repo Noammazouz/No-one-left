@@ -8,6 +8,7 @@ StartScreen::StartScreen()
 //---------------------------------------------------------------
 void StartScreen::draw(sf::RenderWindow& window)
 {
+	window.setView(window.getDefaultView());
 	sf::Texture backgroundTexture = ResourcesManager::getInstance().getTexture("startScreen");
 	backgroundTexture.setSmooth(true);
 	sf::Sprite backgroundSprite(backgroundTexture);
@@ -19,16 +20,16 @@ void StartScreen::draw(sf::RenderWindow& window)
 //---------------------------------------------------------------
 void StartScreen::activate(sf::Clock& clockin, int& m_currrentScreen)
 {
-
 }
 
 //---------------------------------------------------------------
 void StartScreen::initButtons()
 {
+	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
 	std::vector<std::string> buttonNames = { "start game", "help", "exit"};
 	for (int index = 0; index < buttonNames.size(); ++index)
 	{
-		sf::Vector2f position(static_cast<float>(WINDOW_WIDTH / 2), static_cast<float>(WINDOW_HEIGHT / 5 + 300 * index));
+		sf::Vector2f position(static_cast<float>(desktop.width * WINDOW_RATIO / 2), static_cast<float>(desktop.height * WINDOW_RATIO / 5 + 300 * index));
 		m_buttons.emplace_back(buttonNames[index], position);
 	}
 }

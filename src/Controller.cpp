@@ -8,7 +8,7 @@ Controller::Controller()
 	: m_currentScreen(int(START_SCREEN))
 {
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-	m_window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "No One Left");
+	m_window.create(sf::VideoMode(desktop.width * WINDOW_RATIO, desktop.height * WINDOW_RATIO), "No One Left");
 	initScreen();
 }
 
@@ -24,6 +24,8 @@ void Controller::run()
 		m_window.display();
 		m_screens[m_currentScreen]->activate(clock, m_currentScreen);
 		m_screens[m_currentScreen]->run(m_window, m_currentScreen);
+		if (m_currentScreen  != HELP_SCREEN)
+		m_screens[HELP_SCREEN]->setPreviousScreen(m_currentScreen);
 	}
 }
 

@@ -3,17 +3,17 @@
 
 
 GameScreen::GameScreen()
+	: worldBounds(0.f, 0.f, MAP_WIDTH, MAP_HEIGHT)
 {
 	initButtons();
 }
 //-------------------------------------
 void GameScreen::run(sf::RenderWindow& window, int& m_currrentScreen)
 {
-	//handleMusicTransition(false);
 	Screen::run(window, m_currrentScreen);
-	/*m_view.setCenter(m_player.getPos());
+	m_view.setCenter(m_player.getPos());
 	m_view.setCenter(clampViewPosition(worldBounds));
-	window.setView(m_view);*/
+	window.setView(m_view);
 }
 //---------
 void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
@@ -26,7 +26,7 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 
 	handleMusicTransition(true);
 
-	handleLoadingLevel(clock);
+	handleLoadingLevel();
 	if (m_staticObj.empty()) {
 		std::cerr << "[WARN] No static objects were loaded—are you sure your CSV has entries?\n";
 	}
@@ -46,7 +46,6 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 		m_sound.setPlayingOffset(sf::seconds(0.95f));
 		m_sound.play();
 		calculateScore();
-		handleLoadingLevel(clock);
 		if (m_win)
 		{
 			m_currrentScreen = WIN_SCREEN;
@@ -58,79 +57,62 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 		m_currrentScreen = LOSE_SCREEN;
 		return;
 	}
-	else if (m_timer.asSeconds() <= 0.f)
-	{
-		m_player.decLife();
-		handleLoadingLevel(clock);
-	}
 
 }
 
 //-------------------------------------
 void GameScreen::initButtons()
 {
-	sf::Vector2f pos(WINDOW_WIDTH - ResourcesManager::getInstance().getTexture("pause").getSize().x / 2, ResourcesManager::getInstance().getTexture("pause").getSize().y / 2);
+	sf::Vector2f pos(20.f, 20.f); // Fixed top-left with padding
 	m_buttons.emplace_back("pause", pos);
-	//m_buttons.push_back(button);
+
+	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
 	std::vector<std::string> buttonNames = { "resume", "exit" };
 	for (int index = 0; index < buttonNames.size(); ++index)
 	{
-		sf::Vector2f position(static_cast<float>(WINDOW_WIDTH / 2), static_cast<float>(WINDOW_HEIGHT / 5 + 300 * index));
+		sf::Vector2f position(static_cast<float>(desktop.width * WINDOW_RATIO / 2),
+			static_cast<float>(desktop.height * WINDOW_RATIO / 5 + 300 * index));
 		m_buttons.emplace_back(buttonNames[index], position);
 	}
 }
 
+
 //-------------------------------------
 void GameScreen::draw(sf::RenderWindow& window)
 {
+
+	// Draw game world
 	sf::Sprite backround;
 	sf::Texture texure = ResourcesManager::getInstance().getTexture("background");
-	texure.setRepeated(true); // Enable texture repeating
-	texure.setSmooth(true); // Enable texture smoothing for better quality
+	texure.setRepeated(true);
+	texure.setSmooth(true);
 
-
-	
 	backround.setTexture(texure);
 	backround.setTextureRect(sf::IntRect(0, 0, MAP_WIDTH, MAP_HEIGHT));
 	window.draw(backround);
-	for (auto& obj : m_staticObj)
-	{
-		obj->draw(window);
-	}
-	//for (const auto& staticObj : m_staticObj)
-	//{
-	//	staticObj->draw(m_window);
-	//}
 
-	//// Draw moving objects
-	//for (const auto& movingObj : m_movingObj)
-	//{
-	//	movingObj->draw(m_window);
-	//}
+	for (auto& obj : m_staticObj)
+		obj->draw(window);
 
 	m_player.draw(window);
-	
-	//window.draw(m_scoreboard.getLevel());
-	//window.draw(m_scoreboard.getScore());
-	//window.draw(m_scoreboard.getTime());
-	//window.draw(m_scoreboard.getLives());
-	if(m_paused)
-	{
-		drawButtons(window);
-	}
+
+	// Switch to default view to draw UI
+	window.setView(window.getDefaultView());
+
+	if (m_paused)
+		drawButtons(window); // Menu buttons
 	else
-	{
-		m_buttons[0].draw(window);
-	}
+		m_buttons[PAUSE].draw(window); // Only pause button
 }
+
 //-------------------------------------
 void GameScreen::move(sf::Clock& clock)
 {
-	/*const auto deltaTime = clock.restart();
+	const auto deltaTime = clock.restart();
 
 	int index = 0;
 	m_player.update(deltaTime);
-	for (const auto& movingObj : m_movingObj)
+	/*for (const auto& movingObj : m_movingObj)
 	{
 		if (index < Enemy::getNumOfGuardsAlive())
 		{
@@ -138,8 +120,8 @@ void GameScreen::move(sf::Clock& clock)
 		}
 		movingObj->update(deltaTime);
 		index++;
-	}
-	m_timer -= deltaTime;*/
+	}*/
+	
 }
 //-------------------------------------
 void GameScreen::handleCollision()
@@ -308,16 +290,14 @@ void GameScreen::checkVaildDraw()
 	handleErasing();*/
 }
 //---------------------------------
-void GameScreen::handleLoadingLevel(sf::Clock& clock)
+void GameScreen::handleLoadingLevel()
 {
 	m_movingObj.clear();
 	m_staticObj.clear();
 
-	//Enemy::resetNumOfGuards();
 	m_map.loadFromCSV(/*m_movingObj,*/ m_staticObj, m_player);
 
 	m_timer = sf::seconds(120);
-	//clock.restart();
 }
 
 
@@ -392,7 +372,33 @@ void GameScreen::handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow
 	{
 		if (m_buttons[index].getBounds().contains(clickPos))
 		{
-			m_paused = !m_paused;
+			switch (index)
+			{
+			case PAUSE:
+			{
+				m_paused = true;
+				break;
+			}
+			case RESUME:
+			{
+				m_paused = false;
+				break;
+			}
+			case _HELP:
+			{
+				screenState = HELP_SCREEN;
+				break;
+			}
+			}
 		}
 	}
+}
+
+//---------------------------------------------------------------------------------------------------
+sf::Vector2f GameScreen::clampViewPosition(const sf::FloatRect& bounds)
+{
+	sf::Vector2f center = m_view.getCenter();
+	center.x = std::max(bounds.left + m_view.getSize().x / 2.f, std::min(center.x, bounds.left + bounds.width - m_view.getSize().x / 2.f));
+	center.y = std::max(bounds.top + m_view.getSize().y / 2.f, std::min(center.y, bounds.top + bounds.height - m_view.getSize().y / 2.f));
+	return center;
 }

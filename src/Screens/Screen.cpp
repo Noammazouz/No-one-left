@@ -3,27 +3,34 @@
 
 void Screen::run(sf::RenderWindow& window, int& currrentScreen)
 {
+
 	for (auto event = sf::Event{}; window.pollEvent(event);)
 	{
 		switch (event.type)
 		{
-		case sf::Event::Closed:
-		{
-			window.close();
-			break;
-		}
-		case sf::Event::MouseButtonReleased:
-		{
-			handleMouseClick(window.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y }), window, currrentScreen);
-			break;
-		}
-		case sf::Event::KeyPressed:
-		{
-			handleKeyPressed(event.key, currrentScreen, window);
-			break;
-		}
+			case sf::Event::Closed:
+			{
+				window.close();
+				break;
+			}
+			case sf::Event::MouseButtonReleased:
+			{
+				handleMouseClick(window.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y }), window, currrentScreen);
+				break;
+			}
+			case sf::Event::KeyPressed:
+			{
+				handleKeyPressed(event.key, currrentScreen, window);
+				break;
+			}
 		}
 	}
+}
+
+void Screen::setPreviousScreen(int previousScreen)
+{
+	m_previousScreen = previousScreen;
+	//std::cout << "Previous screen set to: " << previousScreen << std::endl;
 }
 
 //---------------------------------
@@ -47,22 +54,22 @@ void Screen::handleMusicTransition(bool toGameplay)
 {
 	if (toGameplay && !m_inGameplay)
 	{
-		ResourcesManager::getInstance().getMusic("menu").stop();
-		if (ResourcesManager::getInstance().getMusic("game").getStatus() != sf::Music::Playing)
+		ResourcesManager::getInstance().getMusic(MENU_MUSIC).stop();
+		if (ResourcesManager::getInstance().getMusic(GAME_MUSIC).getStatus() != sf::Music::Playing)
 		{
-			ResourcesManager::getInstance().getMusic("game").play();
+			ResourcesManager::getInstance().getMusic(GAME_MUSIC).play();
 		}
 		m_inGameplay = true;
 	}
 	else if (!toGameplay && m_inGameplay)
 	{
-		ResourcesManager::getInstance().getMusic("game").stop();
-		ResourcesManager::getInstance().getMusic("menu").play();
+		ResourcesManager::getInstance().getMusic(GAME_MUSIC).stop();
+		ResourcesManager::getInstance().getMusic(MENU_MUSIC).play();
 		m_inGameplay = false;
 	}
 	else
 	{
-		ResourcesManager::getInstance().getMusic("menu").play();
+		ResourcesManager::getInstance().getMusic(MENU_MUSIC).play();
 	}
 }
 
@@ -72,11 +79,11 @@ void Screen::handleMuting(int currrentScreen)
 	std::string musicStatus;
 	if(currrentScreen == int(GAME_SCREEN))
 	{
-		musicStatus = "game";
+		musicStatus = GAME_MUSIC;
 	}
 	else
 	{
-		musicStatus = "menu";
+		musicStatus = MENU_MUSIC;
 	}
 
 	if (ResourcesManager::getInstance().getMusic(musicStatus).getStatus() == sf::Music::Playing)
