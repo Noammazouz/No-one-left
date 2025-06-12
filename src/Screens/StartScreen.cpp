@@ -1,11 +1,14 @@
+//-----includes section-----
 #include "StartScreen.h"
 
+//-----functions section------
+//-----------------------------------------------------------------------------
 StartScreen::StartScreen()
 {
 	initButtons();
 }
 
-//---------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void StartScreen::draw(sf::RenderWindow& window)
 {
 	window.setView(window.getDefaultView());
@@ -17,12 +20,12 @@ void StartScreen::draw(sf::RenderWindow& window)
 	drawButtons(window);
 }
 
-//---------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void StartScreen::activate(sf::Clock& clockin, int& m_currrentScreen)
 {
 }
 
-//---------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void StartScreen::initButtons()
 {
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
@@ -34,7 +37,7 @@ void StartScreen::initButtons()
 	}
 }
 
-//---------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void StartScreen::handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow& window, int& screenState)
 {
 	for (int index = 0; index < m_buttons.size(); ++index)
