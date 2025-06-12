@@ -7,9 +7,16 @@
 class RandomMoveBehavior : public MoveBehavior
 {
 public:
-	RandomMoveBehavior() = default;
-	virtual ~RandomMoveBehavior() = default;
+    RandomMoveBehavior();
+    virtual ~RandomMoveBehavior() = default;
+    virtual void Move(sf::Vector2f playerPos, float deltaTime) override;
 
-	// Override the move method
-	virtual void Move(sf::Vector2f playerLoc) override;
+private:
+    sf::Vector2f direction{ 1, 0 };
+    float Timer = 0;
+    const float CHANGE_DIRECTION_TIME = 2.0f; 
+
+    void chooseNewDirection();
 };
+
+

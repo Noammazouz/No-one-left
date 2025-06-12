@@ -33,6 +33,15 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
     }
 }
 
+//-------------------------------------
+
+const std::vector<sf::Vector2f>& Map::getWallPositions() const 
+{
+    return m_wallPositions;
+}
+
+//-------------------------------------
+
 void SetEnemies()
 {
 
