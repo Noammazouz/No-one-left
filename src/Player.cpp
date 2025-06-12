@@ -10,14 +10,7 @@ int Player::m_score = 0;
 //-----------------------------------------------------------------------------
 Player::Player()
 	: UpdateableObject()
-{
-	/*m_pic.setSize(sf::Vector2f(50.f, 50.f));
-	m_pic.setPosition(sf::Vector2f(500.f, 500.f));
-	m_pic.setOutlineThickness(5.f);
-	m_pic.setFillColor(sf::Color::Black);
-
-    m_pic.setOrigin(m_pic.getSize().x / 2.f, m_pic.getSize().y / 2.f);*/
-}
+{}
 
 //-----------------------------------------------------------------------------
 Player::Player(sf::Vector2f position, const sf::Texture& texture)
@@ -67,67 +60,6 @@ void Player::setDirection(sf::Vector2f position)
 
 	this->setRotation(m_direction);
 }
-
-//void Player::setDirection(sf::Vector2f position)
-//{
-//	static sf::Clock rotationClock; // Clock persists across calls
-//	float deltaTime = rotationClock.restart().asSeconds();
-//
-//	const auto right = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
-//	const auto left = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
-//	const auto up = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
-//	const auto down = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
-//
-//	if (checkDeriction())
-//	{
-//		if (left)
-//		{
-//			m_direction = sf::Vector2f(-1, 0);
-//			m_targetAngle = 270.f;
-//		}
-//		else if (right)
-//		{
-//			m_direction = sf::Vector2f(1, 0);
-//			m_targetAngle = 90.f;
-//		}
-//		else if (up)
-//		{
-//			m_direction = sf::Vector2f(0, -1);
-//			m_targetAngle = 0.f;
-//		}
-//		else if (down)
-//		{
-//			m_direction = sf::Vector2f(0, 1);
-//			m_targetAngle = 180.f;
-//		}
-//		//else if (up && right)
-//		//{
-//		//	m_direction = sf::Vector2f(0, -0.5f);
-//		//	m_targetAngle = 45.f; // Maintain current angle
-//		//}
-//	}
-//	else
-//	{
-//		m_direction = sf::Vector2f(0, 0);
-//	}
-//
-//	// --- Smooth rotation towards m_targetAngle ---
-//	float currentAngle = m_pic.getRotation();
-//
-//	// Normalize angle difference to [-180, 180]
-//	float deltaAngle = std::fmod(m_targetAngle - currentAngle + 540.f, 360.f) - 180.f;
-//
-//	// Compute step
-//	float rotationStep = ROTATION_SPEED * deltaTime;
-//
-//	// Apply smooth turn
-//	if (std::abs(deltaAngle) < rotationStep)
-//		currentAngle = m_targetAngle;
-//	else
-//		currentAngle += (deltaAngle > 0 ? 1 : -1) * rotationStep;
-//
-//	m_pic.setRotation(currentAngle);
-//}
 
 //------------------------------------------------------------------------------
 bool Player::checkDirection()
@@ -194,6 +126,28 @@ void Player::setScore(int score)
 //}
 
 //------------------------------------------------------------------------------
+bool Player::registerPlayer(ObjectType type)
+{
+	//We register with Factory<UpdateableObject> so the factory returns
+	//a unique_ptr<UpdateableObject> that actually points to a Player.
+	return Factory<UpdateableObject>::instance().registerType(
+			type,
+			// This lambda signature must match Factory<FuncType>:
+			//   (const sf::Texture&, const sf::Vector2f&, float, float)
+			[](const sf::Texture& texture,
+				const sf::Vector2f& position,
+				float width,
+				float height) -> std::unique_ptr<UpdateableObject>
+			{
+				// Forward exactly those params into your Player constructor:
+				return std::make_unique<Player>(position, texture);
+			}
+		);
+}
+
+//Then, trigger registration once at file scope:
+static bool s_playerRegistered = Player::registerPlayer(ObjectType::PLAYER);
+
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------

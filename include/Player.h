@@ -23,7 +23,7 @@ public:
 
 	virtual void update(sf::Time deltaTime) override;
 	virtual void setDirection(sf::Vector2f position) /*override*/;
-
+	static bool Player::registerPlayer(ObjectType type);
 	void setWin(bool win);
 	bool getWin() const;
     int getScore();
