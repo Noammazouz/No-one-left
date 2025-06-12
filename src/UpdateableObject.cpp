@@ -9,7 +9,7 @@ UpdateableObject::UpdateableObject()
 
 //-----------------------------------------------------------------------------
 UpdateableObject::UpdateableObject(sf::Vector2f position, const sf::Texture& texture)
-	: GameObject(sf::Texture(), sf::Vector2f(), 0, 0), m_starting_position(0, 0), m_prev_location(0, 0)
+	: GameObject(sf::Texture(), sf::Vector2f(), 0, 0), m_starting_position(position), m_prevLocation(position)
 {}
 
 //-----------------------------------------------------------------------------

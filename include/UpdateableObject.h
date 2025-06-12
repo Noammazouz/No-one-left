@@ -14,12 +14,12 @@ public:
 	virtual void update(sf::Time deltaTime) = 0;
 	virtual bool checkCollision(GameObject& otherObject) { return false; };
 
-	sf::Vector2f getPrevLocation() const {};
+	sf::Vector2f getPrevLocation() const;
 
 protected:
-	void setPrevLocation(sf::Vector2f position) {};
+	void setPrevLocation(const sf::Vector2f& position);
 
 private:
 	sf::Vector2f m_starting_position;
-	sf::Vector2f m_prev_location;
+	sf::Vector2f m_prevLocation;
 };

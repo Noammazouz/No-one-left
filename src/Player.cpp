@@ -75,7 +75,7 @@ void Player::enemyCollide(Enemy& /*otherObject*/)
 //-----------------------------------------------------------------------------
 void Player::explosionCollide(Explosion& /*otherobject*/)
 {
-	this->setPosition(this->getStartingPosition());
+	//this->setPosition(this->getStartingPosition());
 	decLife();
 }
 
