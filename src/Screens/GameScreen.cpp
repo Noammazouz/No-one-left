@@ -1,119 +1,119 @@
+//-----include section-----
 #include "GameScreen.h"
 
-
-
+//-----functions section------
+//-----------------------------------------------------------------------------
 GameScreen::GameScreen()
+	: worldBounds(0.f, 0.f, MAP_WIDTH, MAP_HEIGHT)
 {
-	//initBotton();
+	initButtons();
+	handleLoadingLevel();
+	if (m_staticObj.empty()) 
+	{
+		std::cerr << "[WARN] No static objects were loaded�are you sure your CSV has entries?\n";
+	}
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 void GameScreen::run(sf::RenderWindow& window, int& m_currrentScreen)
 {
-	handleMusicTransition(false);
 	Screen::run(window, m_currrentScreen);
-	/*m_view.setCenter(m_player->getPos());
+	m_view.setCenter(m_player.getPos());
 	m_view.setCenter(clampViewPosition(worldBounds));
-	window.setView(m_view);*/
-	//runLevel();
+	window.setView(m_view);
 }
-//---------
+
+//-----------------------------------------------------------------------------
 void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 {
-	handleMusicTransition(true);
-	//m_scoreboard.updateScore(0);
-
-	//sf::Clock clock;
-	handleLoadingLevel(clock);
-
-	/*while (m_window.isOpen())
+	if (m_paused)
 	{
-		m_window.clear();
+		handleMusicTransition(false);
+		return;
+	}
 
-		
-		m_window.display();*/
+	handleMusicTransition(true);
 
-		m_player.setDirection(sf::Vector2f());
+	m_player.setDirection(sf::Vector2f());
 
-		/*for (auto event = sf::Event{}; m_window.pollEvent(event);)
+
+	move(clock);
+	handleCollision();
+	explosion();
+	handleErasing();
+	handleSocreboard();
+	if (m_player.getWin())
+	{
+		m_sound.setBuffer(ResourcesManager::getInstance().getSound("door"));
+		m_sound.setVolume(100.f);
+		m_sound.setPlayingOffset(sf::seconds(0.95f));
+		m_sound.play();
+		calculateScore();
+		if (m_win)
 		{
-			switch (event.type)
-			{
-			case sf::Event::Closed:
-				m_window.close();
-				break;
-			case sf::Event::KeyPressed:
-			{
-				handleKeyPressed(event.key);
-				break;
-			}
-			}
-		}*/
-
-		move(clock);
-		handleCollision();
-		explosion();
-		handleErasing();
-		handleSocreboard();
-		if (m_player.getWin())
-		{
-			m_sound.setBuffer(ResourcesManager::getInstance().getSound("door"));
-			m_sound.setVolume(100.f);
-			m_sound.setPlayingOffset(sf::seconds(0.95f));
-			m_sound.play();
-			calculateScore();
-			handleLoadingLevel(clock);
-			if (m_win)
-			{
-				winWindow();
-				//break;
-			}
+			m_currrentScreen = WIN_SCREEN;
+			return;
 		}
-		if (m_player.getLife() == END_GAME)
-		{
-			lostWindow();
-			//break;
-		}
-		else if (m_timer.asSeconds() <= 0.f)
-		{
-			m_player.decLife();
-			handleLoadingLevel(clock);
-		}
-	//}
+	}
+	if (m_player.getLife() == END_GAME)
+	{
+		m_currrentScreen = LOSE_SCREEN;
+		return;
+	}
+
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
+void GameScreen::initButtons()
+{
+	sf::Vector2f pos(20.f, 20.f); // Fixed top-left with padding
+	m_buttons.emplace_back("pause", pos);
+
+	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+	std::vector<std::string> buttonNames = { "resume", "exit" };
+	for (int index = 0; index < buttonNames.size(); ++index)
+	{
+		sf::Vector2f position(static_cast<float>(desktop.width * WINDOW_RATIO / 2),
+			static_cast<float>(desktop.height * WINDOW_RATIO / 5 + 300 * index));
+		m_buttons.emplace_back(buttonNames[index], position);
+	}
+}
+
+
+//-----------------------------------------------------------------------------
 void GameScreen::draw(sf::RenderWindow& window)
 {
-	ResourcesManager& resources = ResourcesManager::getInstance();
 	sf::Sprite backround;
+	sf::Texture texure = ResourcesManager::getInstance().getTexture("background");
+	texure.setRepeated(true);
+	texure.setSmooth(true);
 
-	backround.setTexture(resources.getTexture("background"));
+	backround.setTexture(texure);
+	backround.setTextureRect(sf::IntRect(0, 0, MAP_WIDTH, MAP_HEIGHT));
 	window.draw(backround);
 
-	//for (const auto& staticObj : m_staticObj)
-	//{
-	//	staticObj->draw(m_window);
-	//}
+	for (auto& obj : m_staticObj)
+		obj->draw(window);
 
-	//// Draw moving objects
-	//for (const auto& movingObj : m_movingObj)
-	//{
-	//	movingObj->draw(m_window);
-	//}
+	m_player.draw(window);
 
-	m_player.draw(m_window);
-	//window.draw(m_scoreboard.getLevel());
-	//window.draw(m_scoreboard.getScore());
-	//window.draw(m_scoreboard.getTime());
-	//window.draw(m_scoreboard.getLives());
+	
+	window.setView(window.getDefaultView());
+
+	if (m_paused)
+		drawButtons(window); 
+	else
+		m_buttons[PAUSE].draw(window);
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 void GameScreen::move(sf::Clock& clock)
 {
-	/*const auto deltaTime = clock.restart();
+	const auto deltaTime = clock.restart();
 
 	int index = 0;
 	m_player.update(deltaTime);
-	for (const auto& movingObj : m_movingObj)
+	/*for (const auto& movingObj : m_movingObj)
 	{
 		if (index < Enemy::getNumOfGuardsAlive())
 		{
@@ -121,17 +121,19 @@ void GameScreen::move(sf::Clock& clock)
 		}
 		movingObj->update(deltaTime);
 		index++;
-	}
-	m_timer -= deltaTime;*/
+	}*/
+	
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 void GameScreen::handleCollision()
 {
+	auto& collisionHandler = CollisionFactory::getInstance();
 	/*for (const auto& staticObj : m_staticObj)
 	{
 		if (m_player.checkCollision(*staticObj))
 		{
-			m_player.collide(*staticObj);
+			collisionHandler;
 		}
 	}
 
@@ -143,7 +145,7 @@ void GameScreen::handleCollision()
 		{
 			if (movingObj->checkCollision(*staticObj))
 			{
-				movingObj->collide(*staticObj);
+				collisionHandler;
 			}
 		}
 	}
@@ -155,8 +157,7 @@ void GameScreen::handleCollision()
 			m_sound.setBuffer(ResourcesManager::getInstance().getSound("hit"));
 			m_sound.setVolume(100.f);
 			m_sound.play();
-			m_player.collide(*m_movingObj[guard]);
-			resetLevel();
+			collisionHandler;
 			break;
 		}
 	}
@@ -167,17 +168,19 @@ void GameScreen::handleCollision()
 		{
 			if (m_movingObj[moveObj]->checkCollision(*m_movingObj[nextMoveObj]))
 			{
-				m_movingObj[moveObj]->collide(*m_movingObj[nextMoveObj]);
+				collisionHandler;
 			}
 		}
 	}*/
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 void GameScreen::setbomb()
 {
 	//m_movingObj.push_back(std::make_unique<Bombs>(sf::Vector2f(m_player.getPosition()), ResourcesManager::getInstance().getTexture("bomb")));
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 void GameScreen::handleErasing()
 {
 	/*std::erase_if(m_movingObj, [](const auto& item)
@@ -186,7 +189,8 @@ void GameScreen::handleErasing()
 	std::erase_if(m_staticObj, [](const auto& item)
 		{return item->isDead(); });*/
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 void GameScreen::explosion()
 {
 	/*auto bomb = Enemy::getNumOfGuardsAlive();
@@ -205,7 +209,8 @@ void GameScreen::explosion()
 		}
 	}*/
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 void GameScreen::calculateScore()
 {
 	/*int points = 0;
@@ -214,19 +219,8 @@ void GameScreen::calculateScore()
 	points += (std::abs(Enemy::getNumOfGuardsAlive() - Enemy::getNumOfStartingGuards()) * KILL_GUARD);
 	m_player.setScore(points);*/
 }
-//-------------------------------------
-void GameScreen::resetLevel()
-{
-	/*for (int index = 0; index < Enemy::getNumOfGuardsAlive(); ++index)
-	{
-		m_movingObj[index]->setPosition(m_movingObj[index]->getStartingPosition());
-	}
-	for (int index = Enemy::getNumOfGuardsAlive(); index < m_movingObj.size(); ++index)
-	{
-		m_movingObj[index]->setLife(true);
-	}*/
-}
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 void GameScreen::setExpoDirection(int index)
 {
 	/*for (int direction = 0; direction < NUM_OF_DIRECTION; direction++)
@@ -254,7 +248,8 @@ void GameScreen::setExpoDirection(int index)
 	m_movingObj.push_back(std::make_unique<Explosion>(sf::Vector2f(m_movingObj[index]->getPosition()), ResourcesManager::getInstance().getTexture("explosion")));
 }*/
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 void GameScreen::checkExpo()
 {
 	/*auto explosion = m_movingObj.size() - NUM_OF_EXPLOSION;
@@ -286,7 +281,8 @@ void GameScreen::checkExpo()
 		}
 	}*/
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 void GameScreen::checkVaildDraw()
 {
 	/*auto explosion = m_movingObj.size() - NUM_OF_EXPLOSION;
@@ -302,21 +298,19 @@ void GameScreen::checkVaildDraw()
 	}
 	handleErasing();*/
 }
-//---------------------------------
-void GameScreen::handleLoadingLevel(sf::Clock& clock)
+
+//-----------------------------------------------------------------------------
+void GameScreen::handleLoadingLevel()
 {
 	m_movingObj.clear();
 	m_staticObj.clear();
 
-	//Enemy::resetNumOfGuards();
-	m_map.loadFromCSV(/*m_movingObj,*/ m_staticObj, m_player);
-
+	m_map.loadFromCSV(m_staticObj, m_player);
+	//m_map.loadMovingObj(m_movingObj);
 	m_timer = sf::seconds(120);
-	//clock.restart();
 }
 
-
-//---------------------------------
+//-----------------------------------------------------------------------------
 void GameScreen::handleSocreboard()
 {
 	/*m_scoreboard.updateTime(m_timer);
@@ -324,30 +318,8 @@ void GameScreen::handleSocreboard()
 	m_scoreboard.updateLives(m_player.getLife());
 	m_scoreboard.updateScore(m_player.getScore());*/
 }
-void GameScreen::handlePresents()
-{
-	/*switch (m_player.getPresent())
-	{
-	case TIME:
-	{
-		addTime();
-		break;
-	}
-	case KILL:
-	{
-		removeGuard();
-		break;
 
-	}
-	case FREEZE:
-	{
-		freezeGuard();
-		break;
-	}
-	}
-	m_player.setPresent(DEFAULT);*/
-}
-//------------------------
+//-----------------------------------------------------------------------------
 void GameScreen::removeGuard()
 {
 	/*if (Enemy::getNumOfGuardsAlive() != 0)
@@ -357,44 +329,48 @@ void GameScreen::removeGuard()
 		m_movingObj[index]->setLife(true);
 	}*/
 }
-//------------------------
+
+//-----------------------------------------------------------------------------
 void GameScreen::addTime()
 {
 	/*m_timer += sf::seconds(ADDED_TIME);
 	m_scoreboard.updateTime(m_timer);*/
 }
-//------------------------
-void GameScreen::lostWindow()
-{
-	//// to do a Lost board
-	//ResourcesManager::getInstance().getMusic("game").stop();
-	//m_sound.setBuffer(ResourcesManager::getInstance().getSound("loss"));
-	//m_sound.setVolume(100.f);
-	//m_sound.play();
 
-	//sf::Sprite lostWindow;
-	//lostWindow.setTexture(ResourcesManager::getInstance().getTexture("game over"));
-	//m_window.clear();
-	//m_window.draw(lostWindow);
-	//m_window.display();
-	//sf::sleep(sf::seconds(2));
-	//m_window.close();
+//-----------------------------------------------------------------------------
+void GameScreen::handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow& window, int& screenState)
+{
+	for (int index = 0; index < m_buttons.size(); ++index)
+	{
+		if (m_buttons[index].getBounds().contains(clickPos))
+		{
+			switch (index)
+			{
+			case PAUSE:
+			{
+				m_paused = true;
+				break;
+			}
+			case RESUME:
+			{
+				m_paused = false;
+				break;
+			}
+			case _HELP:
+			{
+				screenState = HELP_SCREEN;
+				break;
+			}
+			}
+		}
+	}
 }
-//------------------------
-void GameScreen::winWindow()
-{
-	//// to do a win board
-	//ResourcesManager::getInstance().getMusic("game").stop();
-	//m_sound.setBuffer(ResourcesManager::getInstance().getSound("win"));
-	//m_sound.setVolume(100.f);
-	//m_sound.play();
 
-	//sf::Sprite winWindow;
-	//winWindow.setTexture(ResourcesManager::getInstance().getTexture("win"));
-	//m_window.clear();
-	//m_window.draw(winWindow);
-	//m_window.draw(m_scoreboard.getScore());
-	//m_window.display();
-	//sf::sleep(sf::seconds(3));
-	//m_window.close();
+//---------------------------------------------------------------------------------------------------
+sf::Vector2f GameScreen::clampViewPosition(const sf::FloatRect& bounds)
+{
+	sf::Vector2f center = m_view.getCenter();
+	center.x = std::max(bounds.left + m_view.getSize().x / 2.f, std::min(center.x, bounds.left + bounds.width - m_view.getSize().x / 2.f));
+	center.y = std::max(bounds.top + m_view.getSize().y / 2.f, std::min(center.y, bounds.top + bounds.height - m_view.getSize().y / 2.f));
+	return center;
 }

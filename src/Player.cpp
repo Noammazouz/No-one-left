@@ -10,7 +10,12 @@ int Player::m_score = 0;
 //-----------------------------------------------------------------------------
 Player::Player()
 	: UpdateableObject(), m_present(DEFAULT)
-{}
+{
+	m_pic.setSize(sf::Vector2f(50.f, 50.f));
+	m_pic.setPosition(sf::Vector2f(500.f, 500.f));
+	m_pic.setOutlineThickness(5.f);
+	m_pic.setFillColor(sf::Color::Black);
+}
 
 //-----------------------------------------------------------------------------
 Player::Player(sf::Vector2f position, const sf::Texture& texture)
@@ -22,6 +27,7 @@ void Player::update(sf::Time deltaTime)
 {
 	this->setPrevLocation(this->getPosition());
 	this->updatePosition(m_direction * PLAYER_SPEED * deltaTime.asSeconds());
+	m_pic.move(m_direction * PLAYER_SPEED * deltaTime.asSeconds());
 }
 
 //-----------------------------------------------------------------------------

@@ -8,6 +8,7 @@
 #include "UpdateableObject.h"
 #include "StaticObject.h"
 #include "Player.h"
+#include "Wall.h"
 
 class Player;
 
@@ -21,6 +22,7 @@ public:
 	//const std::vector<sf::Vector2f>& getWallPositions() const;
 
 private:
+	void SetEnemies();
 	std::vector<std::string> m_level;
 	//std::vector<sf::Vector2f> m_wallPositions;
 	int m_rows;

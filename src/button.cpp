@@ -3,86 +3,75 @@
 
 //-----functions section------
 //-----------------------------------------------------------------------------
-Button::Button(char buttonName) : m_buttonType(buttonName)
+Button::Button(std::string buttonName, sf::Vector2f pos) : m_buttonType(buttonName)
 {
-	setSize();  //Initialize size when button is created
+	setSprite(pos);  //Initialize size when button is created
 }
+
+////-----------------------------------------------------------------------------
+//sf::Vector2f Button::getPosition() const
+//{
+//	return m_position;
+//}
+//
+////-----------------------------------------------------------------------------
+//void Button::setPosition(int place)
+//{
+//	//m_position.x = 30.f;
+//	m_position.x = (WINDOW_WIDTH - BUTTON_WIDTH) / 2;
+//
+//	//calculate vertical starting position for centering
+//	float totalButtonsHeight = START_WINDOW_BUTTONS_NUM * BUTTON_HEIGHT +
+//		(START_WINDOW_BUTTONS_NUM - 1) * BUTTON_SPACING;
+//	float startingY = (WINDOW_HEIGHT - totalButtonsHeight) / 2;
+//
+//	//vertical position for each button
+//	m_position.y = startingY + (BUTTON_HEIGHT + BUTTON_SPACING) * place;
+//}
+//
+////-----------------------------------------------------------------------------
+//sf::Vector2f Button::getSize() const
+//{
+//	return m_size;
+//}
 
 //-----------------------------------------------------------------------------
-sf::Vector2f Button::getPosition() const
+void Button::setSprite(sf::Vector2f pos)
 {
-	return m_position;
+	m_buttonSprite.setTexture(ResourcesManager::getInstance().getTexture(m_buttonType));
+	m_buttonSprite.setOrigin(static_cast<float>(m_buttonSprite.getTexture()->getSize().x) / 2.0f, static_cast<float>(m_buttonSprite.getTexture()->getSize().y) / 2.0f);
+	m_buttonSprite.setPosition(pos);
+	m_buttonSprite.setScale(static_cast<float>(0.3), static_cast<float>(0.3));
 }
 
-//-----------------------------------------------------------------------------
-void Button::setPosition(int place)
-{
-	//m_position.x = 30.f;
-	m_position.x = (WINDOW_WIDTH - BUTTON_WIDTH) / 2;
-
-	//calculate vertical starting position for centering
-	float totalButtonsHeight = START_WINDOW_BUTTONS_NUM * BUTTON_HEIGHT +
-		(START_WINDOW_BUTTONS_NUM - 1) * BUTTON_SPACING;
-	float startingY = (WINDOW_HEIGHT - totalButtonsHeight) / 2;
-
-	//vertical position for each button
-	m_position.y = startingY + (BUTTON_HEIGHT + BUTTON_SPACING) * place;
-}
-
-//-----------------------------------------------------------------------------
-sf::Vector2f Button::getSize() const
-{
-	return m_size;
-}
-
-//-----------------------------------------------------------------------------
-void Button::setSize()
-{
-	m_size = sf::Vector2f(BUTTON_WIDTH, BUTTON_HEIGHT);
-}
-
-//-----------------------------------------------------------------------------
-sf::RectangleShape Button::makeButtonRectangle() const
-{
-	sf::RectangleShape buttonRectangle(m_size);
-
-	buttonRectangle.setPosition(m_position);
-
-	buttonRectangle.setFillColor(sf::Color(0, 0, 0, 0));
-	buttonRectangle.setTexture(NULL);
-
-	return buttonRectangle;
-}
+////-----------------------------------------------------------------------------
+//sf::RectangleShape Button::makeButtonRectangle() const
+//{
+//	sf::RectangleShape buttonRectangle(sf::Vector2f(3, 3));
+//
+//	buttonRectangle.setPosition(m_buttonSprite.getPosition());
+//
+//	buttonRectangle.setFillColor(sf::Color(0, 0, 0, 0));
+//	buttonRectangle.setTexture(NULL);
+//
+//	return buttonRectangle;
+//}
 
 //-----------------------------------------------------------------------------
 //This function draw each button.
-void Button::draw(sf::RenderWindow& window, char buttonType) const
+void Button::draw(sf::RenderWindow& window)
 {
-	//create a rectangle for the button
-	sf::RectangleShape button = makeButtonRectangle();
+	window.draw(m_buttonSprite);
 
-
-	//create text for the button
-	sf::Text buttonText;
-	buttonText.setFont(ResourcesManager::getInstance().getFont());   //Set the font
-	//buttonText.setString(getStartMenuButtonStringByChar(buttonType));  //Set the text
-	buttonText.setCharacterSize(FONT_CHARACTERS_SIZE);                //Text size
-	buttonText.setFillColor(sf::Color::Black);                       //Text color
-
-
-	//center the text on the button
-	sf::FloatRect textBounds = buttonText.getLocalBounds();
-	sf::FloatRect buttonBounds = button.getGlobalBounds();
-	buttonText.setPosition(buttonBounds.left + (buttonBounds.width - textBounds.width) / 2,
-		buttonBounds.top + (buttonBounds.height - textBounds.height) / 2 - textBounds.top);
-
-
-	window.draw(button);
-	window.draw(buttonText);
 }
 
-//-----------------------------------------------------------------------------
-const char Button::getButtonType() const
+////-----------------------------------------------------------------------------
+//const std::string Button::getButtonType() const
+//{
+//	return m_buttonType;
+//}
+
+sf::FloatRect Button::getBounds() const
 {
-	return m_buttonType;
+	return m_buttonSprite.getGlobalBounds();
 }

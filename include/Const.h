@@ -14,13 +14,12 @@ enum Direction
 	RIGHT
 };
 
-//enum ScreenButtons 
-//{
-//	START_GAME,
-//	HELP,
-//	EXIT,
-//	BACK
-//};
+enum ScreenButtons 
+{
+	START_GAME,
+	HELP,
+	EXIT
+};
 
 enum Present
 {
@@ -30,12 +29,11 @@ enum Present
 	DEFAULT
 };
 
-enum GameState
+enum GameButtons
 {
-	START,
-	HELP,
-	GAME,
-	PUASE
+	PAUSE,
+    RESUME,
+	_HELP
 };
 
 enum ScreenType
@@ -43,12 +41,15 @@ enum ScreenType
 	START_SCREEN,
 	HELP_SCREEN,
 	GAME_SCREEN,
-	END_SCREEN
+	WIN_SCREEN,
+	LOSE_SCREEN
 };
 
 //-----constants section-----
-const int WINDOW_HEIGHT = 1283;
-const int WINDOW_WIDTH = 1600;
+const int WINDOW_HEIGHT = 900;
+const int WINDOW_WIDTH = 1602;
+const int MAP_WIDTH = 5000;
+const int MAP_HEIGHT = 5000;
 const float BUTTON_WIDTH = 300;
 const float BUTTON_HEIGHT = 100;
 const float BUTTON_SPACING = 40.f;
@@ -71,13 +72,17 @@ const float BOMB_TIME = 4.f;
 const int NUM_OF_EXPLOSION = 5;
 const float ADDED_TIME = 10.f;
 const float WINDOW_RATIO = 0.92f;
-const std::map<GameState, std::vector<std::string> > GAME_BUTTONS = 
-{
-	{START, {"Start", "Help", "Exit"}},
-	{HELP, {"Back"}},
-	{GAME, {"Pause"}},
-	{PUASE, {"Resume", "Help"}}
-};
+const std::string MENU_MUSIC = "menu";
+const std::string GAME_MUSIC = "game";
+const std::string RETURN_BUTTON = "return";
+
+//const std::map<GameState, std::vector<std::string> > GAME_BUTTONS = 
+//{
+//	{START, {"Start", "Help", "Exit"}},
+//	{HELP, {"Back"}},
+//	{GAME, {"Pause"}},
+//	{PUASE, {"Resume", "Help"}}
+//};
 
 
 //-----------------------------------------------------------------------------

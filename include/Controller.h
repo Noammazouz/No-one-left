@@ -8,8 +8,9 @@
 #include "Screen.h"
 #include "StartScreen.h"
 #include "HelpScreen.h"
-#include "PauseGame.h"
 #include "GameScreen.h"
+#include "WinScreen.h"
+#include "LoseScreen.h"
 
 //-----class section-----
 class Controller
