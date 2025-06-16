@@ -9,10 +9,5 @@ class AxisMoveBehavior : public MoveBehavior
 public:
     AxisMoveBehavior() = default;
     virtual ~AxisMoveBehavior() = default;
-    virtual void Move(sf::Vector2f playerPos, float deltaTime) override;
-
-private:
-    bool isMovingX = true; 
-    float Timer = 0;
-    const float CHANGE_DIRECTION_TIME = 1.0f;
+    virtual sf::Vector2f Move(sf::Vector2f playerPos, sf::Time /*deltaTime*/, sf::Vector2f enemyPos) override;
 };

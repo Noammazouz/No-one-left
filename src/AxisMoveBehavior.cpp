@@ -3,41 +3,31 @@
 
 //-----functions section------
 //-----------------------------------------------------------------------------
-void AxisMoveBehavior::Move(sf::Vector2f playerPos, float deltaTime)
+sf::Vector2f AxisMoveBehavior::Move(sf::Vector2f playerPos, sf::Time /*deltaTime*/, sf::Vector2f enemyPos)
  {
-    Timer += deltaTime;
+    float xDistance = enemyPos.x - playerPos.x;
+    float yDistance = enemyPos.y - playerPos.y;
 
-    if (Timer >= CHANGE_DIRECTION_TIME)
+    if (std::abs(yDistance) > std::abs(xDistance))
     {
-        isMovingX = !isMovingX;
-        Timer = 0;
-    }
-
-    float player_enemy_distance_x = playerPos.x - enemyPos.x;
-    float player_enemy_distance_y = playerPos.y - enemyPos.y;
-
-    sf::Vector2f moveDirection{ 0, 0 };
-
-    if (isMovingX) 
-    {
-        if (player_enemy_distance_x > 0)
+        if (yDistance > 0)
         {
-            enemyPos.x -= speed * deltaTime; //player right, enemy left
+            return sf::Vector2f(0, -1);//up
         }
-        else 
+        else
         {
-            enemyPos.x += speed * deltaTime;  //player left, enemy right
+            return sf::Vector2f(0, 1);//down
         }
     }
     else
     {
-        if (player_enemy_distance_y > 0)
+        if (xDistance > 0)
         {
-            enemyPos.y -= speed * deltaTime; //player down, enemy up
+            return sf::Vector2f(-1, 0); //left
         }
         else
         {
-            enemyPos.y += speed * deltaTime;  //player up, enemy down
+            return sf::Vector2f(1, 0); //right
         }
     }
 }

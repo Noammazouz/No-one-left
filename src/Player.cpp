@@ -19,15 +19,15 @@ Player::Player(sf::Vector2f position, const sf::Texture& texture)
 {}
 
 //-----------------------------------------------------------------------------
-void Player::update(sf::Time deltaTime)
+void Player::update(sf::Time deltaTime, sf::Vector2f /*playerPos*/)
 {
+	setDirection();
 	this->setPrevLocation(this->getPosition());
 	this->updatePosition(m_direction * PLAYER_SPEED * deltaTime.asSeconds());
-	//m_pic.move(m_direction * PLAYER_SPEED * deltaTime.asSeconds());
 }
 
 //-----------------------------------------------------------------------------
-void Player::setDirection(sf::Vector2f position)
+void Player::setDirection()
 {
 	if (checkDirection())
 	{
@@ -98,7 +98,7 @@ bool Player::getWin() const
 //-----------------------------------------------------------------------------
 sf::Vector2f Player::getPos() const
 {
-	return getObjPosition();
+	return getPosition();
 }
 
 //------------------------------------------------------------------------------

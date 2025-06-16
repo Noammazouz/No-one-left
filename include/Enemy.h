@@ -13,8 +13,7 @@ public:
 	~Enemy() = default;
 
 	static bool registerEnemy(ObjectType type);
-	void update(sf::Time deltaTime) override;
-	void setDirection(sf::Vector2f playerPosition);
+	void update(sf::Time deltaTime, sf::Vector2f playerPos) override;
 	virtual void Display() {};
 	/*virtual void setFreezing(bool freeze) override;
 	void SetMoveBehavior(std::unique_ptr<MoveBehavior>	pMoveBehavior);

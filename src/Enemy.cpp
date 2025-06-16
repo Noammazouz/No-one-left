@@ -29,14 +29,10 @@ bool Enemy::registerEnemy(ObjectType type)
 // Then, trigger registration once at file scope:
 static bool s_enemyRegistered = Enemy::registerEnemy(ObjectType::ENEMY);
 
-void Enemy::update(sf::Time deltaTime)
+void Enemy::update(sf::Time deltaTime, sf::Vector2f playerPos)
 {
+    m_direction = m_MoveBehavior->Move(playerPos, deltaTime ,this->getPosition());
+
 	this->setPrevLocation(this->getPosition());
 	this->updatePosition(m_direction * ENEMY_SPEED * deltaTime.asSeconds());
-}
-
-void Enemy::setDirection(sf::Vector2f playerPosition)
-{
-    m_prevlocation = this->getPosition();
-	//m_direction = m_MoveBehavior->Move(playerPosition, this->getPosition());
 }
