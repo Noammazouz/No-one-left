@@ -51,7 +51,7 @@ private:
 	sf::Vector2f clampViewPosition(const sf::FloatRect& bounds);
 
 	sf::RenderWindow m_window;
-	sf::Time m_timer;
+	sf::Time m_stopwatch;
 	sf::Sound m_sound;
 	sf::View m_view;
 	sf::FloatRect worldBounds;
