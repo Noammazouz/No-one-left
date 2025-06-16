@@ -38,7 +38,6 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 	{
 		std::cerr << "[WARN] No static objects were loaded—are you sure your CSV has entries?\n";
 	}
-	m_player.setDirection(sf::Vector2f());
 
 
 	move(clock);
@@ -99,9 +98,7 @@ void GameScreen::draw(sf::RenderWindow& window)
 	for (auto& obj : m_staticObj) 
 		obj->draw(window);
 
-	std::cout << "Before [INFO] Drawing player at position: " << m_player.getPosition().x << ", " << m_player.getPosition().y << "\n";
 	m_player.draw(window);
-	std::cout << "After [INFO] Drawing player at position: " << m_player.getPosition().x << ", " << m_player.getPosition().y << "\n";
 
 	
 	window.setView(window.getDefaultView());
@@ -116,11 +113,12 @@ void GameScreen::move(sf::Clock& clock)
 	const auto deltaTime = clock.restart();
 
 	int index = 0;
-	m_player.update(deltaTime);
+	m_player.update(deltaTime, sf::Vector2f());
 	/*for (const auto& movingObj : m_movingObj)
 	{
 		if (index < Enemy::getNumOfGuardsAlive())
 		{
+		    movingObj->update(deltaTime, m_player.getPosition());
 			movingObj->setDirection(m_player.getPosition());
 		}
 		movingObj->update(deltaTime);

@@ -23,7 +23,13 @@ void GameObject::draw(sf::RenderWindow& window)
 }
 
 //-----------------------------------------------------------------------------
-sf::Vector2f GameObject::getObjPosition() const
+void GameObject::setPosition(const sf::Vector2f& position)
+{
+	m_pic.setPosition(position);
+}
+
+//-----------------------------------------------------------------------------
+sf::Vector2f GameObject::getPosition() const
 {
 	return m_pic.getPosition();
 }

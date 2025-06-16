@@ -24,21 +24,20 @@ public:
 	sf::FloatRect getBounds() const;
 
 	virtual void draw(sf::RenderWindow& window) ;
-	virtual sf::Vector2f getPosition() const { return sf::Vector2f(); };
 
-	void setPosition(const sf::Vector2f& position) {};
-	sf::Vector2f getObjPosition() const;
+	void setPosition(const sf::Vector2f& position);
+	sf::Vector2f getPosition() const;
 	bool isDead() const {};
 	void setLife(const bool life) {};
 
-	virtual void setRotation(sf::Vector2f direction);
+	
 
 protected:
 	void updatePosition(sf::Vector2f direction);
 	void mirrorImage(sf::Vector2f direction) {};
+	void setRotation(sf::Vector2f direction);
 
 private:
-	void setSprite(sf::Vector2f pos) {};
 	bool checkDirection();
 	sf::Vector2f m_direction;
 	float m_targetAngle = 0.f; // add this to private section
