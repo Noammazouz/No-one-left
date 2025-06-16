@@ -2,6 +2,7 @@
 configure_file ("gamebackgroundGPT.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Level1.csv" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Rwall.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Player.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("wall.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("startScreen.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("exit.png" ${CMAKE_BINARY_DIR} COPYONLY)

@@ -13,9 +13,10 @@ void StartScreen::draw(sf::RenderWindow& window)
 {
 	window.setView(window.getDefaultView());
 	sf::Texture backgroundTexture = ResourcesManager::getInstance().getTexture("startScreen");
-	backgroundTexture.setSmooth(true);
+	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
 	sf::Sprite backgroundSprite(backgroundTexture);
-	backgroundSprite.setScale(1.5f, 1.5f); // Scale the background to fit the window
+	backgroundSprite.setScale(desktop.width * WINDOW_RATIO / backgroundTexture.getSize().x, 
+							  desktop.height * WINDOW_RATIO / backgroundTexture.getSize().y); // Scale the background to fit the window
 	window.draw(backgroundSprite);
 	drawButtons(window);
 }

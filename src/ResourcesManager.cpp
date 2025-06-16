@@ -45,6 +45,7 @@ void ResourcesManager::loadTexture()
     std::vector<std::pair<std::string, std::string>> textures =
     {
         {"background","gamebackgroundGPT.png"},
+        {"Player", "Player.png"},
         {"wall","wall.png"},
         {"startScreen", "startScreen.png"},
         {"start game", "start game.png"},
@@ -82,13 +83,11 @@ void ResourcesManager::loadTexture()
         {
             std::cout << "Failed to load texture " << filePath << std::endl;
         }
-
+		texture.setSmooth(true); // Enable smooth scaling for the texture
         // Insert the texture into the unordered_map
         m_textures.emplace(name, std::move(texture));
-
     }
 }
-
 
 //------------------------------------------------------------------------------
 void ResourcesManager::initializeMusic()

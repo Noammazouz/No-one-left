@@ -12,32 +12,24 @@ public:
 	Enemy(sf::Vector2f position, const sf::Texture& texture);
 	~Enemy() = default;
 
+	static bool registerEnemy(ObjectType type);
 	void update(sf::Time deltaTime) override;
-	void setDirection(sf::Vector2f position) override;
-
-	virtual void collide(GameObject& otherObject) override;
-	virtual void enemyCollide(Enemy& otherObject) override;
-	virtual void explosionCollide(Explosion& otherobject) override;
-	virtual void playerCollide(Player& otherObject) override;
-	virtual void setFreezing(bool freeze) override;
+	void setDirection(sf::Vector2f playerPosition);
 	virtual void Display() {};
-
-	void PerformAttack();
-	void PerformMove();
+	/*virtual void setFreezing(bool freeze) override;
 	void SetMoveBehavior(std::unique_ptr<MoveBehavior>	pMoveBehavior);
 	void SetAttackBehavior(std::unique_ptr<AttackBehavior>	pAttackBehavior);
 
-	static void resetNumOfEnemies();
 	static int getNumOfStartingEnemies();
-	static int getNumOfEnemiesAlive();
+	static int getNumOfEnemiesAlive();*/
 
 private:
 	//void checktimer();
-	std::unique_ptr<AttackBehavior>	pAttackBehavior_;
-	std::unique_ptr<MoveBehavior>	pMoveBehavior_;
-	static int m_num_of_enemies;
+	std::unique_ptr<AttackBehavior>	m_AttackBehavior;
+	std::unique_ptr<MoveBehavior>	m_MoveBehavior;
+	/*static int m_num_of_enemies;
 	static int m_num_of_enemies_alive;
-	bool m_freeze = false;
+	bool m_freeze = false;*/
 
 	sf::Vector2f m_direction;
 	sf::Vector2f m_prevlocation;

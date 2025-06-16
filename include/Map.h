@@ -7,7 +7,6 @@
 #include "Const.h"`
 #include "UpdateableObject.h"
 #include "StaticObject.h"
-#include "Player.h"
 #include "Wall.h"
 
 class Player;
@@ -19,9 +18,11 @@ public:
 	Map()=default;
 	void loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player);
 	void draw();
+
 private:
 	void SetEnemies();
 	std::vector<std::string> m_level;
+	//std::vector<sf::Vector2f> m_wallPositions;
 	int m_rows;
 	int m_cols;
 };

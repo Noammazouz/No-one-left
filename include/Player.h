@@ -1,7 +1,15 @@
 #pragma once
 
 //-----include section-----
+#include <iostream>
+#include <SFML/Graphics.hpp>
 #include "UpdateableObject.h"
+#include "ResourcesManager.h"
+//#include "CollisionFactory.h"
+#include "Enemy.h"
+#include "Wall.h"
+#include "Bombs.h"
+#include "Explosion.h"
 
 class GameObject;
 
@@ -14,12 +22,8 @@ public:
 	~Player() = default;
 
 	virtual void update(sf::Time deltaTime) override;
-	virtual void setDirection(sf::Vector2f position) override;
-
-	virtual void collide(GameObject& otherObject) override;
-	virtual void enemyCollide(Enemy& otherObject) override;
-	virtual void explosionCollide(Explosion& otherobject) override;
-
+	virtual void setDirection(sf::Vector2f position) /*override*/;
+	static bool registerPlayer(ObjectType type);
 	void setWin(bool win);
 	bool getWin() const;
     int getScore();
@@ -27,18 +31,17 @@ public:
 	void decLife();
 	void incLife();
 	static int getLife();
-	const Present& getPresent() const;
-	void setPresent(Present present);
-	sf::Vector2f getPos() const { return m_pic.getPosition(); }
+	sf::Vector2f getPos() const;
+	//void draw(sf::RenderWindow& window);
 
 private:
-	bool checkDeriction();
+	bool checkDirection();
 
 	sf::Vector2f m_direction;
-	sf::RectangleShape m_pic;
+	//sf::RectangleShape m_pic;
 	static int m_lives;
 	static int m_score;
 	bool m_win = false;
 
-	Present m_present;
+	float m_targetAngle = 0.f; // add this to private section
 };

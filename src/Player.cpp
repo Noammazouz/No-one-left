@@ -1,5 +1,6 @@
 //-----include section-----
 #include "Player.h"
+#include "Factory.h"
 
 //-----functions section------
 //-----------------------------------------------------------------------------
@@ -9,17 +10,12 @@ int Player::m_score = 0;
 
 //-----------------------------------------------------------------------------
 Player::Player()
-	: UpdateableObject(), m_present(DEFAULT)
-{
-	m_pic.setSize(sf::Vector2f(50.f, 50.f));
-	m_pic.setPosition(sf::Vector2f(500.f, 500.f));
-	m_pic.setOutlineThickness(5.f);
-	m_pic.setFillColor(sf::Color::Black);
-}
+	: UpdateableObject()
+{}
 
 //-----------------------------------------------------------------------------
 Player::Player(sf::Vector2f position, const sf::Texture& texture)
-	//: UpdateableObject(position, texture), m_present(DEFAULT)
+	: UpdateableObject(sf::Vector2f(100.f, 100.f), texture)
 {}
 
 //-----------------------------------------------------------------------------
@@ -27,13 +23,13 @@ void Player::update(sf::Time deltaTime)
 {
 	this->setPrevLocation(this->getPosition());
 	this->updatePosition(m_direction * PLAYER_SPEED * deltaTime.asSeconds());
-	m_pic.move(m_direction * PLAYER_SPEED * deltaTime.asSeconds());
+	//m_pic.move(m_direction * PLAYER_SPEED * deltaTime.asSeconds());
 }
 
 //-----------------------------------------------------------------------------
 void Player::setDirection(sf::Vector2f position)
 {
-	if (checkDeriction())
+	if (checkDirection())
 	{
 		// Get the current key being pressed and update movement
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
@@ -54,29 +50,25 @@ void Player::setDirection(sf::Vector2f position)
 		{
 			m_direction = sf::Vector2f(0, 1);
 		}
+
+		//this->setRotation(m_direction);
 	}
 	else
 	{
 		// If no movement keys are pressed, stop the player
 		m_direction = sf::Vector2f(0, 0);
 	}
+
+	this->setRotation(m_direction);
 }
 
-//-----------------------------------------------------------------------------
-void Player::collide(GameObject& otherObject)
+//------------------------------------------------------------------------------
+bool Player::checkDirection()
 {
-	otherObject.playerCollide(*this);
-}
-
-//-----------------------------------------------------------------------------
-void Player::enemyCollide(Enemy& /*otherObject*/)
-{}
-
-//-----------------------------------------------------------------------------
-void Player::explosionCollide(Explosion& /*otherobject*/)
-{
-	this->setPosition(this->getStartingPosition());
-	decLife();
+	return sf::Keyboard::isKeyPressed(sf::Keyboard::Left) ||
+		   sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
+		   sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
+		   sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
 }
 
 //-----------------------------------------------------------------------------
@@ -104,15 +96,9 @@ bool Player::getWin() const
 }
 
 //-----------------------------------------------------------------------------
-const Present& Player::getPresent() const
+sf::Vector2f Player::getPos() const
 {
-	return m_present;
-}
-
-//-----------------------------------------------------------------------------
-void Player::setPresent(Present present)
-{
-	m_present = present;
+	return getObjPosition();
 }
 
 //------------------------------------------------------------------------------
@@ -134,10 +120,75 @@ void Player::setScore(int score)
 }
 
 //------------------------------------------------------------------------------
-bool Player::checkDeriction()
+//void Player::draw(sf::RenderWindow& window)
+//{
+//	// Draw the player rectangle
+//	//window.draw(m_pic);
+//}
+
+//------------------------------------------------------------------------------
+bool Player::registerPlayer(ObjectType type)
 {
-	return sf::Keyboard::isKeyPressed(sf::Keyboard::Left) ||
-		   sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
-		   sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
-		   sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
+	//We register with Factory<UpdateableObject> so the factory returns
+	//a unique_ptr<UpdateableObject> that actually points to a Player.
+	return Factory<UpdateableObject>::instance().registerType(
+			type,
+			// This lambda signature must match Factory<FuncType>:
+			//   (const sf::Texture&, const sf::Vector2f&, float, float)
+			[](const sf::Texture& texture,
+				const sf::Vector2f& position,
+				float width,
+				float height) -> std::unique_ptr<UpdateableObject>
+			{
+				// Forward exactly those params into your Player constructor:
+				return std::make_unique<Player>(position, texture);
+			}
+		);
 }
+
+//Then, trigger registration once at file scope:
+static bool s_playerRegistered = Player::registerPlayer(ObjectType::PLAYER);
+
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//void Plyer::registerCollision()
+//{
+//	static bool registered = false;
+//	if (registered) return; //only register once
+//
+//	auto& factory = CollisionFactory::getInstance();
+//
+//	//register the collision handlers
+//	factory.registerSymetricCollision<Player, Enemy>([](Player& player, Enemy& enemy) { 
+//		Player& p = static_cast<Player&>(player);
+//		std::cout << "Player hit by Enemy!" << std::endl;
+//		p.decLife();
+//		p.setPosition(p.getStartingPosition());
+//	});
+//
+//	factory.registerSymetricCollision<Player, Wall>([](Player& player, Wall& wall) { 
+//		Player& p = static_cast<Player&>(player);
+//		std::cout << "Player hit a Wall!" << std::endl;
+//		p.setPosition(p.getPrevLocation()); // revert to previous position
+//	});
+//
+//	factory.registerSymetricCollision<Player, Explosion>([](Player& player, Explosion& explosion) { 
+//		Player& p = static_cast<Player&>(player);
+//		std::cout << "Player hit an Explosion!" << std::endl;
+//		p.decLife();
+//		p.setPosition(p.getStartingPosition());
+//	});
+//
+//	registered = true;
+//	std::cout << "Player collisions registered." << std::endl;
+//}
+
+//------------------------------------------------------------------------------
+//Auto-regiteration helper - runs when first Player is created.
+//static bool g_playerColliosionRegistered = []()
+//{
+//	Player::registerCollision();
+//	return true;
+//}
