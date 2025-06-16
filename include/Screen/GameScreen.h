@@ -52,7 +52,6 @@ private:
 
 	sf::RenderWindow m_window;
 	sf::Time m_timer;
-	//sf::Clock m_clock;
 	sf::Sound m_sound;
 	sf::View m_view;
 	sf::FloatRect worldBounds;

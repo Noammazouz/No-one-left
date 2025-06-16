@@ -83,8 +83,6 @@ void GameScreen::initButtons()
 //-----------------------------------------------------------------------------
 void GameScreen::draw(sf::RenderWindow& window)
 {
-
-	// Draw game world
 	sf::Sprite backround;
 	sf::Texture texure = ResourcesManager::getInstance().getTexture("background");
 	texure.setRepeated(true);
@@ -99,13 +97,13 @@ void GameScreen::draw(sf::RenderWindow& window)
 
 	m_player.draw(window);
 
-	// Switch to default view to draw UI
+	
 	window.setView(window.getDefaultView());
 
 	if (m_paused)
-		drawButtons(window); // Menu buttons
+		drawButtons(window); 
 	else
-		m_buttons[PAUSE].draw(window); // Only pause button
+		m_buttons[PAUSE].draw(window);
 }
 
 //-----------------------------------------------------------------------------
@@ -302,7 +300,7 @@ void GameScreen::checkVaildDraw()
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::handleLoadingLevel(sf::Clock& clock)
+void GameScreen::handleLoadingLevel()
 {
 	m_movingObj.clear();
 	m_staticObj.clear();
