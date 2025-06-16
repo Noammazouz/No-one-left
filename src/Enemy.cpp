@@ -32,11 +32,11 @@ static bool s_enemyRegistered = Enemy::registerEnemy(ObjectType::ENEMY);
 void Enemy::update(sf::Time deltaTime)
 {
 	this->setPrevLocation(this->getPosition());
-    this->updatePosition(m_direction * ENEMY_SPEED * deltaTime);
+	this->updatePosition(m_direction * ENEMY_SPEED * deltaTime.asSeconds());
 }
 
 void Enemy::setDirection(sf::Vector2f playerPosition)
 {
     m_prevlocation = this->getPosition();
-	m_direction = pMoveBehavior_->Move(playerPosition, this->getPosition());
+	//m_direction = m_MoveBehavior->Move(playerPosition, this->getPosition());
 }

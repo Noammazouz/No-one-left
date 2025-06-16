@@ -12,9 +12,6 @@
 template <typename T>
 class Factory 
 {
-template <typename T>
-class Factory 
-{
 public:
 	static Factory& instance()
 	{
