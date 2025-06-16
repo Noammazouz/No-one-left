@@ -18,13 +18,13 @@
 #include "GameObject.h"
 #include "Scoreboard.h"
 #include "Explosion.h"
+#include "CollisionFactory.h"
 
 //-----class section-----
 class GameScreen : public Screen
 {
 public:
 	GameScreen();
-	~GameScreen() = default;
 
 	void draw(sf::RenderWindow& window) override;
 	virtual void activate(sf::Clock& clockin, int& m_currrentScreen) override;
@@ -48,13 +48,10 @@ private:
 	void handleSocreboard();
 	void removeGuard();
 	void addTime();
-	void lostWindow();
-	void winWindow();
 	sf::Vector2f clampViewPosition(const sf::FloatRect& bounds);
 
 	sf::RenderWindow m_window;
 	sf::Time m_timer;
-	//sf::Clock m_clock;
 	sf::Sound m_sound;
 	sf::View m_view;
 	sf::FloatRect worldBounds;

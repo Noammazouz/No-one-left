@@ -7,9 +7,12 @@
 class AxisMoveBehavior : public MoveBehavior
 {
 public:
-	AxisMoveBehavior() = default;
-	virtual ~AxisMoveBehavior() = default;
+    AxisMoveBehavior() = default;
+    virtual ~AxisMoveBehavior() = default;
+    virtual void Move(sf::Vector2f playerPos, float deltaTime) override;
 
-	// Override the move method
-	virtual void Move(sf::Vector2f playerLoc) override;
+private:
+    bool isMovingX = true; 
+    float Timer = 0;
+    const float CHANGE_DIRECTION_TIME = 1.0f;
 };

@@ -13,6 +13,7 @@ public:
 
 	virtual void update(sf::Time deltaTime) = 0;
 	virtual bool checkCollision(GameObject& otherObject) { return false; };
+	sf::Vector2f getPrevLocation() const {};
 
 	sf::Vector2f getPrevLocation() const;
 

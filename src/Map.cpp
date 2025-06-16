@@ -73,7 +73,7 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
                 )
             );
         }
-        // Ö handle other types Ö
+        // ‚Ä¶ handle other types ‚Ä¶
     }
 
 	 // ensure smooth scaling
@@ -83,6 +83,16 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
     //std::ifstream file("Level1.csv");
     //if (!file) { /* error */ return; }
 
+
+//-------------------------------------
+const std::vector<sf::Vector2f>& Map::getWallPositions() const 
+{
+    return m_wallPositions;
+}
+
+//-------------------------------------
+void SetEnemies()
+{
     //std::string line;
     //while (std::getline(file, line))
     //{
@@ -98,7 +108,7 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
     //    //}
     //    //else if (type == "player")
     //    //{
-    //    //    // ìspawn,player,x,y,0,0î
+    //    //    // ‚Äúspawn,player,x,y,0,0‚Äù
     //    //    player.setPosition({ x, y });
     //    //}
     //    
