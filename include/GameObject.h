@@ -30,8 +30,6 @@ public:
 	bool isDead() const {};
 	void setLife(const bool life) {};
 
-	virtual void setRotation(const sf::Vector2f& direction);
-
 protected:
 	void updatePosition(sf::Vector2f direction);
 	void mirrorImage(sf::Vector2f direction) {};

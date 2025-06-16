@@ -84,7 +84,7 @@ const float DEFUALT_HEIGHT = 32.f;
 const float BOMB_TIME = 4.f;
 const float ADDED_TIME = 10.f;
 const float WINDOW_RATIO = 0.92f;
-const float ROTATION_SPEED = 150.f; //degrees per second
+const float ROTATION_SPEED = 200.f; //degrees per second
 
 const std::string MENU_MUSIC = "menu";
 const std::string GAME_MUSIC = "game";

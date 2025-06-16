@@ -27,37 +27,66 @@ void Player::update(sf::Time deltaTime, sf::Vector2f /*playerPos*/)
 }
 
 //-----------------------------------------------------------------------------
+//void Player::setDirection()
+//{
+//	if (checkDirection())
+//	{
+//		// Get the current key being pressed and update movement
+//		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+//		{
+//			m_direction = sf::Vector2f(-1, 0);
+//			this->mirrorImage(m_direction);
+//		}
+//		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+//		{
+//			m_direction = sf::Vector2f(1, 0);
+//			this->mirrorImage(m_direction);
+//		}
+//		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+//		{
+//			m_direction = sf::Vector2f(0, -1);
+//		}
+//		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+//		{
+//			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) m_direction = sf::Vector2f(-1, 1);
+//			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) m_direction = sf::Vector2f(1, 1);
+//			else m_direction = sf::Vector2f(0, 1);
+//		}
+//		else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+//		{
+//			m_direction = sf::Vector2f(0, 0);
+//		}
+//	}
+//	else
+//	{
+//		// If no movement keys are pressed, stop the player
+//		m_direction = sf::Vector2f(0, 0);
+//	}
+//
+//	this->setRotation(m_direction);
+//}
+
 void Player::setDirection()
 {
-	if (checkDirection())
+	if (!checkDirection())
 	{
-		// Get the current key being pressed and update movement
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		{
-			m_direction = sf::Vector2f(-1, 0);
-			this->mirrorImage(m_direction);
-		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		{
-			m_direction = sf::Vector2f(1, 0);
-			this->mirrorImage(m_direction);
-		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-		{
-			m_direction = sf::Vector2f(0, -1);
-		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-		{
-			m_direction = sf::Vector2f(0, 1);
-		}
-
-		//this->setRotation(m_direction);
-	}
-	else
-	{
-		// If no movement keys are pressed, stop the player
 		m_direction = sf::Vector2f(0, 0);
+		this->setRotation(m_direction);
+		return;
 	}
+
+	sf::Vector2f newDir(0.f, 0.f);
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) newDir.x -= 1.f;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) newDir.x += 1.f;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) newDir.y -= 1.f;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) newDir.y += 1.f;
+
+	//Normalize direction if moving diagonally
+	if (newDir != sf::Vector2f(0.f, 0.f))
+		newDir /= std::sqrt(newDir.x * newDir.x + newDir.y * newDir.y);
+
+	m_direction = newDir;
 
 	this->setRotation(m_direction);
 }
