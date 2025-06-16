@@ -14,10 +14,11 @@ void HelpScreen::draw(sf::RenderWindow& window)
 {
 	window.setView(window.getDefaultView());
 	sf::Texture texture = ResourcesManager::getInstance().getTexture("help screen");
-	texture.setSmooth(true);
-
+	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
 	sf::Sprite helpMenu(texture);
 	helpMenu.setScale(1.8f, 1.75f); // Scale the help menu to fit the window
+	helpMenu.setScale(desktop.width * WINDOW_RATIO / texture.getSize().x,
+					  desktop.height * WINDOW_RATIO / texture.getSize().y); // Scale the background to fit the window
 	window.draw(helpMenu);
 	drawButtons(window);
 	//m_buttons[0].draw(window);
