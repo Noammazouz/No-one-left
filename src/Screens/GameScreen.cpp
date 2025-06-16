@@ -300,7 +300,7 @@ void GameScreen::checkVaildDraw()
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::handleLoadingLevel(sf::Clock& clock)
+void GameScreen::handleLoadingLevel()
 {
 	m_movingObj.clear();
 	m_staticObj.clear();
