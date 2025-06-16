@@ -29,7 +29,7 @@ sf::Vector2f GameObject::getObjPosition() const
 }
 
 //-----------------------------------------------------------------------------
-void GameObject::setRotation(sf::Vector2f direction)
+void GameObject::setRotation(const sf::Vector2f& direction)
 {
 	static sf::Clock rotationClock; // Clock persists across calls
 	float deltaTime = rotationClock.restart().asSeconds();
