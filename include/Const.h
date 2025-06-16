@@ -45,6 +45,17 @@ enum ScreenType
 	LOSE_SCREEN
 };
 
+enum ObjectType
+{
+	PLAYER,
+	ENEMY,
+	BULLET,
+	BOMB,
+	TREE,
+	BUILDING,
+	EXPLOSION
+};
+
 //-----constants section-----
 const int WINDOW_HEIGHT = 900;
 const int WINDOW_WIDTH = 1602;
@@ -59,7 +70,7 @@ const int END_GAME = 0;
 const int BOARD_STARTING_X = WINDOW_WIDTH / 5;
 const int BOARD_STARTING_Y = WINDOW_HEIGHT / 10;
 const float PLAYER_SPEED = 200.f;
-const float GUARD_SPEED = 125.f;
+const float ENEMY_SPEED = 125.f;
 const int NUM_OF_BUTTON = 4;
 const int NUM_OF_LIVES = 3;
 const int POINT_FOR_ENEMY = 3;
