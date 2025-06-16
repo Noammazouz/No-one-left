@@ -15,7 +15,7 @@ Player::Player()
 
 //-----------------------------------------------------------------------------
 Player::Player(sf::Vector2f position, const sf::Texture& texture)
-	: UpdateableObject(sf::Vector2f(100.f, 100.f), texture)
+	: UpdateableObject(position, texture)
 {}
 
 //-----------------------------------------------------------------------------
