@@ -8,7 +8,7 @@ class BFSMoveBehavior : public MoveBehavior
 public:
     BFSMoveBehavior(int gridWidth, int gridHeight, int cellSize);
     virtual ~BFSMoveBehavior() = default;
-    virtual void Move(sf::Vector2f playerPos, float deltaTime) override;
+    virtual sf::Vector2f Move(sf::Vector2f playerPos, sf::Time deltaTime, sf::Vector2f enemyPos) override;
 
     void setObstaclesFromMap(const std::vector<sf::Vector2f>& wallPositions);
 

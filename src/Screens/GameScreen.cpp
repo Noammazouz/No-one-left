@@ -38,14 +38,13 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 	{
 		std::cerr << "[WARN] No static objects were loaded—are you sure your CSV has entries?\n";
 	}
-	m_player.setDirection(sf::Vector2f());
 
 
 	move(clock);
 	handleCollision();
 	explosion();
 	handleErasing();
-	handleSocreboard();
+	handleScoreBoard();
 
 	if (m_player.getWin())
 	{
@@ -99,9 +98,7 @@ void GameScreen::draw(sf::RenderWindow& window)
 	for (auto& obj : m_staticObj) 
 		obj->draw(window);
 
-	std::cout << "Before [INFO] Drawing player at position: " << m_player.getPosition().x << ", " << m_player.getPosition().y << "\n";
 	m_player.draw(window);
-	std::cout << "After [INFO] Drawing player at position: " << m_player.getPosition().x << ", " << m_player.getPosition().y << "\n";
 
 	
 	window.setView(window.getDefaultView());
@@ -116,11 +113,12 @@ void GameScreen::move(sf::Clock& clock)
 	const auto deltaTime = clock.restart();
 
 	int index = 0;
-	m_player.update(deltaTime);
+	m_player.update(deltaTime, sf::Vector2f());
 	/*for (const auto& movingObj : m_movingObj)
 	{
 		if (index < Enemy::getNumOfGuardsAlive())
 		{
+		    movingObj->update(deltaTime, m_player.getPosition());
 			movingObj->setDirection(m_player.getPosition());
 		}
 		movingObj->update(deltaTime);
@@ -178,7 +176,7 @@ void GameScreen::handleCollision()
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::setbomb()
+void GameScreen::setBomb()
 {
 	//m_movingObj.push_back(std::make_unique<Bombs>(sf::Vector2f(m_player.getPosition()), ResourcesManager::getInstance().getTexture("bomb")));
 }
@@ -206,7 +204,7 @@ void GameScreen::explosion()
 			m_sound.setVolume(100.f);
 			m_sound.play();
 			setExpoDirection(bomb);
-			checkVaildDraw();
+			checkValidDraw();
 			drawWindow();
 			checkExpo();
 		}
@@ -286,7 +284,7 @@ void GameScreen::checkExpo()
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::checkVaildDraw()
+void GameScreen::checkValidDraw()
 {
 	/*auto explosion = m_movingObj.size() - NUM_OF_EXPLOSION;
 	for (; explosion < m_movingObj.size(); explosion++)
@@ -314,7 +312,7 @@ void GameScreen::handleLoadingLevel()
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::handleSocreboard()
+void GameScreen::handleScoreBoard()
 {
 	/*m_scoreboard.updateTime(m_timer);
 	m_scoreboard.updateLevel(m_level);

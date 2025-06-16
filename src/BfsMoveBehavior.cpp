@@ -8,14 +8,15 @@ BFSMoveBehavior::BFSMoveBehavior(int gridWidth, int gridHeight, int cellSize)
     grid.resize(gridHeight, std::vector<bool>(gridWidth, true));
 }
 
-void BFSMoveBehavior::Move(sf::Vector2f playerPos, float deltaTime) {
-    pathUpdateTimer += deltaTime;
+sf::Vector2f BFSMoveBehavior::Move(sf::Vector2f playerPos, sf::Time /*deltaTime*/, sf::Vector2f enemyPos) 
+{
+   // pathUpdateTimer += deltaTime;
 
-    if (pathUpdateTimer >= PATH_UPDATE_INTERVAL || currentPath.empty()) {
+   /* if (pathUpdateTimer >= PATH_UPDATE_INTERVAL || currentPath.empty()) {
         currentPath = findPath(enemyPos, playerPos);
         currentPathIndex = 0;
         pathUpdateTimer = 0;
-    }
+    }*/
 
 
     if (!currentPath.empty() && currentPathIndex < currentPath.size()) {
@@ -26,7 +27,7 @@ void BFSMoveBehavior::Move(sf::Vector2f playerPos, float deltaTime) {
         float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
         if (distance < cellSize * 0.2f) {
             currentPathIndex++;
-            return;
+            return sf::Vector2f();
         }
 
 
@@ -35,8 +36,8 @@ void BFSMoveBehavior::Move(sf::Vector2f playerPos, float deltaTime) {
             direction.y /= distance;
         }
 
-        enemyPos.x += direction.x * speed * deltaTime;
-        enemyPos.y += direction.y * speed * deltaTime;
+       /* enemyPos.x += direction.x * speed * deltaTime;
+        enemyPos.y += direction.y * speed * deltaTime;*/
     }
 }
 

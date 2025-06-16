@@ -15,49 +15,78 @@ Player::Player()
 
 //-----------------------------------------------------------------------------
 Player::Player(sf::Vector2f position, const sf::Texture& texture)
-	: UpdateableObject(sf::Vector2f(100.f, 100.f), texture)
+	: UpdateableObject(position, texture)
 {}
 
 //-----------------------------------------------------------------------------
-void Player::update(sf::Time deltaTime)
+void Player::update(sf::Time deltaTime, sf::Vector2f /*playerPos*/)
 {
+	setDirection();
 	this->setPrevLocation(this->getPosition());
 	this->updatePosition(m_direction * PLAYER_SPEED * deltaTime.asSeconds());
-	//m_pic.move(m_direction * PLAYER_SPEED * deltaTime.asSeconds());
 }
 
 //-----------------------------------------------------------------------------
-void Player::setDirection(sf::Vector2f position)
-{
-	if (checkDirection())
-	{
-		// Get the current key being pressed and update movement
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		{
-			m_direction = sf::Vector2f(-1, 0);
-			this->mirrorImage(m_direction);
-		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		{
-			m_direction = sf::Vector2f(1, 0);
-			this->mirrorImage(m_direction);
-		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-		{
-			m_direction = sf::Vector2f(0, -1);
-		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-		{
-			m_direction = sf::Vector2f(0, 1);
-		}
+//void Player::setDirection()
+//{
+//	if (checkDirection())
+//	{
+//		// Get the current key being pressed and update movement
+//		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+//		{
+//			m_direction = sf::Vector2f(-1, 0);
+//			this->mirrorImage(m_direction);
+//		}
+//		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+//		{
+//			m_direction = sf::Vector2f(1, 0);
+//			this->mirrorImage(m_direction);
+//		}
+//		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+//		{
+//			m_direction = sf::Vector2f(0, -1);
+//		}
+//		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+//		{
+//			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) m_direction = sf::Vector2f(-1, 1);
+//			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) m_direction = sf::Vector2f(1, 1);
+//			else m_direction = sf::Vector2f(0, 1);
+//		}
+//		else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+//		{
+//			m_direction = sf::Vector2f(0, 0);
+//		}
+//	}
+//	else
+//	{
+//		// If no movement keys are pressed, stop the player
+//		m_direction = sf::Vector2f(0, 0);
+//	}
+//
+//	this->setRotation(m_direction);
+//}
 
-		//this->setRotation(m_direction);
-	}
-	else
+void Player::setDirection()
+{
+	if (!checkDirection())
 	{
-		// If no movement keys are pressed, stop the player
 		m_direction = sf::Vector2f(0, 0);
+		this->setRotation(m_direction);
+		return;
 	}
+
+	sf::Vector2f newDir(0.f, 0.f);
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) newDir.x -= 1.f;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) newDir.x += 1.f;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) newDir.y -= 1.f;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) newDir.y += 1.f;
+
+	//Normalize direction if moving diagonally
+	if (newDir != sf::Vector2f(0.f, 0.f))
+		newDir /= std::sqrt(newDir.x * newDir.x + newDir.y * newDir.y);
+
+	m_direction = newDir;
 
 	this->setRotation(m_direction);
 }
@@ -98,7 +127,7 @@ bool Player::getWin() const
 //-----------------------------------------------------------------------------
 sf::Vector2f Player::getPos() const
 {
-	return getObjPosition();
+	return getPosition();
 }
 
 //------------------------------------------------------------------------------
@@ -118,13 +147,6 @@ void Player::setScore(int score)
 {
 	m_score += score;
 }
-
-//------------------------------------------------------------------------------
-//void Player::draw(sf::RenderWindow& window)
-//{
-//	// Draw the player rectangle
-//	//window.draw(m_pic);
-//}
 
 //------------------------------------------------------------------------------
 bool Player::registerPlayer(ObjectType type)
