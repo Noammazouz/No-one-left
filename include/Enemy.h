@@ -14,7 +14,7 @@ public:
 
 	static bool registerEnemy(ObjectType type);
 	void update(sf::Time deltaTime) override;
-	void setDirection(sf::Vector2f playerPosition) override;
+	void setDirection(sf::Vector2f playerPosition);
 	virtual void Display() {};
 	/*virtual void setFreezing(bool freeze) override;
 	void SetMoveBehavior(std::unique_ptr<MoveBehavior>	pMoveBehavior);
@@ -25,8 +25,8 @@ public:
 
 private:
 	//void checktimer();
-	std::unique_ptr<AttackBehavior>	pAttackBehavior_;
-	std::unique_ptr<MoveBehavior>	pMoveBehavior_;
+	std::unique_ptr<AttackBehavior>	m_AttackBehavior;
+	std::unique_ptr<MoveBehavior>	m_MoveBehavior;
 	/*static int m_num_of_enemies;
 	static int m_num_of_enemies_alive;
 	bool m_freeze = false;*/
