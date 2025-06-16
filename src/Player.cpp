@@ -120,13 +120,6 @@ void Player::setScore(int score)
 }
 
 //------------------------------------------------------------------------------
-//void Player::draw(sf::RenderWindow& window)
-//{
-//	// Draw the player rectangle
-//	//window.draw(m_pic);
-//}
-
-//------------------------------------------------------------------------------
 bool Player::registerPlayer(ObjectType type)
 {
 	//We register with Factory<UpdateableObject> so the factory returns
