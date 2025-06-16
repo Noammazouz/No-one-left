@@ -119,7 +119,6 @@ void GameScreen::move(sf::Clock& clock)
 		if (index < Enemy::getNumOfGuardsAlive())
 		{
 		    movingObj->update(deltaTime, m_player.getPosition());
-			movingObj->setDirection(m_player.getPosition());
 		}
 		movingObj->update(deltaTime);
 		index++;
