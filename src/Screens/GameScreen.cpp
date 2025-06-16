@@ -1,7 +1,8 @@
+//-----include section-----
 #include "GameScreen.h"
 
-
-
+//-----functions section------
+//-----------------------------------------------------------------------------
 GameScreen::GameScreen()
 	: worldBounds(0.f, 0.f, MAP_WIDTH, MAP_HEIGHT)
 {
@@ -9,10 +10,11 @@ GameScreen::GameScreen()
 	handleLoadingLevel();
 	if (m_staticObj.empty()) 
 	{
-		std::cerr << "[WARN] No static objects were loaded—are you sure your CSV has entries?\n";
+		std::cerr << "[WARN] No static objects were loadedï¿½are you sure your CSV has entries?\n";
 	}
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 void GameScreen::run(sf::RenderWindow& window, int& m_currrentScreen)
 {
 	Screen::run(window, m_currrentScreen);
@@ -20,7 +22,8 @@ void GameScreen::run(sf::RenderWindow& window, int& m_currrentScreen)
 	m_view.setCenter(clampViewPosition(worldBounds));
 	window.setView(m_view);
 }
-//---------
+
+//-----------------------------------------------------------------------------
 void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 {
 	if (m_paused)
@@ -60,7 +63,7 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 
 }
 
-//-------------------------------------
+//-----------------------------------------------------------------------------
 void GameScreen::initButtons()
 {
 	sf::Vector2f pos(20.f, 20.f); // Fixed top-left with padding
@@ -77,7 +80,7 @@ void GameScreen::initButtons()
 }
 
 
-//-------------------------------------
+//-----------------------------------------------------------------------------
 void GameScreen::draw(sf::RenderWindow& window)
 {
 	sf::Sprite backround;
@@ -103,7 +106,7 @@ void GameScreen::draw(sf::RenderWindow& window)
 		m_buttons[PAUSE].draw(window);
 }
 
-//-------------------------------------
+//-----------------------------------------------------------------------------
 void GameScreen::move(sf::Clock& clock)
 {
 	const auto deltaTime = clock.restart();
@@ -121,7 +124,8 @@ void GameScreen::move(sf::Clock& clock)
 	}*/
 	
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 void GameScreen::handleCollision()
 {
 	auto& collisionHandler = CollisionFactory::getInstance();
@@ -169,12 +173,14 @@ void GameScreen::handleCollision()
 		}
 	}*/
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 void GameScreen::setbomb()
 {
 	//m_movingObj.push_back(std::make_unique<Bombs>(sf::Vector2f(m_player.getPosition()), ResourcesManager::getInstance().getTexture("bomb")));
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 void GameScreen::handleErasing()
 {
 	/*std::erase_if(m_movingObj, [](const auto& item)
@@ -183,7 +189,8 @@ void GameScreen::handleErasing()
 	std::erase_if(m_staticObj, [](const auto& item)
 		{return item->isDead(); });*/
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 void GameScreen::explosion()
 {
 	/*auto bomb = Enemy::getNumOfGuardsAlive();
@@ -202,7 +209,8 @@ void GameScreen::explosion()
 		}
 	}*/
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 void GameScreen::calculateScore()
 {
 	/*int points = 0;
@@ -211,7 +219,8 @@ void GameScreen::calculateScore()
 	points += (std::abs(Enemy::getNumOfGuardsAlive() - Enemy::getNumOfStartingGuards()) * KILL_GUARD);
 	m_player.setScore(points);*/
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 void GameScreen::setExpoDirection(int index)
 {
 	/*for (int direction = 0; direction < NUM_OF_DIRECTION; direction++)
@@ -239,7 +248,8 @@ void GameScreen::setExpoDirection(int index)
 	m_movingObj.push_back(std::make_unique<Explosion>(sf::Vector2f(m_movingObj[index]->getPosition()), ResourcesManager::getInstance().getTexture("explosion")));
 }*/
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 void GameScreen::checkExpo()
 {
 	/*auto explosion = m_movingObj.size() - NUM_OF_EXPLOSION;
@@ -271,7 +281,8 @@ void GameScreen::checkExpo()
 		}
 	}*/
 }
-//-------------------------------------
+
+//-----------------------------------------------------------------------------
 void GameScreen::checkVaildDraw()
 {
 	/*auto explosion = m_movingObj.size() - NUM_OF_EXPLOSION;
@@ -287,8 +298,9 @@ void GameScreen::checkVaildDraw()
 	}
 	handleErasing();*/
 }
-//---------------------------------
-void GameScreen::handleLoadingLevel()
+
+//-----------------------------------------------------------------------------
+void GameScreen::handleLoadingLevel(sf::Clock& clock)
 {
 	m_movingObj.clear();
 	m_staticObj.clear();
@@ -298,8 +310,7 @@ void GameScreen::handleLoadingLevel()
 	m_timer = sf::seconds(120);
 }
 
-
-//---------------------------------
+//-----------------------------------------------------------------------------
 void GameScreen::handleSocreboard()
 {
 	/*m_scoreboard.updateTime(m_timer);
@@ -308,7 +319,7 @@ void GameScreen::handleSocreboard()
 	m_scoreboard.updateScore(m_player.getScore());*/
 }
 
-//------------------------
+//-----------------------------------------------------------------------------
 void GameScreen::removeGuard()
 {
 	/*if (Enemy::getNumOfGuardsAlive() != 0)
@@ -319,14 +330,14 @@ void GameScreen::removeGuard()
 	}*/
 }
 
-//------------------------
+//-----------------------------------------------------------------------------
 void GameScreen::addTime()
 {
 	/*m_timer += sf::seconds(ADDED_TIME);
 	m_scoreboard.updateTime(m_timer);*/
 }
 
-//------------------------
+//-----------------------------------------------------------------------------
 void GameScreen::handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow& window, int& screenState)
 {
 	for (int index = 0; index < m_buttons.size(); ++index)

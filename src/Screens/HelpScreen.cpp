@@ -1,11 +1,15 @@
+//-----includes section-----
 #include "HelpScreen.h"
 
+//-----functions section------
+//-----------------------------------------------------------------------------
 HelpScreen::HelpScreen()
 {
 	// Initialize buttons
 	initButtons();
 }
 
+//-----------------------------------------------------------------------------
 void HelpScreen::draw(sf::RenderWindow& window)
 {
 	window.setView(window.getDefaultView());
@@ -19,11 +23,11 @@ void HelpScreen::draw(sf::RenderWindow& window)
 	//m_buttons[0].draw(window);
 }
 
+//-----------------------------------------------------------------------------
 void HelpScreen::activate(sf::Clock& clockin, int& m_currrentScreen)
-{
-	
-}
+{}
 
+//-----------------------------------------------------------------------------
 void HelpScreen::initButtons()
 {
 	// Initialize buttons for the help screen
@@ -32,6 +36,7 @@ void HelpScreen::initButtons()
 	m_buttons.emplace_back(RETURN_BUTTON, position);
 }
 
+//-----------------------------------------------------------------------------
 void  HelpScreen::handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow& window, int& screenState)
 {
 	for (int index = 0; index < m_buttons.size(); ++index)
