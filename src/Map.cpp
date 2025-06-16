@@ -1,6 +1,7 @@
 //-----include section-----
 #include "Map.h"
 #include "ResourcesManager.h"
+#include "Player.h"
 #include <fstream>
 #include <sstream>
 #include <stdlib.h>
@@ -15,16 +16,18 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
         return;
     }
 
-    auto trim = [&](std::string s) {
+    auto trim = [&](std::string s) 
+    {
         // remove leading/trailing whitespace (including '\r')
         while (!s.empty() && std::isspace((unsigned char)s.front())) s.erase(s.begin());
         while (!s.empty() && std::isspace((unsigned char)s.back()))  s.pop_back();
         return s;
-        };
+    };
 
     std::string line;
     bool firstLine = true;
-    while (std::getline(file, line)) {
+    while (std::getline(file, line)) 
+    {
         line = trim(line);
         if (line.empty()) continue;
 
@@ -33,19 +36,22 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
         {
             std::istringstream ss(line);
             std::string field;
-            while (std::getline(ss, field, ',')) {
+            while (std::getline(ss, field, ',')) 
+            {
                 tokens.push_back(trim(field));
             }
         }
 
         // skip the header row
-        if (firstLine && tokens.size() > 0 && tokens[0] == "type") {
+        if (firstLine && tokens.size() > 0 && tokens[0] == "type") 
+        {
             firstLine = false;
             continue;
         }
         firstLine = false;
 
-        if (tokens.size() != 6) {
+        if (tokens.size() != 6) 
+        {
             std::cerr << "[WARN] expected 6 fields but got "
                 << tokens.size() << " in: " << line << "\n";
             continue;
@@ -69,41 +75,13 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
         }
         // … handle other types …
     }
-}
-    //std::ifstream file("Level1.csv");
-    //if (!file) { /* error */ return; }
 
-
-//-------------------------------------
-const std::vector<sf::Vector2f>& Map::getWallPositions() const 
-{
-    return m_wallPositions;
+	 // ensure smooth scaling
+	player = Player(sf::Vector2f(0, 0), // default position, will be set later
+        ResourcesManager::getInstance().getTexture("Player"));
 }
 
 //-------------------------------------
-void SetEnemies()
-{
-    //std::string line;
-    //while (std::getline(file, line))
-    //{
-    //    //// parse CSV into: type, textureKey, x, y, w, h
-    //    //if (type == "wall")
-    //    //{
-    //    //    // Create a Wall at (x,y) with size (w,h) and push into staticObjs:
-    //    //    staticObjs.push_back(
-    //    //        std::make_unique<Wall>(
-    //    //            sf::Vector2f(x, y),
-    //    //            ResourcesManager::getInstance().getTexture("back"),
-    //    //            w, h));
-    //    //}
-    //    //else if (type == "player")
-    //    //{
-    //    //    // “spawn,player,x,y,0,0”
-    //    //    player.setPosition({ x, y });
-    //    //}
-    //    
-    //}
-
-//-----------------------------------------------------------------------------
 void Map::SetEnemies()
-{}
+{
+}

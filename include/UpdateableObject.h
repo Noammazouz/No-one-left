@@ -7,25 +7,19 @@
 class UpdateableObject : public GameObject
 {
 public:
-	UpdateableObject() = default;
-	//UpdateableObject(sf::Vector2f position, const sf::Texture& texture);
-
-	virtual sf::Vector2f getStartingPosition() const { return sf::Vector2f(); };
-	virtual void setFreezing(bool freeze) {};
-	virtual void update(sf::Time deltaTime) = 0;
-	virtual void setDirection(sf::Vector2f position) = 0;
-	virtual bool checkCollision(GameObject& otherObject) { return false; };
-	virtual sf::Time getTimer() const { return sf::Time(); };
-	virtual bool getExpo() const { return false; };
-
-	sf::Vector2f getPrevLocation() const {};
-
+	UpdateableObject();
+	UpdateableObject(sf::Vector2f position, const sf::Texture& texture);
 	virtual ~UpdateableObject() = default;
 
+	virtual void update(sf::Time deltaTime) = 0;
+	virtual bool checkCollision(GameObject& otherObject) { return false; };
+
+	sf::Vector2f getPrevLocation() const;
+
 protected:
-	void setPrevLocation(sf::Vector2f position) {};
+	void setPrevLocation(const sf::Vector2f& position);
 
 private:
 	sf::Vector2f m_starting_position;
-	sf::Vector2f m_prev_location;
+	sf::Vector2f m_prevLocation;
 };

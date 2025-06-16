@@ -34,6 +34,10 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 
 	handleMusicTransition(true);
 
+	if (m_staticObj.empty()) 
+	{
+		std::cerr << "[WARN] No static objects were loaded—are you sure your CSV has entries?\n";
+	}
 	m_player.setDirection(sf::Vector2f());
 
 
@@ -42,6 +46,7 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 	explosion();
 	handleErasing();
 	handleSocreboard();
+
 	if (m_player.getWin())
 	{
 		m_sound.setBuffer(ResourcesManager::getInstance().getSound("door"));
@@ -55,12 +60,12 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 			return;
 		}
 	}
+
 	if (m_player.getLife() == END_GAME)
 	{
 		m_currrentScreen = LOSE_SCREEN;
 		return;
 	}
-
 }
 
 //-----------------------------------------------------------------------------
@@ -79,31 +84,30 @@ void GameScreen::initButtons()
 	}
 }
 
-
 //-----------------------------------------------------------------------------
 void GameScreen::draw(sf::RenderWindow& window)
 {
+	// Draw game world
 	sf::Sprite backround;
 	sf::Texture texure = ResourcesManager::getInstance().getTexture("background");
 	texure.setRepeated(true);
-	texure.setSmooth(true);
 
 	backround.setTexture(texure);
 	backround.setTextureRect(sf::IntRect(0, 0, MAP_WIDTH, MAP_HEIGHT));
 	window.draw(backround);
 
-	for (auto& obj : m_staticObj)
+	for (auto& obj : m_staticObj) 
 		obj->draw(window);
 
+	std::cout << "Before [INFO] Drawing player at position: " << m_player.getPosition().x << ", " << m_player.getPosition().y << "\n";
 	m_player.draw(window);
+	std::cout << "After [INFO] Drawing player at position: " << m_player.getPosition().x << ", " << m_player.getPosition().y << "\n";
 
 	
 	window.setView(window.getDefaultView());
 
-	if (m_paused)
-		drawButtons(window); 
-	else
-		m_buttons[PAUSE].draw(window);
+	if (m_paused) drawButtons(window); // Menu buttons
+	else m_buttons[PAUSE].draw(window); // Only pause button
 }
 
 //-----------------------------------------------------------------------------
@@ -122,7 +126,6 @@ void GameScreen::move(sf::Clock& clock)
 		movingObj->update(deltaTime);
 		index++;
 	}*/
-	
 }
 
 //-----------------------------------------------------------------------------
@@ -307,7 +310,7 @@ void GameScreen::handleLoadingLevel()
 
 	m_map.loadFromCSV(m_staticObj, m_player);
 	//m_map.loadMovingObj(m_movingObj);
-	m_timer = sf::seconds(120);
+	m_stopwatch = sf::seconds(0);
 }
 
 //-----------------------------------------------------------------------------
