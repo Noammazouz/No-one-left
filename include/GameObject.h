@@ -33,7 +33,7 @@ public:
 protected:
 	void updatePosition(sf::Vector2f direction);
 	void mirrorImage(sf::Vector2f direction) {};
-	void setRotation(sf::Vector2f direction);
+	void setRotation(const sf::Vector2f& direction);
 
 private:
 	bool checkDirection();
