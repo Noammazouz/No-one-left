@@ -44,7 +44,7 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 	handleCollision();
 	explosion();
 	handleErasing();
-	handleSocreboard();
+	handleScoreBoard();
 
 	if (m_player.getWin())
 	{
@@ -176,7 +176,7 @@ void GameScreen::handleCollision()
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::setbomb()
+void GameScreen::setBomb()
 {
 	//m_movingObj.push_back(std::make_unique<Bombs>(sf::Vector2f(m_player.getPosition()), ResourcesManager::getInstance().getTexture("bomb")));
 }
@@ -204,7 +204,7 @@ void GameScreen::explosion()
 			m_sound.setVolume(100.f);
 			m_sound.play();
 			setExpoDirection(bomb);
-			checkVaildDraw();
+			checkValidDraw();
 			drawWindow();
 			checkExpo();
 		}
@@ -284,7 +284,7 @@ void GameScreen::checkExpo()
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::checkVaildDraw()
+void GameScreen::checkValidDraw()
 {
 	/*auto explosion = m_movingObj.size() - NUM_OF_EXPLOSION;
 	for (; explosion < m_movingObj.size(); explosion++)
@@ -312,7 +312,7 @@ void GameScreen::handleLoadingLevel()
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::handleSocreboard()
+void GameScreen::handleScoreBoard()
 {
 	/*m_scoreboard.updateTime(m_timer);
 	m_scoreboard.updateLevel(m_level);

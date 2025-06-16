@@ -11,7 +11,8 @@
 void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player)
 {
     std::ifstream file("Level1.csv");
-    if (!file.is_open()) {
+    if (!file.is_open()) 
+    {
         std::cerr << "[ERROR] Cannot open " << "Level1" << "\n";
         return;
     }
@@ -63,7 +64,8 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
         float w = std::stof(tokens[4]);
         float h = std::stof(tokens[5]);
 
-        if (tokens[0] == "wall") {
+        if (tokens[0] == "wall") 
+        {
             ResourcesManager& res = ResourcesManager::getInstance();
             m_staticObj.emplace_back(
                 std::make_unique<Wall>(
@@ -76,12 +78,10 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
         // … handle other types …
     }
 
-	 // ensure smooth scaling
-	player = Player(sf::Vector2f(0, 0), // default position, will be set later
+	player = Player(sf::Vector2f(100, 100), // default position, will be set later
         ResourcesManager::getInstance().getTexture("Player"));
 }
 
 //-------------------------------------
 void Map::SetEnemies()
-{
-}
+{}
