@@ -116,15 +116,10 @@ void GameScreen::move(sf::Clock& clock)
 
 	int index = 0;
 	m_player.update(deltaTime, sf::Vector2f());
-	/*for (const auto& movingObj : m_movingObj)
+	for (const auto& movingObj : m_movingObj)
 	{
-		if (index < Enemy::getNumOfGuardsAlive())
-		{
-		    movingObj->update(deltaTime, m_player.getPosition());
-		}
-		movingObj->update(deltaTime);
-		index++;
-	}*/
+	   movingObj->update(deltaTime, m_player.getPosition());
+	}
 }
 
 //-----------------------------------------------------------------------------
