@@ -14,8 +14,8 @@ Player::Player()
 {}
 
 //-----------------------------------------------------------------------------
-Player::Player(sf::Vector2f position, const sf::Texture& texture)
-	: UpdateableObject(position, texture)
+Player::Player(sf::Vector2f position, std::string name)
+	: UpdateableObject(position, name)
 {}
 
 //-----------------------------------------------------------------------------
@@ -147,29 +147,6 @@ void Player::setScore(int score)
 {
 	m_score += score;
 }
-
-//------------------------------------------------------------------------------
-bool Player::registerPlayer(ObjectType type)
-{
-	//We register with Factory<UpdateableObject> so the factory returns
-	//a unique_ptr<UpdateableObject> that actually points to a Player.
-	return Factory<UpdateableObject>::instance().registerType(
-			type,
-			// This lambda signature must match Factory<FuncType>:
-			//   (const sf::Texture&, const sf::Vector2f&, float, float)
-			[](const sf::Texture& texture,
-				const sf::Vector2f& position,
-				float width,
-				float height) -> std::unique_ptr<UpdateableObject>
-			{
-				// Forward exactly those params into your Player constructor:
-				return std::make_unique<Player>(position, texture);
-			}
-		);
-}
-
-//Then, trigger registration once at file scope:
-static bool s_playerRegistered = Player::registerPlayer(ObjectType::PLAYER);
 
 
 //------------------------------------------------------------------------------

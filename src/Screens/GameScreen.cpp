@@ -97,6 +97,8 @@ void GameScreen::draw(sf::RenderWindow& window)
 
 	for (auto& obj : m_staticObj) 
 		obj->draw(window);
+	for (auto& enemy : m_movingObj)
+		enemy->draw(window);
 
 	m_player.draw(window);
 

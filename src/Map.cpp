@@ -71,20 +71,13 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
 
         if (tokens[0] == "wall") 
         {
-            ResourcesManager& res = ResourcesManager::getInstance();
-            m_staticObj.emplace_back(
-                std::make_unique<Wall>(
-                    res.getTexture(tokens[1]), // textureKey
-                    sf::Vector2f(x, y),
-                    w, h
-                )
-            );
+            //ResourcesManager& res = ResourcesManager::getInstance();
+            m_staticObj.emplace_back(std::make_unique<Wall>(tokens[1], sf::Vector2f(x, y)));
         }
         // … handle other types …
     }
 
-	player = Player(sf::Vector2f(100, 100), // default position, will be set later
-        ResourcesManager::getInstance().getTexture("Player"));
+	player = Player(sf::Vector2f(100, 100), "Player");
 }
 
 //-------------------------------------
@@ -114,7 +107,6 @@ void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingOb
                 (region * thirdH, (region + 1) * thirdH)(rng);
         };
     auto& factory = Factory<UpdateableObject>::instance();
-    auto& tex = ResourcesManager::getInstance().getTexture("enemy");
     
     //first third (3 simple enemies)
     for (int i = 0; i < 3; ++i)
