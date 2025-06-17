@@ -49,7 +49,9 @@ enum ScreenType
 enum ObjectType
 {
 	PLAYER,
-	ENEMY,
+	SIMPLENEMY,
+	SMARTENEMY,
+	BFSENEMY,
 	BULLET,
 	BOMB,
 	TREE,
