@@ -1,8 +1,11 @@
 #pragma once
+
+//-----include section-----
 #include "MoveBehavior.h"
 #include <vector>
 #include <queue>
 
+//-----class section-----
 class BFSMoveBehavior : public MoveBehavior
 {
 public:

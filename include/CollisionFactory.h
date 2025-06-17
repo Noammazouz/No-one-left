@@ -1,5 +1,6 @@
 #pragma once
 
+//-----include section-----
 #include "GameObject.h"
 #include <iostream>
 #include <map>
@@ -12,10 +13,10 @@ struct UnknownCollision : public std::runtime_error
 {
     UnknownCollision(GameObject& a, GameObject& b)
         : std::runtime_error(std::string("Unknown collision of ") + typeid(a).name() + " and " + typeid(b).name())
-    {
-    }
+    {}
 };
 
+//-----class section-----
 // Collision Factory Singleton Class
 class CollisionFactory
 {
@@ -54,7 +55,11 @@ private:
     std::map<CollisionKey, CollisionHandler> m_collisionMap;
 };
 
-// Template implementation
+
+//-----cpp section------
+//This code is the template implementation.
+//-----functions section------
+//-----------------------------------------------------------------------------
 template<typename T1, typename T2>
 void CollisionFactory::registerTypedCollision(void (*handler)(T1&, T2&))
 {
