@@ -31,7 +31,6 @@ public:
 	void incLife();
 	static int getLife();
 	sf::Vector2f getPos() const;
-	//void draw(sf::RenderWindow& window);
 
 private:
 	sf::Vector2f m_direction;
