@@ -4,17 +4,19 @@
 #include "AxisMoveBehavior.h"
 #include "BfsMoveBehavior.h"
 #include "OneDirectionAttackBehavior.h"
+#include <iostream>
 //#include "AllDirectionsAttackBehavior.h"
 
-Enemy::Enemy(sf::Vector2f position, const sf::Texture& texture)
-	: UpdateableObject(position, texture), m_direction(0, 0), m_prevlocation(position)
+Enemy::Enemy(sf::Vector2f position, std::string name)
+	: UpdateableObject(position, name), m_direction(0, 0), m_prevlocation(position)
 {
+	std::cout << "Enemy created at position: " << position.x << ", " << position.y << std::endl;
 }
 
 static auto regSimple = Factory<UpdateableObject>::instance().registerType(
     ObjectType::SIMPLENEMY,
     [](const sf::Vector2f& pos) -> std::unique_ptr<UpdateableObject> {
-        auto enemy = std::make_unique<Enemy>(pos, ResourcesManager::getInstance().getTexture("SimpleEnemy"));
+        auto enemy = std::make_unique<Enemy>(pos, "SimpleEnemy");
         enemy->SetMoveBehavior(std::make_unique<RandomMoveBehavior>());
         enemy->SetAttackBehavior(std::make_unique<OneDirectionAttackBehavior>());
         return enemy;
@@ -23,7 +25,7 @@ static auto regSimple = Factory<UpdateableObject>::instance().registerType(
 static auto regSmart = Factory<UpdateableObject>::instance().registerType(
     ObjectType::SMARTENEMY,
     [](const sf::Vector2f& pos) -> std::unique_ptr<UpdateableObject> {
-        auto enemy = std::make_unique<Enemy>(pos, ResourcesManager::getInstance().getTexture("SmartEnemy"));
+        auto enemy = std::make_unique<Enemy>(pos, "SmartEnemy");
         enemy->SetMoveBehavior(std::make_unique<AxisMoveBehavior>());
         enemy->SetAttackBehavior(std::make_unique<OneDirectionAttackBehavior>());
         return enemy;
@@ -32,7 +34,7 @@ static auto regSmart = Factory<UpdateableObject>::instance().registerType(
 //static auto regBfs = Factory<UpdateableObject>::instance().registerType(
 //    ObjectType::BFSENEMY,
 //    [](const sf::Vector2f& pos) -> std::unique_ptr<UpdateableObject> {
-//        auto enemy = std::make_unique<Enemy>(pos, ResourcesManager::getInstance().getTexture("BfsEnemy"));
+//        auto enemy = std::make_unique<Enemy>(pos, "BfsEnemy");
 //        enemy->SetMoveBehavior(std::make_unique<BFSMoveBehavior>());
 //        enemy->SetAttackBehavior(std::make_unique<AllDirectionsAttackBehavior>());
 //        return enemy;

@@ -18,11 +18,10 @@ class Player : public UpdateableObject
 {
 public:
 	Player();
-	Player(sf::Vector2f position, const sf::Texture& texture);
+	Player(sf::Vector2f position, std::string name);
 	~Player() = default;
 
 	virtual void update(sf::Time deltaTime, sf::Vector2f playerPos) override;
-	static bool registerPlayer(ObjectType type);
 	void setWin(bool win);
 	bool getWin() const;
     int getScore();

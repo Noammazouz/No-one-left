@@ -9,7 +9,7 @@
 class Enemy : public UpdateableObject
 {
 public:
-	Enemy(sf::Vector2f position, const sf::Texture& texture);
+	Enemy(sf::Vector2f position, std::string name);
 	~Enemy() = default;
 
 	void update(sf::Time deltaTime, sf::Vector2f playerPos) override;

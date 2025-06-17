@@ -8,6 +8,6 @@ class StaticObject : public GameObject
 {
 public:
 	StaticObject();
-	StaticObject(const sf::Texture& texture, const sf::Vector2f& position, float width, float height);
+	StaticObject(std::string name, const sf::Vector2f& position);
 	virtual ~StaticObject() = default;
 };

@@ -7,6 +7,6 @@
 class Wall : public StaticObject
 {
 public:
-	Wall(const sf::Texture& texture, const sf::Vector2f& position, float width, float height);
+	Wall(std::string name, const sf::Vector2f& position);
 	~Wall() = default;
 };
