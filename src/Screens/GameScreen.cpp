@@ -305,7 +305,7 @@ void GameScreen::handleLoadingLevel()
 	m_movingObj.clear();
 	m_staticObj.clear();
 
-	m_map.loadFromCSV(m_staticObj, m_player);
+	m_map.loadFromCSV(m_movingObj, m_staticObj, m_player);
 	//m_map.loadMovingObj(m_movingObj);
 	m_stopwatch = sf::seconds(0);
 }
