@@ -49,7 +49,9 @@ enum ScreenType
 enum ObjectType
 {
 	PLAYER,
-	ENEMY,
+	SIMPLENEMY,
+	SMARTENEMY,
+	BFSENEMY,
 	BULLET,
 	BOMB,
 	TREE,
@@ -58,8 +60,6 @@ enum ObjectType
 };
 
 //-----constants section-----
-const int WINDOW_HEIGHT = 900;
-const int WINDOW_WIDTH = 1602;
 const int MAP_WIDTH = 5000;
 const int MAP_HEIGHT = 5000;
 const int START_WINDOW_BUTTONS_NUM = 3;

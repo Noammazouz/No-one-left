@@ -97,6 +97,8 @@ void GameScreen::draw(sf::RenderWindow& window)
 
 	for (auto& obj : m_staticObj) 
 		obj->draw(window);
+	for (auto& enemy : m_movingObj)
+		enemy->draw(window);
 
 	m_player.draw(window);
 
@@ -114,15 +116,10 @@ void GameScreen::move(sf::Clock& clock)
 
 	int index = 0;
 	m_player.update(deltaTime, sf::Vector2f());
-	/*for (const auto& movingObj : m_movingObj)
+	for (const auto& movingObj : m_movingObj)
 	{
-		if (index < Enemy::getNumOfGuardsAlive())
-		{
-		    movingObj->update(deltaTime, m_player.getPosition());
-		}
-		movingObj->update(deltaTime);
-		index++;
-	}*/
+	   movingObj->update(deltaTime, m_player.getPosition());
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -305,8 +302,7 @@ void GameScreen::handleLoadingLevel()
 	m_movingObj.clear();
 	m_staticObj.clear();
 
-	m_map.loadFromCSV(m_staticObj, m_player);
-	//m_map.loadMovingObj(m_movingObj);
+	m_map.loadlevelobj(m_movingObj,m_staticObj, m_player);
 	m_stopwatch = sf::seconds(0);
 }
 

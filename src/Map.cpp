@@ -5,6 +5,11 @@
 #include <fstream>
 #include <sstream>
 #include <stdlib.h>
+#include <random>
+#include "Factory.h"
+#include "AxisMoveBehavior.h"
+#include "BfsMoveBehavior.h"
+#include "RandomMoveBehavior.h"
 
 //-----functions section------
 //-----------------------------------------------------------------------------
@@ -66,22 +71,60 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
 
         if (tokens[0] == "wall") 
         {
-            ResourcesManager& res = ResourcesManager::getInstance();
-            m_staticObj.emplace_back(
-                std::make_unique<Wall>(
-                    res.getTexture(tokens[1]), // textureKey
-                    sf::Vector2f(x, y),
-                    w, h
-                )
-            );
+            //ResourcesManager& res = ResourcesManager::getInstance();
+            m_staticObj.emplace_back(std::make_unique<Wall>(tokens[1], sf::Vector2f(x, y)));
         }
         // … handle other types …
     }
 
-	player = Player(sf::Vector2f(100, 100), // default position, will be set later
-        ResourcesManager::getInstance().getTexture("Player"));
+	player = Player(sf::Vector2f(100, 100), "Player");
 }
 
 //-------------------------------------
-void Map::SetEnemies()
-{}
+void Map::loadlevelobj(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj, std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player)
+{
+    m_staticObj.clear();
+    m_movingObj.clear();
+    loadFromCSV(m_staticObj, player);
+    loadEnemies(m_movingObj);
+}
+
+void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj)
+{
+    //random_device is a seed maker.
+    //mt19937 is a random engine.
+    std::mt19937 rng{ std::random_device{}() };
+    float thirdH = MAP_HEIGHT / 3.f;
+    // getting a random x value (can spawn everywhere from left to right)
+    auto randX = [&]()
+        {
+            return std::uniform_real_distribution<float>(0.f, MAP_WIDTH)(rng);
+        };
+    // getting a random y value in a specific third
+    auto randYIn = [&](int region) 
+        {
+            return std::uniform_real_distribution<float>
+                (region * thirdH, (region + 1) * thirdH)(rng);
+        };
+    auto& factory = Factory<UpdateableObject>::instance();
+    
+    //first third (3 simple enemies)
+    for (int i = 0; i < 3; ++i)
+    {
+        m_movingObj.emplace_back(factory.create(ObjectType::SIMPLENEMY, { randX(), randYIn(0) }));
+    }
+
+    //second third 1 simple 2 smart)
+    m_movingObj.emplace_back(factory.create(ObjectType::SIMPLENEMY, { randX(), randYIn(1) }));
+    for (int i = 0; i < 2; ++i)
+    {
+        m_movingObj.emplace_back(factory.create(ObjectType::SMARTENEMY, { randX(), randYIn(1) }));
+    }
+    //third third (1 simple, 2 smart 1 bfs)
+    m_movingObj.emplace_back(factory.create(ObjectType::SIMPLENEMY, { randX(), randYIn(2) }));
+    //m_movingObj.emplace_back(factory.create(ObjectType::BFSENEMY, { randX(), randYIn(2) }));
+    for (int i = 0; i < 2; ++i)
+    {
+        m_movingObj.emplace_back(factory.create(ObjectType::SMARTENEMY, { randX(), randYIn(2) }));
+    }
+}
