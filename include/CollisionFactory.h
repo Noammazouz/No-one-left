@@ -24,13 +24,17 @@ public:
     // Singleton access
     static CollisionFactory& getInstance();
 
-    // Function pointer type for collision handlers
-    using CollisionHandler = void (*)(GameObject&, GameObject&);
-    using CollisionKey = std::pair<std::type_index, std::type_index>;
+    // Function pointer type for collision handlers (same as multimethods approach)
+    using HitFunctionPtr = void (*)(GameObject&, GameObject&);
+    using Key = std::pair<std::type_index, std::type_index>;
+    using HitMap = std::map<Key, HitFunctionPtr>;
 
-    // Template method for type-safe registration
+    // Register collision handler (automatically symmetric)
+    void registerCollision(const std::type_index& type1, const std::type_index& type2, HitFunctionPtr handler);
+    
+    // Template helper for type-safe registration
     template<typename T1, typename T2>
-    void registerTypedCollision(void (*handler)(T1&, T2&));
+    void registerTypedCollision(void (*handler)(GameObject&, GameObject&));
 
     // Process collision (main factory method)
     void processCollision(GameObject& object1, GameObject& object2);
@@ -48,38 +52,17 @@ private:
     CollisionFactory& operator=(const CollisionFactory&) = delete;
 
     // Internal methods
-    CollisionHandler lookup(const std::type_index& class1, const std::type_index& class2) const;
-    void registerCollisionInternal(const std::type_index& type1, const std::type_index& type2, CollisionHandler handler);
+    HitFunctionPtr lookup(const std::type_index& class1, const std::type_index& class2) const;
 
-    // Factory storage
-    std::map<CollisionKey, CollisionHandler> m_collisionMap;
+    // Factory storage (same as multimethods approach)
+    HitMap m_collisionMap;
 };
 
-
-//-----cpp section------
-//This code is the template implementation.
-//-----functions section------
-//-----------------------------------------------------------------------------
+//-----Template implementation-----
 template<typename T1, typename T2>
-void CollisionFactory::registerTypedCollision(void (*handler)(T1&, T2&))
+void CollisionFactory::registerTypedCollision(void (*handler)(GameObject&, GameObject&))
 {
-    // Create wrapper that does the casting automatically
-    auto wrapper = [handler](GameObject& obj1, GameObject& obj2) {
-        // Cast to the correct types (we know this is safe because of how we registered)
-        if (typeid(obj1) == typeid(T1)) {
-            // obj1 is T1, obj2 is T2
-            T1& typed1 = static_cast<T1&>(obj1);
-            T2& typed2 = static_cast<T2&>(obj2);
-            handler(typed1, typed2);
-        } else {
-            // obj1 is T2, obj2 is T1 (symmetric)
-            T1& typed1 = static_cast<T1&>(obj2);
-            T2& typed2 = static_cast<T2&>(obj1);
-            handler(typed1, typed2);
-        }
-    };
-
-    // Register both directions
-    registerCollisionInternal(typeid(T1), typeid(T2), wrapper);
-    registerCollisionInternal(typeid(T2), typeid(T1), wrapper);
+    // Simple approach: just register the handler directly for both directions
+    registerCollision(typeid(T1), typeid(T2), handler);
+    registerCollision(typeid(T2), typeid(T1), handler);
 } 
