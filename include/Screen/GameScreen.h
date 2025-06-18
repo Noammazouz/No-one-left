@@ -37,15 +37,15 @@ protected:
 private:
 	void move(sf::Clock& clock);
 	void handleCollision();
-	void setbomb();
+	void setBomb();
 	void handleErasing();
 	void explosion();
 	void calculateScore();
 	void setExpoDirection(int index);
 	void checkExpo();
-	void checkVaildDraw();
+	void checkValidDraw();
 	void handleLoadingLevel();
-	void handleSocreboard();
+	void handleScoreBoard();
 	void removeGuard();
 	void addTime();
 	sf::Vector2f clampViewPosition(const sf::FloatRect& bounds);

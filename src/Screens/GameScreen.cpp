@@ -10,7 +10,7 @@ GameScreen::GameScreen()
 	handleLoadingLevel();
 	if (m_staticObj.empty()) 
 	{
-		std::cerr << "[WARN] No static objects were loaded�are you sure your CSV has entries?\n";
+		std::cerr << "[WARN] No static objects were loaded are you sure your CSV has entries?\n";
 	}
 }
 
@@ -36,16 +36,15 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 
 	if (m_staticObj.empty()) 
 	{
-		std::cerr << "[WARN] No static objects were loaded—are you sure your CSV has entries?\n";
+		std::cerr << "[WARN] No static objects were loaded are you sure your CSV has entries?\n";
 	}
-	m_player.setDirection(sf::Vector2f());
 
 
 	move(clock);
 	handleCollision();
 	explosion();
 	handleErasing();
-	handleSocreboard();
+	handleScoreBoard();
 
 	if (m_player.getWin())
 	{
@@ -98,10 +97,10 @@ void GameScreen::draw(sf::RenderWindow& window)
 
 	for (auto& obj : m_staticObj) 
 		obj->draw(window);
+	for (auto& enemy : m_movingObj)
+		enemy->draw(window);
 
-	std::cout << "Before [INFO] Drawing player at position: " << m_player.getPosition().x << ", " << m_player.getPosition().y << "\n";
 	m_player.draw(window);
-	std::cout << "After [INFO] Drawing player at position: " << m_player.getPosition().x << ", " << m_player.getPosition().y << "\n";
 
 	
 	window.setView(window.getDefaultView());
@@ -116,16 +115,11 @@ void GameScreen::move(sf::Clock& clock)
 	const auto deltaTime = clock.restart();
 
 	int index = 0;
-	m_player.update(deltaTime);
-	/*for (const auto& movingObj : m_movingObj)
+	m_player.update(deltaTime, sf::Vector2f());
+	for (const auto& movingObj : m_movingObj)
 	{
-		if (index < Enemy::getNumOfGuardsAlive())
-		{
-			movingObj->setDirection(m_player.getPosition());
-		}
-		movingObj->update(deltaTime);
-		index++;
-	}*/
+	   movingObj->update(deltaTime, m_player.getPosition());
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -178,7 +172,7 @@ void GameScreen::handleCollision()
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::setbomb()
+void GameScreen::setBomb()
 {
 	//m_movingObj.push_back(std::make_unique<Bombs>(sf::Vector2f(m_player.getPosition()), ResourcesManager::getInstance().getTexture("bomb")));
 }
@@ -186,11 +180,11 @@ void GameScreen::setbomb()
 //-----------------------------------------------------------------------------
 void GameScreen::handleErasing()
 {
-	/*std::erase_if(m_movingObj, [](const auto& item)
+	std::erase_if(m_movingObj, [](const auto& item)
 		{return item->isDead(); });
 
 	std::erase_if(m_staticObj, [](const auto& item)
-		{return item->isDead(); });*/
+		{return item->isDead(); });
 }
 
 //-----------------------------------------------------------------------------
@@ -206,7 +200,7 @@ void GameScreen::explosion()
 			m_sound.setVolume(100.f);
 			m_sound.play();
 			setExpoDirection(bomb);
-			checkVaildDraw();
+			checkValidDraw();
 			drawWindow();
 			checkExpo();
 		}
@@ -286,7 +280,7 @@ void GameScreen::checkExpo()
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::checkVaildDraw()
+void GameScreen::checkValidDraw()
 {
 	/*auto explosion = m_movingObj.size() - NUM_OF_EXPLOSION;
 	for (; explosion < m_movingObj.size(); explosion++)
@@ -308,13 +302,12 @@ void GameScreen::handleLoadingLevel()
 	m_movingObj.clear();
 	m_staticObj.clear();
 
-	m_map.loadFromCSV(m_staticObj, m_player);
-	//m_map.loadMovingObj(m_movingObj);
+	m_map.loadlevelobj(m_movingObj,m_staticObj, m_player);
 	m_stopwatch = sf::seconds(0);
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::handleSocreboard()
+void GameScreen::handleScoreBoard()
 {
 	/*m_scoreboard.updateTime(m_timer);
 	m_scoreboard.updateLevel(m_level);

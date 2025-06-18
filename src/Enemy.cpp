@@ -1,42 +1,61 @@
 #include "Enemy.h"
 #include "Factory.h"
+#include "RandomMoveBehavior.h"
+#include "AxisMoveBehavior.h"
+#include "BfsMoveBehavior.h"
+#include "OneDirectionAttackBehavior.h"
+#include <iostream>
+//#include "AllDirectionsAttackBehavior.h"
 
-Enemy::Enemy(sf::Vector2f position, const sf::Texture& texture)
-	: UpdateableObject(position, texture), m_direction(0, 0), m_prevlocation(position)
+Enemy::Enemy(sf::Vector2f position, std::string name)
+	: UpdateableObject(position, name), m_direction(0, 0), m_prevlocation(position)
 {
+	std::cout << "Enemy created at position: " << position.x << ", " << position.y << std::endl;
 }
 
-bool Enemy::registerEnemy(ObjectType type)
-{
-    // We register with Factory<UpdateableObject> so the factory returns
-    // a unique_ptr<UpdateableObject> that actually points to an Enemy.
-    return Factory<UpdateableObject>::instance()
-        .registerType(
-            type,
-            // This lambda signature must match Factory<FuncType>:
-            //   (const sf::Texture&, const sf::Vector2f&, float, float)
-            [](const sf::Texture& texture,
-                const sf::Vector2f& position,
-                float width,
-                float height) -> std::unique_ptr<UpdateableObject>
-            {
-                // Forward exactly those params into your Enemy constructor:
-                return std::make_unique<Enemy>(position, texture);
-            }
-        );
-}
+static auto regSimple = Factory<UpdateableObject>::instance().registerType(
+    ObjectType::SIMPLENEMY,
+    [](const sf::Vector2f& pos) -> std::unique_ptr<UpdateableObject> {
+        auto enemy = std::make_unique<Enemy>(pos, "SimpleEnemy");
+        enemy->SetMoveBehavior(std::make_unique<RandomMoveBehavior>());
+        enemy->SetAttackBehavior(std::make_unique<OneDirectionAttackBehavior>());
+        return enemy;
+    });
 
-// Then, trigger registration once at file scope:
-static bool s_enemyRegistered = Enemy::registerEnemy(ObjectType::ENEMY);
+static auto regSmart = Factory<UpdateableObject>::instance().registerType(
+    ObjectType::SMARTENEMY,
+    [](const sf::Vector2f& pos) -> std::unique_ptr<UpdateableObject> {
+        auto enemy = std::make_unique<Enemy>(pos, "SmartEnemy");
+        enemy->SetMoveBehavior(std::make_unique<AxisMoveBehavior>());
+        enemy->SetAttackBehavior(std::make_unique<OneDirectionAttackBehavior>());
+        return enemy;
+    });
 
-void Enemy::update(sf::Time deltaTime)
+//static auto regBfs = Factory<UpdateableObject>::instance().registerType(
+//    ObjectType::BFSENEMY,
+//    [](const sf::Vector2f& pos) -> std::unique_ptr<UpdateableObject> {
+//        auto enemy = std::make_unique<Enemy>(pos, "BfsEnemy");
+//        enemy->SetMoveBehavior(std::make_unique<BFSMoveBehavior>());
+//        enemy->SetAttackBehavior(std::make_unique<AllDirectionsAttackBehavior>());
+//        return enemy;
+//    });
+
+
+
+void Enemy::update(sf::Time deltaTime, sf::Vector2f playerPos)
 {
+    m_direction = m_MoveBehavior->Move(playerPos, deltaTime ,this->getPosition());
+
 	this->setPrevLocation(this->getPosition());
 	this->updatePosition(m_direction * ENEMY_SPEED * deltaTime.asSeconds());
 }
 
-void Enemy::setDirection(sf::Vector2f playerPosition)
+void Enemy::SetMoveBehavior(std::unique_ptr<MoveBehavior> pMoveBehavior)
 {
-    m_prevlocation = this->getPosition();
-	//m_direction = m_MoveBehavior->Move(playerPosition, this->getPosition());
+    m_MoveBehavior = std::move(pMoveBehavior);
+}
+
+void Enemy::SetAttackBehavior(std::unique_ptr<AttackBehavior> pAttackBehavior)
+{
+    m_AttackBehavior = std::move(pAttackBehavior);
 }

@@ -8,10 +8,10 @@ class UpdateableObject : public GameObject
 {
 public:
 	UpdateableObject();
-	UpdateableObject(sf::Vector2f position, const sf::Texture& texture);
+	UpdateableObject(sf::Vector2f position, std::string name);
 	virtual ~UpdateableObject() = default;
 
-	virtual void update(sf::Time deltaTime) = 0;
+	virtual void update(sf::Time deltaTime, sf::Vector2f playerPos = {0,0}) = 0;
 	virtual bool checkCollision(GameObject& otherObject) { return false; };
 
 	sf::Vector2f getPrevLocation() const;

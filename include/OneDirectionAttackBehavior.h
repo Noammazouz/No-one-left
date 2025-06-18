@@ -11,5 +11,5 @@ public:
 	virtual ~OneDirectionAttackBehavior() = default;
 
 	// Override the attack method
-	virtual void Attack() override;
+	virtual void Attack() override {};
 };

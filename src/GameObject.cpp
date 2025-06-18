@@ -8,9 +8,9 @@ GameObject::GameObject()
 {}
 
 //-----------------------------------------------------------------------------
-GameObject::GameObject(const sf::Texture& texture, const sf::Vector2f& position, 
-                       float width, float height)
+GameObject::GameObject(std::string name, const sf::Vector2f& position)
 {
+	auto& texture = ResourcesManager::getInstance().getTexture(name);
     m_pic.setTexture(texture);
 	m_pic.setOrigin(texture.getSize().x / 2, texture.getSize().y / 2); // Set origin to center
     m_pic.setPosition(position);
@@ -23,56 +23,67 @@ void GameObject::draw(sf::RenderWindow& window)
 }
 
 //-----------------------------------------------------------------------------
-sf::Vector2f GameObject::getObjPosition() const
+void GameObject::setPosition(const sf::Vector2f& position)
+{
+	m_pic.setPosition(position);
+}
+
+//-----------------------------------------------------------------------------
+sf::Vector2f GameObject::getPosition() const
 {
 	return m_pic.getPosition();
 }
 
 //-----------------------------------------------------------------------------
-void GameObject::setRotation(sf::Vector2f direction)
+bool GameObject::isDead() const
 {
-	static sf::Clock rotationClock; // Clock persists across calls
-	float deltaTime = rotationClock.restart().asSeconds();
+    return m_isDead;
+}
 
+//-----------------------------------------------------------------------------
+void GameObject::setLife(const bool life)
+{
+	m_isDead = life;
+}
 
-	if (direction == sf::Vector2f(-1, 0))
-	{
-		m_targetAngle = 270.f;
-	}
-	else if (direction == sf::Vector2f(1, 0))
-	{
-		m_targetAngle = 90.f;
-	}
-	else if (direction == sf::Vector2f(0, -1))
-	{
-		m_targetAngle = 0.f;
-	}
-	else if (direction == sf::Vector2f(0, 1))
-	{
-		m_targetAngle = 180.f;
-	}
-	//else if (up && right)
-	//{
-	//	m_direction = sf::Vector2f(0, -0.5f);
-	//	m_targetAngle = 45.f; // Maintain current angle
-	//}
+//-----------------------------------------------------------------------------
+void GameObject::setRotation(const sf::Vector2f& direction)
+{
+    static sf::Clock rotationClock;
+    float deltaTime = rotationClock.restart().asSeconds();
 
-	// --- Smooth rotation towards m_targetAngle ---
-	float currentAngle = m_pic.getRotation();
+    //Ignore zero direction
+    if (direction == sf::Vector2f(0.f, 0.f)) return;
 
-	// Normalize angle difference to [-180, 180]
-	float deltaAngle = std::fmod(m_targetAngle - currentAngle + 540.f, 360.f) - 180.f;
+    //Normalize direction vector
+    float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+    if (length == 0.f) return;
+    sf::Vector2f normDir = direction / length;
 
-	// Compute step
-	float rotationStep = ROTATION_SPEED * deltaTime;
+    //Map normalized direction to fixed 8 angles (degrees, 0° = Up)
+    //Use thresholds to detect closest direction
+    if (normDir.x > 0.7f && normDir.y < -0.7f)          m_targetAngle = 45.f;   // Up-Right
+    else if (normDir.x > 0.7f && normDir.y > 0.7f)      m_targetAngle = 135.f;  // Down-Right
+    else if (normDir.x < -0.7f && normDir.y > 0.7f)     m_targetAngle = 225.f;  // Down-Left
+    else if (normDir.x < -0.7f && normDir.y < -0.7f)    m_targetAngle = 315.f;  // Up-Left
+    else if (normDir.x > 0.5f)                          m_targetAngle = 90.f;   // Right
+    else if (normDir.x < -0.5f)                         m_targetAngle = 270.f;  // Left
+    else if (normDir.y < -0.5f)                         m_targetAngle = 0.f;    // Up
+    else if (normDir.y > 0.5f)                          m_targetAngle = 180.f;  // Down
 
-	// Apply smooth turn
-	if (std::abs(deltaAngle) < rotationStep)
-		currentAngle = m_targetAngle;
-	else
-		currentAngle += (deltaAngle > 0 ? 1 : -1) * rotationStep;
+    //Smooth rotation toward target angle
+    float currentAngle = m_pic.getRotation();
+    float deltaAngle = std::fmod(m_targetAngle - currentAngle + 540.f, 360.f) - 180.f;
+    float rotationStep = ROTATION_SPEED * deltaTime;
 
-	m_pic.setRotation(currentAngle);
+    if (std::abs(deltaAngle) < rotationStep) currentAngle = m_targetAngle;
+    else currentAngle += (deltaAngle > 0.f ? 1.f : -1.f) * rotationStep;
+
+    // Normalize current angle to [0, 360)
+    if (currentAngle < 0.f) currentAngle += 360.f;
+    else if (currentAngle >= 360.f) currentAngle -= 360.f;
+
+    m_pic.setRotation(currentAngle);
 }
 
 //-----------------------------------------------------------------------------

@@ -9,19 +9,16 @@
 class Enemy : public UpdateableObject
 {
 public:
-	Enemy(sf::Vector2f position, const sf::Texture& texture);
+	Enemy(sf::Vector2f position, std::string name);
 	~Enemy() = default;
 
-	static bool registerEnemy(ObjectType type);
-	void update(sf::Time deltaTime) override;
-	void setDirection(sf::Vector2f playerPosition);
+	void update(sf::Time deltaTime, sf::Vector2f playerPos) override;
 	virtual void Display() {};
-	/*virtual void setFreezing(bool freeze) override;
 	void SetMoveBehavior(std::unique_ptr<MoveBehavior>	pMoveBehavior);
 	void SetAttackBehavior(std::unique_ptr<AttackBehavior>	pAttackBehavior);
 
-	static int getNumOfStartingEnemies();
-	static int getNumOfEnemiesAlive();*/
+	//static int getNumOfStartingEnemies();
+	//static int getNumOfEnemiesAlive();
 
 private:
 	//void checktimer();

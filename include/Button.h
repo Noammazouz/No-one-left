@@ -1,10 +1,8 @@
 #pragma once
 
 //-----include section-----
-
 #include "Const.h"
 #include "ResourcesManager.h"
-
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <iostream>
@@ -15,12 +13,10 @@
 #include <memory>
 #include <vector>
 
-
 //-----class section-----
 class Button
 {
 public:
-
 	Button() = default;	
 	Button(std::string buttonType, sf::Vector2f pos);
 

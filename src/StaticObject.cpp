@@ -3,8 +3,8 @@
 
 //-----functions section------
 //-----------------------------------------------------------------------------
-StaticObject::StaticObject(const sf::Texture& texture, const sf::Vector2f& position, float width, float height)
-	:GameObject(texture, position, width, height)
+StaticObject::StaticObject(std::string name, const sf::Vector2f& position)
+	:GameObject(name, position)
 {}
 
 //-----------------------------------------------------------------------------

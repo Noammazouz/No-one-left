@@ -18,12 +18,10 @@ class Player : public UpdateableObject
 {
 public:
 	Player();
-	Player(sf::Vector2f position, const sf::Texture& texture);
+	Player(sf::Vector2f position, std::string name);
 	~Player() = default;
 
-	virtual void update(sf::Time deltaTime) override;
-	virtual void setDirection(sf::Vector2f position) /*override*/;
-	static bool registerPlayer(ObjectType type);
+	virtual void update(sf::Time deltaTime, sf::Vector2f playerPos) override;
 	void setWin(bool win);
 	bool getWin() const;
     int getScore();
@@ -32,13 +30,12 @@ public:
 	void incLife();
 	static int getLife();
 	sf::Vector2f getPos() const;
-	//void draw(sf::RenderWindow& window);
 
 private:
-	bool checkDirection();
-
 	sf::Vector2f m_direction;
-	//sf::RectangleShape m_pic;
+
+	bool checkDirection();
+	void setDirection();
 	static int m_lives;
 	static int m_score;
 	bool m_win = false;
