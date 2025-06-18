@@ -5,13 +5,16 @@
 #include "BfsMoveBehavior.h"
 #include "OneDirectionAttackBehavior.h"
 #include <iostream>
-//#include "AllDirectionsAttackBehavior.h"
+#include "AllDirectionsAttackBehavior.h"
 
 Enemy::Enemy(sf::Vector2f position, std::string name)
 	: UpdateableObject(position, name), m_direction(0, 0), m_prevlocation(position)
 {
 	std::cout << "Enemy created at position: " << position.x << ", " << position.y << std::endl;
 }
+
+// Note: Enemy-Wall collision handling removed due to CollisionFactory template issues
+// You can implement collision handling in your game's collision detection system instead
 
 static auto regSimple = Factory<UpdateableObject>::instance().registerType(
     ObjectType::SIMPLENEMY,
@@ -31,14 +34,14 @@ static auto regSmart = Factory<UpdateableObject>::instance().registerType(
         return enemy;
     });
 
-//static auto regBfs = Factory<UpdateableObject>::instance().registerType(
-//    ObjectType::BFSENEMY,
-//    [](const sf::Vector2f& pos) -> std::unique_ptr<UpdateableObject> {
-//        auto enemy = std::make_unique<Enemy>(pos, "BfsEnemy");
-//        enemy->SetMoveBehavior(std::make_unique<BFSMoveBehavior>());
-//        enemy->SetAttackBehavior(std::make_unique<AllDirectionsAttackBehavior>());
-//        return enemy;
-//    });
+static auto regBfs = Factory<UpdateableObject>::instance().registerType(
+    ObjectType::BFSENEMY,
+    [](const sf::Vector2f& pos) -> std::unique_ptr<UpdateableObject> {
+        auto enemy = std::make_unique<Enemy>(pos, "BfsEnemy");
+        enemy->SetMoveBehavior(std::make_unique<BfsMoveBehavior>(MAP_WIDTH, MAP_HEIGHT, SECTION_SIZE, LOCAL_GRID_SIZE));
+        enemy->SetAttackBehavior(std::make_unique<AllDirectionsAttackBehavior>());
+        return enemy;
+    });
 
 
 

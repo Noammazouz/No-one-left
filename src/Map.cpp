@@ -123,7 +123,7 @@ void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingOb
     }
     //third third (1 simple, 2 smart, 1 bfs)
     m_movingObj.emplace_back(factory.create(ObjectType::SIMPLENEMY, { randX(), randYIn(2) }));
-    //m_movingObj.emplace_back(factory.create(ObjectType::BFSENEMY, { randX(), randYIn(2) }));
+    m_movingObj.emplace_back(factory.create(ObjectType::BFSENEMY, { randX(), randYIn(2) }));
     for (int i = 0; i < 2; ++i)
     {
         m_movingObj.emplace_back(factory.create(ObjectType::SMARTENEMY, { randX(), randYIn(2) }));
