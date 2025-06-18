@@ -180,11 +180,11 @@ void GameScreen::setBomb()
 //-----------------------------------------------------------------------------
 void GameScreen::handleErasing()
 {
-	/*std::erase_if(m_movingObj, [](const auto& item)
+	std::erase_if(m_movingObj, [](const auto& item)
 		{return item->isDead(); });
 
 	std::erase_if(m_staticObj, [](const auto& item)
-		{return item->isDead(); });*/
+		{return item->isDead(); });
 }
 
 //-----------------------------------------------------------------------------
