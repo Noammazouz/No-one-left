@@ -341,17 +341,21 @@ void GameScreen::addTime()
 //-----------------------------------------------------------------------------
 void GameScreen::handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow& window, int& screenState)
 {
-	for (int index = 0; index < m_buttons.size(); ++index)
+	if (!m_paused)
+	{
+		if (m_buttons[PAUSE].getBounds().contains(clickPos))
+		{
+			m_paused = true;
+			return;
+		}
+		return; // If not paused, ignore other clicks
+	}
+	for (int index = 1; index < m_buttons.size(); ++index)
 	{
 		if (m_buttons[index].getBounds().contains(clickPos))
 		{
 			switch (index)
 			{
-			case PAUSE:
-			{
-				m_paused = true;
-				break;
-			}
 			case RESUME:
 			{
 				m_paused = false;
