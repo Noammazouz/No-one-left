@@ -54,9 +54,10 @@ void ResourcesManager::loadTexture()
         {"pause", "pauseButton.png"},
         {"resume", "start game.png"},
         {"help screen", "help screen.png"},
-		{"return", "return.png"},
+        {"return", "return.png"},
         {"SimpleEnemy", "Enemy.png"},
-        {"SmartEnemy", "Enemy.png"}
+        {"SmartEnemy", "Enemy.png"},
+        {"BfsEnemy", "boss.png"}
         /*{"guard", "Guard.png"},
         {"player", "Robot.png"},
         {"rock", "Rock.png"},
@@ -164,7 +165,7 @@ sf::SoundBuffer& ResourcesManager::getSound(std::string name)
     auto it = m_music.find(name);
     if (it == m_music.end())
     {
-        std::cout << "Could not find sound: " << name << std::endl;
+        //std::cout << "Could not find sound: " << name << std::endl;
     }
     return it->second;
 }

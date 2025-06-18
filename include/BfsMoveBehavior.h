@@ -1,34 +1,55 @@
 #pragma once
-
-//-----include section-----
 #include "MoveBehavior.h"
+#include <SFML/Graphics.hpp>
 #include <vector>
 #include <queue>
+#include <memory>
 
-//-----class section-----
-class BFSMoveBehavior : public MoveBehavior
+struct MapSection {
+    int sectionX, sectionY;
+    std::vector<std::vector<bool>> localGrid;
+    bool isWalkable; // Can this entire section be entered?
+
+    MapSection(int x, int y, int localSize)
+        : sectionX(x), sectionY(y), isWalkable(true) {
+        localGrid.resize(localSize, std::vector<bool>(localSize, true));
+    }
+};
+
+class BfsMoveBehavior : public MoveBehavior
 {
-public:
-    BFSMoveBehavior(int gridWidth, int gridHeight, int cellSize);
-    virtual ~BFSMoveBehavior() = default;
-    virtual sf::Vector2f Move(sf::Vector2f playerPos, sf::Time deltaTime, sf::Vector2f enemyPos) override;
-
-    void setObstaclesFromMap(const std::vector<sf::Vector2f>& wallPositions);
-
 private:
-    std::vector<std::vector<bool>> grid; 
-    std::vector<sf::Vector2i> currentPath;
-    size_t currentPathIndex = 0;
-    int gridWidth, gridHeight, cellSize;
-    float pathUpdateTimer = 0;
-    const float PATH_UPDATE_INTERVAL = 0.3f; 
+    // High-level grid (sections)
+    int highLevelWidth, highLevelHeight;
+    int sectionSize; // Size of each section in world pixels
+    int localGridSize; // Grid resolution within each section
 
+    std::vector<std::vector<std::unique_ptr<MapSection>>> sections;
 
-    sf::Vector2i worldToGrid(sf::Vector2f worldPos);
-    sf::Vector2f gridToWorld(sf::Vector2i gridPos);
+    // Current path tracking
+    std::vector<sf::Vector2i> highLevelPath; // Path between sections
+    std::vector<sf::Vector2i> lowLevelPath;  // Path within current section
+    size_t currentHighLevelIndex;
+    sf::Time pathUpdateTimer;
+    static const sf::Time PATH_UPDATE_INTERVAL;
+    bool hasObstaclesSet; // Flag to track if obstacles have been set
 
- 
-    std::vector<sf::Vector2i> findPath(sf::Vector2f start, sf::Vector2f target);
-    bool isValidCell(int x, int y);
-    bool isWalkable(int x, int y);
+    // Helper functions
+    sf::Vector2i worldToSection(sf::Vector2f worldPos);
+    sf::Vector2i worldToLocalGrid(sf::Vector2f worldPos);
+    sf::Vector2f sectionToWorld(sf::Vector2i sectionPos);
+    sf::Vector2f localGridToWorld(sf::Vector2i localPos, sf::Vector2i sectionPos);
+    sf::Vector2f findSectionEdgePoint(sf::Vector2i fromSection, sf::Vector2i toSection);
+
+    std::vector<sf::Vector2i> findHighLevelPath(sf::Vector2f start, sf::Vector2f target);
+    std::vector<sf::Vector2i> findLowLevelPath(sf::Vector2f start, sf::Vector2f target, sf::Vector2i section);
+
+    bool isValidSection(int x, int y);
+    bool isSectionWalkable(int x, int y);
+    bool isValidLocalCell(int x, int y);
+
+public:
+    BfsMoveBehavior(int worldWidth, int worldHeight, int sectionSize = 100, int localGridSize = 10);
+    sf::Vector2f Move(sf::Vector2f playerPos, sf::Time deltaTime, sf::Vector2f enemyPos);
+    // Note: Obstacle management methods removed - using collision-based approach instead
 };

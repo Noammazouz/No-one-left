@@ -62,6 +62,8 @@ enum ObjectType
 //-----constants section-----
 const int MAP_WIDTH = 5000;
 const int MAP_HEIGHT = 5000;
+const int SECTION_SIZE = 100;
+const int LOCAL_GRID_SIZE = 10;
 const int START_WINDOW_BUTTONS_NUM = 3;
 const int FONT_CHARACTERS_SIZE = 26;
 const int END_GAME = 0;
@@ -77,7 +79,7 @@ const float CHANGE_DIRECTION_TIME = 0.f;
 const float BUTTON_WIDTH = 300;
 const float BUTTON_HEIGHT = 100;
 const float BUTTON_SPACING = 40.f;
-const float PLAYER_SPEED = 200.f;
+const float PLAYER_SPEED = 500.f;
 const float ENEMY_SPEED = 125.f;
 const float DEFUALT_WIDTH = 32.f;
 const float DEFUALT_HEIGHT = 32.f;
