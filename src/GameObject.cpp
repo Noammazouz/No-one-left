@@ -34,11 +34,13 @@ sf::Vector2f GameObject::getPosition() const
 	return m_pic.getPosition();
 }
 
+//-----------------------------------------------------------------------------
 bool GameObject::isDead() const
 {
     return m_isDead;
 }
 
+//-----------------------------------------------------------------------------
 void GameObject::setLife(const bool life)
 {
 	m_isDead = life;

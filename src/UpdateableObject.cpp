@@ -1,6 +1,5 @@
 //-----include section-----
 #include "UpdateableObject.h"
-
 #include <iostream>
 #include <SFML/System.hpp>
 
@@ -14,7 +13,6 @@ UpdateableObject::UpdateableObject()
 UpdateableObject::UpdateableObject(sf::Vector2f position, std::string name)
 	: GameObject(name, position), m_starting_position(position), m_prevLocation(position)
 {}
-
 
 //-----------------------------------------------------------------------------
 sf::Vector2f UpdateableObject::getPrevLocation() const
