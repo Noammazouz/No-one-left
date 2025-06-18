@@ -36,9 +36,9 @@ protected:
 
 private:
 	bool checkDirection();
+
 	sf::Vector2f m_direction;
 	float m_targetAngle = 0.f; 
-
 	sf::Sprite m_pic;
 	float m_cell_size[2]; 
 	bool m_isDead = false;
