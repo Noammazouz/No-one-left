@@ -74,12 +74,11 @@ const int ENDING_LEVEL = 25;
 const int KILL_ENEMY = 5;
 const int NUM_OF_DIRECTION = 4;
 const int NUM_OF_EXPLOSION = 5;
+const int NUM_OF_STUPID_ENEMY = 10;
+const int NUM_OF_SMART_ENEMY = 5;
 
 const float CHANGE_DIRECTION_TIME = 0.f;
-const float BUTTON_WIDTH = 300;
-const float BUTTON_HEIGHT = 100;
-const float BUTTON_SPACING = 40.f;
-const float PLAYER_SPEED = 500.f;
+const float PLAYER_SPEED = 1000.f;
 const float ENEMY_SPEED = 125.f;
 const float DEFUALT_WIDTH = 32.f;
 const float DEFUALT_HEIGHT = 32.f;
