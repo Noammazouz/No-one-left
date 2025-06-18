@@ -16,6 +16,8 @@ public:
 	virtual void Display() {};
 	void SetMoveBehavior(std::unique_ptr<MoveBehavior>	pMoveBehavior);
 	void SetAttackBehavior(std::unique_ptr<AttackBehavior>	pAttackBehavior);
+	void SetDirection(sf::Vector2f direction);
+	sf::Vector2f getDirection() const;
 
 	//static int getNumOfStartingEnemies();
 	//static int getNumOfEnemiesAlive();

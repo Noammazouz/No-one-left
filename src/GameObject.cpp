@@ -17,6 +17,12 @@ GameObject::GameObject(std::string name, const sf::Vector2f& position)
 }
 
 //-----------------------------------------------------------------------------
+sf::FloatRect GameObject::getBounds() const
+{
+    return m_pic.getGlobalBounds();
+}
+
+//-----------------------------------------------------------------------------
 void GameObject::draw(sf::RenderWindow& window)
 {
     window.draw(m_pic);
@@ -60,7 +66,7 @@ void GameObject::setRotation(const sf::Vector2f& direction)
     if (length == 0.f) return;
     sf::Vector2f normDir = direction / length;
 
-    //Map normalized direction to fixed 8 angles (degrees, 0° = Up)
+    //Map normalized direction to fixed 8 angles (degrees, 0ï¿½ = Up)
     //Use thresholds to detect closest direction
     if (normDir.x > 0.7f && normDir.y < -0.7f)          m_targetAngle = 45.f;   // Up-Right
     else if (normDir.x > 0.7f && normDir.y > 0.7f)      m_targetAngle = 135.f;  // Down-Right

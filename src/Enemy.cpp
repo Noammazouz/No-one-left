@@ -6,6 +6,8 @@
 #include "OneDirectionAttackBehavior.h"
 #include <iostream>
 #include "AllDirectionsAttackBehavior.h"
+#include "CollisionFactory.h"
+#include "Wall.h"
 
 Enemy::Enemy(sf::Vector2f position, std::string name)
 	: UpdateableObject(position, name), m_direction(0, 0), m_prevlocation(position)
@@ -13,8 +15,27 @@ Enemy::Enemy(sf::Vector2f position, std::string name)
 	std::cout << "Enemy created at position: " << position.x << ", " << position.y << std::endl;
 }
 
-// Note: Enemy-Wall collision handling removed due to CollisionFactory template issues
-// You can implement collision handling in your game's collision detection system instead
+// Collision handler function for Enemy-Wall collisions (multimethods style)
+void handleEnemyWallCollision(GameObject& obj1, GameObject& obj2)
+{
+    // Cast to specific types and handle collision
+    // Only need to handle one direction since CollisionFactory handles symmetry
+    if (auto* enemy = dynamic_cast<Enemy*>(&obj1)) {
+        if (auto* wall = dynamic_cast<Wall*>(&obj2)) {
+            // Enemy hit wall - revert to previous position
+            enemy->setPosition(enemy->getPrevLocation());
+			enemy->SetDirection(-enemy->getDirection()); // Reverse direction
+            return;
+        }
+    }
+}
+
+// Register Enemy-Wall collision handler (multimethods approach)
+static bool enemyWallCollisionRegistered = []() {
+    auto& collisionFactory = CollisionFactory::getInstance();
+    collisionFactory.registerTypedCollision<Enemy, Wall>(handleEnemyWallCollision);
+    return true;
+}();
 
 static auto regSimple = Factory<UpdateableObject>::instance().registerType(
     ObjectType::SIMPLENEMY,
@@ -61,4 +82,14 @@ void Enemy::SetMoveBehavior(std::unique_ptr<MoveBehavior> pMoveBehavior)
 void Enemy::SetAttackBehavior(std::unique_ptr<AttackBehavior> pAttackBehavior)
 {
     m_AttackBehavior = std::move(pAttackBehavior);
+}
+
+void Enemy::SetDirection(sf::Vector2f direction)
+{
+	m_direction = direction;
+}
+
+sf::Vector2f Enemy::getDirection() const
+{
+    return m_direction;
 }
