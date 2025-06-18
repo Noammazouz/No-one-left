@@ -18,6 +18,7 @@ RandomMoveBehavior::RandomMoveBehavior()
     chooseNewDirection(); // choose first direction
 }
 
+//-----------------------------------------------------------------------------
 sf::Vector2f RandomMoveBehavior::Move(sf::Vector2f /*playerPos*/, sf::Time deltaTime, sf::Vector2f /*enemyPos*/)
 {
     m_timer -= deltaTime;
@@ -31,6 +32,7 @@ sf::Vector2f RandomMoveBehavior::Move(sf::Vector2f /*playerPos*/, sf::Time delta
     return m_direction;
 }
 
+//-----------------------------------------------------------------------------
 void RandomMoveBehavior::chooseNewDirection()
 {
     int random_directon = rand() % 8;

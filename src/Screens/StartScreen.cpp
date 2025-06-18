@@ -22,9 +22,8 @@ void StartScreen::draw(sf::RenderWindow& window)
 }
 
 //-----------------------------------------------------------------------------
-void StartScreen::activate(sf::Clock& clockin, int& m_currrentScreen)
-{
-}
+void StartScreen::activate(sf::Clock& clocking, int& m_currentScreen)
+{}
 
 //-----------------------------------------------------------------------------
 void StartScreen::initButtons()
@@ -55,7 +54,6 @@ void StartScreen::handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindo
 				case HELP:
 				{
 					screenState = HELP_SCREEN;
-
 					break;
 				}
 				case EXIT:

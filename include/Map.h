@@ -16,6 +16,7 @@ class Map
 {
 public:
 	Map() = default;
+	~Map() = default;
 	void loadlevelobj(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj,std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player);
 	void draw();
 

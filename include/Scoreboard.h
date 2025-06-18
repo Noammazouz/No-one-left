@@ -9,6 +9,8 @@ class Scoreboard
 {
 public:
 	Scoreboard() = default;
+	~Scoreboard() = default;
+
 	void updateLives(int numberOfLives);
 	sf::Text getLives() const;
 	void updateScore(int Score);

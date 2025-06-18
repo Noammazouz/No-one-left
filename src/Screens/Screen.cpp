@@ -4,11 +4,10 @@
 //-----functions section------
 //-----------------------------------------------------------------------------
 Screen::Screen()
-{
-}
+{}
 
 //-----------------------------------------------------------------------------
-void Screen::run(sf::RenderWindow& window, int& currrentScreen)
+void Screen::run(sf::RenderWindow& window, int& currentScreen)
 {
 
 	for (auto event = sf::Event{}; window.pollEvent(event);)
@@ -22,37 +21,37 @@ void Screen::run(sf::RenderWindow& window, int& currrentScreen)
 			}
 			case sf::Event::MouseButtonReleased:
 			{
-				handleMouseClick(window.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y }), window, currrentScreen);
+				handleMouseClick(window.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y }), window, currentScreen);
 				break;
 			}
 			case sf::Event::KeyPressed:
 			{
-				handleKeyPressed(event.key, currrentScreen, window);
+				handleKeyPressed(event.key, currentScreen, window);
 				break;
 			}
 		}
 	}
 }
 
-//-------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void Screen::setPreviousScreen(int previousScreen)
 {
 	m_previousScreen = previousScreen;
 }
 
 //-----------------------------------------------------------------------------
-void Screen::handleKeyPressed(sf::Event::KeyEvent event, int& currrentScreen, sf::RenderWindow& window)
+void Screen::handleKeyPressed(sf::Event::KeyEvent event, int& currentScreen, sf::RenderWindow& window)
 {
 	if (event.code == sf::Keyboard::Escape)
 	{
-		currrentScreen = int(START_SCREEN);
+		currentScreen = int(START_SCREEN);
 		handleMusicTransition(false);
 		return;
 	}
 	
 	if (event.code == sf::Keyboard::M)
 	{
-		handleMuting(currrentScreen);
+		handleMuting(currentScreen);
 	}
 }
 
@@ -81,10 +80,10 @@ void Screen::handleMusicTransition(bool toGameplay)
 }
 
 //-----------------------------------------------------------------------------
-void Screen::handleMuting(int currrentScreen)
+void Screen::handleMuting(int currentScreen)
 {
 	std::string musicStatus;
-	if(currrentScreen == int(GAME_SCREEN))
+	if(currentScreen == int(GAME_SCREEN))
 	{
 		musicStatus = GAME_MUSIC;
 	}
