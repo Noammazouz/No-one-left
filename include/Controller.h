@@ -17,6 +17,7 @@ class Controller
 {
 public:
 	Controller();
+	~Controller() = default;
 	void run();
 	
 private:

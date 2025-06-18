@@ -1,6 +1,5 @@
 //-----include section-----
 #include "UpdateableObject.h"
-
 #include <iostream>
 #include <SFML/System.hpp>
 

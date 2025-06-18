@@ -22,7 +22,7 @@ public:
 
 	sf::FloatRect getBounds() const;
 
-	virtual void draw(sf::RenderWindow& window) ;
+	virtual void draw(sf::RenderWindow& window);
 
 	void setPosition(const sf::Vector2f& position);
 	sf::Vector2f getPosition() const;
