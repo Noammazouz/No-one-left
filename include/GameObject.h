@@ -26,8 +26,8 @@ public:
 
 	void setPosition(const sf::Vector2f& position);
 	sf::Vector2f getPosition() const;
-	bool isDead() const {};
-	void setLife(const bool life) {};
+	bool isDead() const;
+	void setLife(const bool life);
 
 protected:
 	void updatePosition(sf::Vector2f direction);
@@ -41,6 +41,6 @@ private:
 
 	sf::Sprite m_pic;
 	float m_cell_size[2]; 
-	bool m_is_dead = false;
+	bool m_isDead = false;
 	bool m_facingRight = true;
 };

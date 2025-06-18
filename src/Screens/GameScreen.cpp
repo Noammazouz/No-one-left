@@ -10,7 +10,7 @@ GameScreen::GameScreen()
 	handleLoadingLevel();
 	if (m_staticObj.empty()) 
 	{
-		std::cerr << "[WARN] No static objects were loaded�are you sure your CSV has entries?\n";
+		std::cerr << "[WARN] No static objects were loaded are you sure your CSV has entries?\n";
 	}
 }
 
@@ -36,7 +36,7 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 
 	if (m_staticObj.empty()) 
 	{
-		std::cerr << "[WARN] No static objects were loaded—are you sure your CSV has entries?\n";
+		std::cerr << "[WARN] No static objects were loaded are you sure your CSV has entries?\n";
 	}
 
 
@@ -180,11 +180,11 @@ void GameScreen::setBomb()
 //-----------------------------------------------------------------------------
 void GameScreen::handleErasing()
 {
-	/*std::erase_if(m_movingObj, [](const auto& item)
+	std::erase_if(m_movingObj, [](const auto& item)
 		{return item->isDead(); });
 
 	std::erase_if(m_staticObj, [](const auto& item)
-		{return item->isDead(); });*/
+		{return item->isDead(); });
 }
 
 //-----------------------------------------------------------------------------
