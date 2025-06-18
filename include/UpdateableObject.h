@@ -20,6 +20,6 @@ protected:
 	void setPrevLocation(const sf::Vector2f& position);
 
 private:
-	sf::Vector2f m_starting_position;
+	sf::Vector2f m_startingPosition;
 	sf::Vector2f m_prevLocation;
 };
