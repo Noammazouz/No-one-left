@@ -3,31 +3,32 @@
 
 //-----functions section------
 //-----------------------------------------------------------------------------
-sf::Vector2f AxisMoveBehavior::Move(sf::Vector2f playerPos, sf::Time /*deltaTime*/, sf::Vector2f enemyPos)
- {
-    float xDistance = enemyPos.x - playerPos.x;
-    float yDistance = enemyPos.y - playerPos.y;
+sf::Vector2f AxisMoveBehavior::Move(sf::Vector2f playerPos, sf::Time /*dt*/, sf::Vector2f enemyPos) {
+    float xDist = playerPos.x - enemyPos.x;
+    float yDist = playerPos.y - enemyPos.y;
+    sf::Vector2f dir(0.f, 0.f);
 
-    if (std::abs(yDistance) > std::abs(xDistance))
-    {
-        if (yDistance > 0)
-        {
-            return sf::Vector2f(0, -1);//up
+    // Decide primary axis based on preference
+    if (m_preferHorizontal) {
+        if (std::abs(xDist) >= std::abs(yDist)) {
+            dir.x = (xDist > 0.f ? 1.f : -1.f);
         }
-        else
-        {
-            return sf::Vector2f(0, 1);//down
+        else {
+            dir.y = (yDist > 0.f ? 1.f : -1.f);
         }
     }
-    else
-    {
-        if (xDistance > 0)
-        {
-            return sf::Vector2f(-1, 0); //left
+    else {
+        if (std::abs(yDist) >= std::abs(xDist)) {
+            dir.y = (yDist > 0.f ? 1.f : -1.f);
         }
-        else
-        {
-            return sf::Vector2f(1, 0); //right
+        else {
+            dir.x = (xDist > 0.f ? 1.f : -1.f);
         }
     }
+    return dir;
+}
+
+void AxisMoveBehavior::OnCollision() {
+    // Flip axis preference when an obstacle is hit
+    m_preferHorizontal = !m_preferHorizontal;
 }

@@ -141,21 +141,21 @@ void Map::loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj)
     auto& factory = Factory<StaticObject>::instance();
 
     // e.g. 10 rocks
-    for (int i = 0; i < 10; ++i) {
+    for (int i = 0; i < 20; ++i) {
         sf::Vector2f pos{ randX(rng), randY(rng) };
         m_staticObj.emplace_back(
             factory.create(ObjectType::OBSTACLE1, pos));
     }
 
     // 5 crates
-    for (int i = 0; i < 5; ++i) {
+    for (int i = 0; i < 20; ++i) {
         sf::Vector2f pos{ randX(rng), randY(rng) };
         m_staticObj.emplace_back(
             factory.create(ObjectType::OBSTACLE2, pos));
     }
 
     // 3 barrels
-    for (int i = 0; i < 3; ++i) {
+    for (int i = 0; i < 20; ++i) {
         sf::Vector2f pos{ randX(rng), randY(rng) };
         m_staticObj.emplace_back(
             factory.create(ObjectType::OBSTACLE3, pos));

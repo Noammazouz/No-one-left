@@ -93,3 +93,15 @@ sf::Vector2f Enemy::getDirection() const
 {
     return m_direction;
 }
+
+void Enemy::NotifyCollision()
+{
+    // revert movement
+    setPosition(getPrevLocation());
+    SetDirection(-getDirection());
+    // tell the behavior to reset
+    if (m_MoveBehavior)
+    {
+        m_MoveBehavior->OnCollision();
+    }
+}

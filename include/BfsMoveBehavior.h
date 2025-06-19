@@ -48,6 +48,7 @@ private:
     bool isSectionWalkable(int x, int y);
     bool isValidLocalCell(int x, int y);
 
+
 public:
     BfsMoveBehavior(int worldWidth, int worldHeight, int sectionSize = 100, int localGridSize = 10);
     sf::Vector2f Move(sf::Vector2f playerPos, sf::Time deltaTime, sf::Vector2f enemyPos);

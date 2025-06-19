@@ -7,7 +7,7 @@
 ResourcesManager::ResourcesManager()
 {
     loadTexture();
-    initializeMusic();
+    //initializeMusic();
     initializeFont();
 }
 
