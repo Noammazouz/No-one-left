@@ -14,7 +14,7 @@ Player::Player()
 
 //-----------------------------------------------------------------------------
 Player::Player(sf::Vector2f position, std::string name)
-	: UpdateableObject(position, name)
+	: UpdateableObject(position, name), m_lives(NUM_OF_LIVES)
 {
 	m_frames.clear();
 	m_frames.reserve(PLAYER_FRAME_COUNT);
