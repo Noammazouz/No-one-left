@@ -28,11 +28,11 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 {
 	if (m_paused)
 	{
-		handleMusicTransition(false);
+		//handleMusicTransition(false);
 		return;
 	}
 
-	handleMusicTransition(true);
+	//handleMusicTransition(true);
 
 	if (m_staticObj.empty()) 
 	{
@@ -48,10 +48,10 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 
 	if (m_player.getWin())
 	{
-		m_sound.setBuffer(ResourcesManager::getInstance().getSound("door"));
+		/*m_sound.setBuffer(ResourcesManager::getInstance().getSound("door"));
 		m_sound.setVolume(100.f);
 		m_sound.setPlayingOffset(sf::seconds(0.95f));
-		m_sound.play();
+		m_sound.play();*/
 		calculateScore();
 		if (m_win)
 		{
@@ -105,6 +105,8 @@ void GameScreen::draw(sf::RenderWindow& window)
 	
 	window.setView(window.getDefaultView());
 
+	m_infoBar.draw(window);
+
 	if (m_paused) drawButtons(window); // Menu buttons
 	else m_buttons[PAUSE].draw(window); // Only pause button
 }
@@ -120,6 +122,8 @@ void GameScreen::move(sf::Clock& clock)
 	{
 	   movingObj->update(deltaTime, m_player.getPosition());
 	}
+
+	m_stopwatch += deltaTime;
 }
 
 //-----------------------------------------------------------------------------
@@ -314,10 +318,9 @@ void GameScreen::handleLoadingLevel()
 //-----------------------------------------------------------------------------
 void GameScreen::handleScoreBoard()
 {
-	/*m_scoreboard.updateTime(m_timer);
-	m_scoreboard.updateLevel(m_level);
-	m_scoreboard.updateLives(m_player.getLife());
-	m_scoreboard.updateScore(m_player.getScore());*/
+	m_infoBar.updateTime(m_stopwatch);
+	m_infoBar.updateNumOfBullets(29);
+	m_infoBar.updateLives(m_player.getLife());
 }
 
 //-----------------------------------------------------------------------------
