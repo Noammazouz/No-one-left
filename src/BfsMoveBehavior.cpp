@@ -1,13 +1,17 @@
+//-----include section-----
 #include "BFSMoveBehavior.h"
 #include <cmath>
 #include <algorithm>
 
+//-----functions section------
+//-----------------------------------------------------------------------------
 BFSMoveBehavior::BFSMoveBehavior(int gridWidth, int gridHeight, int cellSize)
     : gridWidth(gridWidth), gridHeight(gridHeight), cellSize(cellSize) {
 
     grid.resize(gridHeight, std::vector<bool>(gridWidth, true));
 }
 
+//-----------------------------------------------------------------------------
 sf::Vector2f BFSMoveBehavior::Move(sf::Vector2f playerPos, sf::Time /*deltaTime*/, sf::Vector2f enemyPos) 
 {
    // pathUpdateTimer += deltaTime;
@@ -41,7 +45,9 @@ sf::Vector2f BFSMoveBehavior::Move(sf::Vector2f playerPos, sf::Time /*deltaTime*
     }
 }
 
-void BFSMoveBehavior::setObstaclesFromMap(const std::vector<sf::Vector2f>& wallPositions) {
+//-----------------------------------------------------------------------------
+void BFSMoveBehavior::setObstaclesFromMap(const std::vector<sf::Vector2f>& wallPositions) 
+{
     for (int y = 0; y < gridHeight; ++y) {
         for (int x = 0; x < gridWidth; ++x) {
             grid[y][x] = true;
@@ -57,32 +63,34 @@ void BFSMoveBehavior::setObstaclesFromMap(const std::vector<sf::Vector2f>& wallP
     }
 }
 
-sf::Vector2i BFSMoveBehavior::worldToGrid(sf::Vector2f worldPos) {
+//-----------------------------------------------------------------------------
+sf::Vector2i BFSMoveBehavior::worldToGrid(sf::Vector2f worldPos) 
+{
     return sf::Vector2i(
         static_cast<int>(worldPos.x / cellSize),
         static_cast<int>(worldPos.y / cellSize)
     );
 }
 
-sf::Vector2f BFSMoveBehavior::gridToWorld(sf::Vector2i gridPos) {
+//-----------------------------------------------------------------------------
+sf::Vector2f BFSMoveBehavior::gridToWorld(sf::Vector2i gridPos) 
+{
     return sf::Vector2f(
         gridPos.x * cellSize + cellSize / 2.0f,
         gridPos.y * cellSize + cellSize / 2.0f
     );
 }
 
-std::vector<sf::Vector2i> BFSMoveBehavior::findPath(sf::Vector2f start, sf::Vector2f target) {
+//-----------------------------------------------------------------------------
+std::vector<sf::Vector2i> BFSMoveBehavior::findPath(sf::Vector2f start, sf::Vector2f target) 
+{
     sf::Vector2i startGrid = worldToGrid(start);
     sf::Vector2i targetGrid = worldToGrid(target);
 
 
-    if (!isValidCell(startGrid.x, startGrid.y) || !isValidCell(targetGrid.x, targetGrid.y)) {
-        return {};
-    }
+    if (!isValidCell(startGrid.x, startGrid.y) || !isValidCell(targetGrid.x, targetGrid.y)) return {};
 
-    if (!isWalkable(startGrid.x, startGrid.y) || !isWalkable(targetGrid.x, targetGrid.y)) {
-        return {};
-    }
+    if (!isWalkable(startGrid.x, startGrid.y) || !isWalkable(targetGrid.x, targetGrid.y)) return {};
 
 
     std::queue<sf::Vector2i> queue;
@@ -95,19 +103,20 @@ std::vector<sf::Vector2i> BFSMoveBehavior::findPath(sf::Vector2f start, sf::Vect
     queue.push(startGrid);
     visited[startGrid.y][startGrid.x] = true;
 
-    while (!queue.empty()) {
+    while (!queue.empty()) 
+    {
         sf::Vector2i current = queue.front();
         queue.pop();
 
-        if (current.x == targetGrid.x && current.y == targetGrid.y) {
-            break;
-        }
+        if (current.x == targetGrid.x && current.y == targetGrid.y) break;
 
-        for (int i = 0; i < 4; ++i) {
+        for (int i = 0; i < 4; ++i) 
+        {
             int newX = current.x + dx[i];
             int newY = current.y + dy[i];
 
-            if (isValidCell(newX, newY) && !visited[newY][newX] && isWalkable(newX, newY)) {
+            if (isValidCell(newX, newY) && !visited[newY][newX] && isWalkable(newX, newY)) 
+            {
                 visited[newY][newX] = true;
                 parent[newY][newX] = current;
                 queue.push({ newX, newY });
@@ -118,11 +127,10 @@ std::vector<sf::Vector2i> BFSMoveBehavior::findPath(sf::Vector2f start, sf::Vect
     std::vector<sf::Vector2i> path;
     sf::Vector2i current = targetGrid;
 
-    while (current.x != -1 && current.y != -1) {
+    while (current.x != -1 && current.y != -1) 
+    {
         path.push_back(current);
-        if (current.x == startGrid.x && current.y == startGrid.y) {
-            break;
-        }
+        if (current.x == startGrid.x && current.y == startGrid.y) break;
         current = parent[current.y][current.x];
     }
 
@@ -131,10 +139,14 @@ std::vector<sf::Vector2i> BFSMoveBehavior::findPath(sf::Vector2f start, sf::Vect
     return path;
 }
 
-bool BFSMoveBehavior::isValidCell(int x, int y) {
+//-----------------------------------------------------------------------------
+bool BFSMoveBehavior::isValidCell(int x, int y) 
+{
     return x >= 0 && x < gridWidth && y >= 0 && y < gridHeight;
 }
 
-bool BFSMoveBehavior::isWalkable(int x, int y) {
+//-----------------------------------------------------------------------------
+bool BFSMoveBehavior::isWalkable(int x, int y) 
+{
     return isValidCell(x, y) && grid[y][x];
 }
