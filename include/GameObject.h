@@ -30,16 +30,12 @@ public:
 	void setLife(const bool life);
 
 protected:
-	void updatePosition(sf::Vector2f direction);
-	void mirrorImage(sf::Vector2f direction) {};
-	void setRotation(const sf::Vector2f& direction);
+	sf::Sprite m_pic;
 
 private:
 	bool checkDirection();
 
-	sf::Vector2f m_direction;
-	float m_targetAngle = 0.f; 
-	sf::Sprite m_pic;
+	sf::Vector2f m_direction; 
 	float m_cellSize[2]; 
 	bool m_isDead = false;
 	bool m_facingRight = true;
