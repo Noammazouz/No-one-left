@@ -12,7 +12,6 @@
 Enemy::Enemy(sf::Vector2f position, std::string name)
 	: UpdateableObject(position, name), m_direction(0, 0), m_prevlocation(position)
 {
-	std::cout << "Enemy created at position: " << position.x << ", " << position.y << std::endl;
 }
 
 // Collision handler function for Enemy-Wall collisions (multimethods style)

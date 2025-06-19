@@ -16,7 +16,7 @@
 #include "UpdateableObject.h"
 #include "StaticObject.h"
 #include "GameObject.h"
-#include "Scoreboard.h"
+#include "Infobar.h"
 #include "Explosion.h"
 #include "CollisionFactory.h"
 
@@ -57,7 +57,7 @@ private:
 	sf::FloatRect worldBounds;
 	Map m_map;
 	Player m_player;
-	Scoreboard m_scoreboard;
+	Infobar m_infoBar;
 
 	bool m_win = false;
 	bool m_paused = false;

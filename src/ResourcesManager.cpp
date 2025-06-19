@@ -58,6 +58,9 @@ void ResourcesManager::loadTexture()
         {"SimpleEnemy", "Enemy.png"},
         {"SmartEnemy", "Enemy.png"},
         {"BfsEnemy", "boss.png"},
+        {"life", "life.png"},
+        {"bulletIcon", "bulletIcon.png"},
+        {"clock", "clock.png"}
         {"obstacle1","obstacle1.png"},
         {"obstacle2","obstacle2.png"},
         {"obstacle3","obstacle3.png"}

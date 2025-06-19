@@ -71,7 +71,7 @@ const int START_WINDOW_BUTTONS_NUM = 3;
 const int FONT_CHARACTERS_SIZE = 26;
 const int END_GAME = 0;
 const int NUM_OF_BUTTON = 4;
-const int NUM_OF_LIVES = 3;
+const int NUM_OF_LIVES = 100;
 const int POINT_FOR_ENEMY = 3;
 const int ENDING_LEVEL = 25;
 const int KILL_ENEMY = 5;
@@ -94,5 +94,7 @@ const std::string MENU_MUSIC = "menu";
 const std::string GAME_MUSIC = "game";
 const std::string RETURN_BUTTON = "return";
 
+const sf::Color FONT_COLOR = sf::Color(128, 0, 128);
 const int MAX_BULLETS = 29; //Maximum number of bullets that a gun have.
 const int MIN_BOUND_BULLETS = 0; //Minimum number of bullets that a gun have.
+
