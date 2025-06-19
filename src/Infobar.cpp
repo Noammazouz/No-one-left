@@ -20,7 +20,7 @@ void Infobar::updateLives(int numberOfLives)
 //-----------------------------------------------------------------------------
 void Infobar::updateNumOfBullets(int BulletsAmount)
 {
-	std::string temp = std::to_string(BulletsAmount);
+	std::string temp = std::to_string(BulletsAmount) + "/" + std::to_string(MAX_BULLETS);
 	m_BulletsAmount.setString(":" + temp);
 }
 
@@ -71,14 +71,14 @@ void Infobar::initializeLives()
 	m_livesIcon.setTextureRect(livesFrames[5]);
 	m_livesIcon.setOrigin(m_livesIcon.getGlobalBounds().width / 2, m_livesIcon.getGlobalBounds().height / 2);
 	m_livesIcon.setScale(0.9f, 0.9f); // Adjust scale as needed
-	m_livesIcon.setPosition(sf::Vector2f(9, 100));
+	m_livesIcon.setPosition(sf::Vector2f(9, 110));
 
 	m_lifePercentages.setCharacterSize(20);
 	m_lifePercentages.setFont(ResourcesManager::getInstance().getFont());
 	m_lifePercentages.setFillColor(sf::Color(128, 0, 128));
 	m_lifePercentages.setOutlineColor(sf::Color::Black);
 	m_lifePercentages.setOutlineThickness(1);
-	m_lifePercentages.setPosition(sf::Vector2f(25, 100));
+	m_lifePercentages.setPosition(sf::Vector2f(25, 110));
 }
 void Infobar::initializeBullets()
 {
