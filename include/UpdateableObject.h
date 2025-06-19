@@ -18,8 +18,11 @@ public:
 
 protected:
 	void setPrevLocation(const sf::Vector2f& position);
+	void updatePosition(const sf::Vector2f& direction);
+	void setRotation(const sf::Vector2f& direction);
 
 private:
 	sf::Vector2f m_startingPosition;
 	sf::Vector2f m_prevLocation;
+	float m_targetAngle = 0.f; //Target angle for rotation
 };
