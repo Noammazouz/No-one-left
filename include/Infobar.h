@@ -2,6 +2,7 @@
 
 //-----include section-----
 #include "ResourcesManager.h"
+#include "Const.h"
 #include <SFML/Graphics.hpp>
 
 //-----class section-----
@@ -27,5 +28,5 @@ private:
 	sf::Sprite m_livesIcon, m_bulletsIcon, m_timeIcon;
 
 	std::vector<sf::IntRect> livesFrames;
-	int currentFrame = 5;
+	//int currentFrame = 5;
 };

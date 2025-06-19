@@ -319,7 +319,7 @@ void GameScreen::handleLoadingLevel()
 void GameScreen::handleScoreBoard()
 {
 	m_infoBar.updateTime(m_stopwatch);
-	/*m_soreboard.updateNumOfBullets(m_player.getNumOfBullets());*/
+	m_infoBar.updateNumOfBullets(29);
 	m_infoBar.updateLives(m_player.getLife());
 }
 
