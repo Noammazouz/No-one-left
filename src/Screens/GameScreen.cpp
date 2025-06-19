@@ -126,49 +126,54 @@ void GameScreen::move(sf::Clock& clock)
 void GameScreen::handleCollision()
 {
 	auto& collisionHandler = CollisionFactory::getInstance();
-	/*for (const auto& staticObj : m_staticObj)
-	{
-		if (m_player.checkCollision(*staticObj))
-		{
-			collisionHandler;
-		}
-	}
+	
+	//// Player vs Static Objects (walls)
+	//for (const auto& staticObj : m_staticObj)
+	//{
+	//	if (m_player.checkCollision(*staticObj))
+	//	{
+	//		collisionHandler.handleCollision(m_player, *staticObj);
+	//	}
+	//}
 
-	handlePresents();
+	//handlePresents();
 
+	// Moving Objects vs Static Objects (enemies vs walls)
 	for (const auto& movingObj : m_movingObj)
 	{
 		for (const auto& staticObj : m_staticObj)
 		{
 			if (movingObj->checkCollision(*staticObj))
 			{
-				collisionHandler;
+				collisionHandler.processCollision(*movingObj, *staticObj);
 			}
 		}
 	}
 
-	for (int guard = 0; guard < Enemy::getNumOfGuardsAlive(); ++guard)
-	{
-		if (m_player.checkCollision(*m_movingObj[guard]))
-		{
-			m_sound.setBuffer(ResourcesManager::getInstance().getSound("hit"));
-			m_sound.setVolume(100.f);
-			m_sound.play();
-			collisionHandler;
-			break;
-		}
-	}
+	//// Player vs Enemies
+	//for (int guard = 0; guard < Enemy::getNumOfGuardsAlive(); ++guard)
+	//{
+	//	if (m_player.checkCollision(*m_movingObj[guard]))
+	//	{
+	//		m_sound.setBuffer(ResourcesManager::getInstance().getSound("hit"));
+	//		m_sound.setVolume(100.f);
+	//		m_sound.play();
+	//		collisionHandler.handleCollision(m_player, *m_movingObj[guard]);
+	//		break;
+	//	}
+	//}
 
-	for (int moveObj = 0; moveObj < (Enemy::getNumOfGuardsAlive() - 1); ++moveObj)
-	{
-		for (int nextMoveObj = moveObj + 1; nextMoveObj < Enemy::getNumOfGuardsAlive(); ++nextMoveObj)
-		{
-			if (m_movingObj[moveObj]->checkCollision(*m_movingObj[nextMoveObj]))
-			{
-				collisionHandler;
-			}
-		}
-	}*/
+	//// Enemy vs Enemy collisions
+	//for (int moveObj = 0; moveObj < (Enemy::getNumOfGuardsAlive() - 1); ++moveObj)
+	//{
+	//	for (int nextMoveObj = moveObj + 1; nextMoveObj < Enemy::getNumOfGuardsAlive(); ++nextMoveObj)
+	//	{
+	//		if (m_movingObj[moveObj]->checkCollision(*m_movingObj[nextMoveObj]))
+	//		{
+	//			collisionHandler.handleCollision(*m_movingObj[moveObj], *m_movingObj[nextMoveObj]);
+	//		}
+	//	}
+	//}
 }
 
 //-----------------------------------------------------------------------------
@@ -336,17 +341,21 @@ void GameScreen::addTime()
 //-----------------------------------------------------------------------------
 void GameScreen::handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow& window, int& screenState)
 {
-	for (int index = 0; index < m_buttons.size(); ++index)
+	if (!m_paused)
+	{
+		if (m_buttons[PAUSE].getBounds().contains(clickPos))
+		{
+			m_paused = true;
+			return;
+		}
+		return; // If not paused, ignore other clicks
+	}
+	for (int index = 1; index < m_buttons.size(); ++index)
 	{
 		if (m_buttons[index].getBounds().contains(clickPos))
 		{
 			switch (index)
 			{
-			case PAUSE:
-			{
-				m_paused = true;
-				break;
-			}
 			case RESUME:
 			{
 				m_paused = false;

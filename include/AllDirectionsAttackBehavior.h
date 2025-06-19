@@ -7,6 +7,7 @@
 class AllDirectionsAttackBehavior :public AttackBehavior
 {
 public:
+	AllDirectionsAttackBehavior() = default;
 	void Attack()
 	{
 		//shoot to all directions
