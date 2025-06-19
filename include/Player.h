@@ -32,13 +32,12 @@ public:
 	sf::Vector2f getPos() const;
 
 private:
-	sf::Vector2f m_direction;
-
 	bool checkDirection();
 	void setDirection();
+
+	sf::Vector2f m_direction;
 	static int m_lives;
 	static int m_score;
 	bool m_win = false;
-
-	float m_targetAngle = 0.f; // add this to private section
+	float m_targetAngle = 0.f; //add this to private section.
 };
