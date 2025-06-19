@@ -93,3 +93,6 @@ const float ROTATION_SPEED = 200.f; //degrees per second
 const std::string MENU_MUSIC = "menu";
 const std::string GAME_MUSIC = "game";
 const std::string RETURN_BUTTON = "return";
+
+const int MAX_BULLETS = 29;
+const int MIN_BULLETS = 0;
