@@ -57,7 +57,8 @@ void ResourcesManager::loadTexture()
         {"return", "return.png"},
         {"SimpleEnemy", "Enemy.png"},
         {"SmartEnemy", "Enemy.png"},
-        {"BfsEnemy", "boss.png"}
+        {"BfsEnemy", "boss.png"},
+        {"life", "life.png"}
         /*{"guard", "Guard.png"},
         {"player", "Robot.png"},
         {"rock", "Rock.png"},
