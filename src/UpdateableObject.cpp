@@ -13,7 +13,6 @@ UpdateableObject::UpdateableObject()
 UpdateableObject::UpdateableObject(sf::Vector2f position, std::string name)
 	: GameObject(name, position), m_startingPosition(position), m_prevLocation(position)
 {
-
     m_animClock.restart();
 }
 
