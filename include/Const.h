@@ -81,14 +81,14 @@ const int NUM_OF_STUPID_ENEMY = 10;
 const int NUM_OF_SMART_ENEMY = 5;
 
 const float CHANGE_DIRECTION_TIME = 0.f;
-const float PLAYER_SPEED = 1000.f;
+const float PLAYER_SPEED = 500.f;
 const float ENEMY_SPEED = 125.f;
 const float DEFUALT_WIDTH = 32.f;
 const float DEFUALT_HEIGHT = 32.f;
 const float BOMB_TIME = 4.f;
 const float ADDED_TIME = 10.f;
 const float WINDOW_RATIO = 0.92f;
-const float ROTATION_SPEED = 200.f; //degrees per second
+const float ROTATION_SPEED = 150.f; //degrees per second
 
 const std::string MENU_MUSIC = "menu";
 const std::string GAME_MUSIC = "game";
@@ -96,3 +96,8 @@ const std::string RETURN_BUTTON = "return";
 
 const int MAX_BULLETS = 29; //Maximum number of bullets that a gun have.
 const int MIN_BOUND_BULLETS = 0; //Minimum number of bullets that a gun have.
+
+const float PLAYER_FRAME_TIME = 0.1f;   //seconds per frame for the player animation
+const int PLAYER_FRAME_COUNT = 10;
+const int PLAYER_HEIGHT = 53; //Height of the player sprite
+const int PLAYER_WIDTH = 50; //Width of the player sprite

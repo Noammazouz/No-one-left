@@ -12,7 +12,10 @@ UpdateableObject::UpdateableObject()
 //-----------------------------------------------------------------------------
 UpdateableObject::UpdateableObject(sf::Vector2f position, std::string name)
 	: GameObject(name, position), m_startingPosition(position), m_prevLocation(position)
-{}
+{
+
+    m_animClock.restart();
+}
 
 //-----------------------------------------------------------------------------
 bool UpdateableObject::checkCollision(GameObject& otherObject)
@@ -47,7 +50,7 @@ void UpdateableObject::setRotation(const sf::Vector2f& direction)
     if (length == 0.f) return;
     sf::Vector2f normDir = direction / length;
 
-    //Map normalized direction to fixed 8 angles (degrees, 0 deegre = Up)
+    //Map normalized direction to fixed 8 angles (degrees, 0 degree = Up)
     //Use thresholds to detect closest direction
     if (normDir.x > 0.7f && normDir.y < -0.7f)          m_targetAngle = 45.f;   // Up-Right
     else if (normDir.x > 0.7f && normDir.y > 0.7f)      m_targetAngle = 135.f;  // Down-Right
@@ -66,25 +69,47 @@ void UpdateableObject::setRotation(const sf::Vector2f& direction)
     if (std::abs(deltaAngle) < rotationStep) currentAngle = m_targetAngle;
     else currentAngle += (deltaAngle > 0.f ? 1.f : -1.f) * rotationStep;
 
-    //Normalize current angle to [0, 360)
+    //Normalize current angle to [0, 360).
     if (currentAngle < 0.f) currentAngle += 360.f;
     else if (currentAngle >= 360.f) currentAngle -= 360.f;
-
+    
     m_pic.setRotation(currentAngle);
 }
 
 //-----------------------------------------------------------------------------
 void UpdateableObject::updatePosition(const sf::Vector2f& direction)
 {
-    float left_corner = direction.x + m_pic.getPosition().x - ResourcesManager::getInstance().getTexture("Player").getSize().x / 2.f;
-    float bottom_corner = direction.y + m_pic.getPosition().y + ResourcesManager::getInstance().getTexture("Player").getSize().y / 2.f;
-    float up_corner = direction.y + m_pic.getPosition().y - ResourcesManager::getInstance().getTexture("Player").getSize().y / 2.f;
-    float right_corner = direction.x + m_pic.getPosition().x + ResourcesManager::getInstance().getTexture("Player").getSize().x / 2.f;
+    //get sprite bounds (already reflects texture rect).
+    sf::FloatRect bounds = m_pic.getGlobalBounds();
 
+    //calculate the corners of the window.
+    float left_corner = m_pic.getPosition().x + direction.x - bounds.width / 2.f;
+    float up_corner = m_pic.getPosition().y + direction.y - bounds.height / 2.f;
+    float right_corner = left_corner + bounds.width;
+    float bottom_corner = up_corner + bounds.height;
 
+	//Check if the m_pic is in the window bounds.
     if (left_corner > 0 && up_corner > 0 && bottom_corner < MAP_HEIGHT && right_corner < MAP_WIDTH)
     {
-        //m_pic.setTextureRect(frame[current_frame]);
         m_pic.move(direction);
+    }
+}
+
+//-----------------------------------------------------------------------------
+void UpdateableObject::updateFrames(const sf::Vector2f& direction, const float frameTime, const int numberOfFrames)
+{
+    if (direction != sf::Vector2f(0.f, 0.f))
+    {
+        if (m_animClock.getElapsedTime().asSeconds() >= frameTime)
+        {
+            currentPlayerFrame = (currentPlayerFrame + 1) % numberOfFrames;
+            m_animClock.restart();
+            m_pic.setTextureRect(m_frames[currentPlayerFrame]);
+        }
+    }
+    else if (currentPlayerFrame != 0)
+    {
+        currentPlayerFrame = 0;
+        m_pic.setTextureRect(m_frames[0]);
     }
 }

@@ -15,7 +15,18 @@ Player::Player()
 //-----------------------------------------------------------------------------
 Player::Player(sf::Vector2f position, std::string name)
 	: UpdateableObject(position, name)
-{}
+{
+	m_frames.clear();
+	m_frames.reserve(PLAYER_FRAME_COUNT);
+	for (int frameNumber = 0; frameNumber < PLAYER_FRAME_COUNT; frameNumber++)
+	{
+		m_frames.emplace_back(sf::IntRect(frameNumber * PLAYER_WIDTH, 0, PLAYER_WIDTH, PLAYER_HEIGHT));
+	}
+
+	m_pic.setTextureRect(m_frames[currentPlayerFrame]); //set for the first frame at first.
+	m_pic.setOrigin(PLAYER_WIDTH / 2, PLAYER_HEIGHT / 2); //Set origin to center.
+	m_pic.setPosition(position);
+}
 
 //-----------------------------------------------------------------------------
 void Player::update(sf::Time deltaTime, sf::Vector2f /*playerPos*/)
@@ -23,6 +34,7 @@ void Player::update(sf::Time deltaTime, sf::Vector2f /*playerPos*/)
 	setDirection();
 	this->setPrevLocation(this->getPosition());
 	this->updatePosition(m_direction * PLAYER_SPEED * deltaTime.asSeconds());
+	this->updateFrames(m_direction, PLAYER_FRAME_TIME, PLAYER_FRAME_COUNT);
 }
 
 //-----------------------------------------------------------------------------

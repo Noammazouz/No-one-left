@@ -21,6 +21,12 @@ protected:
 	void updatePosition(const sf::Vector2f& direction);
 	void setRotation(const sf::Vector2f& direction);
 
+	std::vector<sf::IntRect> m_frames;
+	sf::Clock m_animClock;
+	int currentPlayerFrame = 0;
+
+	void updateFrames(const sf::Vector2f& direction, const float frameTime, const int numberOfFrames);
+
 private:
 	sf::Vector2f m_startingPosition;
 	sf::Vector2f m_prevLocation;

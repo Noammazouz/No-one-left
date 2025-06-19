@@ -28,7 +28,7 @@ public:
 	void setScore(int score);
 	void decLife();
 	void incLife();
-	static int getLife();
+	int getLife();
 	sf::Vector2f getPos() const;
 
 private:
