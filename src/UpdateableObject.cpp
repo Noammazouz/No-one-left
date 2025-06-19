@@ -17,10 +17,7 @@ UpdateableObject::UpdateableObject(sf::Vector2f position, std::string name)
 //-----------------------------------------------------------------------------
 bool UpdateableObject::checkCollision(GameObject& otherObject)
 {
-	if (getBounds().intersects(otherObject.getBounds()))
-	{
-		return true;
-	}
+	if (getBounds().intersects(otherObject.getBounds())) return true;
 	return false;
 }
 
@@ -50,7 +47,7 @@ void UpdateableObject::setRotation(const sf::Vector2f& direction)
     if (length == 0.f) return;
     sf::Vector2f normDir = direction / length;
 
-    //Map normalized direction to fixed 8 angles (degrees, 0? = Up)
+    //Map normalized direction to fixed 8 angles (degrees, 0 deegre = Up)
     //Use thresholds to detect closest direction
     if (normDir.x > 0.7f && normDir.y < -0.7f)          m_targetAngle = 45.f;   // Up-Right
     else if (normDir.x > 0.7f && normDir.y > 0.7f)      m_targetAngle = 135.f;  // Down-Right
