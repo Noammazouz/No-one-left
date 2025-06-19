@@ -94,5 +94,5 @@ const std::string MENU_MUSIC = "menu";
 const std::string GAME_MUSIC = "game";
 const std::string RETURN_BUTTON = "return";
 
-const int MAX_BULLETS = 29;
-const int MIN_BULLETS = 0;
+const int MAX_BULLETS = 29; //Maximum number of bullets that a gun have.
+const int MIN_BOUND_BULLETS = 0; //Minimum number of bullets that a gun have.
