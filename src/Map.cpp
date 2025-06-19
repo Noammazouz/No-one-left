@@ -87,6 +87,8 @@ void Map::loadlevelobj(std::vector<std::unique_ptr<UpdateableObject>>& m_movingO
     m_movingObj.clear();
     loadFromCSV(m_staticObj, player);
     loadEnemies(m_movingObj);
+    loadObstacles(m_staticObj);
+
 }
 
 //-----------------------------------------------------------------------------
@@ -127,5 +129,35 @@ void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingOb
     for (int i = 0; i < NUM_OF_SMART_ENEMY; ++i)
     {
         m_movingObj.emplace_back(factory.create(ObjectType::SMARTENEMY, { randX(), randYIn(2) }));
+    }
+}
+
+void Map::loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj)
+{
+    std::mt19937 rng{ std::random_device{}() };
+    std::uniform_real_distribution<float> randX(0.f, MAP_WIDTH);
+    std::uniform_real_distribution<float> randY(0.f, MAP_HEIGHT);
+
+    auto& factory = Factory<StaticObject>::instance();
+
+    // e.g. 10 rocks
+    for (int i = 0; i < 10; ++i) {
+        sf::Vector2f pos{ randX(rng), randY(rng) };
+        m_staticObj.emplace_back(
+            factory.create(ObjectType::OBSTACLE1, pos));
+    }
+
+    // 5 crates
+    for (int i = 0; i < 5; ++i) {
+        sf::Vector2f pos{ randX(rng), randY(rng) };
+        m_staticObj.emplace_back(
+            factory.create(ObjectType::OBSTACLE2, pos));
+    }
+
+    // 3 barrels
+    for (int i = 0; i < 3; ++i) {
+        sf::Vector2f pos{ randX(rng), randY(rng) };
+        m_staticObj.emplace_back(
+            factory.create(ObjectType::OBSTACLE3, pos));
     }
 }

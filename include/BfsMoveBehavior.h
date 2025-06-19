@@ -1,23 +1,34 @@
 #pragma once
+
+//-----include section-----
 #include "MoveBehavior.h"
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <queue>
 #include <memory>
 
-struct MapSection {
+//-----struct section-----
+struct MapSection 
+{
     int sectionX, sectionY;
     std::vector<std::vector<bool>> localGrid;
     bool isWalkable; // Can this entire section be entered?
 
     MapSection(int x, int y, int localSize)
-        : sectionX(x), sectionY(y), isWalkable(true) {
+        : sectionX(x), sectionY(y), isWalkable(true) 
+    {
         localGrid.resize(localSize, std::vector<bool>(localSize, true));
     }
 };
 
+//-----class section-----
 class BfsMoveBehavior : public MoveBehavior
 {
+public:
+    BfsMoveBehavior(int worldWidth, int worldHeight, int sectionSize = 100, int localGridSize = 10);
+    sf::Vector2f Move(sf::Vector2f playerPos, sf::Time deltaTime, sf::Vector2f enemyPos);
+    // Note: Obstacle management methods removed - using collision-based approach instead
+
 private:
     // High-level grid (sections)
     int highLevelWidth, highLevelHeight;
@@ -47,9 +58,4 @@ private:
     bool isValidSection(int x, int y);
     bool isSectionWalkable(int x, int y);
     bool isValidLocalCell(int x, int y);
-
-public:
-    BfsMoveBehavior(int worldWidth, int worldHeight, int sectionSize = 100, int localGridSize = 10);
-    sf::Vector2f Move(sf::Vector2f playerPos, sf::Time deltaTime, sf::Vector2f enemyPos);
-    // Note: Obstacle management methods removed - using collision-based approach instead
 };

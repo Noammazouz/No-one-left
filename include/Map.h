@@ -23,6 +23,7 @@ public:
 private:
 	void loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player);
 	void loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj);
+	void loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj);
 	std::vector<std::string> m_level;
 	//std::vector<sf::Vector2f> m_wallPositions;
 	int m_rows;

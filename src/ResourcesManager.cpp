@@ -61,6 +61,9 @@ void ResourcesManager::loadTexture()
         {"life", "life.png"},
         {"bulletIcon", "bulletIcon.png"},
         {"clock", "clock.png"}
+        {"obstacle1","obstacle1.png"},
+        {"obstacle2","obstacle2.png"},
+        {"obstacle3","obstacle3.png"}
         /*{"guard", "Guard.png"},
         {"player", "Robot.png"},
         {"rock", "Rock.png"},

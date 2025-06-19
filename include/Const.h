@@ -52,6 +52,9 @@ enum ObjectType
 	SIMPLENEMY,
 	SMARTENEMY,
 	BFSENEMY,
+	OBSTACLE1,
+	OBSTACLE2,
+	OBSTACLE3,
 	BULLET,
 	BOMB,
 	TREE,
@@ -92,3 +95,6 @@ const std::string GAME_MUSIC = "game";
 const std::string RETURN_BUTTON = "return";
 
 const sf::Color FONT_COLOR = sf::Color(128, 0, 128);
+const int MAX_BULLETS = 29; //Maximum number of bullets that a gun have.
+const int MIN_BOUND_BULLETS = 0; //Minimum number of bullets that a gun have.
+
