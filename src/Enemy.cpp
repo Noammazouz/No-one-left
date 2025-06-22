@@ -65,7 +65,7 @@ static auto regBfs = Factory<UpdateableObject>::instance().registerType(
     ObjectType::BFSENEMY,
     [](const sf::Vector2f& pos) -> std::unique_ptr<UpdateableObject> {
         auto enemy = std::make_unique<Enemy>(pos, "BfsEnemy");
-        enemy->SetMoveBehavior(std::make_unique<BfsMoveBehavior>(MAP_WIDTH, MAP_HEIGHT, SECTION_SIZE, LOCAL_GRID_SIZE));
+        enemy->SetMoveBehavior(std::make_unique<BfsMoveBehavior>());
         enemy->SetAttackBehavior(std::make_unique<AllDirectionsAttackBehavior>());
         return enemy;
     });

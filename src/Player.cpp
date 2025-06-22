@@ -12,13 +12,13 @@ int Player::m_bulletCount = NUM_OF_BULLETS;
 
 //-----------------------------------------------------------------------------
 Player::Player()
-	: UpdateableObject(), m_isShooting(false), /*m_attackBehavior(std::make_unique<OneDirectionAttackBehavior>())*/ m_lives(NUM_OF_LIVES)
+	: UpdateableObject(), m_isShooting(false), /*m_attackBehavior(std::move(std::make_unique<OneDirectionAttackBehavior>())),*/ m_lives(NUM_OF_LIVES)
 {
 }
 
 //-----------------------------------------------------------------------------
 Player::Player(sf::Vector2f position, std::string name)
-	: UpdateableObject(position, name), m_isShooting(false), /*m_attackBehavior(std::make_unique<OneDirectionAttackBehavior>())*/ m_lives(NUM_OF_LIVES)
+	: UpdateableObject(position, name), m_isShooting(false), /*m_attackBehavior(std::move(std::make_unique<OneDirectionAttackBehavior>())),*/ m_lives(NUM_OF_LIVES)
 {
 	m_frames.clear();
 	m_frames.reserve(PLAYER_FRAME_COUNT);

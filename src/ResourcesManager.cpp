@@ -35,11 +35,12 @@ std::vector<sf::Text> ResourcesManager::getHelpText() const
 //------------------------------------------------------------------------------
 const sf::Texture& ResourcesManager::getTexture(std::string name) const
 {
+	std::string errorMessage = "Could not find texture: " + name;
 	//std::cout << "Getting texture: " << name << std::endl;
     auto it = m_textures.find(name);
     if (it == m_textures.end())
     {
-        std::cout << "Could not find texture: " << name << std::endl;
+        throw std::runtime_error(errorMessage);
     }
 	//std::cout << "Found texture: " << name << std::endl;
     return it->second;
@@ -94,10 +95,11 @@ void ResourcesManager::loadTexture()
 
     for (const auto& [name, filePath] : textures)
     {
+		std::string errorMessage = "Failed to load texture: " + filePath;
         sf::Texture texture;
         if (!texture.loadFromFile(filePath))
         {
-            std::cout << "Failed to load texture " << filePath << std::endl;
+            throw std::runtime_error(errorMessage);
         }
 		texture.setSmooth(true); // Enable smooth scaling for the texture
         // Insert the texture into the unordered_map

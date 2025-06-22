@@ -18,7 +18,7 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
     std::ifstream file("Level1.csv");
     if (!file.is_open()) 
     {
-        std::cerr << "[ERROR] Cannot open " << "Level1" << "\n";
+        throw std::runtime_error("[ERROR] Cannot open Level1.csv");
         return;
     }
 
