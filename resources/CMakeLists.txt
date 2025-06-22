@@ -1,5 +1,5 @@
 ﻿configure_file ("ARCADE_N.TTF" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("gamebackgroundGPT.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("gamebackground.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Level1.csv" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Rwall.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Player.png" ${CMAKE_BINARY_DIR} COPYONLY)
@@ -20,10 +20,7 @@ configure_file ("clock.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("obstacle1.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("obstacle2.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("obstacle3.png" ${CMAKE_BINARY_DIR} COPYONLY)
-<<<<<<< HEAD
 configure_file ("resume.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("help.txt" ${CMAKE_BINARY_DIR} COPYONLY)
-=======
 configure_file ("life.png" ${CMAKE_BINARY_DIR} COPYONLY)
->>>>>>> 00f0f454bee4cad30434b75b57a0d463c29831ab
 #configure_file ("pauseButtonHL.png" ${CMAKE_BINARY_DIR} COPYONLY)
