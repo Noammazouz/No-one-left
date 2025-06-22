@@ -201,7 +201,7 @@ sf::Vector2f Player::getCurrentDirection() const
 }
 
 //-----------------------------------------------------------------------------
-void Player::handleShooting(std::vector<std::unique_ptr<Bullets>>& bullets)
+void Player::handleShooting(std::vector<std::unique_ptr<Projectile>>& bullets)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
@@ -225,7 +225,7 @@ void Player::setAttackBehavior(std::unique_ptr<AttackBehavior> attackBehavior)
 }
 
 //-----------------------------------------------------------------------------
-void Player::doAttack(std::vector<std::unique_ptr<Bullets>>& bullets)
+void Player::doAttack(std::vector<std::unique_ptr<Projectile>>& bullets)
 {
 	if (!m_attackBehavior) return;
 

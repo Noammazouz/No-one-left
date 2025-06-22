@@ -4,7 +4,7 @@
 
 //-----functions section------
 //-----------------------------------------------------------------------------
-void AllDirectionsAttackBehavior::Attack(sf::Vector2f position, sf::Vector2f direction, std::vector<std::unique_ptr<Bullets>>& bullets)
+void AllDirectionsAttackBehavior::Attack(sf::Vector2f position, sf::Vector2f direction, std::vector<std::unique_ptr<Projectile>>& bullets)
 {
     sf::Vector2f directions[NUM_OF_DIRECTIONS] =
     {
@@ -21,7 +21,7 @@ void AllDirectionsAttackBehavior::Attack(sf::Vector2f position, sf::Vector2f dir
     for (int directionBullet = 0; directionBullet < NUM_OF_DIRECTIONS; directionBullet++)
     {
         sf::Vector2f bulletDirection = directions[directionBullet];
-        auto bullet = std::make_unique<Bullets>(position, bulletDirection);
+        auto bullet = std::make_unique<Projectile>(position, bulletDirection, 300.0f, 1);
         bullets.push_back(std::move(bullet));
     }
 }

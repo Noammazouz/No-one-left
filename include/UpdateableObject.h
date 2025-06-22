@@ -2,6 +2,8 @@
 
 //-----include section-----
 #include "GameObject.h"
+//#include <SFML/System/Time.hpp>
+#include <time.h>
 
 //-----class section-----
 class UpdateableObject : public GameObject

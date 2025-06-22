@@ -2,7 +2,7 @@
 
 //-----include section-----
 #include "AttackBehavior.h"
-#include "Bullets.h"
+#include "Projectile.h"
 #include "Const.h"
 #include <SFML/Graphics.hpp>
 #include <vector>
@@ -15,7 +15,7 @@ public:
     AllDirectionsAttackBehavior() = default;
     virtual ~AllDirectionsAttackBehavior() = default;
 
-    virtual void Attack(sf::Vector2f position, sf::Vector2f direction, std::vector<std::unique_ptr<Bullets>>& bullets) override;
+    virtual void Attack(sf::Vector2f position, sf::Vector2f direction, std::vector<std::unique_ptr<Projectile>>& bullets) override;
 
 private:
 };
