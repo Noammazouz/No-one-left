@@ -21,14 +21,7 @@ public:
 	Button(std::string buttonType, sf::Vector2f pos);
 	~Button() = default;
 
-	/*sf::Vector2f getPosition() const;
-	void setPosition(int place);*/
-
-	/*sf::Vector2f getSize() const;*/
-	//void setSprite(int size, sf::Vector2f pos);
 	sf::FloatRect getBounds() const;
-	/*const std::string getButtonType() const;
-	sf::RectangleShape makeButtonRectangle() const;*/
 	void draw(sf::RenderWindow& window);
   
 private:

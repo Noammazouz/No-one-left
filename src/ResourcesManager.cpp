@@ -9,6 +9,7 @@ ResourcesManager::ResourcesManager()
     loadTexture();
     initializeMusic();
     initializeFont();
+    intializeHelpText();
 }
 
 //------------------------------------------------------------------------------
@@ -25,6 +26,11 @@ ResourcesManager& ResourcesManager::getInstance()
 //------------------------------------------------------------------------------
 void ResourcesManager::show() const
 {}
+
+std::vector<sf::Text> ResourcesManager::getHelpText() const
+{
+    return m_helpText;
+}
 
 //------------------------------------------------------------------------------
 const sf::Texture& ResourcesManager::getTexture(std::string name) const
@@ -51,12 +57,20 @@ void ResourcesManager::loadTexture()
         {"start game", "start game.png"},
         {"exit", "exit.png"},
         {"help", "help.png"},
+        {"help game screen", "help2.png"},
         {"pause", "pauseButton.png"},
-        {"resume", "start game.png"},
+        {"resume", "resume.png"},
         {"help screen", "help screen.png"},
-		{"return", "return.png"},
+        {"return", "return.png"},
         {"SimpleEnemy", "Enemy.png"},
-        {"SmartEnemy", "Enemy.png"}
+        {"SmartEnemy", "Enemy.png"},
+        {"BfsEnemy", "boss.png"},
+        {"life", "life.png"},
+        {"bulletIcon", "bulletIcon.png"},
+        {"clock", "clock.png"},
+        {"obstacle1","obstacle1.png"},
+        {"obstacle2","obstacle2.png"},
+        {"obstacle3","obstacle3.png"}
         /*{"guard", "Guard.png"},
         {"player", "Robot.png"},
         {"rock", "Rock.png"},
@@ -164,7 +178,29 @@ sf::SoundBuffer& ResourcesManager::getSound(std::string name)
     auto it = m_music.find(name);
     if (it == m_music.end())
     {
-        std::cout << "Could not find sound: " << name << std::endl;
+        //std::cout << "Could not find sound: " << name << std::endl;
     }
     return it->second;
+}
+
+//------------------------------------------------------------------------------
+void ResourcesManager::intializeHelpText()
+{
+    std::ifstream file("help.txt");
+    if (!file) 
+    {
+       throw std::runtime_error("[ERROR] Cannot open help.txt");
+        return;
+    }
+
+    std::string line;
+    float yOffset = 100.f;
+    while (std::getline(file, line)) 
+    {
+        sf::Text text(line, m_font, 20);
+        text.setPosition(100.f, yOffset);
+        text.setFillColor(sf::Color::White);
+        m_helpText.push_back(text);
+        yOffset += 28.f;
+    }
 }

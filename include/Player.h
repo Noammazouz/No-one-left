@@ -33,7 +33,7 @@ public:
 	void setScore(int score);
 	void decLife();
 	void incLife();
-	static int getLife();
+	int getLife();
 	sf::Vector2f getPos() const;
 
 	static int getNumOfBullets();
@@ -45,17 +45,16 @@ public:
 	void setAttackBehavior(std::unique_ptr<AttackBehavior> attackBehavior);
 
 private:
-	sf::Vector2f m_direction;
-
 	bool checkDirection();
 	void setDirection();
 	void doAttack(std::vector<std::unique_ptr<Bullets>>& bullets);
-	static int m_lives;
+
+	sf::Vector2f m_direction;
+	int m_lives;
 	static int m_score;
 	static int m_bulletCount;
 	bool m_win = false;
 	bool m_isShooting = false;
 	std::unique_ptr<AttackBehavior> m_attackBehavior;
 	float m_targetAngle = 0.f; // add this to private section
-	
 };

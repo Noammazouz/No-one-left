@@ -28,11 +28,11 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 {
 	if (m_paused)
 	{
-		handleMusicTransition(false);
+		//handleMusicTransition(false);
 		return;
 	}
 
-	handleMusicTransition(true);
+	//handleMusicTransition(true);
 
 	if (m_staticObj.empty()) 
 	{
@@ -48,10 +48,10 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 
 	if (m_player.getWin())
 	{
-		m_sound.setBuffer(ResourcesManager::getInstance().getSound("door"));
+		/*m_sound.setBuffer(ResourcesManager::getInstance().getSound("door"));
 		m_sound.setVolume(100.f);
 		m_sound.setPlayingOffset(sf::seconds(0.95f));
-		m_sound.play();
+		m_sound.play();*/
 		calculateScore();
 		if (m_win)
 		{
@@ -74,7 +74,7 @@ void GameScreen::initButtons()
 	m_buttons.emplace_back("pause", pos);
 
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-	std::vector<std::string> buttonNames = { "resume", "exit" };
+	std::vector<std::string> buttonNames = { "resume", "help game screen" };
 	for (int index = 0; index < buttonNames.size(); ++index)
 	{
 		sf::Vector2f position(static_cast<float>(desktop.width * WINDOW_RATIO / 2),
@@ -105,6 +105,8 @@ void GameScreen::draw(sf::RenderWindow& window)
 	
 	window.setView(window.getDefaultView());
 
+	m_infoBar.draw(window);
+
 	if (m_paused) drawButtons(window); // Menu buttons
 	else m_buttons[PAUSE].draw(window); // Only pause button
 }
@@ -120,55 +122,62 @@ void GameScreen::move(sf::Clock& clock)
 	{
 	   movingObj->update(deltaTime, m_player.getPosition());
 	}
+
+	m_stopwatch += deltaTime;
 }
 
 //-----------------------------------------------------------------------------
 void GameScreen::handleCollision()
 {
 	auto& collisionHandler = CollisionFactory::getInstance();
-	/*for (const auto& staticObj : m_staticObj)
-	{
-		if (m_player.checkCollision(*staticObj))
-		{
-			collisionHandler;
-		}
-	}
+	
+	//// Player vs Static Objects (walls)
+	//for (const auto& staticObj : m_staticObj)
+	//{
+	//	if (m_player.checkCollision(*staticObj))
+	//	{
+	//		collisionHandler.handleCollision(m_player, *staticObj);
+	//	}
+	//}
 
-	handlePresents();
+	//handlePresents();
 
+	// Moving Objects vs Static Objects (enemies vs walls)
 	for (const auto& movingObj : m_movingObj)
 	{
 		for (const auto& staticObj : m_staticObj)
 		{
 			if (movingObj->checkCollision(*staticObj))
 			{
-				collisionHandler;
+				collisionHandler.processCollision(*movingObj, *staticObj);
 			}
 		}
 	}
 
-	for (int guard = 0; guard < Enemy::getNumOfGuardsAlive(); ++guard)
-	{
-		if (m_player.checkCollision(*m_movingObj[guard]))
-		{
-			m_sound.setBuffer(ResourcesManager::getInstance().getSound("hit"));
-			m_sound.setVolume(100.f);
-			m_sound.play();
-			collisionHandler;
-			break;
-		}
-	}
+	//// Player vs Enemies
+	//for (int guard = 0; guard < Enemy::getNumOfGuardsAlive(); ++guard)
+	//{
+	//	if (m_player.checkCollision(*m_movingObj[guard]))
+	//	{
+	//		m_sound.setBuffer(ResourcesManager::getInstance().getSound("hit"));
+	//		m_sound.setVolume(100.f);
+	//		m_sound.play();
+	//		collisionHandler.handleCollision(m_player, *m_movingObj[guard]);
+	//		break;
+	//	}
+	//}
 
-	for (int moveObj = 0; moveObj < (Enemy::getNumOfGuardsAlive() - 1); ++moveObj)
-	{
-		for (int nextMoveObj = moveObj + 1; nextMoveObj < Enemy::getNumOfGuardsAlive(); ++nextMoveObj)
-		{
-			if (m_movingObj[moveObj]->checkCollision(*m_movingObj[nextMoveObj]))
-			{
-				collisionHandler;
-			}
-		}
-	}*/
+	//// Enemy vs Enemy collisions
+	//for (int moveObj = 0; moveObj < (Enemy::getNumOfGuardsAlive() - 1); ++moveObj)
+	//{
+	//	for (int nextMoveObj = moveObj + 1; nextMoveObj < Enemy::getNumOfGuardsAlive(); ++nextMoveObj)
+	//	{
+	//		if (m_movingObj[moveObj]->checkCollision(*m_movingObj[nextMoveObj]))
+	//		{
+	//			collisionHandler.handleCollision(*m_movingObj[moveObj], *m_movingObj[nextMoveObj]);
+	//		}
+	//	}
+	//}
 }
 
 //-----------------------------------------------------------------------------
@@ -309,10 +318,9 @@ void GameScreen::handleLoadingLevel()
 //-----------------------------------------------------------------------------
 void GameScreen::handleScoreBoard()
 {
-	/*m_scoreboard.updateTime(m_timer);
-	m_scoreboard.updateLevel(m_level);
-	m_scoreboard.updateLives(m_player.getLife());
-	m_scoreboard.updateScore(m_player.getScore());*/
+	m_infoBar.updateTime(m_stopwatch);
+	m_infoBar.updateNumOfBullets(29);
+	m_infoBar.updateLives(m_player.getLife());
 }
 
 //-----------------------------------------------------------------------------
@@ -336,17 +344,21 @@ void GameScreen::addTime()
 //-----------------------------------------------------------------------------
 void GameScreen::handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow& window, int& screenState)
 {
-	for (int index = 0; index < m_buttons.size(); ++index)
+	if (!m_paused)
+	{
+		if (m_buttons[PAUSE].getBounds().contains(clickPos))
+		{
+			m_paused = true;
+			return;
+		}
+		return; // If not paused, ignore other clicks
+	}
+	for (int index = 1; index < m_buttons.size(); ++index)
 	{
 		if (m_buttons[index].getBounds().contains(clickPos))
 		{
 			switch (index)
 			{
-			case PAUSE:
-			{
-				m_paused = true;
-				break;
-			}
 			case RESUME:
 			{
 				m_paused = false;
