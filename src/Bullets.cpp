@@ -70,29 +70,29 @@ void Bullets::setActive(bool active)
     isActive = active;
 }
 
-//-----------------------------------------------------------------------------
-void Bullets::collide(GameObject& otherObject)
-{
-    isActive = false;
-}
-
-//-----------------------------------------------------------------------------
-void Bullets::enemyCollide(Enemy& otherObject)
-{
-    isActive = false;
-}
-
-//-----------------------------------------------------------------------------
-void Bullets::playerCollide(Player& otherObject)
-{
-    isActive = false;
-}
-
-//-----------------------------------------------------------------------------
-void Bullets::explosionCollide(Explosion& otherObject)
-{
-    isActive = false;
-}
+////-----------------------------------------------------------------------------
+//void Bullets::collide(GameObject& otherObject)
+//{
+//    isActive = false;
+//}
+//
+////-----------------------------------------------------------------------------
+//void Bullets::enemyCollide(Enemy& otherObject)
+//{
+//    isActive = false;
+//}
+//
+////-----------------------------------------------------------------------------
+//void Bullets::playerCollide(Player& otherObject)
+//{
+//    isActive = false;
+//}
+//
+////-----------------------------------------------------------------------------
+//void Bullets::explosionCollide(Explosion& otherObject)
+//{
+//    isActive = false;
+//}
 
 //-----------------------------------------------------------------------------
 bool Bullets::isOutOfMap() const
