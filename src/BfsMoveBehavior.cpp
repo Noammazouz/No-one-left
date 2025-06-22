@@ -9,16 +9,18 @@ const sf::Time BfsMoveBehavior::PATH_UPDATE_INTERVAL = sf::seconds(0.2f); //Bala
 
 //-----functions section------
 //-----------------------------------------------------------------------------
-BfsMoveBehavior::BfsMoveBehavior()
+BfsMoveBehavior::BfsMoveBehavior(int /*worldWidth*/, int /*worldHeight*/, int /*sectionSize*/, int /*localGridSize*/)
     : sectionSize(50), localGridSize(10), currentHighLevelIndex(0), hasObstaclesSet(false) 
 {
+    // Simple initialization - we don't need complex grid setup for collision-based approach
+    std::cout << "[BFS] Initialized - using collision-based movement" << std::endl;
 }
 
 //-----------------------------------------------------------------------------
 sf::Vector2f BfsMoveBehavior::Move(sf::Vector2f playerPos, sf::Time /*deltaTime*/, sf::Vector2f enemyPos) 
 {
     // Simple approach: Use direct movement and let collision system handle walls
-    // This is much more reliable than complex pathfinding
+    // This is much more reliable than complex pathfi
     
     // Calculate direct direction to player
     sf::Vector2f direction = playerPos - enemyPos;
@@ -186,85 +188,87 @@ std::vector<sf::Vector2i> BfsMoveBehavior::findHighLevelPath(sf::Vector2f start,
 //-----------------------------------------------------------------------------
 std::vector<sf::Vector2i> BfsMoveBehavior::findLowLevelPath(sf::Vector2f start, sf::Vector2f target, sf::Vector2i section) 
 {
-    if (!isValidSection(section.x, section.y)) 
-    {
-        std::cout << "[BFS] Invalid section for low-level pathfinding" << std::endl;
-        return {};
-    }
+    //if (!isValidSection(section.x, section.y)) 
+    //{
+    //    std::cout << "[BFS] Invalid section for low-level pathfinding" << std::endl;
+    //    return {};
+    //}
 
-    sf::Vector2i startLocal = worldToLocalGrid(start);
-    sf::Vector2i targetLocal = worldToLocalGrid(target);
+    //sf::Vector2i startLocal = worldToLocalGrid(start);
+    //sf::Vector2i targetLocal = worldToLocalGrid(target);
 
-    // Ensure coordinates are within bounds
-    startLocal.x = std::max(0, std::min(localGridSize - 1, startLocal.x));
-    startLocal.y = std::max(0, std::min(localGridSize - 1, startLocal.y));
-    targetLocal.x = std::max(0, std::min(localGridSize - 1, targetLocal.x));
-    targetLocal.y = std::max(0, std::min(localGridSize - 1, targetLocal.y));
+    //// Ensure coordinates are within bounds
+    //startLocal.x = std::max(0, std::min(localGridSize - 1, startLocal.x));
+    //startLocal.y = std::max(0, std::min(localGridSize - 1, startLocal.y));
+    //targetLocal.x = std::max(0, std::min(localGridSize - 1, targetLocal.x));
+    //targetLocal.y = std::max(0, std::min(localGridSize - 1, targetLocal.y));
 
-    // If start and target are the same, return empty path
-    if (startLocal.x == targetLocal.x && startLocal.y == targetLocal.y) return {};
+    //// If start and target are the same, return empty path
+    //if (startLocal.x == targetLocal.x && startLocal.y == targetLocal.y) return {};
 
-    // BFS within section
-    std::queue<sf::Vector2i> queue;
-    std::vector<std::vector<bool>> visited(localGridSize, std::vector<bool>(localGridSize, false));
-    std::vector<std::vector<sf::Vector2i>> parent(localGridSize, std::vector<sf::Vector2i>(localGridSize, { -1, -1 }));
+    //// BFS within section
+    //std::queue<sf::Vector2i> queue;
+    //std::vector<std::vector<bool>> visited(localGridSize, std::vector<bool>(localGridSize, false));
+    //std::vector<std::vector<sf::Vector2i>> parent(localGridSize, std::vector<sf::Vector2i>(localGridSize, { -1, -1 }));
 
-    int dx[] = { 0, 0, -1, 1 };
-    int dy[] = { -1, 1, 0, 0 };
+    //int dx[] = { 0, 0, -1, 1 };
+    //int dy[] = { -1, 1, 0, 0 };
 
-    queue.push(startLocal);
-    visited[startLocal.y][startLocal.x] = true;
+    //queue.push(startLocal);
+    //visited[startLocal.y][startLocal.x] = true;
 
-    bool pathFound = false;
-    while (!queue.empty()) 
-    {
-        sf::Vector2i current = queue.front();
-        queue.pop();
+    //bool pathFound = false;
+    //while (!queue.empty()) 
+    //{
+    //    sf::Vector2i current = queue.front();
+    //    queue.pop();
 
-        if (current.x == targetLocal.x && current.y == targetLocal.y) 
-        {
-            pathFound = true;
-            break;
-        }
+    //    if (current.x == targetLocal.x && current.y == targetLocal.y) 
+    //    {
+    //        pathFound = true;
+    //        break;
+    //    }
 
-        for (int i = 0; i < 4; ++i) 
-        {
-            int newX = current.x + dx[i];
-            int newY = current.y + dy[i];
+    //    for (int i = 0; i < 4; ++i) 
+    //    {
+    //        int newX = current.x + dx[i];
+    //        int newY = current.y + dy[i];
 
-            if (isValidLocalCell(newX, newY) && !visited[newY][newX] &&
-                sections[section.y][section.x]->localGrid[newY][newX]) 
-            {
-                visited[newY][newX] = true;
-                parent[newY][newX] = current;
-                queue.push({ newX, newY });
-            }
-        }
-    }
+    //        if (isValidLocalCell(newX, newY) && !visited[newY][newX] &&
+    //            sections[section.y][section.x]->localGrid[newY][newX]) 
+    //        {
+    //            visited[newY][newX] = true;
+    //            parent[newY][newX] = current;
+    //            queue.push({ newX, newY });
+    //        }
+    //    }
+    //}
 
-    if (!pathFound) 
-    {
-        std::cout << "[BFS] No low-level path found in section (" << section.x << ", " << section.y << ")" << std::endl;
-        return {};
-    }
+    //if (!pathFound) 
+    //{
+    //    std::cout << "[BFS] No low-level path found in section (" << section.x << ", " << section.y << ")" << std::endl;
+    //    return {};
+    //}
 
-    // Reconstruct path
-    std::vector<sf::Vector2i> path;
-    sf::Vector2i current = targetLocal;
+    //// Reconstruct path
+    //std::vector<sf::Vector2i> path;
+    //sf::Vector2i current = targetLocal;
 
-    while (current.x != -1 && current.y != -1) 
-    {
-        path.push_back(current);
-        if (current.x == startLocal.x && current.y == startLocal.y) break;
-        current = parent[current.y][current.x];
-    }
+    //while (current.x != -1 && current.y != -1) 
+    //{
+    //    path.push_back(current);
+    //    if (current.x == startLocal.x && current.y == startLocal.y) break;
+    //    current = parent[current.y][current.x];
+    //}
 
-    std::reverse(path.begin(), path.end());
+    //std::reverse(path.begin(), path.end());
 
-    // Remove starting position
-    if (!path.empty()) path.erase(path.begin());
+    //// Remove starting position
+    //if (!path.empty()) path.erase(path.begin());
 
-    return path;
+    //return path;
+
+    return std::vector<sf::Vector2i>();
 }
 
 //-----------------------------------------------------------------------------
