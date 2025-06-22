@@ -1,34 +1,52 @@
-//-----include section-----
 #include "AxisMoveBehavior.h"
+#include <cmath>
 
-//-----functions section------
-//-----------------------------------------------------------------------------
-sf::Vector2f AxisMoveBehavior::Move(sf::Vector2f playerPos, sf::Time /*dt*/, sf::Vector2f enemyPos) {
-    float xDist = playerPos.x - enemyPos.x;
-    float yDist = playerPos.y - enemyPos.y;
+AxisMoveBehavior::AxisMoveBehavior() = default;
+
+sf::Vector2f AxisMoveBehavior::Move(sf::Vector2f playerPos, sf::Time, sf::Vector2f enemyPos) {
     sf::Vector2f dir(0.f, 0.f);
 
-    // Decide primary axis based on preference
-    if (m_preferHorizontal) {
-        if (std::abs(xDist) >= std::abs(yDist)) {
-            dir.x = (xDist > 0.f ? 1.f : -1.f);
+    if (m_avoiding) {
+        // Side?step perpendicular to lastDir
+        if (m_preferHorizontal) {
+            dir.x = 0.f;
+            dir.y = (m_lastDir.x > 0.f ? 1.f : -1.f);
         }
         else {
-            dir.y = (yDist > 0.f ? 1.f : -1.f);
+            dir.x = (m_lastDir.y > 0.f ? -1.f : 1.f);
+            dir.y = 0.f;
         }
     }
     else {
-        if (std::abs(yDist) >= std::abs(xDist)) {
-            dir.y = (yDist > 0.f ? 1.f : -1.f);
+        float dx = playerPos.x - enemyPos.x;
+        float dy = playerPos.y - enemyPos.y;
+        // Normal chase along preferred axis
+        if (m_preferHorizontal) {
+            if (std::abs(dx) > std::abs(dy))
+                dir.x = (dx > 0.f ? 1.f : -1.f);
+            else
+                dir.y = (dy > 0.f ? 1.f : -1.f);
         }
         else {
-            dir.x = (xDist > 0.f ? 1.f : -1.f);
+            if (std::abs(dy) > std::abs(dx))
+                dir.y = (dy > 0.f ? 1.f : -1.f);
+            else
+                dir.x = (dx > 0.f ? 1.f : -1.f);
         }
     }
+
+    // Always remember what we just tried
+    m_lastDir = dir;
     return dir;
 }
 
 void AxisMoveBehavior::OnCollision() {
-    // Flip axis preference when an obstacle is hit
+    // Enter avoidance mode and flip primary axis for side?step logic
+    m_avoiding = true;
     m_preferHorizontal = !m_preferHorizontal;
+}
+
+void AxisMoveBehavior::ClearAvoidance()
+{
+    m_avoiding = false;
 }

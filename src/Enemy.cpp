@@ -105,3 +105,9 @@ void Enemy::NotifyCollision()
         m_MoveBehavior->OnCollision();
     }
 }
+
+void Enemy::OnSuccessfulMove() {
+    // Only clear avoidance if the current move behavior supports it
+    m_MoveBehavior->ClearAvoidance();
+    // (No need to know which concrete type it is)
+}

@@ -112,9 +112,10 @@ void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingOb
     auto& factory = Factory<UpdateableObject>::instance();
     
     //first third (3 simple enemies)
-    for (int i = 0; i < 3; ++i)
+    for (int i = 0; i < 8; ++i)
     {
-        m_movingObj.emplace_back(factory.create(ObjectType::SIMPLENEMY, { randX(), randYIn(0) }));
+        m_movingObj.emplace_back(factory.create(ObjectType::BFSENEMY, { randX(), randYIn(0) }));
+        m_movingObj.emplace_back(factory.create(ObjectType::SMARTENEMY, { randX(), randYIn(0) }));
     }
 
     //second third (1 simple, 2 smart)
