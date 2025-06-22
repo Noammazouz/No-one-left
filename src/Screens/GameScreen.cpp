@@ -74,7 +74,7 @@ void GameScreen::initButtons()
 	m_buttons.emplace_back("pause", pos);
 
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-	std::vector<std::string> buttonNames = { "resume", "exit" };
+	std::vector<std::string> buttonNames = { "resume", "help game screen" };
 	for (int index = 0; index < buttonNames.size(); ++index)
 	{
 		sf::Vector2f position(static_cast<float>(desktop.width * WINDOW_RATIO / 2),

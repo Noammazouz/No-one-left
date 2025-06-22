@@ -98,3 +98,5 @@ const sf::Color FONT_COLOR = sf::Color(128, 0, 128);
 const int MAX_BULLETS = 29; //Maximum number of bullets that a gun have.
 const int MIN_BOUND_BULLETS = 0; //Minimum number of bullets that a gun have.
 
+
+
