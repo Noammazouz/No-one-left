@@ -50,7 +50,7 @@ void ResourcesManager::loadTexture()
 {
     std::vector<std::pair<std::string, std::string>> textures =
     {
-        {"background","gamebackgroundGPT.png"},
+        {"background","gamebackground.png"},
         {"Player", "Player.png"},
         {"wall","wall.png"},
         {"startScreen", "startScreen.png"},
