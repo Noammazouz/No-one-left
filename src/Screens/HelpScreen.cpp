@@ -5,7 +5,6 @@
 //-----------------------------------------------------------------------------
 HelpScreen::HelpScreen()
 {
-	// Initialize buttons
 	initButtons();
 }
 
@@ -16,7 +15,6 @@ void HelpScreen::draw(sf::RenderWindow& window)
 	sf::Texture texture = ResourcesManager::getInstance().getTexture("help screen");
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
 	sf::Sprite helpMenu(texture);
-	helpMenu.setScale(1.8f, 1.75f); // Scale the help menu to fit the window
 	helpMenu.setScale(desktop.width * WINDOW_RATIO / texture.getSize().x,
 					  desktop.height * WINDOW_RATIO / texture.getSize().y); // Scale the background to fit the window
 	window.draw(helpMenu);
@@ -26,11 +24,10 @@ void HelpScreen::draw(sf::RenderWindow& window)
 	{
 		window.draw(text);
 	}
-	//m_buttons[0].draw(window);
 }
 
 //-----------------------------------------------------------------------------
-void HelpScreen::activate(sf::Clock& clockin, int& m_currrentScreen)
+void HelpScreen::activate(sf::Clock& /*clockin*/, int& /*m_currrentScreen*/)
 {}
 
 //-----------------------------------------------------------------------------
@@ -43,7 +40,7 @@ void HelpScreen::initButtons()
 }
 
 //-----------------------------------------------------------------------------
-void  HelpScreen::handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow& window, int& screenState)
+void  HelpScreen::handleMouseClick(const sf::Vector2f& clickPos, int& screenState)
 {
 	for (int index = 0; index < m_buttons.size(); ++index)
 	{

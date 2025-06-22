@@ -29,7 +29,7 @@ public:
 	void draw(sf::RenderWindow& window) override;
 	virtual void activate(sf::Clock& clockin, int& m_currrentScreen) override;
 	virtual void run(sf::RenderWindow& window, int& m_currrentScreen) override;
-	virtual void handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow& window, int& screenState) override;
+	virtual void handleMouseClick(const sf::Vector2f& clickPos, int& screenState) override;
 
 protected:
 	void initButtons() override;
@@ -47,6 +47,7 @@ private:
 	void handleLoadingLevel();
 	void handleScoreBoard();
 	void removeGuard();
+	void resetGame();
 	void addTime();
 	sf::Vector2f clampViewPosition(const sf::FloatRect& bounds);
 
@@ -61,6 +62,7 @@ private:
 
 	bool m_win = false;
 	bool m_paused = false;
+	bool m_lost = false;
 	std::vector<std::unique_ptr<UpdateableObject>> m_movingObj;
 	std::vector<std::unique_ptr<StaticObject>> m_staticObj;
 };

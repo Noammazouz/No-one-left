@@ -56,6 +56,6 @@ private:
 	static int m_bulletCount;
 	bool m_win = false;
 	bool m_isShooting = false;
-	std::unique_ptr<AttackBehavior> m_attackBehavior;
+	//std::unique_ptr<AttackBehavior> m_attackBehavior;
 	float m_targetAngle = 0.f; // add this to private section
 };

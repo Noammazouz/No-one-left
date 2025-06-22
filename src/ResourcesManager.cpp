@@ -7,7 +7,7 @@
 ResourcesManager::ResourcesManager()
 {
     loadTexture();
-    initializeMusic();
+    //initializeMusic();
     initializeFont();
     intializeHelpText();
 }
@@ -35,11 +35,12 @@ std::vector<sf::Text> ResourcesManager::getHelpText() const
 //------------------------------------------------------------------------------
 const sf::Texture& ResourcesManager::getTexture(std::string name) const
 {
+	std::string errorMessage = "Could not find texture: " + name;
 	//std::cout << "Getting texture: " << name << std::endl;
     auto it = m_textures.find(name);
     if (it == m_textures.end())
     {
-        std::cout << "Could not find texture: " << name << std::endl;
+        throw std::runtime_error(errorMessage);
     }
 	//std::cout << "Found texture: " << name << std::endl;
     return it->second;
@@ -50,7 +51,7 @@ void ResourcesManager::loadTexture()
 {
     std::vector<std::pair<std::string, std::string>> textures =
     {
-        {"background","gamebackgroundGPT.png"},
+        {"background","gamebackground.png"},
         {"Player", "Player.png"},
         {"wall","wall.png"},
         {"startScreen", "startScreen.png"},
@@ -70,37 +71,22 @@ void ResourcesManager::loadTexture()
         {"clock", "clock.png"},
         {"obstacle1","obstacle1.png"},
         {"obstacle2","obstacle2.png"},
-        {"obstacle3","obstacle3.png"}
-        /*{"guard", "Guard.png"},
-        {"player", "Robot.png"},
-        {"rock", "Rock.png"},
-        {"empty", "empty.png"},
-        {"menu", "menu.png"},
-        {"backround", "helpBackground.png"},
-        {"start game", "start game.png"},
-        {"exit", "exit.png"},
-        {"help", "help.png"},
-        {"return", "return.png"},
-        {"explation", "help screen.png"},
-        {"bomb", "bomb.png"},
-        {"freeze", "freeze.png"},
-        {"explosion", "Explosion.png"},
-        {"add time", "add_time.png"},
-        {"add life", "m_medkit.png"},
-        {"kill guard", "o_water.png"},
+        {"obstacle3","obstacle3.png"},
         {"game over", "lose_screen.png"},
-        {"win", "win_screen.png"}*/
+        {"start menu", "home.png"}
+        /*{"win", "win_screen.png"}*/
     };
 
     for (const auto& [name, filePath] : textures)
     {
+		std::string errorMessage = "Failed to load texture: " + filePath;
         sf::Texture texture;
         if (!texture.loadFromFile(filePath))
         {
-            std::cout << "Failed to load texture " << filePath << std::endl;
+            throw std::runtime_error(errorMessage);
         }
-		texture.setSmooth(true); // Enable smooth scaling for the texture
-        // Insert the texture into the unordered_map
+
+		texture.setSmooth(true);
         m_textures.emplace(name, std::move(texture));
     }
 }
@@ -110,11 +96,11 @@ void ResourcesManager::initializeMusic()
 {
     //if (!m_menuMusic.openFromFile("menuMusic.ogg"))
     //{
-    //    std::cerr << "Error loading menu music" << std::endl;
+    //    throw std::runtime_error("Error loading menu music");
     //}
     //if (!m_gameMusic.openFromFile("Liquidzz.ogg"))
     //{
-    //    std::cerr << "Error loading game music" << std::endl;
+    //    throw std::runtime_error("Error loading game music");
     //}
     //m_menuMusic.setLoop(true);
     //m_gameMusic.setLoop(true);
@@ -189,7 +175,7 @@ void ResourcesManager::intializeHelpText()
     std::ifstream file("help.txt");
     if (!file) 
     {
-       throw std::runtime_error("[ERROR] Cannot open help.txt");
+        throw std::runtime_error("[ERROR] Cannot open help.txt");
         return;
     }
 

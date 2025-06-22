@@ -4,6 +4,7 @@
 //-----functions section------
 //-----------------------------------------------------------------------------
 Screen::Screen()
+	: m_previousScreen(START_SCREEN)
 {}
 
 //-----------------------------------------------------------------------------
@@ -21,12 +22,12 @@ void Screen::run(sf::RenderWindow& window, int& currentScreen)
 			}
 			case sf::Event::MouseButtonReleased:
 			{
-				handleMouseClick(window.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y }), window, currentScreen);
+				handleMouseClick(window.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y }), currentScreen);
 				break;
 			}
 			case sf::Event::KeyPressed:
 			{
-				handleKeyPressed(event.key, currentScreen, window);
+				handleKeyPressed(event.key, currentScreen);
 				break;
 			}
 		}
@@ -40,7 +41,7 @@ void Screen::setPreviousScreen(int previousScreen)
 }
 
 //-----------------------------------------------------------------------------
-void Screen::handleKeyPressed(sf::Event::KeyEvent event, int& currentScreen, sf::RenderWindow& window)
+void Screen::handleKeyPressed(sf::Event::KeyEvent event, int& currentScreen)
 {
 	if (event.code == sf::Keyboard::Escape)
 	{

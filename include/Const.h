@@ -22,6 +22,11 @@ enum ScreenButtons
 	EXIT
 };
 
+enum LoseScreenButtons
+{
+	HOME = 1
+};
+
 enum Present
 {
 	TIME,
@@ -105,6 +110,3 @@ const std::string GAME_MUSIC = "game";
 const std::string RETURN_BUTTON = "return";
 
 const sf::Color FONT_COLOR = sf::Color(128, 0, 128);
-
-
-

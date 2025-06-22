@@ -22,7 +22,7 @@ void StartScreen::draw(sf::RenderWindow& window)
 }
 
 //-----------------------------------------------------------------------------
-void StartScreen::activate(sf::Clock& clocking, int& m_currentScreen)
+void StartScreen::activate(sf::Clock& /*clocking*/, int& /*m_currentScreen*/)
 {}
 
 //-----------------------------------------------------------------------------
@@ -38,7 +38,7 @@ void StartScreen::initButtons()
 }
 
 //-----------------------------------------------------------------------------
-void StartScreen::handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow& window, int& screenState)
+void StartScreen::handleMouseClick(const sf::Vector2f& clickPos, int& screenState)
 {
 	for (int index = 0; index < m_buttons.size(); ++index)
 	{

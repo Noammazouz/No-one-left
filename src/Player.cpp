@@ -12,13 +12,13 @@ int Player::m_bulletCount = NUM_OF_BULLETS;
 
 //-----------------------------------------------------------------------------
 Player::Player()
-	: UpdateableObject(), m_isShooting(false), m_attackBehavior(std::make_unique<OneDirectionAttackBehavior>()), m_lives(NUM_OF_LIVES)
+	: UpdateableObject(), m_isShooting(false), /*m_attackBehavior(std::move(std::make_unique<OneDirectionAttackBehavior>())),*/ m_lives(NUM_OF_LIVES)
 {
 }
 
 //-----------------------------------------------------------------------------
 Player::Player(sf::Vector2f position, std::string name)
-	: UpdateableObject(position, name), m_isShooting(false), m_attackBehavior(std::make_unique<OneDirectionAttackBehavior>()), m_lives(NUM_OF_LIVES)
+	: UpdateableObject(position, name), m_isShooting(false), /*m_attackBehavior(std::move(std::make_unique<OneDirectionAttackBehavior>())),*/ m_lives(NUM_OF_LIVES)
 {
 	m_frames.clear();
 	m_frames.reserve(PLAYER_FRAME_COUNT);
@@ -29,7 +29,7 @@ Player::Player(sf::Vector2f position, std::string name)
 
 	m_pic.setTextureRect(m_frames[currentPlayerFrame]); //set for the first frame at first.
 	m_pic.setOrigin(PLAYER_WIDTH / 2, PLAYER_HEIGHT / 2); //Set origin to center.
-	m_pic.setPosition(position);
+	//m_pic.setPosition(position);
 }
 
 //-----------------------------------------------------------------------------
@@ -42,45 +42,6 @@ void Player::update(sf::Time deltaTime, sf::Vector2f /*playerPos*/)
 }
 
 //-----------------------------------------------------------------------------
-//void Player::setDirection()
-//{
-//	if (checkDirection())
-//	{
-//		// Get the current key being pressed and update movement
-//		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-//		{
-//			m_direction = sf::Vector2f(-1, 0);
-//			this->mirrorImage(m_direction);
-//		}
-//		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-//		{
-//			m_direction = sf::Vector2f(1, 0);
-//			this->mirrorImage(m_direction);
-//		}
-//		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-//		{
-//			m_direction = sf::Vector2f(0, -1);
-//		}
-//		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-//		{
-//			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) m_direction = sf::Vector2f(-1, 1);
-//			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) m_direction = sf::Vector2f(1, 1);
-//			else m_direction = sf::Vector2f(0, 1);
-//		}
-//		else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-//		{
-//			m_direction = sf::Vector2f(0, 0);
-//		}
-//	}
-//	else
-//	{
-//		// If no movement keys are pressed, stop the player
-//		m_direction = sf::Vector2f(0, 0);
-//	}
-//
-//	this->setRotation(m_direction);
-//}
-
 void Player::setDirection()
 {
 	if (!checkDirection())
@@ -249,9 +210,6 @@ void Player::doAttack(std::vector<std::unique_ptr<Projectile>>& bullets)
 		}
 	}
 }
-
-
-
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
