@@ -24,11 +24,10 @@ void HelpScreen::draw(sf::RenderWindow& window)
 	{
 		window.draw(text);
 	}
-	//m_buttons[0].draw(window);
 }
 
 //-----------------------------------------------------------------------------
-void HelpScreen::activate(sf::Clock& clockin, int& m_currrentScreen)
+void HelpScreen::activate(sf::Clock& /*clockin*/, int& /*m_currrentScreen*/)
 {}
 
 //-----------------------------------------------------------------------------
@@ -41,7 +40,7 @@ void HelpScreen::initButtons()
 }
 
 //-----------------------------------------------------------------------------
-void  HelpScreen::handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow& window, int& screenState)
+void  HelpScreen::handleMouseClick(const sf::Vector2f& clickPos, int& screenState)
 {
 	for (int index = 0; index < m_buttons.size(); ++index)
 	{

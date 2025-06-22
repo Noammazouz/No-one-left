@@ -22,6 +22,11 @@ enum ScreenButtons
 	EXIT
 };
 
+enum LoseScreenButtons
+{
+	HOME = 1
+};
+
 enum Present
 {
 	TIME,

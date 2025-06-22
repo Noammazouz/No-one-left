@@ -25,7 +25,8 @@ struct MapSection
 class BfsMoveBehavior : public MoveBehavior
 {
 public:
-    BfsMoveBehavior();
+    BfsMoveBehavior() = default;
+    BfsMoveBehavior(int worldWidth, int worldHeight, int sectionSize, int localGridSize);
     sf::Vector2f Move(sf::Vector2f playerPos, sf::Time deltaTime, sf::Vector2f enemyPos);
     // Note: Obstacle management methods removed - using collision-based approach instead
 

@@ -14,6 +14,6 @@ public:
 	virtual void activate(sf::Clock& clockin, int& m_currrentScreen) override;
 
 protected:
-	virtual void handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow& window, int& screenState) override;
+	virtual void handleMouseClick(const sf::Vector2f& clickPos, int& screenState) override;
 	virtual void initButtons() override;
 };
