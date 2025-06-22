@@ -13,7 +13,7 @@ LoseScreen::LoseScreen()
 void LoseScreen::draw(sf::RenderWindow& window) 
 {
 	window.setView(window.getDefaultView());
-	sf::Texture texture = ResourcesManager::getInstance().getTexture("lose_screen");
+	sf::Texture texture = ResourcesManager::getInstance().getTexture("game over");
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
 	sf::Sprite loseScreen(texture);
 	loseScreen.setScale(desktop.width * WINDOW_RATIO / texture.getSize().x,
@@ -23,14 +23,14 @@ void LoseScreen::draw(sf::RenderWindow& window)
 }
 
 //-----------------------------------------------------------------------------
-void LoseScreen::activate(sf::Clock& clock, int& state) 
+void LoseScreen::activate(sf::Clock& /*clock*/, int& /*state*/) 
 {
 }
 
 //-----------------------------------------------------------------------------
-void LoseScreen::handleMouseClick(const sf::Vector2<float>& clickPos, sf::RenderWindow& window, int& state)
+void LoseScreen::handleMouseClick(const sf::Vector2f& clickPos, int& screenState)
 {
-   /*
+   
     for (int index = 0; index < m_buttons.size(); ++index)
 	{
 		if(m_buttons[index].getBounds().contains(clickPos))
@@ -42,7 +42,7 @@ void LoseScreen::handleMouseClick(const sf::Vector2<float>& clickPos, sf::Render
 					screenState = GAME_SCREEN;
 					return;
 				}
-				case START_MENU:
+				case HOME:
 				{
 					screenState = START_SCREEN;
 					break;
@@ -55,18 +55,18 @@ void LoseScreen::handleMouseClick(const sf::Vector2<float>& clickPos, sf::Render
 			}
 		}
 	}
-   */
+   
 }
 
 //-----------------------------------------------------------------------------
 void LoseScreen::initButtons() 
 {
-	/*sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
 	std::vector<std::string> buttonNames = { "start game", "start menu" ,"exit"};
 	for (int index = 0; index < buttonNames.size(); ++index)
 	{
 		sf::Vector2f position(static_cast<float>(desktop.width * WINDOW_RATIO / 2),
 			static_cast<float>(desktop.height * WINDOW_RATIO / 5 + 300 * index));
 		m_buttons.emplace_back(buttonNames[index], position);
-	}*/
+	}
 }

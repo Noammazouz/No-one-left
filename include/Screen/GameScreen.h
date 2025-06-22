@@ -29,7 +29,7 @@ public:
 	void draw(sf::RenderWindow& window) override;
 	virtual void activate(sf::Clock& clockin, int& m_currrentScreen) override;
 	virtual void run(sf::RenderWindow& window, int& m_currrentScreen) override;
-	virtual void handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow& window, int& screenState) override;
+	virtual void handleMouseClick(const sf::Vector2f& clickPos, int& screenState) override;
 
 protected:
 	void initButtons() override;

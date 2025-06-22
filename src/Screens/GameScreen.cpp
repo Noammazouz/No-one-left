@@ -118,7 +118,6 @@ void GameScreen::move(sf::Clock& clock)
 {
 	const auto deltaTime = clock.restart();
 
-	int index = 0;
 	m_player.update(deltaTime, sf::Vector2f());
 	for (const auto& movingObj : m_movingObj)
 	{
@@ -351,7 +350,7 @@ void GameScreen::addTime()
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow& window, int& screenState)
+void GameScreen::handleMouseClick(const sf::Vector2f& clickPos, int& screenState)
 {
 	if (!m_paused)
 	{
