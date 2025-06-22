@@ -17,6 +17,7 @@ GameScreen::GameScreen()
 //-----------------------------------------------------------------------------
 void GameScreen::run(sf::RenderWindow& window, int& m_currrentScreen)
 {
+	if (m_lost) resetGame();
 	Screen::run(window, m_currrentScreen);
 	m_view.setCenter(m_player.getPos());
 	m_view.setCenter(clampViewPosition(worldBounds));
@@ -63,6 +64,7 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 	if (m_player.getLife() == END_GAME)
 	{
 		m_currrentScreen = LOSE_SCREEN;
+		m_lost = true;
 		return;
 	}
 }
@@ -310,7 +312,7 @@ void GameScreen::handleLoadingLevel()
 {
 	m_movingObj.clear();
 	m_staticObj.clear();
-
+	
 	m_map.loadlevelobj(m_movingObj,m_staticObj, m_player);
 	m_stopwatch = sf::seconds(0);
 }
@@ -332,6 +334,13 @@ void GameScreen::removeGuard()
 		int index = rand() % Enemy::getNumOfGuardsAlive();
 		m_movingObj[index]->setLife(true);
 	}*/
+}
+
+void GameScreen::resetGame()
+{
+	m_lost = false;
+	m_win = false;
+	handleLoadingLevel();
 }
 
 //-----------------------------------------------------------------------------
@@ -359,16 +368,16 @@ void GameScreen::handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow
 		{
 			switch (index)
 			{
-			case RESUME:
-			{
-				m_paused = false;
-				break;
-			}
-			case _HELP:
-			{
-				screenState = HELP_SCREEN;
-				break;
-			}
+				case RESUME:
+				{
+					m_paused = false;
+					break;
+				}
+				case _HELP:
+				{
+					screenState = HELP_SCREEN;
+					break;
+				}
 			}
 		}
 	}
