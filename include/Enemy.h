@@ -18,6 +18,8 @@ public:
 	void SetAttackBehavior(std::unique_ptr<AttackBehavior>	pAttackBehavior);
 	void SetDirection(sf::Vector2f direction);
 	sf::Vector2f getDirection() const;
+	void NotifyCollision();
+	void OnSuccessfulMove();
 
 	//static int getNumOfStartingEnemies();
 	//static int getNumOfEnemiesAlive();
