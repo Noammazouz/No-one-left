@@ -10,7 +10,7 @@
 //-----functions section------
 //-----------------------------------------------------------------------------
 Bullets::Bullets(sf::Vector2f position, sf::Vector2f dir, float spd)
-    : ItemsToCollect(position), direction(dir), speed(spd), isActive(true)
+    : ItemsToCollect("bullets", position), direction(dir), speed(spd), isActive(true)
 {
     float length = std::sqrt(direction.x * direction.x + direction.y * direction.y); // to get same speed for all directions
     if (length > 0)

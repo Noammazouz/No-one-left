@@ -5,6 +5,6 @@
 class ItemsToCollect : public StaticObject  
 {  
 public:  
-   ItemsToCollect(sf::Vector2f position); // Updated constructor to match the argument list in Bullets.cpp  
+   ItemsToCollect(std::string name, sf::Vector2f position); // Updated constructor to match the argument list in Bullets.cpp  
    ~ItemsToCollect() = default;  
 };
