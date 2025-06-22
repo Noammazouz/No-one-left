@@ -22,10 +22,10 @@ public:
     void setActive(bool active);
     bool isOutOfMap() const;
 
-    virtual void collide(GameObject& otherObject) override;
+    /*virtual void collide(GameObject& otherObject) override;
     virtual void enemyCollide(Enemy& otherObject) override;
     virtual void playerCollide(Player& otherObject) override;
-    virtual void explosionCollide(Explosion& otherobject) override;
+    virtual void explosionCollide(Explosion& otherobject) override;*/
 
 
 private:
