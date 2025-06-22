@@ -77,9 +77,19 @@ const int ENDING_LEVEL = 25;
 const int KILL_ENEMY = 5;
 const int NUM_OF_DIRECTION = 4;
 const int NUM_OF_EXPLOSION = 5;
+const int NUM_OF_DIRECTIONS = 8;
+const int NUM_OF_BULLETS = 29;
+const int ONE_DIRECTION_BULLET = 1;
+const int ALL_DIRECTIONS_BULLETS = 8;
 const int NUM_OF_STUPID_ENEMY = 10;
 const int NUM_OF_SMART_ENEMY = 5;
+const int PLAYER_FRAME_COUNT = 10;
+const int PLAYER_HEIGHT = 53; //Height of the player sprite
+const int PLAYER_WIDTH = 50; //Width of the player sprite
+const int MAX_BULLETS = 29; //Maximum number of bullets that a gun have.
+const int MIN_BOUND_BULLETS = 0; //Minimum number of bullets that a gun have.
 
+const float PLAYER_FRAME_TIME = 0.1f; //seconds per frame for the player animation
 const float CHANGE_DIRECTION_TIME = 0.f;
 const float PLAYER_SPEED = 500.f;
 const float ENEMY_SPEED = 125.f;
@@ -95,10 +105,3 @@ const std::string GAME_MUSIC = "game";
 const std::string RETURN_BUTTON = "return";
 
 const sf::Color FONT_COLOR = sf::Color(128, 0, 128);
-const int MAX_BULLETS = 29; //Maximum number of bullets that a gun have.
-const int MIN_BOUND_BULLETS = 0; //Minimum number of bullets that a gun have.
-
-const float PLAYER_FRAME_TIME = 0.1f; //seconds per frame for the player animation
-const int PLAYER_FRAME_COUNT = 10;
-const int PLAYER_HEIGHT = 53; //Height of the player sprite
-const int PLAYER_WIDTH = 50; //Width of the player sprite

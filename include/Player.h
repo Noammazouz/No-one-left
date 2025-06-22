@@ -10,6 +10,11 @@
 #include "Wall.h"
 #include "Bombs.h"
 #include "Explosion.h"
+#include "Bullets.h"
+#include "AttackBehavior.h"
+#include <vector>
+#include <memory>
+#include "Const.h"
 
 class GameObject;
 
@@ -31,13 +36,25 @@ public:
 	int getLife();
 	sf::Vector2f getPos() const;
 
+	static int getNumOfBullets();
+	static void addBullets(int bullets);
+	static void decBullets();
+	static bool isBulletsAvailable();
+	sf::Vector2f getCurrentDirection() const;
+	void handleShooting(std::vector<std::unique_ptr<Bullets>>& bullets);
+	void setAttackBehavior(std::unique_ptr<AttackBehavior> attackBehavior);
+
 private:
 	bool checkDirection();
 	void setDirection();
+	void doAttack(std::vector<std::unique_ptr<Bullets>>& bullets);
 
 	sf::Vector2f m_direction;
 	int m_lives;
 	static int m_score;
+	static int m_bulletCount;
 	bool m_win = false;
-	float m_targetAngle = 0.f; //add this to private section.
+	bool m_isShooting = false;
+	std::unique_ptr<AttackBehavior> m_attackBehavior;
+	float m_targetAngle = 0.f; // add this to private section
 };
