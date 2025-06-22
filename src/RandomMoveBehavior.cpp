@@ -35,7 +35,7 @@ sf::Vector2f RandomMoveBehavior::Move(sf::Vector2f /*playerPos*/, sf::Time delta
 //-----------------------------------------------------------------------------
 void RandomMoveBehavior::chooseNewDirection()
 {
-    int random_directon = rand() % 8;
+    int random_directon = rand() % NUM_OF_DIRECTIONS;
 
     switch (random_directon)
     {
