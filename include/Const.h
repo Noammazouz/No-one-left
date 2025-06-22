@@ -72,6 +72,10 @@ const int ENDING_LEVEL = 25;
 const int KILL_ENEMY = 5;
 const int NUM_OF_DIRECTION = 4;
 const int NUM_OF_EXPLOSION = 5;
+const int NUM_OF_DIRECTIONS = 8;
+const int NUM_OF_BULLETS = 29;
+const int ONE_DIRECTION_BULLET = 1;
+const int ALL_DIRECTIONS_BULLETS = 8;
 
 const float CHANGE_DIRECTION_TIME = 0.f;
 const float BUTTON_WIDTH = 300;
