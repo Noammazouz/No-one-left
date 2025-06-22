@@ -1,0 +1,25 @@
+                                        HELP
+
+ CONTROLS:
+ - Movement: Use Arrow Keys (Left, Right, Up, Down).
+ - To Shoot: Press Spacebar.
+ - To Pause: Press The Button In The Top Left Corner.
+ - Music: Press M to mute/unmute.
+ - Back to Menu: Press Escape.
+
+
+ HOW TO PLAY:
+ Eliminate all enemies to win the game and avoid their fire.
+ 3 ifferent levels of difficulty.
+ Each enemy moves and shoots differently.
+ Use obstacles to your advantage (for cover or to block enemeis).
+
+
+ TIPS:
+ - Use the environment to your advantage -- don't rush!
+ - Predict and trap enemies.
+ - Strategy, timing and patience Are the key to winning the fight
+
+
+ GOOD LUCK!
+ Have fun, good luck soldier!

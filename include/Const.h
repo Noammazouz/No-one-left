@@ -98,7 +98,12 @@ const sf::Color FONT_COLOR = sf::Color(128, 0, 128);
 const int MAX_BULLETS = 29; //Maximum number of bullets that a gun have.
 const int MIN_BOUND_BULLETS = 0; //Minimum number of bullets that a gun have.
 
+<<<<<<< HEAD
+
+
+=======
 const float PLAYER_FRAME_TIME = 0.1f; //seconds per frame for the player animation
 const int PLAYER_FRAME_COUNT = 10;
 const int PLAYER_HEIGHT = 53; //Height of the player sprite
 const int PLAYER_WIDTH = 50; //Width of the player sprite
+>>>>>>> 00f0f454bee4cad30434b75b57a0d463c29831ab

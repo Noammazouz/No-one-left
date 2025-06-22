@@ -21,6 +21,11 @@ void HelpScreen::draw(sf::RenderWindow& window)
 					  desktop.height * WINDOW_RATIO / texture.getSize().y); // Scale the background to fit the window
 	window.draw(helpMenu);
 	drawButtons(window);
+	auto helpText = ResourcesManager::getInstance().getHelpText();
+	for(const auto& text : helpText)
+	{
+		window.draw(text);
+	}
 	//m_buttons[0].draw(window);
 }
 
@@ -33,7 +38,7 @@ void HelpScreen::initButtons()
 {
 	// Initialize buttons for the help screen
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-	sf::Vector2f position(20.f, 20.f);
+	sf::Vector2f position(40.f, 40.f);
 	m_buttons.emplace_back(RETURN_BUTTON, position);
 }
 
@@ -45,7 +50,6 @@ void  HelpScreen::handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindo
 		if (m_buttons[index].getBounds().contains(clickPos))
 		{
 			screenState = m_previousScreen;
-			std::cout << "Returning to previous screen: " << m_previousScreen << std::endl;
 		}
 	}
 }

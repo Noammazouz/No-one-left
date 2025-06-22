@@ -8,6 +8,7 @@ configure_file ("startScreen.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("exit.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("start game.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("help.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("help2.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("pauseButton.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("help screen.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("return.png" ${CMAKE_BINARY_DIR} COPYONLY)
@@ -19,5 +20,10 @@ configure_file ("clock.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("obstacle1.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("obstacle2.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("obstacle3.png" ${CMAKE_BINARY_DIR} COPYONLY)
+<<<<<<< HEAD
+configure_file ("resume.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("help.txt" ${CMAKE_BINARY_DIR} COPYONLY)
+=======
 configure_file ("life.png" ${CMAKE_BINARY_DIR} COPYONLY)
+>>>>>>> 00f0f454bee4cad30434b75b57a0d463c29831ab
 #configure_file ("pauseButtonHL.png" ${CMAKE_BINARY_DIR} COPYONLY)

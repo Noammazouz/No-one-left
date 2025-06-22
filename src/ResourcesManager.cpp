@@ -9,6 +9,7 @@ ResourcesManager::ResourcesManager()
     loadTexture();
     initializeMusic();
     initializeFont();
+    intializeHelpText();
 }
 
 //------------------------------------------------------------------------------
@@ -25,6 +26,11 @@ ResourcesManager& ResourcesManager::getInstance()
 //------------------------------------------------------------------------------
 void ResourcesManager::show() const
 {}
+
+std::vector<sf::Text> ResourcesManager::getHelpText() const
+{
+    return m_helpText;
+}
 
 //------------------------------------------------------------------------------
 const sf::Texture& ResourcesManager::getTexture(std::string name) const
@@ -51,8 +57,9 @@ void ResourcesManager::loadTexture()
         {"start game", "start game.png"},
         {"exit", "exit.png"},
         {"help", "help.png"},
+        {"help game screen", "help2.png"},
         {"pause", "pauseButton.png"},
-        {"resume", "start game.png"},
+        {"resume", "resume.png"},
         {"help screen", "help screen.png"},
         {"return", "return.png"},
         {"SimpleEnemy", "Enemy.png"},
@@ -174,4 +181,26 @@ sf::SoundBuffer& ResourcesManager::getSound(std::string name)
         //std::cout << "Could not find sound: " << name << std::endl;
     }
     return it->second;
+}
+
+//------------------------------------------------------------------------------
+void ResourcesManager::intializeHelpText()
+{
+    std::ifstream file("help.txt");
+    if (!file) 
+    {
+       throw std::runtime_error("[ERROR] Cannot open help.txt");
+        return;
+    }
+
+    std::string line;
+    float yOffset = 100.f;
+    while (std::getline(file, line)) 
+    {
+        sf::Text text(line, m_font, 20);
+        text.setPosition(100.f, yOffset);
+        text.setFillColor(sf::Color::White);
+        m_helpText.push_back(text);
+        yOffset += 28.f;
+    }
 }
