@@ -1,14 +1,17 @@
+//-----includes section-----
 #include "BfsMoveBehavior.h"
 #include <iostream>
 #include <cmath>
 #include <algorithm>
 
-const sf::Time BfsMoveBehavior::PATH_UPDATE_INTERVAL = sf::seconds(0.2f); // Balanced update frequency
+//-----constants section-----
+const sf::Time BfsMoveBehavior::PATH_UPDATE_INTERVAL = sf::seconds(0.2f); //Balanced update frequency
 
-BfsMoveBehavior::BfsMoveBehavior(int /*worldWidth*/, int /*worldHeight*/, int /*sectionSize*/, int /*localGridSize*/)
-    : sectionSize(50), localGridSize(10), currentHighLevelIndex(0), hasObstaclesSet(false) {
-    // Simple initialization - we don't need complex grid setup for collision-based approach
-    std::cout << "[BFS] Initialized - using collision-based movement" << std::endl;
+//-----functions section------
+//-----------------------------------------------------------------------------
+BfsMoveBehavior::BfsMoveBehavior()
+    : sectionSize(50), localGridSize(10), currentHighLevelIndex(0), hasObstaclesSet(false) 
+{
 }
 
 sf::Vector2f BfsMoveBehavior::Move(sf::Vector2f playerPos, sf::Time /*deltaTime*/, sf::Vector2f enemyPos) 
@@ -26,7 +29,31 @@ sf::Vector2f BfsMoveBehavior::Move(sf::Vector2f playerPos, sf::Time /*deltaTime*
         return m_avoidDirection;
 
     return direction;
-}
+//-----------------------------------------------------------------------------
+//sf::Vector2f BfsMoveBehavior::Move(sf::Vector2f playerPos, sf::Time /*deltaTime*/, sf::Vector2f enemyPos) 
+//{
+    // Simple approach: Use direct movement and let collision system handle walls
+    // This is much more reliable than complex pathfinding
+    
+    // Calculate direct direction to player
+ //   sf::Vector2f direction = playerPos - enemyPos;
+ //   float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+    
+    // If we're close enough, don't move
+  //  if (distance < 50.0f) 
+ //   {
+//        return sf::Vector2f(0.0f, 0.0f);
+ //   }
+    
+    // Return normalized direction - collision system will handle walls
+//    if (distance > 0.0f) 
+ //   {
+ //       return sf::Vector2f(direction.x / distance, direction.y / distance);
+ //   }
+    
+//    return sf::Vector2f(0.0f, 0.0f);
+
+//}
 //{
 //    // Simple approach: Use direct movement and let collision system handle walls
 //    // This is much more reliable than complex pathfinding
@@ -51,7 +78,9 @@ sf::Vector2f BfsMoveBehavior::Move(sf::Vector2f playerPos, sf::Time /*deltaTime*
 // Note: Obstacle management functions removed 
 // BFS now uses collision-based wall avoidance instead of pathfinding
 
-sf::Vector2i BfsMoveBehavior::worldToSection(sf::Vector2f worldPos) {
+//-----------------------------------------------------------------------------
+sf::Vector2i BfsMoveBehavior::worldToSection(sf::Vector2f worldPos) 
+{
     // Ensure positive coordinates and proper bounds
     int sectionX = static_cast<int>(std::max(0.0f, worldPos.x) / sectionSize);
     int sectionY = static_cast<int>(std::max(0.0f, worldPos.y) / sectionSize);
@@ -63,7 +92,9 @@ sf::Vector2i BfsMoveBehavior::worldToSection(sf::Vector2f worldPos) {
     return sf::Vector2i(sectionX, sectionY);
 }
 
-sf::Vector2i BfsMoveBehavior::worldToLocalGrid(sf::Vector2f worldPos) {
+//-----------------------------------------------------------------------------
+sf::Vector2i BfsMoveBehavior::worldToLocalGrid(sf::Vector2f worldPos) 
+{
     sf::Vector2i section = worldToSection(worldPos);
     sf::Vector2f sectionOrigin(section.x * sectionSize, section.y * sectionSize);
     sf::Vector2f localPos = worldPos - sectionOrigin;
@@ -81,16 +112,20 @@ sf::Vector2i BfsMoveBehavior::worldToLocalGrid(sf::Vector2f worldPos) {
     return sf::Vector2i(localX, localY);
 }
 
-sf::Vector2f BfsMoveBehavior::sectionToWorld(sf::Vector2i sectionPos) {
+//-----------------------------------------------------------------------------
+sf::Vector2f BfsMoveBehavior::sectionToWorld(sf::Vector2i sectionPos) 
+{
     return sf::Vector2f(
         sectionPos.x * sectionSize + sectionSize / 2.0f,
         sectionPos.y * sectionSize + sectionSize / 2.0f
     );
 }
 
-sf::Vector2f BfsMoveBehavior::localGridToWorld(sf::Vector2i localPos, sf::Vector2i sectionPos) {
+//-----------------------------------------------------------------------------
+sf::Vector2f BfsMoveBehavior::localGridToWorld(sf::Vector2i localPos, sf::Vector2i sectionPos) 
+{
     int localCellSize = sectionSize / localGridSize;
-    if (localCellSize <= 0) localCellSize = 1; // Prevent issues
+    if (localCellSize <= 0) localCellSize = 1; //Prevent issues
     
     sf::Vector2f sectionOrigin(sectionPos.x * sectionSize, sectionPos.y * sectionSize);
 
@@ -100,7 +135,9 @@ sf::Vector2f BfsMoveBehavior::localGridToWorld(sf::Vector2i localPos, sf::Vector
     );
 }
 
-std::vector<sf::Vector2i> BfsMoveBehavior::findHighLevelPath(sf::Vector2f start, sf::Vector2f target) {
+//-----------------------------------------------------------------------------
+std::vector<sf::Vector2i> BfsMoveBehavior::findHighLevelPath(sf::Vector2f start, sf::Vector2f target) 
+{
     sf::Vector2i startSection = worldToSection(start);
     sf::Vector2i targetSection = worldToSection(target);
 
@@ -108,13 +145,15 @@ std::vector<sf::Vector2i> BfsMoveBehavior::findHighLevelPath(sf::Vector2f start,
               << ") to (" << targetSection.x << ", " << targetSection.y << ")" << std::endl;
 
     if (!isValidSection(startSection.x, startSection.y) ||
-        !isValidSection(targetSection.x, targetSection.y)) {
+        !isValidSection(targetSection.x, targetSection.y)) 
+    {
         std::cout << "[BFS] Invalid start or target section!" << std::endl;
         return {};
     }
 
     // If start and target are in same section, return empty path (already there)
-    if (startSection.x == targetSection.x && startSection.y == targetSection.y) {
+    if (startSection.x == targetSection.x && startSection.y == targetSection.y) 
+    {
         std::cout << "[BFS] Start and target in same section" << std::endl;
         return {};
     }
@@ -131,20 +170,24 @@ std::vector<sf::Vector2i> BfsMoveBehavior::findHighLevelPath(sf::Vector2f start,
     visited[startSection.y][startSection.x] = true;
 
     bool pathFound = false;
-    while (!queue.empty()) {
+    while (!queue.empty()) 
+    {
         sf::Vector2i current = queue.front();
         queue.pop();
 
-        if (current.x == targetSection.x && current.y == targetSection.y) {
+        if (current.x == targetSection.x && current.y == targetSection.y) 
+        {
             pathFound = true;
             break;
         }
 
-        for (int i = 0; i < 8; ++i) {
+        for (int i = 0; i < 8; ++i) 
+        {
             int newX = current.x + dx[i];
             int newY = current.y + dy[i];
 
-            if (isValidSection(newX, newY) && !visited[newY][newX] && isSectionWalkable(newX, newY)) {
+            if (isValidSection(newX, newY) && !visited[newY][newX] && isSectionWalkable(newX, newY)) 
+            {
                 visited[newY][newX] = true;
                 parent[newY][newX] = current;
                 queue.push({ newX, newY });
@@ -152,7 +195,8 @@ std::vector<sf::Vector2i> BfsMoveBehavior::findHighLevelPath(sf::Vector2f start,
         }
     }
 
-    if (!pathFound) {
+    if (!pathFound) 
+    {
         std::cout << "[BFS] No high-level path found!" << std::endl;
         return {};
     }
@@ -161,11 +205,10 @@ std::vector<sf::Vector2i> BfsMoveBehavior::findHighLevelPath(sf::Vector2f start,
     std::vector<sf::Vector2i> path;
     sf::Vector2i current = targetSection;
 
-    while (current.x != -1 && current.y != -1) {
+    while (current.x != -1 && current.y != -1) 
+    {
         path.push_back(current);
-        if (current.x == startSection.x && current.y == startSection.y) {
-            break;
-        }
+        if (current.x == startSection.x && current.y == startSection.y) break;
         current = parent[current.y][current.x];
     }
 
@@ -176,8 +219,11 @@ std::vector<sf::Vector2i> BfsMoveBehavior::findHighLevelPath(sf::Vector2f start,
     return path;
 }
 
-std::vector<sf::Vector2i> BfsMoveBehavior::findLowLevelPath(sf::Vector2f start, sf::Vector2f target, sf::Vector2i section) {
-    if (!isValidSection(section.x, section.y)) {
+//-----------------------------------------------------------------------------
+std::vector<sf::Vector2i> BfsMoveBehavior::findLowLevelPath(sf::Vector2f start, sf::Vector2f target, sf::Vector2i section) 
+{
+    if (!isValidSection(section.x, section.y)) 
+    {
         std::cout << "[BFS] Invalid section for low-level pathfinding" << std::endl;
         return {};
     }
@@ -192,9 +238,7 @@ std::vector<sf::Vector2i> BfsMoveBehavior::findLowLevelPath(sf::Vector2f start, 
     targetLocal.y = std::max(0, std::min(localGridSize - 1, targetLocal.y));
 
     // If start and target are the same, return empty path
-    if (startLocal.x == targetLocal.x && startLocal.y == targetLocal.y) {
-        return {};
-    }
+    if (startLocal.x == targetLocal.x && startLocal.y == targetLocal.y) return {};
 
     // BFS within section
     std::queue<sf::Vector2i> queue;
@@ -208,21 +252,25 @@ std::vector<sf::Vector2i> BfsMoveBehavior::findLowLevelPath(sf::Vector2f start, 
     visited[startLocal.y][startLocal.x] = true;
 
     bool pathFound = false;
-    while (!queue.empty()) {
+    while (!queue.empty()) 
+    {
         sf::Vector2i current = queue.front();
         queue.pop();
 
-        if (current.x == targetLocal.x && current.y == targetLocal.y) {
+        if (current.x == targetLocal.x && current.y == targetLocal.y) 
+        {
             pathFound = true;
             break;
         }
 
-        for (int i = 0; i < 4; ++i) {
+        for (int i = 0; i < 4; ++i) 
+        {
             int newX = current.x + dx[i];
             int newY = current.y + dy[i];
 
             if (isValidLocalCell(newX, newY) && !visited[newY][newX] &&
-                sections[section.y][section.x]->localGrid[newY][newX]) {
+                sections[section.y][section.x]->localGrid[newY][newX]) 
+            {
                 visited[newY][newX] = true;
                 parent[newY][newX] = current;
                 queue.push({ newX, newY });
@@ -230,7 +278,8 @@ std::vector<sf::Vector2i> BfsMoveBehavior::findLowLevelPath(sf::Vector2f start, 
         }
     }
 
-    if (!pathFound) {
+    if (!pathFound) 
+    {
         std::cout << "[BFS] No low-level path found in section (" << section.x << ", " << section.y << ")" << std::endl;
         return {};
     }
@@ -239,37 +288,42 @@ std::vector<sf::Vector2i> BfsMoveBehavior::findLowLevelPath(sf::Vector2f start, 
     std::vector<sf::Vector2i> path;
     sf::Vector2i current = targetLocal;
 
-    while (current.x != -1 && current.y != -1) {
+    while (current.x != -1 && current.y != -1) 
+    {
         path.push_back(current);
-        if (current.x == startLocal.x && current.y == startLocal.y) {
-            break;
-        }
+        if (current.x == startLocal.x && current.y == startLocal.y) break;
         current = parent[current.y][current.x];
     }
 
     std::reverse(path.begin(), path.end());
 
     // Remove starting position
-    if (!path.empty()) {
-        path.erase(path.begin());
-    }
+    if (!path.empty()) path.erase(path.begin());
 
     return path;
 }
 
-bool BfsMoveBehavior::isValidSection(int x, int y) {
+//-----------------------------------------------------------------------------
+bool BfsMoveBehavior::isValidSection(int x, int y) 
+{
     return x >= 0 && x < highLevelWidth && y >= 0 && y < highLevelHeight;
 }
 
-bool BfsMoveBehavior::isSectionWalkable(int x, int y) {
+//-----------------------------------------------------------------------------
+bool BfsMoveBehavior::isSectionWalkable(int x, int y) 
+{
     return isValidSection(x, y) && sections[y][x]->isWalkable;
 }
 
-bool BfsMoveBehavior::isValidLocalCell(int x, int y) {
+//-----------------------------------------------------------------------------
+bool BfsMoveBehavior::isValidLocalCell(int x, int y) 
+{
     return x >= 0 && x < localGridSize && y >= 0 && y < localGridSize;
 }
 
-sf::Vector2f BfsMoveBehavior::findSectionEdgePoint(sf::Vector2i fromSection, sf::Vector2i toSection) {
+//-----------------------------------------------------------------------------
+sf::Vector2f BfsMoveBehavior::findSectionEdgePoint(sf::Vector2i fromSection, sf::Vector2i toSection) 
+{
     // Calculate direction from current section to target section
     sf::Vector2i direction(toSection.x - fromSection.x, toSection.y - fromSection.y);
     
@@ -284,24 +338,34 @@ sf::Vector2f BfsMoveBehavior::findSectionEdgePoint(sf::Vector2i fromSection, sf:
     // Find the edge point based on direction
     sf::Vector2f edgePoint;
     
-    if (direction.x > 0) {
+    if (direction.x > 0) 
+    {
         // Moving right - use right edge
         edgePoint.x = sectionEnd.x - sectionSize * 0.1f; // Slightly inside the section
-    } else if (direction.x < 0) {
+    } 
+    else if (direction.x < 0) 
+    {
         // Moving left - use left edge
         edgePoint.x = sectionOrigin.x + sectionSize * 0.1f; // Slightly inside the section
-    } else {
+    } 
+    else 
+    {
         // No horizontal movement - use center
         edgePoint.x = sectionOrigin.x + sectionSize * 0.5f;
     }
     
-    if (direction.y > 0) {
+    if (direction.y > 0) 
+    {
         // Moving down - use bottom edge
         edgePoint.y = sectionEnd.y - sectionSize * 0.1f; // Slightly inside the section
-    } else if (direction.y < 0) {
+    } 
+    else if (direction.y < 0) 
+    {
         // Moving up - use top edge
         edgePoint.y = sectionOrigin.y + sectionSize * 0.1f; // Slightly inside the section
-    } else {
+    } 
+    else 
+    {
         // No vertical movement - use center
         edgePoint.y = sectionOrigin.y + sectionSize * 0.5f;
     }

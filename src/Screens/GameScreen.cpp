@@ -17,6 +17,7 @@ GameScreen::GameScreen()
 //-----------------------------------------------------------------------------
 void GameScreen::run(sf::RenderWindow& window, int& m_currrentScreen)
 {
+	if (m_lost) resetGame();
 	Screen::run(window, m_currrentScreen);
 	m_view.setCenter(m_player.getPos());
 	m_view.setCenter(clampViewPosition(worldBounds));
@@ -48,10 +49,10 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 
 	/*if (m_player.getWin())
 	{
-		m_sound.setBuffer(ResourcesManager::getInstance().getSound("door"));
+		/*m_sound.setBuffer(ResourcesManager::getInstance().getSound("door"));
 		m_sound.setVolume(100.f);
 		m_sound.setPlayingOffset(sf::seconds(0.95f));
-		m_sound.play();
+		m_sound.play();*/
 		calculateScore();
 		if (m_win)
 		{
@@ -63,6 +64,7 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 	if (m_player.getLife() == END_GAME)
 	{
 		m_currrentScreen = LOSE_SCREEN;
+		m_lost = true;
 		return;
 	}
 }
@@ -74,7 +76,7 @@ void GameScreen::initButtons()
 	m_buttons.emplace_back("pause", pos);
 
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-	std::vector<std::string> buttonNames = { "resume", "exit" };
+	std::vector<std::string> buttonNames = { "resume", "help game screen" };
 	for (int index = 0; index < buttonNames.size(); ++index)
 	{
 		sf::Vector2f position(static_cast<float>(desktop.width * WINDOW_RATIO / 2),
@@ -105,6 +107,8 @@ void GameScreen::draw(sf::RenderWindow& window)
 	
 	window.setView(window.getDefaultView());
 
+	m_infoBar.draw(window);
+
 	if (m_paused) drawButtons(window); // Menu buttons
 	else m_buttons[PAUSE].draw(window); // Only pause button
 }
@@ -120,6 +124,8 @@ void GameScreen::move(sf::Clock& clock)
 	{
 	   movingObj->update(deltaTime, m_player.getPosition());
 	}
+
+	m_stopwatch += deltaTime;
 }
 
 //-----------------------------------------------------------------------------
@@ -319,7 +325,7 @@ void GameScreen::handleLoadingLevel()
 {
 	m_movingObj.clear();
 	m_staticObj.clear();
-
+	
 	m_map.loadlevelobj(m_movingObj,m_staticObj, m_player);
 	m_stopwatch = sf::seconds(0);
 }
@@ -327,10 +333,9 @@ void GameScreen::handleLoadingLevel()
 //-----------------------------------------------------------------------------
 void GameScreen::handleScoreBoard()
 {
-	/*m_scoreboard.updateTime(m_timer);
-	m_scoreboard.updateLevel(m_level);
-	m_scoreboard.updateLives(m_player.getLife());
-	m_scoreboard.updateScore(m_player.getScore());*/
+	m_infoBar.updateTime(m_stopwatch);
+	m_infoBar.updateNumOfBullets(29);
+	m_infoBar.updateLives(m_player.getLife());
 }
 
 //-----------------------------------------------------------------------------
@@ -344,6 +349,13 @@ void GameScreen::removeGuard()
 	}*/
 }
 
+void GameScreen::resetGame()
+{
+	m_lost = false;
+	m_win = false;
+	handleLoadingLevel();
+}
+
 //-----------------------------------------------------------------------------
 void GameScreen::addTime()
 {
@@ -354,27 +366,31 @@ void GameScreen::addTime()
 //-----------------------------------------------------------------------------
 void GameScreen::handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow& window, int& screenState)
 {
-	for (int index = 0; index < m_buttons.size(); ++index)
+	if (!m_paused)
+	{
+		if (m_buttons[PAUSE].getBounds().contains(clickPos))
+		{
+			m_paused = true;
+			return;
+		}
+		return; // If not paused, ignore other clicks
+	}
+	for (int index = 1; index < m_buttons.size(); ++index)
 	{
 		if (m_buttons[index].getBounds().contains(clickPos))
 		{
 			switch (index)
 			{
-			case PAUSE:
-			{
-				m_paused = true;
-				break;
-			}
-			case RESUME:
-			{
-				m_paused = false;
-				break;
-			}
-			case _HELP:
-			{
-				screenState = HELP_SCREEN;
-				break;
-			}
+				case RESUME:
+				{
+					m_paused = false;
+					break;
+				}
+				case _HELP:
+				{
+					screenState = HELP_SCREEN;
+					break;
+				}
 			}
 		}
 	}

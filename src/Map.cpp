@@ -18,7 +18,7 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
     std::ifstream file("Level1.csv");
     if (!file.is_open()) 
     {
-        std::cerr << "[ERROR] Cannot open " << "Level1" << "\n";
+        throw std::runtime_error("[ERROR] Cannot open Level1.csv");
         return;
     }
 
@@ -112,7 +112,7 @@ void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingOb
     auto& factory = Factory<UpdateableObject>::instance();
     
     //first third (3 simple enemies)
-    for (int i = 0; i < 8; ++i)
+    for (int i = 0; i < NUM_OF_STUPID_ENEMY; ++i)
     {
         m_movingObj.emplace_back(factory.create(ObjectType::BFSENEMY, { randX(), randYIn(0) }));
         m_movingObj.emplace_back(factory.create(ObjectType::SMARTENEMY, { randX(), randYIn(0) }));
@@ -120,14 +120,14 @@ void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingOb
 
     //second third (1 simple, 2 smart)
     m_movingObj.emplace_back(factory.create(ObjectType::SIMPLENEMY, { randX(), randYIn(1) }));
-    for (int i = 0; i < 2; ++i)
+    for (int i = 0; i < NUM_OF_SMART_ENEMY; ++i)
     {
         m_movingObj.emplace_back(factory.create(ObjectType::SMARTENEMY, { randX(), randYIn(1) }));
     }
     //third third (1 simple, 2 smart, 1 bfs)
     m_movingObj.emplace_back(factory.create(ObjectType::SIMPLENEMY, { randX(), randYIn(2) }));
     m_movingObj.emplace_back(factory.create(ObjectType::BFSENEMY, { randX(), randYIn(2) }));
-    for (int i = 0; i < 2; ++i)
+    for (int i = 0; i < NUM_OF_SMART_ENEMY; ++i)
     {
         m_movingObj.emplace_back(factory.create(ObjectType::SMARTENEMY, { randX(), randYIn(2) }));
     }

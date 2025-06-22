@@ -16,7 +16,7 @@
 #include "UpdateableObject.h"
 #include "StaticObject.h"
 #include "GameObject.h"
-#include "Scoreboard.h"
+#include "Infobar.h"
 #include "Explosion.h"
 #include "CollisionFactory.h"
 
@@ -47,6 +47,7 @@ private:
 	void handleLoadingLevel();
 	void handleScoreBoard();
 	void removeGuard();
+	void resetGame();
 	void addTime();
 	sf::Vector2f clampViewPosition(const sf::FloatRect& bounds);
 
@@ -57,10 +58,11 @@ private:
 	sf::FloatRect worldBounds;
 	Map m_map;
 	Player m_player;
-	Scoreboard m_scoreboard;
+	Infobar m_infoBar;
 
 	bool m_win = false;
 	bool m_paused = false;
+	bool m_lost = false;
 	std::vector<std::unique_ptr<UpdateableObject>> m_movingObj;
 	std::vector<std::unique_ptr<StaticObject>> m_staticObj;
 };

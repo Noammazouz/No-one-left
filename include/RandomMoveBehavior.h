@@ -1,7 +1,8 @@
 #pragma once
 
-//-----includes section-----
+//-----include section-----
 #include "MoveBehavior.h"
+#include "Const.h"
 
 //-----class section-----
 class RandomMoveBehavior : public MoveBehavior

@@ -12,23 +12,61 @@ LoseScreen::LoseScreen()
 //-----------------------------------------------------------------------------
 void LoseScreen::draw(sf::RenderWindow& window) 
 {
-    // Implementation here
+	window.setView(window.getDefaultView());
+	sf::Texture texture = ResourcesManager::getInstance().getTexture("lose_screen");
+	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+	sf::Sprite loseScreen(texture);
+	loseScreen.setScale(desktop.width * WINDOW_RATIO / texture.getSize().x,
+		desktop.height * WINDOW_RATIO / texture.getSize().y); // Scale the background to fit the window
+	window.draw(loseScreen);
+	drawButtons(window);
 }
 
 //-----------------------------------------------------------------------------
 void LoseScreen::activate(sf::Clock& clock, int& state) 
 {
-    // Implementation here
 }
 
 //-----------------------------------------------------------------------------
 void LoseScreen::handleMouseClick(const sf::Vector2<float>& clickPos, sf::RenderWindow& window, int& state)
 {
-    // Implementation here
+   /*
+    for (int index = 0; index < m_buttons.size(); ++index)
+	{
+		if(m_buttons[index].getBounds().contains(clickPos))
+		{
+			switch (index)
+			{
+				case START_GAME:
+				{
+					screenState = GAME_SCREEN;
+					return;
+				}
+				case START_MENU:
+				{
+					screenState = START_SCREEN;
+					break;
+				}
+				case EXIT:
+				{
+					exit(EXIT_SUCCESS);
+					break;
+				}
+			}
+		}
+	}
+   */
 }
 
 //-----------------------------------------------------------------------------
 void LoseScreen::initButtons() 
 {
-    // Implementation here
+	/*sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+	std::vector<std::string> buttonNames = { "start game", "start menu" ,"exit"};
+	for (int index = 0; index < buttonNames.size(); ++index)
+	{
+		sf::Vector2f position(static_cast<float>(desktop.width * WINDOW_RATIO / 2),
+			static_cast<float>(desktop.height * WINDOW_RATIO / 5 + 300 * index));
+		m_buttons.emplace_back(buttonNames[index], position);
+	}*/
 }
