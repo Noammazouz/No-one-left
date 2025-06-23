@@ -133,6 +133,7 @@ void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingOb
     }
 }
 
+//-----------------------------------------------------------------------------
 void Map::loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj)
 {
     std::mt19937 rng{ std::random_device{}() };
