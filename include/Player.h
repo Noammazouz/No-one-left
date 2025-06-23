@@ -5,7 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include "UpdateableObject.h"
 #include "ResourcesManager.h"
-//#include "CollisionFactory.h"
+#include "CollisionFactory.h"
 #include "Enemy.h"
 #include "Wall.h"
 #include "Bombs.h"
@@ -36,6 +36,7 @@ public:
 	void incLife();
 	int getLife();
 	sf::Vector2f getPos() const;
+	static void registerPlayerCollisions();
 
 	static int getNumOfBullets();
 	static void addBullets(int bullets);
