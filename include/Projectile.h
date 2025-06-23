@@ -5,9 +5,7 @@
 #include "Enemy.h"  
 #include "Player.h"  
 #include "Explosion.h"  
-#include "Const.h"  
-#include "../../../../../SFML/SFML-2.6.1/include/SFML/System/Vector2.hpp" // copilot fix  
-
+#include "Const.h"
 
 //-----class section-----  
 class Projectile : public UpdateableObject  
