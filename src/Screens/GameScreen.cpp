@@ -168,7 +168,7 @@ void GameScreen::handleCollision()
 			if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get()))
  {
 				if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get())) {
-					//enemy->OnSuccessfulMove();
+					enemy->OnSuccessfulMove();
 				}
 			}
 		}

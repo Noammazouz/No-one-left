@@ -25,10 +25,11 @@ struct MapSection
 class BfsMoveBehavior : public MoveBehavior
 {
 public:
-    BfsMoveBehavior() = default;
-    BfsMoveBehavior(int worldWidth, int worldHeight, int sectionSize, int localGridSize);
+    BfsMoveBehavior();
     sf::Vector2f Move(sf::Vector2f playerPos, sf::Time deltaTime, sf::Vector2f enemyPos);
     // Note: Obstacle management methods removed - using collision-based approach instead
+    void OnCollision();
+    void ClearAvoidance();
 
 private:
     // High-level grid (sections)
@@ -63,4 +64,6 @@ private:
     sf::Vector2f m_lastTriedDirection = { 0.f, 0.f };
     sf::Vector2f m_avoidDirection = { 0.f, 0.f };
     bool m_avoiding = false;
+    std::array<sf::Vector2f, 3> m_avoidOptions;  // three candidate dodge vectors
+    int                        m_avoidIndex = 0;
 };

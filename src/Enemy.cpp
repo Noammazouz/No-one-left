@@ -108,3 +108,23 @@ sf::Vector2f Enemy::getDirection() const
 {
     return m_direction;
 }
+
+
+void Enemy::NotifyCollision()
+{
+    // revert movement
+    setPosition(getPrevLocation());
+    auto nudge = -getDirection() * 1.5f;
+    setPosition(getPosition() + nudge);
+    // tell the behavior to reset
+    if (m_MoveBehavior)
+    {
+        m_MoveBehavior->OnCollision();
+    }
+}
+
+void Enemy::OnSuccessfulMove() {
+    // Only clear avoidance if the current move behavior supports it
+    m_MoveBehavior->ClearAvoidance();
+    // (No need to know which concrete type it is)
+}
