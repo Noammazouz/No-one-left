@@ -15,7 +15,7 @@ public:
     AllDirectionsAttackBehavior() = default;
     virtual ~AllDirectionsAttackBehavior() = default;
 
-    virtual void Attack(sf::Vector2f position, sf::Vector2f direction, std::vector<std::unique_ptr<Projectile>>& bullets) override;
+    virtual void Attack(sf::Vector2f position, sf::Vector2f direction, std::vector<std::unique_ptr<Projectile>>& projectile, BulletOwner owner) override;
 
 private:
 };

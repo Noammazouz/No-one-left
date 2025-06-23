@@ -10,11 +10,17 @@
 #include "CollisionFactory.h"
 #include "Wall.h"
 
+//-----static member initialization-----
+//int Enemy::m_num_of_enemies = 0;
+//int Enemy::m_num_of_enemies_alive = 0;
+
 //-----functions section------
 //-----------------------------------------------------------------------------
 Enemy::Enemy(sf::Vector2f position, std::string name)
 	: UpdateableObject(position, name), m_direction(0, 0), m_prevlocation(position)
 {
+ /*   m_num_of_enemies++;
+    m_num_of_enemies_alive++;*/
 }
 
 //-----------------------------------------------------------------------------
@@ -73,7 +79,7 @@ static auto regBfs = Factory<UpdateableObject>::instance().registerType(
 //-----------------------------------------------------------------------------
 void Enemy::update(sf::Time deltaTime, sf::Vector2f playerPos)
 {
-    m_direction = m_MoveBehavior->Move(playerPos, deltaTime ,this->getPosition());
+    m_direction = m_MoveBehavior->Move(playerPos, deltaTime, this->getPosition());
 
 	this->setPrevLocation(this->getPosition());
 	this->updatePosition(m_direction * ENEMY_SPEED * deltaTime.asSeconds());
@@ -102,23 +108,3 @@ sf::Vector2f Enemy::getDirection() const
 {
     return m_direction;
 }
-
-void Enemy::NotifyCollision()
-{
-    // revert movement
-    setPosition(getPrevLocation());
-    SetDirection(-getDirection());
-    // tell the behavior to reset
-    if (m_MoveBehavior)
-    {
-        m_MoveBehavior->OnCollision();
-    }
-}
-
-void Enemy::OnSuccessfulMove() {
-    // Only clear avoidance if the current move behavior supports it
-    m_MoveBehavior->ClearAvoidance();
-    // (No need to know which concrete type it is)
-}
-
-

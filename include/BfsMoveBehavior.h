@@ -63,5 +63,4 @@ private:
     sf::Vector2f m_lastTriedDirection = { 0.f, 0.f };
     sf::Vector2f m_avoidDirection = { 0.f, 0.f };
     bool m_avoiding = false;
-
 };
