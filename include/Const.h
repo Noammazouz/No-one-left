@@ -67,6 +67,12 @@ enum ObjectType
 	EXPLOSION
 };
 
+enum BulletOwner
+{
+	PLAYER,
+	ENEMY
+};
+
 //-----constants section-----
 const int MAP_WIDTH = 5000;
 const int MAP_HEIGHT = 5000;

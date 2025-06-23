@@ -29,10 +29,19 @@ public:
   int getDamage() const;  
   bool isExpired() const;  
 
+  void handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2);
+  void handleEnemyBulletPlayerCollision(GameObject& obj1, GameObject& obj2);
+  void handleBulletWallCollision(GameObject& obj1, GameObject& obj2);
+
+  void registerBulletCollisions();
+
 private:  
   sf::Vector2f direction;  
   float speed;  
   bool isActive;  
   int damage;  
   float elapsedTime;   
+  BulletOwner owner;
+
+  static bool g_bulletCollisionRegistered;
 };
