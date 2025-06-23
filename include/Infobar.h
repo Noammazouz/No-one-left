@@ -28,5 +28,4 @@ private:
 	sf::Sprite m_livesIcon, m_bulletsIcon, m_timeIcon;
 
 	std::vector<sf::IntRect> livesFrames;
-	//int currentFrame = 5;
 };

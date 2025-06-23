@@ -101,7 +101,7 @@ const float ENEMY_SPEED = 125.f;
 const float DEFUALT_WIDTH = 32.f;
 const float DEFUALT_HEIGHT = 32.f;
 const float BOMB_TIME = 4.f;
-const float ADDED_TIME = 10.f;
+const float REMOVE_TIME = 10.f;
 const float WINDOW_RATIO = 0.92f;
 const float ROTATION_SPEED = 150.f; //degrees per second
 

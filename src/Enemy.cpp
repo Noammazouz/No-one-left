@@ -10,11 +10,17 @@
 #include "CollisionFactory.h"
 #include "Wall.h"
 
+//-----static member initialization-----
+//int Enemy::m_num_of_enemies = 0;
+//int Enemy::m_num_of_enemies_alive = 0;
+
 //-----functions section------
 //-----------------------------------------------------------------------------
 Enemy::Enemy(sf::Vector2f position, std::string name)
 	: UpdateableObject(position, name), m_direction(0, 0), m_prevlocation(position)
 {
+ /*   m_num_of_enemies++;
+    m_num_of_enemies_alive++;*/
 }
 
 //-----------------------------------------------------------------------------
@@ -73,7 +79,9 @@ static auto regBfs = Factory<UpdateableObject>::instance().registerType(
 //-----------------------------------------------------------------------------
 void Enemy::update(sf::Time deltaTime, sf::Vector2f playerPos)
 {
-    m_direction = m_MoveBehavior->Move(playerPos, deltaTime ,this->getPosition());
+    if (m_freeze) return; // Skip update if frozen
+    
+    m_direction = m_MoveBehavior->Move(playerPos, deltaTime, this->getPosition());
 
 	this->setPrevLocation(this->getPosition());
 	this->updatePosition(m_direction * ENEMY_SPEED * deltaTime.asSeconds());
@@ -101,4 +109,74 @@ void Enemy::SetDirection(sf::Vector2f direction)
 sf::Vector2f Enemy::getDirection() const
 {
     return m_direction;
+}
+
+//-----------------------------------------------------------------------------
+sf::Vector2f Enemy::getPrevLocation() const
+{
+    return m_prevlocation;
+}
+
+//-----------------------------------------------------------------------------
+void Enemy::PerformAttack(std::vector<std::unique_ptr<Bullets>>& bullets)
+{
+    if (!m_AttackBehavior) return;
+    
+    sf::Vector2f position = getPosition();
+    sf::Vector2f direction = getDirection();
+    
+    // Enemy bullets are marked with BulletOwner::ENEMY
+    m_AttackBehavior->Attack(position, direction, bullets, BulletOwner::ENEMY);
+}
+
+//-----------------------------------------------------------------------------
+void Enemy::collide(GameObject& otherObject)
+{
+    // Basic collision handling - can be extended
+}
+
+//-----------------------------------------------------------------------------
+void Enemy::enemyCollide(Enemy& otherObject)
+{
+    // Enemy-Enemy collision handling - enemies avoid each other
+    setPosition(getPrevLocation());
+}
+
+//-----------------------------------------------------------------------------
+void Enemy::explosionCollide(Explosion& otherObject)
+{
+    // Enemy dies from explosion
+    setLife(true); // Mark as dead
+}
+
+//-----------------------------------------------------------------------------
+void Enemy::playerCollide(Player& otherObject)
+{
+    // Enemy collides with player - damage player
+    otherObject.decLife();
+}
+
+//-----------------------------------------------------------------------------
+void Enemy::setFreezing(bool freeze)
+{
+    m_freeze = freeze;
+}
+
+//-----------------------------------------------------------------------------
+void Enemy::resetNumOfEnemies()
+{
+    m_num_of_enemies = 0;
+    m_num_of_enemies_alive = 0;
+}
+
+//-----------------------------------------------------------------------------
+int Enemy::getNumOfStartingEnemies()
+{
+    return m_num_of_enemies;
+}
+
+//-----------------------------------------------------------------------------
+int Enemy::getNumOfEnemiesAlive()
+{
+    return m_num_of_enemies_alive;
 }
