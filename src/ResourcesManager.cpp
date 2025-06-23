@@ -46,6 +46,7 @@ void ResourcesManager::loadTexture()
     {
         {"background","gamebackgroundGPT.png"},
         {"Player", "Player.png"},
+        {"player_machine_gun", "player_machine_gun.png"},
         {"wall","wall.png"},
         {"startScreen", "startScreen.png"},
         {"start game", "start game.png"},

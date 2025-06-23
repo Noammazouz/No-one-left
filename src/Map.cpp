@@ -77,18 +77,18 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
         // … handle other types …
     }
 
-	player = Player(sf::Vector2f(100, 100), "Player");
+	player = Player(FIRST_PLAYER_POSITION, "player_machine_gun");
 }
 
 //-----------------------------------------------------------------------------
-void Map::loadlevelobj(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj, std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player)
+void Map::loadlevelobj(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj, 
+                       std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player)
 {
     m_staticObj.clear();
     m_movingObj.clear();
     loadFromCSV(m_staticObj, player);
     loadEnemies(m_movingObj);
     loadObstacles(m_staticObj);
-
 }
 
 //-----------------------------------------------------------------------------
@@ -98,7 +98,7 @@ void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingOb
     //mt19937 is a random engine.
     std::mt19937 rng{ std::random_device{}() };
     float thirdH = MAP_HEIGHT / 3.f;
-    // getting a random x value (can spawn everywhere from left to right)
+    //getting a random x value (can spawn everywhere from left to right)
     auto randX = [&]()
         {
             return std::uniform_real_distribution<float>(0.f, MAP_WIDTH)(rng);
