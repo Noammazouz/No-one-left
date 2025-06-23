@@ -8,10 +8,10 @@
 //---forward declaration---  
 class Projectile;  
 
-//-----class section-----  
-class AttackBehavior  
-{  
-public:  
-   virtual ~AttackBehavior() = default;  
-   virtual void Attack(sf::Vector2f position, sf::Vector2f direction, std::vector<std::unique_ptr<Projectile>>& bullets) = 0;  
+//-----class section-----
+class AttackBehavior
+{
+public:
+    virtual ~AttackBehavior() = default;
+    virtual void Attack(sf::Vector2f position, sf::Vector2f direction, std::vector<std::unique_ptr<Bullets>>& bullets, BulletOwner owner) = 0;
 };

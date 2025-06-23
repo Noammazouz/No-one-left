@@ -48,7 +48,7 @@ private:
 	void handleScoreBoard();
 	void removeGuard();
 	void resetGame();
-	void addTime();
+	void decTime();
 	sf::Vector2f clampViewPosition(const sf::FloatRect& bounds);
 
 	sf::RenderWindow m_window;

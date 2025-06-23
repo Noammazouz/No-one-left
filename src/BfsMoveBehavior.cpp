@@ -12,8 +12,6 @@ const sf::Time BfsMoveBehavior::PATH_UPDATE_INTERVAL = sf::seconds(0.2f); //Bala
 BfsMoveBehavior::BfsMoveBehavior(int /*worldWidth*/, int /*worldHeight*/, int /*sectionSize*/, int /*localGridSize*/)
     : sectionSize(50), localGridSize(10), currentHighLevelIndex(0), hasObstaclesSet(false) 
 {
-    // Simple initialization - we don't need complex grid setup for collision-based approach
-    std::cout << "[BFS] Initialized - using collision-based movement" << std::endl;
 }
 
 sf::Vector2f BfsMoveBehavior::Move(sf::Vector2f playerPos, sf::Time /*deltaTime*/, sf::Vector2f enemyPos) 

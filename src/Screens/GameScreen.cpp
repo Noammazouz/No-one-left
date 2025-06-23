@@ -141,8 +141,6 @@ void GameScreen::handleCollision()
 	//	}
 	//}
 
-	//handlePresents();
-
 	// Moving Objects vs Static Objects (enemies vs walls)
 	for (const auto& movingObj : m_movingObj)
 	{
@@ -333,7 +331,7 @@ void GameScreen::handleLoadingLevel()
 void GameScreen::handleScoreBoard()
 {
 	m_infoBar.updateTime(m_stopwatch);
-	m_infoBar.updateNumOfBullets(29);
+	m_infoBar.updateNumOfBullets(m_player.getNumOfBullets());
 	m_infoBar.updateLives(m_player.getLife());
 }
 
@@ -356,10 +354,10 @@ void GameScreen::resetGame()
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::addTime()
+void GameScreen::decTime()
 {
-	/*m_timer += sf::seconds(ADDED_TIME);
-	m_scoreboard.updateTime(m_timer);*/
+	m_stopwatch -= sf::seconds(REMOVE_TIME);
+	m_infoBar.updateTime(m_stopwatch);
 }
 
 //-----------------------------------------------------------------------------
