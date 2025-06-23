@@ -90,59 +90,59 @@ bool Projectile::isOutOfMap() const
     sf::Vector2f pos = getPosition();
     return (pos.x < -50 || pos.x > MAP_WIDTH + 50 || pos.y < -50 || pos.y > MAP_HEIGHT + 50);
 }
-//-----------------------------------------------------------------------------
-// Collision handler for Bullet vs Enemy - Order independent
-void Projectile::handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2)
-{
-    Bullets* bullet = nullptr;
-    Enemy* enemy = nullptr;
+//-----------------------------------------------------------------------------  
+// Collision handler for Bullet vs Enemy - Order independent  
+void Projectile::handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2)  
+{  
+   Projectile* bullet = nullptr;  
+   Enemy* enemy = nullptr;  
 
-    // Check both parameter orders
-    if (auto* b = dynamic_cast<Bullets*>(&obj1)) {
-        if (auto* e = dynamic_cast<Enemy*>(&obj2)) {
-            bullet = b;
-            enemy = e;
-        }
-    }
-    else if (auto* b = dynamic_cast<Bullets*>(&obj2)) {
-        if (auto* e = dynamic_cast<Enemy*>(&obj1)) {
-            bullet = b;
-            enemy = e;
-        }
-    }
+   // Check both parameter orders  
+   if (auto* b = dynamic_cast<Projectile*>(&obj1)) {  
+       if (auto* e = dynamic_cast<Enemy*>(&obj2)) {  
+           bullet = b;  
+           enemy = e;  
+       }  
+   }  
+   else if (auto* b = dynamic_cast<Projectile*>(&obj2)) {  
+       if (auto* e = dynamic_cast<Enemy*>(&obj1)) {  
+           bullet = b;  
+           enemy = e;  
+       }  
+   }  
 
-    if (bullet && enemy) {
-        // Only player bullets can kill enemies
-        if (bullet->getOwner() == BulletOwner::PLAYER)
-        {
-            std::cout << "Player bullet hit enemy - Enemy killed!" << std::endl;
-            enemy->setLife(true); // Mark enemy as dead
-            setActive(false); // Deactivate bullet
-        }
-        // If enemy bullet hits enemy, do nothing (no friendly fire)
-        else
-        {
-            std::cout << "Enemy bullet hit enemy - No effect (no friendly fire)" << std::endl;
-            // Bullet continues through enemy without effect
-        }
-    }
+   if (bullet && enemy) {  
+       // Only player bullets can kill enemies  
+       if (bullet->getOwner() == BulletOwner::PLAYER)  
+       {  
+           std::cout << "Player bullet hit enemy - Enemy killed!" << std::endl;  
+           enemy->setLife(true); // Mark enemy as dead  
+           bullet->setActive(false); // Deactivate bullet  
+       }  
+       // If enemy bullet hits enemy, do nothing (no friendly fire)  
+       else  
+       {  
+           std::cout << "Enemy bullet hit enemy - No effect (no friendly fire)" << std::endl;  
+           // Bullet continues through enemy without effect  
+       }  
+   }  
 }
 
 //-----------------------------------------------------------------------------
 // Collision handler for Bullet vs Player - Order independent
 void Projectile::handleEnemyBulletPlayerCollision(GameObject& obj1, GameObject& obj2)
 {
-    Bullets* bullet = nullptr;
+    Projectile* bullet = nullptr;
     Player* player = nullptr;
 
     // Check both parameter orders
-    if (auto* b = dynamic_cast<Bullets*>(&obj1)) {
+    if (auto* b = dynamic_cast<Projectile*>(&obj1)) {
         if (auto* p = dynamic_cast<Player*>(&obj2)) {
             bullet = b;
             player = p;
         }
     }
-    else if (auto* b = dynamic_cast<Bullets*>(&obj2)) {
+    else if (auto* b = dynamic_cast<Projectile*>(&obj2)) {
         if (auto* p = dynamic_cast<Player*>(&obj1)) {
             bullet = b;
             player = p;
@@ -170,13 +170,13 @@ void Projectile::handleEnemyBulletPlayerCollision(GameObject& obj1, GameObject& 
 // Collision handler for Bullet vs Wall - Order independent
 void Projectile::handleBulletWallCollision(GameObject& obj1, GameObject& obj2)
 {
-    Bullets* bullet = nullptr;
+    Projectile* bullet = nullptr;
 
     // Check both parameter orders
-    if (auto* b = dynamic_cast<Bullets*>(&obj1)) {
+    if (auto* b = dynamic_cast<Projectile*>(&obj1)) {
         bullet = b;
     }
-    else if (auto* b = dynamic_cast<Bullets*>(&obj2)) {
+    else if (auto* b = dynamic_cast<Projectile*>(&obj2)) {
         bullet = b;
     }
 
@@ -215,4 +215,12 @@ bool Projectile::g_bulletCollisionRegistered = []()
         Projectile::registerBulletCollisions();
         return true;
     }();
+
+//-----------------------------------------------------------------------------
+BulletOwner Projectile::getOwner() const
+{
+    return m_owner;
+}
+
+
 

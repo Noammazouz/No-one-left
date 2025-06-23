@@ -9,11 +9,7 @@
 class Bullets : public ItemsToCollect
 {
 public:
-    Bullets(std::string name, const sf::Vector2f& position, BulletOwner owner = BulletOwner::PLAYER);
+    Bullets(std::string name, const sf::Vector2f& position);
     ~Bullets() = default;
-    BulletOwner getOwner() const;
-    void setOwner(BulletOwner owner);
 
-private:
-    BulletOwner m_owner;
 };

@@ -35,13 +35,15 @@ public:
 
   void registerBulletCollisions();
 
+  BulletOwner getOwner() const;
+
 private:  
   sf::Vector2f direction;  
   float speed;  
   bool isActive;  
   int damage;  
   float elapsedTime;   
-  BulletOwner owner;
+  BulletOwner m_owner;
 
   static bool g_bulletCollisionRegistered;
 };
