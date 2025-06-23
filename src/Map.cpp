@@ -18,7 +18,7 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
     std::ifstream file("Level1.csv");
     if (!file.is_open()) 
     {
-        std::cerr << "[ERROR] Cannot open " << "Level1" << "\n";
+        throw std::runtime_error("[ERROR] Cannot open Level1.csv");
         return;
     }
 
@@ -114,7 +114,8 @@ void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingOb
     //first third (3 simple enemies)
     for (int i = 0; i < NUM_OF_STUPID_ENEMY; ++i)
     {
-        m_movingObj.emplace_back(factory.create(ObjectType::SIMPLENEMY, { randX(), randYIn(0) }));
+        m_movingObj.emplace_back(factory.create(ObjectType::BFSENEMY, { randX(), randYIn(0) }));
+        m_movingObj.emplace_back(factory.create(ObjectType::SMARTENEMY, { randX(), randYIn(0) }));
     }
 
     //second third (1 simple, 2 smart)
@@ -141,21 +142,21 @@ void Map::loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj)
     auto& factory = Factory<StaticObject>::instance();
 
     // e.g. 10 rocks
-    for (int i = 0; i < 10; ++i) {
+    for (int i = 0; i < 20; ++i) {
         sf::Vector2f pos{ randX(rng), randY(rng) };
         m_staticObj.emplace_back(
             factory.create(ObjectType::OBSTACLE1, pos));
     }
 
     // 5 crates
-    for (int i = 0; i < 5; ++i) {
+    for (int i = 0; i < 20; ++i) {
         sf::Vector2f pos{ randX(rng), randY(rng) };
         m_staticObj.emplace_back(
             factory.create(ObjectType::OBSTACLE2, pos));
     }
 
     // 3 barrels
-    for (int i = 0; i < 3; ++i) {
+    for (int i = 0; i < 20; ++i) {
         sf::Vector2f pos{ randX(rng), randY(rng) };
         m_staticObj.emplace_back(
             factory.create(ObjectType::OBSTACLE3, pos));

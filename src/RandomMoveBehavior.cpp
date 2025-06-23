@@ -31,11 +31,17 @@ sf::Vector2f RandomMoveBehavior::Move(sf::Vector2f /*playerPos*/, sf::Time delta
     
     return m_direction;
 }
+//-----------------------------------------------------------------------------
+void RandomMoveBehavior::OnCollision()
+{
+    m_timer = sf::seconds(2);   // restart the interval
+    chooseNewDirection(); // pick a fresh vector right now
+}
 
 //-----------------------------------------------------------------------------
 void RandomMoveBehavior::chooseNewDirection()
 {
-    int random_directon = rand() % 8;
+    int random_directon = rand() % NUM_OF_DIRECTIONS;
 
     switch (random_directon)
     {

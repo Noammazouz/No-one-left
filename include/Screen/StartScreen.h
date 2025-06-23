@@ -13,7 +13,7 @@ public:
     void draw(sf::RenderWindow& window) override;
 	void activate(sf::Clock& clocking, int& m_currentScreen) override;
 	void initButtons() override;
-	void handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow& window, int& screenState) override;
+	void handleMouseClick(const sf::Vector2f& clickPos, int& screenState) override;
 
 private:
 };

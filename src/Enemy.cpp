@@ -10,11 +10,17 @@
 #include "CollisionFactory.h"
 #include "Wall.h"
 
+//-----static member initialization-----
+//int Enemy::m_num_of_enemies = 0;
+//int Enemy::m_num_of_enemies_alive = 0;
+
 //-----functions section------
 //-----------------------------------------------------------------------------
 Enemy::Enemy(sf::Vector2f position, std::string name)
 	: UpdateableObject(position, name), m_direction(0, 0), m_prevlocation(position)
 {
+ /*   m_num_of_enemies++;
+    m_num_of_enemies_alive++;*/
 }
 
 //-----------------------------------------------------------------------------
@@ -65,7 +71,7 @@ static auto regBfs = Factory<UpdateableObject>::instance().registerType(
     ObjectType::BFSENEMY,
     [](const sf::Vector2f& pos) -> std::unique_ptr<UpdateableObject> {
         auto enemy = std::make_unique<Enemy>(pos, "BfsEnemy");
-        enemy->SetMoveBehavior(std::make_unique<BfsMoveBehavior>(MAP_WIDTH, MAP_HEIGHT, SECTION_SIZE, LOCAL_GRID_SIZE));
+        enemy->SetMoveBehavior(std::make_unique<BfsMoveBehavior>());
         enemy->SetAttackBehavior(std::make_unique<AllDirectionsAttackBehavior>());
         return enemy;
     });
@@ -73,7 +79,7 @@ static auto regBfs = Factory<UpdateableObject>::instance().registerType(
 //-----------------------------------------------------------------------------
 void Enemy::update(sf::Time deltaTime, sf::Vector2f playerPos)
 {
-    m_direction = m_MoveBehavior->Move(playerPos, deltaTime ,this->getPosition());
+    m_direction = m_MoveBehavior->Move(playerPos, deltaTime, this->getPosition());
 
 	this->setPrevLocation(this->getPosition());
 	this->updatePosition(m_direction * ENEMY_SPEED * deltaTime.asSeconds());

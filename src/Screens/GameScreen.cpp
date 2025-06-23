@@ -17,6 +17,7 @@ GameScreen::GameScreen()
 //-----------------------------------------------------------------------------
 void GameScreen::run(sf::RenderWindow& window, int& m_currrentScreen)
 {
+	if (m_lost) resetGame();
 	Screen::run(window, m_currrentScreen);
 	m_view.setCenter(m_player.getPos());
 	m_view.setCenter(clampViewPosition(worldBounds));
@@ -63,6 +64,7 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 	if (m_player.getLife() == END_GAME)
 	{
 		m_currrentScreen = LOSE_SCREEN;
+		m_lost = true;
 		return;
 	}
 }
@@ -74,7 +76,7 @@ void GameScreen::initButtons()
 	m_buttons.emplace_back("pause", pos);
 
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-	std::vector<std::string> buttonNames = { "resume", "exit" };
+	std::vector<std::string> buttonNames = { "resume", "help game screen" };
 	for (int index = 0; index < buttonNames.size(); ++index)
 	{
 		sf::Vector2f position(static_cast<float>(desktop.width * WINDOW_RATIO / 2),
@@ -116,7 +118,6 @@ void GameScreen::move(sf::Clock& clock)
 {
 	const auto deltaTime = clock.restart();
 
-	int index = 0;
 	m_player.update(deltaTime, sf::Vector2f());
 	for (const auto& movingObj : m_movingObj)
 	{
@@ -140,19 +141,30 @@ void GameScreen::handleCollision()
 	//	}
 	//}
 
-	//handlePresents();
-
 	// Moving Objects vs Static Objects (enemies vs walls)
 	for (const auto& movingObj : m_movingObj)
 	{
+		bool collided = false;
 		for (const auto& staticObj : m_staticObj)
 		{
 			if (movingObj->checkCollision(*staticObj))
 			{
 				collisionHandler.processCollision(*movingObj, *staticObj);
+				collided = true;
+				break;
+			}
+		}
+		if (!collided) {
+			// Dynamic-cast to Enemy (or UpdateableObject) and call ClearAvoidance()
+			if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get()))
+ {
+				if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get())) {
+					//enemy->OnSuccessfulMove();
+				}
 			}
 		}
 	}
+
 
 	//// Player vs Enemies
 	//for (int guard = 0; guard < Enemy::getNumOfGuardsAlive(); ++guard)
@@ -310,7 +322,7 @@ void GameScreen::handleLoadingLevel()
 {
 	m_movingObj.clear();
 	m_staticObj.clear();
-
+	
 	m_map.loadlevelobj(m_movingObj,m_staticObj, m_player);
 	m_stopwatch = sf::seconds(0);
 }
@@ -319,7 +331,7 @@ void GameScreen::handleLoadingLevel()
 void GameScreen::handleScoreBoard()
 {
 	m_infoBar.updateTime(m_stopwatch);
-	m_infoBar.updateNumOfBullets(29);
+	m_infoBar.updateNumOfBullets(m_player.getNumOfBullets());
 	m_infoBar.updateLives(m_player.getLife());
 }
 
@@ -334,15 +346,22 @@ void GameScreen::removeGuard()
 	}*/
 }
 
-//-----------------------------------------------------------------------------
-void GameScreen::addTime()
+void GameScreen::resetGame()
 {
-	/*m_timer += sf::seconds(ADDED_TIME);
-	m_scoreboard.updateTime(m_timer);*/
+	m_lost = false;
+	m_win = false;
+	handleLoadingLevel();
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow& window, int& screenState)
+void GameScreen::decTime()
+{
+	m_stopwatch -= sf::seconds(REMOVE_TIME);
+	m_infoBar.updateTime(m_stopwatch);
+}
+
+//-----------------------------------------------------------------------------
+void GameScreen::handleMouseClick(const sf::Vector2f& clickPos, int& screenState)
 {
 	if (!m_paused)
 	{
@@ -359,16 +378,16 @@ void GameScreen::handleMouseClick(const sf::Vector2f& clickPos, sf::RenderWindow
 		{
 			switch (index)
 			{
-			case RESUME:
-			{
-				m_paused = false;
-				break;
-			}
-			case _HELP:
-			{
-				screenState = HELP_SCREEN;
-				break;
-			}
+				case RESUME:
+				{
+					m_paused = false;
+					break;
+				}
+				case _HELP:
+				{
+					screenState = HELP_SCREEN;
+					break;
+				}
 			}
 		}
 	}
