@@ -11,6 +11,7 @@
 #include "Bombs.h"
 #include "Explosion.h"
 #include "Bullets.h"
+#include "Projectile.h"
 #include "AttackBehavior.h"
 #include <vector>
 #include <memory>
@@ -41,13 +42,13 @@ public:
 	static void decBullets();
 	static bool isBulletsAvailable();
 	sf::Vector2f getCurrentDirection() const;
-	//void handleShooting(std::vector<std::unique_ptr<Bullets>>& bullets);
-	//void setAttackBehavior(std::unique_ptr<AttackBehavior> attackBehavior);
+	void handleShooting(std::vector<std::unique_ptr<Projectile>>& bullets);
+	void setAttackBehavior(std::unique_ptr<AttackBehavior> attackBehavior);
 
 private:
 	bool checkDirection();
 	void setDirection();
-	//void doAttack(std::vector<std::unique_ptr<Bullets>>& bullets);
+	void doAttack(std::vector<std::unique_ptr<Projectile>>& bullets);
 
 	sf::Vector2f m_direction;
 	int m_lives;

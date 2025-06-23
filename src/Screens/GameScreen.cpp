@@ -47,7 +47,7 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 	handleErasing();
 	handleScoreBoard();
 
-	if (m_player.getWin())
+	/*if (m_player.getWin())
 	{
 		/*m_sound.setBuffer(ResourcesManager::getInstance().getSound("door"));
 		m_sound.setVolume(100.f);
@@ -59,7 +59,7 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 			m_currrentScreen = WIN_SCREEN;
 			return;
 		}
-	}
+	}*/
 
 	if (m_player.getLife() == END_GAME)
 	{
@@ -144,14 +144,27 @@ void GameScreen::handleCollision()
 	// Moving Objects vs Static Objects (enemies vs walls)
 	for (const auto& movingObj : m_movingObj)
 	{
+		bool collided = false;
 		for (const auto& staticObj : m_staticObj)
 		{
 			if (movingObj->checkCollision(*staticObj))
 			{
 				collisionHandler.processCollision(*movingObj, *staticObj);
+				collided = true;
+				break;
+			}
+		}
+		if (!collided) {
+			// Dynamic-cast to Enemy (or UpdateableObject) and call ClearAvoidance()
+			if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get()))
+ {
+				if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get())) {
+					enemy->OnSuccessfulMove();
+				}
 			}
 		}
 	}
+
 
 	//// Player vs Enemies
 	//for (int guard = 0; guard < Enemy::getNumOfGuardsAlive(); ++guard)

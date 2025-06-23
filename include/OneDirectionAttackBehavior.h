@@ -2,7 +2,7 @@
 
 //-----includes section-----
 #include "AttackBehavior.h"
-#include "Bullets.h"
+#include "Projectile.h"
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <memory>

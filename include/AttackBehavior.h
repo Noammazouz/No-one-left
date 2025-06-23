@@ -1,15 +1,12 @@
-#pragma once
+#pragma once  
 
-//-----include section-----
-#include <SFML/Graphics.hpp>
-#include <vector>
-#include <memory>
+//-----include section-----  
+#include <SFML/Graphics.hpp>  
+#include <vector>  
+#include <memory>  
 
-//---forward declaration---
-class Bullets;
-
-//-----enums section-----
-enum class BulletOwner;
+//---forward declaration---  
+class Projectile;  
 
 //-----class section-----
 class AttackBehavior
