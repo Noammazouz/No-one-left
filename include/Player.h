@@ -36,7 +36,7 @@ public:
 	void incLife();
 	int getLife();
 	sf::Vector2f getPos() const;
-	static void registerPlayerCollisions();
+	//static void registerCollisions();
 
 	static int getNumOfBullets();
 	static void addBullets(int bullets);

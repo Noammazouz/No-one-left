@@ -29,11 +29,10 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 {
 	if (m_paused)
 	{
-		//handleMusicTransition(false);
 		return;
 	}
 
-	//handleMusicTransition(true);
+	handleMusicTransition(true);
 
 	if (m_staticObj.empty()) 
 	{
@@ -63,8 +62,18 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 
 	if (m_player.getLife() == END_GAME)
 	{
-		m_currrentScreen = LOSE_SCREEN;
-		m_lost = true;
+		if (m_sound.getStatus() != sf::Sound::Playing)
+		{
+			m_sound.setBuffer(ResourcesManager::getInstance().getSound("death"));
+			m_sound.setVolume(100.f);
+			m_sound.setPlayingOffset(sf::seconds(1.f));
+			m_sound.play();
+		}
+		else if (m_sound.getStatus() == sf::Sound::Stopped)
+		{
+			m_currrentScreen = LOSE_SCREEN;
+			m_lost = true;
+		}
 		return;
 	}
 }
@@ -368,6 +377,7 @@ void GameScreen::handleMouseClick(const sf::Vector2f& clickPos, int& screenState
 		if (m_buttons[PAUSE].getBounds().contains(clickPos))
 		{
 			m_paused = true;
+			handleMusicTransition(false); // Switch to menu music when pausing
 			return;
 		}
 		return; // If not paused, ignore other clicks
@@ -381,6 +391,7 @@ void GameScreen::handleMouseClick(const sf::Vector2f& clickPos, int& screenState
 				case RESUME:
 				{
 					m_paused = false;
+					handleMusicTransition(true); // Switch back to game music when resuming
 					break;
 				}
 				case _HELP:
