@@ -16,8 +16,9 @@ Player::Player()
 Player::Player(sf::Vector2f position, std::string name)
 	: UpdateableObject(position, name), m_lives(NUM_OF_LIVES)
 {
+	m_numberOfFrames = m_pic.getTexture()->getSize().x / PLAYER_WIDTH; //Calculate number of frames based on texture width.
 	m_pic.setRotation(180.f); //Set initial rotation to face down.
-	set_frames(m_pic.getTexture()->getSize().x / PLAYER_WIDTH, position);
+	set_frames(m_numberOfFrames, position);
 }
 
 //-----------------------------------------------------------------------------
@@ -26,7 +27,7 @@ void Player::update(sf::Time deltaTime, sf::Vector2f /*playerPos*/)
 	setDirection();
 	this->setPrevLocation(this->getPosition());
 	this->updatePosition(m_direction * PLAYER_SPEED * deltaTime.asSeconds());
-	this->updateFrames(m_direction, PLAYER_FRAME_TIME, PLAYER_FRAME_COUNT);
+	this->updateFrames(m_direction, PLAYER_FRAME_TIME, m_numberOfFrames);
 }
 
 //-----------------------------------------------------------------------------
