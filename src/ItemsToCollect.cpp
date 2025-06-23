@@ -1,6 +1,6 @@
 #include "ItemsTocollect.h"
 
-ItemsToCollect::ItemsToCollect(std::string name, sf::Vector2f position)
+ItemsToCollect::ItemsToCollect(const std::string& name, const sf::Vector2f& position)
 	:StaticObject(name, position)
 {
 

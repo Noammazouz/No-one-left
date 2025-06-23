@@ -182,27 +182,27 @@ void Player::handleShooting(std::vector<std::unique_ptr<Projectile>>& bullets)
 //-----------------------------------------------------------------------------
 void Player::setAttackBehavior(std::unique_ptr<AttackBehavior> attackBehavior)
 {
-	m_attackBehavior = std::move(attackBehavior);
+	//m_attackBehavior = std::move(attackBehavior);
 }
 
 //-----------------------------------------------------------------------------
 void Player::doAttack(std::vector<std::unique_ptr<Projectile>>& bullets)
 {
-	if (!m_attackBehavior) return;
+	//if (!m_attackBehavior) return;
 
 	int bulletsNeeded = ONE_DIRECTION_BULLET; // default is one direction
 
-	if (typeid(*m_attackBehavior) == typeid(AllDirectionsAttackBehavior)) // check if attack for all directions
-	{
-		bulletsNeeded = ALL_DIRECTIONS_BULLETS;
-	}
+	//if (typeid(*m_attackBehavior) == typeid(AllDirectionsAttackBehavior)) // check if attack for all directions
+	//{
+	//	bulletsNeeded = ALL_DIRECTIONS_BULLETS;
+	//}
 
 	if (getNumOfBullets() >= bulletsNeeded)
 	{
 		sf::Vector2f position = getPos();
 		sf::Vector2f direction = getCurrentDirection();
 
-		m_attackBehavior->Attack(position, direction, bullets);
+		//m_attackBehavior->Attack(position, direction, bullets);
 
 		for (int bullet = 0; bullet < bulletsNeeded; bullet++)
 		{
