@@ -92,7 +92,7 @@ bool Projectile::isOutOfMap() const
 }
 //-----------------------------------------------------------------------------  
 // Collision handler for Bullet vs Enemy - Order independent  
-void Projectile::handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2)  
+void handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2)  
 {  
    Projectile* bullet = nullptr;  
    Enemy* enemy = nullptr;  
@@ -113,7 +113,7 @@ void Projectile::handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& 
 
    if (bullet && enemy) {  
        // Only player bullets can kill enemies  
-       if (bullet->getOwner() == BulletOwner::PLAYER)  
+       if (bullet->getOwner() == PLAYER)  
        {  
            std::cout << "Player bullet hit enemy - Enemy killed!" << std::endl;  
            enemy->setLife(true); // Mark enemy as dead  
@@ -130,7 +130,7 @@ void Projectile::handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& 
 
 //-----------------------------------------------------------------------------
 // Collision handler for Bullet vs Player - Order independent
-void Projectile::handleEnemyBulletPlayerCollision(GameObject& obj1, GameObject& obj2)
+void handleEnemyBulletPlayerCollision(GameObject& obj1, GameObject& obj2)
 {
     Projectile* bullet = nullptr;
     Player* player = nullptr;
@@ -155,7 +155,7 @@ void Projectile::handleEnemyBulletPlayerCollision(GameObject& obj1, GameObject& 
         {
             std::cout << "Enemy bullet hit player!" << std::endl;
             player->decLife();
-            setActive(false); // Deactivate bullet
+            bullet->setActive(false); // Deactivate bullet
         }
         // Player bullets don't hurt player (self-protection)
         else
@@ -168,7 +168,7 @@ void Projectile::handleEnemyBulletPlayerCollision(GameObject& obj1, GameObject& 
 
 //-----------------------------------------------------------------------------
 // Collision handler for Bullet vs Wall - Order independent
-void Projectile::handleBulletWallCollision(GameObject& obj1, GameObject& obj2)
+void handleBulletWallCollision(GameObject& obj1, GameObject& obj2)
 {
     Projectile* bullet = nullptr;
 
@@ -182,7 +182,7 @@ void Projectile::handleBulletWallCollision(GameObject& obj1, GameObject& obj2)
 
     if (bullet) {
         std::cout << "Bullet hit wall - Bullet destroyed" << std::endl;
-        setActive(false); // All bullets are stopped by walls
+        bullet->setActive(false); // All bullets are stopped by walls
     }
 }
 
@@ -210,7 +210,7 @@ void Projectile::registerBulletCollisions()
 
 //-----------------------------------------------------------------------------
 // Auto-registration helper - runs when first Bullet is created
-bool Projectile::g_bulletCollisionRegistered = []()
+bool g_bulletCollisionRegistered = []()
     {
         Projectile::registerBulletCollisions();
         return true;

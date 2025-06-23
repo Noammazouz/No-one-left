@@ -29,11 +29,11 @@ public:
   int getDamage() const;  
   bool isExpired() const;  
 
-  void handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2);
-  void handleEnemyBulletPlayerCollision(GameObject& obj1, GameObject& obj2);
-  void handleBulletWallCollision(GameObject& obj1, GameObject& obj2);
+  //void handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2);
+  //void handleEnemyBulletPlayerCollision(GameObject& obj1, GameObject& obj2);
+  //void handleBulletWallCollision(GameObject& obj1, GameObject& obj2);
 
-  void registerBulletCollisions();
+ static void registerBulletCollisions();
 
   BulletOwner getOwner() const;
 
