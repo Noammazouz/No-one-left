@@ -14,7 +14,7 @@ void WinScreen::draw(sf::RenderWindow& window)
 //--------------------------------------------------------------
 void WinScreen::activate(sf::Clock& /*clockin*/, int& /*m_currrentScreen*/)
 {
-
+	handleMusicTransition(false); // Start menu music
 }
 
 //--------------------------------------------------------------

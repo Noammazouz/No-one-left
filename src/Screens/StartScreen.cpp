@@ -23,7 +23,8 @@ void StartScreen::draw(sf::RenderWindow& window)
 
 //-----------------------------------------------------------------------------
 void StartScreen::activate(sf::Clock& /*clocking*/, int& /*m_currentScreen*/)
-{}
+{
+}
 
 //-----------------------------------------------------------------------------
 void StartScreen::initButtons()

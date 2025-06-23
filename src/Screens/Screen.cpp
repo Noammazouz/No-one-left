@@ -5,7 +5,9 @@
 //-----------------------------------------------------------------------------
 Screen::Screen()
 	: m_previousScreen(START_SCREEN)
-{}
+{
+	handleMusicTransition(false);
+}
 
 //-----------------------------------------------------------------------------
 void Screen::run(sf::RenderWindow& window, int& currentScreen)
