@@ -47,7 +47,7 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 	handleErasing();
 	handleScoreBoard();
 
-	/*if (m_player.getWin())
+	if (m_player.getWin())
 	{
 		/*m_sound.setBuffer(ResourcesManager::getInstance().getSound("door"));
 		m_sound.setVolume(100.f);
@@ -59,7 +59,7 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 			m_currrentScreen = WIN_SCREEN;
 			return;
 		}
-	}*/
+	}
 
 	if (m_player.getLife() == END_GAME)
 	{
@@ -159,7 +159,7 @@ void GameScreen::handleCollision()
 			if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get()))
  {
 				if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get())) {
-					enemy->OnSuccessfulMove();
+					//enemy->OnSuccessfulMove();
 				}
 			}
 		}

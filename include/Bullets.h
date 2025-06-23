@@ -4,17 +4,6 @@
 #include "ItemsToCollect.h"
 #include <SFML/Graphics.hpp>
 
-// Forward declarations
-class Player;
-class Enemy;
-
-//-----enums section-----
-enum class BulletOwner
-{
-    PLAYER,
-    ENEMY
-};
-
 //-----class section-----
 class Bullets : public ItemsToCollect
 {

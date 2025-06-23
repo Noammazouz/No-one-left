@@ -14,7 +14,7 @@ BfsMoveBehavior::BfsMoveBehavior(int /*worldWidth*/, int /*worldHeight*/, int /*
 {
 }
 
-sf::Vector2f BfsMoveBehavior::Move(sf::Vector2f playerPos, sf::Time /*deltaTime*/, sf::Vector2f enemyPos) 
+sf::Vector2f BfsMoveBehavior::Move(sf::Vector2f playerPos, sf::Time /*deltaTime*/, sf::Vector2f enemyPos)
 {
     sf::Vector2f direction = playerPos - enemyPos;
     float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
@@ -29,6 +29,7 @@ sf::Vector2f BfsMoveBehavior::Move(sf::Vector2f playerPos, sf::Time /*deltaTime*
         return m_avoidDirection;
 
     return direction;
+}
 //-----------------------------------------------------------------------------
 //sf::Vector2f BfsMoveBehavior::Move(sf::Vector2f playerPos, sf::Time /*deltaTime*/, sf::Vector2f enemyPos) 
 //{
@@ -376,16 +377,5 @@ sf::Vector2f BfsMoveBehavior::findSectionEdgePoint(sf::Vector2i fromSection, sf:
               << ") is (" << edgePoint.x << ", " << edgePoint.y << ")" << std::endl;
     
     return edgePoint;
-}
-
-void BfsMoveBehavior::OnCollision() {
-    m_avoiding = true;
-
-    // Try perpendicular direction for now
-    m_avoidDirection = { -m_lastTriedDirection.y, m_lastTriedDirection.x };
-}
-
-void BfsMoveBehavior::ClearAvoidance() {
-    m_avoiding = false;
 }
 

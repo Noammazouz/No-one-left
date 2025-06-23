@@ -79,8 +79,6 @@ static auto regBfs = Factory<UpdateableObject>::instance().registerType(
 //-----------------------------------------------------------------------------
 void Enemy::update(sf::Time deltaTime, sf::Vector2f playerPos)
 {
-    if (m_freeze) return; // Skip update if frozen
-    
     m_direction = m_MoveBehavior->Move(playerPos, deltaTime, this->getPosition());
 
 	this->setPrevLocation(this->getPosition());

@@ -63,11 +63,4 @@ private:
     sf::Vector2f m_lastTriedDirection = { 0.f, 0.f };
     sf::Vector2f m_avoidDirection = { 0.f, 0.f };
     bool m_avoiding = false;
-
-public:
-    BfsMoveBehavior(int worldWidth, int worldHeight, int sectionSize = 100, int localGridSize = 10);
-    sf::Vector2f Move(sf::Vector2f playerPos, sf::Time deltaTime, sf::Vector2f enemyPos);
-    // Note: Obstacle management methods removed - using collision-based approach instead
-    void OnCollision();
-    void ClearAvoidance();
 };
