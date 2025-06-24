@@ -76,7 +76,8 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
         }
     }
 
-    player.initialization(FIRST_PLAYER_POSITION, "player_machine_gun");
+    //player.initialization(FIRST_PLAYER_POSITION, "player_machine_gun");
+    player.initialization(FIRST_PLAYER_POSITION, PLAYER_RIFLE);
 }
 
 //-----------------------------------------------------------------------------
