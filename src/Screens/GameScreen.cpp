@@ -141,14 +141,14 @@ void GameScreen::handleCollision()
 {
 	auto& collisionHandler = CollisionFactory::getInstance();
 	
-	//// Player vs Static Objects (walls)
-	//for (const auto& staticObj : m_staticObj)
-	//{
-	//	if (m_player.checkCollision(*staticObj))
-	//	{
-	//		collisionHandler.handleCollision(m_player, *staticObj);
-	//	}
-	//}
+	// Player vs Static Objects (walls)
+	for (const auto& staticObj : m_staticObj)
+	{
+		if (m_player.checkCollision(*staticObj))
+		{
+			collisionHandler.processCollision(m_player, *staticObj);
+		}
+	}
 
 	// Moving Objects vs Static Objects (enemies vs walls)
 	for (const auto& movingObj : m_movingObj)
@@ -175,18 +175,21 @@ void GameScreen::handleCollision()
 	}
 
 
-	//// Player vs Enemies
-	//for (int guard = 0; guard < Enemy::getNumOfGuardsAlive(); ++guard)
-	//{
-	//	if (m_player.checkCollision(*m_movingObj[guard]))
-	//	{
-	//		m_sound.setBuffer(ResourcesManager::getInstance().getSound("hit"));
-	//		m_sound.setVolume(100.f);
-	//		m_sound.play();
-	//		collisionHandler.handleCollision(m_player, *m_movingObj[guard]);
-	//		break;
-	//	}
-	//}
+	// Player vs Enemies
+	for (const auto& movingObj : m_movingObj)
+	{
+		if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get()))
+		{
+			if (m_player.checkCollision(*enemy))
+			{
+				m_sound.setBuffer(ResourcesManager::getInstance().getSound("death"));
+				m_sound.setVolume(100.f);
+				m_sound.play();
+				collisionHandler.processCollision(m_player, *enemy);
+				break;
+			}
+		}
+	}
 
 	//// Enemy vs Enemy collisions
 	//for (int moveObj = 0; moveObj < (Enemy::getNumOfGuardsAlive() - 1); ++moveObj)

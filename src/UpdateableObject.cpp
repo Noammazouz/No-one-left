@@ -30,6 +30,12 @@ sf::Vector2f UpdateableObject::getPrevLocation() const
 };
 
 //-----------------------------------------------------------------------------
+sf::Vector2f UpdateableObject::getStartingPosition() const
+{
+	return m_startingPosition;
+};
+
+//-----------------------------------------------------------------------------
 void UpdateableObject::setPrevLocation(const sf::Vector2f& pos)
 {
     m_prevLocation = pos;

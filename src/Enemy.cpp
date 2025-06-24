@@ -24,14 +24,24 @@ Enemy::Enemy(sf::Vector2f position, std::string name)
 }
 
 //-----------------------------------------------------------------------------
-// Collision handler function for Enemy-Wall collisions (multimethods style)
+// Collision handler function for Enemy-Wall collisions (bidirectional)
 void handleEnemyWallCollision(GameObject& obj1, GameObject& obj2)
 {
-    // Cast to specific types and handle collision
-    // Only need to handle one direction since CollisionFactory handles symmetry
+    // Handle Enemy vs Wall collision (bidirectional)
     if (auto* enemy = dynamic_cast<Enemy*>(&obj1)) 
     {
         if (auto* wall = dynamic_cast<Wall*>(&obj2)) 
+        {
+            // Enemy hit wall - revert to previous position
+            enemy->setPosition(enemy->getPrevLocation());
+			enemy->SetDirection(-enemy->getDirection()); // Reverse direction
+            return;
+        }
+    }
+    // Handle Wall vs Enemy collision (reverse direction)
+    if (auto* wall = dynamic_cast<Wall*>(&obj1)) 
+    {
+        if (auto* enemy = dynamic_cast<Enemy*>(&obj2)) 
         {
             // Enemy hit wall - revert to previous position
             enemy->setPosition(enemy->getPrevLocation());
