@@ -56,14 +56,15 @@ void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 			setMusicState(MusicState::MENU);
 			m_sound.setBuffer(ResourcesManager::getInstance().getSound(LOSING_SOUND));
 			m_sound.setVolume(100.f);
-			m_sound.setPlayingOffset(sf::seconds(1.f));
+			m_sound.setPlayingOffset(sf::seconds(0.2f));
 			m_sound.play();
 			s_deathSoundStarted = true;
 			s_deathTimer.restart();
 		}
-		else if (s_deathTimer.getElapsedTime().asSeconds() >= 3.0f || m_sound.getStatus() != sf::Sound::Playing)
+		else if (s_deathTimer.getElapsedTime().asSeconds() >= 0.8f || m_sound.getStatus() != sf::Sound::Playing)
 		{
 			// Go to lose screen after 3 seconds OR when sound finishes playing
+			m_sound.stop();
 			m_currentScreen = LOSE_SCREEN;
 			m_newGame = true;
 			s_deathSoundStarted = false; // Reset for next time
@@ -387,6 +388,7 @@ void GamePlay::resetGame()
 {
 	m_newGame = false;
 	m_win = false;
+	m_sound.stop();
 	handleLoadingLevel();
 	resetDeathState();
 }
