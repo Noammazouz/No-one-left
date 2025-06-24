@@ -8,7 +8,7 @@
 #include "Screen.h"
 #include "StartScreen.h"
 #include "HelpScreen.h"
-#include "GameScreen.h"
+#include "GamePlay.h"
 #include "WinScreen.h"
 #include "LoseScreen.h"
 

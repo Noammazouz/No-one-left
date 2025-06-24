@@ -25,7 +25,7 @@ class Player : public UpdateableObject
 {
 public:
 	Player();
-	Player(sf::Vector2f position, std::string name);
+	//Player(sf::Vector2f position, std::string name);
 	~Player() = default;
 
 	virtual void update(sf::Time deltaTime, sf::Vector2f playerPos) override;
@@ -37,6 +37,7 @@ public:
 	void incLife();
 	int getLife();
 	sf::Vector2f getPos() const;
+	void initialization(sf::Vector2f pos, std::string name);
 	//static void registerCollisions();
 
 	static int getNumOfBullets();
@@ -58,6 +59,6 @@ private:
 	static int m_bulletCount;
 	bool m_win = false;
 	bool m_isShooting = false;
-	//std::unique_ptr<AttackBehavior> m_attackBehavior;
+	std::unique_ptr<AttackBehavior> m_attackBehavior;
 	float m_targetAngle = 0.f; // add this to private section
 };

@@ -17,6 +17,7 @@ public:
 	virtual bool checkCollision(GameObject& otherObject);
 
 	sf::Vector2f getPrevLocation() const;
+	sf::Vector2f getStartingPosition() const;
 
 protected:
 	void setPrevLocation(const sf::Vector2f& position);
