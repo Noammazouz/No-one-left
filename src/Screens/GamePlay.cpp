@@ -10,7 +10,7 @@ GamePlay::GamePlay()
 	handleLoadingLevel();
 	if (m_staticObj.empty()) 
 	{
-		std::cerr << "[WARN] No static objects were loaded are you sure your CSV has entries?\n";
+		std::cerr << STARIC_OBLECTS_WARNING;
 	}
 }
 
@@ -36,7 +36,7 @@ void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 
 	if (m_staticObj.empty()) 
 	{
-		std::cerr << "[WARN] No static objects were loaded are you sure your CSV has entries?\n";
+		std::cerr << STARIC_OBLECTS_WARNING;
 	}
 
 
@@ -64,7 +64,7 @@ void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 	{
 		if (m_sound.getStatus() != sf::Sound::Playing)
 		{
-			m_sound.setBuffer(ResourcesManager::getInstance().getSound("death"));
+			m_sound.setBuffer(ResourcesManager::getInstance().getSound(LOSING_SOUND));
 			m_sound.setVolume(100.f);
 			m_sound.setPlayingOffset(sf::seconds(1.f));
 			m_sound.play();
@@ -82,10 +82,10 @@ void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 void GamePlay::initButtons()
 {
 	sf::Vector2f pos(20.f, 20.f); // Fixed top-left with padding
-	m_buttons.emplace_back("pause", pos);
+	m_buttons.emplace_back(PAUSE_BUTTON, pos);
 
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-	std::vector<std::string> buttonNames = { "resume", "help game screen" };
+	std::vector<std::string> buttonNames = { RESUME_BUTTON, HELP_MENU_BUTTON_FOR_PAUSE };
 	for (int index = 0; index < buttonNames.size(); ++index)
 	{
 		sf::Vector2f position(static_cast<float>(desktop.width * WINDOW_RATIO / 2),
@@ -99,7 +99,7 @@ void GamePlay::draw(sf::RenderWindow& window)
 {
 	// Draw game world
 	sf::Sprite backround;
-	sf::Texture texure = ResourcesManager::getInstance().getTexture("background");
+	sf::Texture texure = ResourcesManager::getInstance().getTexture(GAME_BACKGROUND);
 	texure.setRepeated(true);
 
 	backround.setTexture(texure);
