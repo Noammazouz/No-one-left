@@ -8,6 +8,7 @@
 #include "CollisionFactory.h"
 #include "Enemy.h"
 #include "Wall.h"
+#include "Obstacles.h"
 #include "Bombs.h"
 #include "Explosion.h"
 #include "Bullets.h"

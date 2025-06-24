@@ -15,17 +15,17 @@ GameScreen::GameScreen()
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::run(sf::RenderWindow& window, int& m_currrentScreen)
+void GameScreen::run(sf::RenderWindow& window, int& m_currentScreen)
 {
 	if (m_lost) resetGame();
-	Screen::run(window, m_currrentScreen);
+	Screen::run(window, m_currentScreen);
 	m_view.setCenter(m_player.getPos());
 	m_view.setCenter(clampViewPosition(worldBounds));
 	window.setView(m_view);
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
+void GameScreen::activate(sf::Clock& clock, int& m_currentScreen)
 {
 	if (m_paused)
 	{
@@ -55,7 +55,7 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 		calculateScore();
 		if (m_win)
 		{
-			m_currrentScreen = WIN_SCREEN;
+			m_currentScreen = WIN_SCREEN;
 			return;
 		}
 	}
@@ -71,7 +71,7 @@ void GameScreen::activate(sf::Clock& clock, int& m_currrentScreen)
 		}
 		else if (m_sound.getStatus() == sf::Sound::Stopped)
 		{
-			m_currrentScreen = LOSE_SCREEN;
+			m_currentScreen = LOSE_SCREEN;
 			m_lost = true;
 		}
 		return;
@@ -141,14 +141,13 @@ void GameScreen::handleCollision()
 {
 	auto& collisionHandler = CollisionFactory::getInstance();
 	
-	//// Player vs Static Objects (walls)
-	//for (const auto& staticObj : m_staticObj)
-	//{
-	//	if (m_player.checkCollision(*staticObj))
-	//	{
-	//		collisionHandler.handleCollision(m_player, *staticObj);
-	//	}
-	//}
+	for (const auto& staticObj : m_staticObj)
+	{
+		if (m_player.checkCollision(*staticObj))
+		{
+			collisionHandler.processCollision(m_player, *staticObj);
+		}
+	}
 
 	// Moving Objects vs Static Objects (enemies vs walls)
 	for (const auto& movingObj : m_movingObj)
@@ -167,7 +166,8 @@ void GameScreen::handleCollision()
 			// Dynamic-cast to Enemy (or UpdateableObject) and call ClearAvoidance()
 			if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get()))
  {
-				if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get())) {
+				if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get())) 
+				{
 					//enemy->OnSuccessfulMove();
 				}
 			}
@@ -175,18 +175,21 @@ void GameScreen::handleCollision()
 	}
 
 
-	//// Player vs Enemies
-	//for (int guard = 0; guard < Enemy::getNumOfGuardsAlive(); ++guard)
-	//{
-	//	if (m_player.checkCollision(*m_movingObj[guard]))
-	//	{
-	//		m_sound.setBuffer(ResourcesManager::getInstance().getSound("hit"));
-	//		m_sound.setVolume(100.f);
-	//		m_sound.play();
-	//		collisionHandler.handleCollision(m_player, *m_movingObj[guard]);
-	//		break;
-	//	}
-	//}
+	// Player vs Enemies
+	for (const auto& movingObj : m_movingObj)
+	{
+		if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get()))
+		{
+			if (m_player.checkCollision(*enemy))
+			{
+				m_sound.setBuffer(ResourcesManager::getInstance().getSound("death"));
+				m_sound.setVolume(100.f);
+				m_sound.play(); 
+				collisionHandler.processCollision(m_player, *enemy);
+				break;
+			}
+		}
+	}
 
 	//// Enemy vs Enemy collisions
 	//for (int moveObj = 0; moveObj < (Enemy::getNumOfGuardsAlive() - 1); ++moveObj)
