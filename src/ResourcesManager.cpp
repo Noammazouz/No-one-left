@@ -52,7 +52,6 @@ void ResourcesManager::loadTexture()
     std::vector<std::pair<std::string, std::string>> textures =
     {
         {"background","gamebackground.png"},
-        {"Player", "Player.png"},
         {"player_machine_gun", "player_machine_gun.png"},
         {"player_rifle", "player_rifle.png"},
         {"player_bazooka", "player_bazooka.png"},

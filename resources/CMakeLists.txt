@@ -2,7 +2,6 @@
 configure_file ("gamebackground.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Level1.csv" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Rwall.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("Player.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("player_machine_gun.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("player_rifle.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("player_bazooka.png" ${CMAKE_BINARY_DIR} COPYONLY)
