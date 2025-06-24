@@ -29,7 +29,7 @@ void HelpScreen::draw(sf::RenderWindow& window)
 //-----------------------------------------------------------------------------
 void HelpScreen::activate(sf::Clock& /*clockin*/, int& /*m_currrentScreen*/)
 {
-	handleMusicTransition(false); // Start menu music
+	//handleMusicTransition(false); // Start menu music
 }
 
 //-----------------------------------------------------------------------------
