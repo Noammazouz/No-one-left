@@ -1,5 +1,6 @@
 //-----include section-----
 #include "Player.h"
+#include "CollisionFactory.h"
 #include "Factory.h"
 #include <OneDirectionAttackBehavior.h>
 #include <AllDirectionsAttackBehavior.h>
@@ -20,16 +21,9 @@ Player::Player()
 Player::Player(sf::Vector2f position, std::string name)
 	: UpdateableObject(position, name), m_isShooting(false), /*m_attackBehavior(std::move(std::make_unique<OneDirectionAttackBehavior>())),*/ m_lives(NUM_OF_LIVES)
 {
-	m_frames.clear();
-	m_frames.reserve(PLAYER_FRAME_COUNT);
-	for (int frameNumber = 0; frameNumber < PLAYER_FRAME_COUNT; frameNumber++)
-	{
-		m_frames.emplace_back(sf::IntRect(frameNumber * PLAYER_WIDTH, 0, PLAYER_WIDTH, PLAYER_HEIGHT));
-	}
-
-	m_pic.setTextureRect(m_frames[currentPlayerFrame]); //set for the first frame at first.
-	m_pic.setOrigin(PLAYER_WIDTH / 2, PLAYER_HEIGHT / 2); //Set origin to center.
-	//m_pic.setPosition(position);
+	m_numberOfFrames = m_pic.getTexture()->getSize().x / PLAYER_WIDTH; //Calculate number of frames based on texture width.
+	m_pic.setRotation(180.f); //Set initial rotation to face down.
+	set_frames(m_numberOfFrames, position);
 }
 
 //-----------------------------------------------------------------------------
@@ -38,7 +32,7 @@ void Player::update(sf::Time deltaTime, sf::Vector2f /*playerPos*/)
 	setDirection();
 	this->setPrevLocation(this->getPosition());
 	this->updatePosition(m_direction * PLAYER_SPEED * deltaTime.asSeconds());
-	this->updateFrames(m_direction, PLAYER_FRAME_TIME, PLAYER_FRAME_COUNT);
+	this->updateFrames(m_direction, PLAYER_FRAME_TIME, m_numberOfFrames);
 }
 
 //-----------------------------------------------------------------------------
@@ -190,9 +184,9 @@ void Player::doAttack(std::vector<std::unique_ptr<Projectile>>& bullets)
 {
 	//if (!m_attackBehavior) return;
 
-	int bulletsNeeded = ONE_DIRECTION_BULLET; // default is one direction
+	int bulletsNeeded = ONE_DIRECTION_BULLET; //default is one direction
 
-	//if (typeid(*m_attackBehavior) == typeid(AllDirectionsAttackBehavior)) // check if attack for all directions
+	//if (typeid(*m_attackBehavior) == typeid(AllDirectionsAttackBehavior)) //check if attack for all directions
 	//{
 	//	bulletsNeeded = ALL_DIRECTIONS_BULLETS;
 	//}
@@ -212,44 +206,83 @@ void Player::doAttack(std::vector<std::unique_ptr<Projectile>>& bullets)
 }
 
 //------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-//void Plyer::registerCollision()
-//{
-//	static bool registered = false;
-//	if (registered) return; //only register once
-//
-//	auto& factory = CollisionFactory::getInstance();
-//
-//	//register the collision handlers
-//	factory.registerSymetricCollision<Player, Enemy>([](Player& player, Enemy& enemy) { 
-//		Player& p = static_cast<Player&>(player);
-//		std::cout << "Player hit by Enemy!" << std::endl;
-//		p.decLife();
-//		p.setPosition(p.getStartingPosition());
-//	});
-//
-//	factory.registerSymetricCollision<Player, Wall>([](Player& player, Wall& wall) { 
-//		Player& p = static_cast<Player&>(player);
-//		std::cout << "Player hit a Wall!" << std::endl;
-//		p.setPosition(p.getPrevLocation()); // revert to previous position
-//	});
-//
-//	factory.registerSymetricCollision<Player, Explosion>([](Player& player, Explosion& explosion) { 
-//		Player& p = static_cast<Player&>(player);
-//		std::cout << "Player hit an Explosion!" << std::endl;
-//		p.decLife();
-//		p.setPosition(p.getStartingPosition());
-//	});
-//
-//	registered = true;
-//	std::cout << "Player collisions registered." << std::endl;
-//}
+void handlePlayerEnemyCollision(GameObject& obj1, GameObject& obj2)
+{
+	// Handle Player vs Enemy collision (bidirectional)
+	if (auto* player = dynamic_cast<Player*>(&obj1)) 
+	{
+		if (auto* enemy = dynamic_cast<Enemy*>(&obj2)) 
+		{
+			player->decLife();
+			//player->setPosition(player->getStartingPosition());
+			return;
+		}
+	}
+	// Handle Enemy vs Player collision (reverse direction)
+	if (auto* enemy = dynamic_cast<Enemy*>(&obj1)) 
+	{
+		if (auto* player = dynamic_cast<Player*>(&obj2)) 
+		{
+			player->decLife();
+			//player->setPosition(player->getStartingPosition());
+			return;
+		}
+	}
+}
 
 //------------------------------------------------------------------------------
-//Auto-regiteration helper - runs when first Player is created.
-//static bool g_playerColliosionRegistered = []()
-//{
-//	Player::registerCollision();
-//	return true;
-//}
+void handlePlayerWallCollision(GameObject& obj1, GameObject& obj2)
+{
+	// Handle Player vs Wall collision (bidirectional)
+	if (auto* player = dynamic_cast<Player*>(&obj1)) 
+	{
+		if (auto* wall = dynamic_cast<Wall*>(&obj2)) 
+		{
+			player->setPosition(player->getPrevLocation());
+			return;
+		}
+	}
+	// Handle Wall vs Player collision (reverse direction)
+	if (auto* wall = dynamic_cast<Wall*>(&obj1)) 
+	{
+		if (auto* player = dynamic_cast<Player*>(&obj2)) 
+		{
+			player->setPosition(player->getPrevLocation());
+			return;
+		}
+	}
+}
+
+//------------------------------------------------------------------------------
+void handlePlayerExplosionCollision(GameObject& obj1, GameObject& obj2)
+{
+	//Handle Player vs Explosion collision (bidirectional)
+	if (auto* player = dynamic_cast<Player*>(&obj1)) 
+	{
+		if (auto* explosion = dynamic_cast<Explosion*>(&obj2)) 
+		{
+			player->decLife();
+			//player->setPosition(player->getStartingPosition());
+			return;
+		}
+	}
+	//Handle Explosion vs Player collision (reverse direction)
+	if (auto* explosion = dynamic_cast<Explosion*>(&obj1)) 
+	{
+		if (auto* player = dynamic_cast<Player*>(&obj2)) 
+		{
+			player->decLife();
+			//player->setPosition(player->getStartingPosition());
+			return;
+		}
+	}
+}
+
+//------------------------------------------------------------------------------
+static bool g_playerCollisionRegistered = []() {
+	auto& factory = CollisionFactory::getInstance();
+	factory.registerTypedCollision<Player, Enemy>(handlePlayerEnemyCollision);
+	factory.registerTypedCollision<Player, Wall>(handlePlayerWallCollision);
+	factory.registerTypedCollision<Player, Explosion>(handlePlayerExplosionCollision);
+	return true;
+	}();
