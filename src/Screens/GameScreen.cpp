@@ -182,9 +182,9 @@ void GameScreen::handleCollision()
 		{
 			if (m_player.checkCollision(*enemy))
 			{
-				m_sound.setBuffer(ResourcesManager::getInstance().getSound("death"));
+				/*m_sound.setBuffer(ResourcesManager::getInstance().getSound("death"));
 				m_sound.setVolume(100.f);
-				m_sound.play();
+				m_sound.play();*/
 				collisionHandler.processCollision(m_player, *enemy);
 				break;
 			}

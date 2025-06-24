@@ -5,9 +5,7 @@
 #include "Enemy.h"  
 #include "Player.h"  
 #include "Explosion.h"  
-#include "Const.h"  
-#include "../../../../../SFML/SFML-2.6.1/include/SFML/System/Vector2.hpp" // copilot fix  
-
+#include "Const.h"
 
 //-----class section-----  
 class Projectile : public UpdateableObject  
@@ -29,10 +27,21 @@ public:
   int getDamage() const;  
   bool isExpired() const;  
 
+  //void handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2);
+  //void handleEnemyBulletPlayerCollision(GameObject& obj1, GameObject& obj2);
+  //void handleBulletWallCollision(GameObject& obj1, GameObject& obj2);
+
+ static void registerBulletCollisions();
+
+  BulletOwner getOwner() const;
+
 private:  
   sf::Vector2f direction;  
   float speed;  
   bool isActive;  
   int damage;  
   float elapsedTime;   
+  BulletOwner m_owner;
+
+  static bool g_bulletCollisionRegistered;
 };
