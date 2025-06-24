@@ -60,9 +60,9 @@ private:
 	Player m_player;
 	Infobar m_infoBar;
 
-	bool m_win = false;
+	bool m_win = true;
 	bool m_paused = false;
-	bool m_lost = false;
+	bool m_newGame = false;
 	std::vector<std::unique_ptr<UpdateableObject>> m_movingObj;
 	std::vector<std::unique_ptr<StaticObject>> m_staticObj;
 };

@@ -30,6 +30,7 @@ void Player::initialization(sf::Vector2f position, std::string name)
 	m_pic.setRotation(180.f); //Set initial rotation to face down.
 	set_frames(m_numberOfFrames, position);
 	m_attackBehavior= std::move(std::make_unique<OneDirectionAttackBehavior>());
+	m_lives = NUM_OF_LIVES;
 }
 
 //-----------------------------------------------------------------------------

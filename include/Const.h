@@ -72,6 +72,11 @@ enum  BulletOwner
 	ENEMY = 1
 };
 
+enum WinScreenButoons
+{
+	_EXIT = 1
+};
+
 //-----constants section-----
 
 //---------int const----------------------------------------
@@ -144,6 +149,7 @@ const std::string START_SCREEN_BACKGROUND = "startScreen";
 const std::string GAME_BACKGROUND = "background";
 const std::string HELP_SCREEN_BACKGROUND = "help screen";
 const std::string LOSE_SCREEN_BACKGROUND = "game over";
+const std::string WIN_SCREEN_BACKGROUND = "winning screen";
 
 //---------------infobar icons const--------------------------
 const std::string LIFE_ICON = "life";

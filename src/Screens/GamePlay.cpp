@@ -17,7 +17,7 @@ GamePlay::GamePlay()
 //-----------------------------------------------------------------------------
 void GamePlay::run(sf::RenderWindow& window, int& m_currentScreen)
 {
-	if (m_lost) resetGame();
+	if (m_newGame) resetGame();
 	Screen::run(window, m_currentScreen);
 	m_view.setCenter(m_player.getPos());
 	m_view.setCenter(clampViewPosition(worldBounds));
@@ -32,7 +32,11 @@ void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 		return;
 	}
 
-	handleMusicTransition(true);
+	// Always ensure game music is playing when in gameplay
+	if (getCurrentMusicState() != MusicState::GAME)
+	{
+		setMusicState(MusicState::GAME);
+	}
 
 	if (m_staticObj.empty()) 
 	{
@@ -56,6 +60,7 @@ void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 		if (m_win)
 		{
 			m_currentScreen = WIN_SCREEN;
+			m_newGame = true;
 			return;
 		}
 	}
@@ -72,7 +77,7 @@ void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 		else if (m_sound.getStatus() == sf::Sound::Stopped)
 		{
 			m_currentScreen = LOSE_SCREEN;
-			m_lost = true;
+			m_newGame = true;
 		}
 		return;
 	}
@@ -361,7 +366,7 @@ void GamePlay::removeGuard()
 
 void GamePlay::resetGame()
 {
-	m_lost = false;
+	m_newGame = false;
 	m_win = false;
 	handleLoadingLevel();
 }
@@ -381,7 +386,7 @@ void GamePlay::handleMouseClick(const sf::Vector2f& clickPos, int& screenState)
 		if (m_buttons[PAUSE].getBounds().contains(clickPos))
 		{
 			m_paused = true;
-			handleMusicTransition(false); // Switch to menu music when pausing
+			setMusicState(MusicState::MENU); // Switch to menu music when pausing
 			return;
 		}
 		return; // If not paused, ignore other clicks
@@ -395,7 +400,7 @@ void GamePlay::handleMouseClick(const sf::Vector2f& clickPos, int& screenState)
 				case RESUME:
 				{
 					m_paused = false;
-					handleMusicTransition(true); // Switch back to game music when resuming
+					setMusicState(MusicState::GAME); // Switch back to game music when resuming
 					break;
 				}
 				case _HELP:

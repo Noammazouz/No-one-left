@@ -76,7 +76,8 @@ void ResourcesManager::loadTexture()
         {"obstacle2","obstacle2.png"},
         {"obstacle3","obstacle3.png"},
         {"game over", "lose_screen.png"},
-        {"start menu", "home.png"}
+        {"start menu", "home.png"},
+        {"winning screen", "win screen background.png"}
         /*{"win", "win_screen.png"}*/
     };
 
