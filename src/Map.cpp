@@ -15,67 +15,45 @@
 //-----------------------------------------------------------------------------
 void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player)
 {
-    std::ifstream file("Level1.csv");
+    std::ifstream file("Level1_cleaned.csv");
     if (!file.is_open()) 
     {
         throw std::runtime_error("[ERROR] Cannot open Level1.csv");
         return;
     }
-
-    auto trim = [&](std::string s) 
-    {
-        // remove leading/trailing whitespace (including '\r')
-        while (!s.empty() && std::isspace((unsigned char)s.front())) s.erase(s.begin());
-        while (!s.empty() && std::isspace((unsigned char)s.back()))  s.pop_back();
-        return s;
-    };
-
     std::string line;
-    bool firstLine = true;
-    while (std::getline(file, line)) 
+    while (std::getline(file, line))
     {
-        line = trim(line);
-        if (line.empty()) continue;
-
-        // split on commas into tokens
-        std::vector<std::string> tokens;
-        {
-            std::istringstream ss(line);
-            std::string field;
-            while (std::getline(ss, field, ',')) 
-            {
-                tokens.push_back(trim(field));
-            }
-        }
-
-        // skip the header row
-        if (firstLine && tokens.size() > 0 && tokens[0] == "type") 
-        {
-            firstLine = false;
+        // ditch empty lines
+        if (line.empty())
             continue;
-        }
-        firstLine = false;
 
-        if (tokens.size() != 6) 
+        // quick check for header
+        if (line.rfind("type", 0) == 0)
+            continue;
+
+        // turn "wall,wall,123,456" → "wall wall 123 456"
+        for (auto& c : line)
+            if (c == ',') c = ' ';
+
+        std::istringstream ss(line);
+        std::string type, key;
+        float x, y;
+        if (!(ss >> type >> key >> x >> y))
         {
-            std::cerr << "[WARN] expected 6 fields but got "
-                << tokens.size() << " in: " << line << "\n";
+            std::cerr << "[WARN] bad line: " << line << "\n";
             continue;
         }
 
-        // now tokens = { type, key, sx, sy, sw, sh }
-        float x = std::stof(tokens[2]);
-        float y = std::stof(tokens[3]);
-        float w = std::stof(tokens[4]);
-        float h = std::stof(tokens[5]);
-
-        if (tokens[0] == "wall") 
+        if (type == "wall")
         {
-            //ResourcesManager& res = ResourcesManager::getInstance();
-            m_staticObj.emplace_back(std::make_unique<Wall>(tokens[1], sf::Vector2f(x, y)));
+            m_staticObj.emplace_back(
+                std::make_unique<Wall>(key, sf::Vector2f{ x,y })
+            );
         }
-        // … handle other types …
+        // … else if for other object-types …
     }
+
 
 	player = Player(FIRST_PLAYER_POSITION, "player_machine_gun");
 }
@@ -87,78 +65,121 @@ void Map::loadlevelobj(std::vector<std::unique_ptr<UpdateableObject>>& m_movingO
     m_staticObj.clear();
     m_movingObj.clear();
     loadFromCSV(m_staticObj, player);
-    loadEnemies(m_movingObj);
-    loadObstacles(m_staticObj);
+    loadEnemies(m_movingObj, m_staticObj);
+    loadObstacles(m_staticObj, m_movingObj);
 }
 
 //-----------------------------------------------------------------------------
-void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj)
+void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj, std::vector<std::unique_ptr<StaticObject>>& m_staticObj)
 {
-    //random_device is a seed maker.
-    //mt19937 is a random engine.
+    ////random_device is a seed maker.
+    ////mt19937 is a random engine.
+    //std::mt19937 rng{ std::random_device{}() };
+    //float thirdH = MAP_HEIGHT / 3.f;
+    ////getting a random x value (can spawn everywhere from left to right)
+    //auto randX = [&]()
+    //    {
+    //        return std::uniform_real_distribution<float>(0.f, MAP_WIDTH)(rng);
+    //    };
+    //// getting a random y value in a specific third
+    //auto randYIn = [&](int region) 
+    //    {
+    //        return std::uniform_real_distribution<float>
+    //            (region * thirdH, (region + 1) * thirdH)(rng);
+    //    };
+    constexpr float WALL_MARGIN = 50.f;
+    constexpr int maxTries = 10;
+
     std::mt19937 rng{ std::random_device{}() };
     float thirdH = MAP_HEIGHT / 3.f;
-    //getting a random x value (can spawn everywhere from left to right)
-    auto randX = [&]()
+
+    std::uniform_real_distribution<float> randX(WALL_MARGIN, MAP_WIDTH - WALL_MARGIN);
+    auto randYIn = [&](int region)
         {
-            return std::uniform_real_distribution<float>(0.f, MAP_WIDTH)(rng);
+            return std::uniform_real_distribution<float>(
+                region * thirdH + WALL_MARGIN, (region + 1) * thirdH - WALL_MARGIN)(rng);
         };
-    // getting a random y value in a specific third
-    auto randYIn = [&](int region) 
-        {
-            return std::uniform_real_distribution<float>
-                (region * thirdH, (region + 1) * thirdH)(rng);
-        };
+
     auto& factory = Factory<UpdateableObject>::instance();
-    
-    //first third (3 simple enemies)
+
+    auto tryPlaceEnemy = [&](ObjectType type, int region)
+        {
+            for (int attempt = 0; attempt < maxTries; ++attempt)
+            {
+                sf::Vector2f pos{ randX(rng), randYIn(region) };
+                auto temp = factory.create(type, pos);
+                if (isPositionFree(temp->getBounds(), m_staticObj, m_movingObj))
+                {
+                    m_movingObj.emplace_back(std::move(temp));
+                    break;
+                }
+            }
+        };
+
+    // first third (3 simple + 3 smart)
     for (int i = 0; i < NUM_OF_STUPID_ENEMY; ++i)
     {
-        m_movingObj.emplace_back(factory.create(ObjectType::BFSENEMY, { randX(), randYIn(0) }));
-        m_movingObj.emplace_back(factory.create(ObjectType::SMARTENEMY, { randX(), randYIn(0) }));
+        tryPlaceEnemy(ObjectType::BFSENEMY, 0);
+        tryPlaceEnemy(ObjectType::SMARTENEMY, 0);
     }
 
-    //second third (1 simple, 2 smart)
-    m_movingObj.emplace_back(factory.create(ObjectType::SIMPLENEMY, { randX(), randYIn(1) }));
+    // second third (1 simple, 2 smart)
+    tryPlaceEnemy(ObjectType::SIMPLENEMY, 1);
     for (int i = 0; i < NUM_OF_SMART_ENEMY; ++i)
     {
-        m_movingObj.emplace_back(factory.create(ObjectType::SMARTENEMY, { randX(), randYIn(1) }));
+        tryPlaceEnemy(ObjectType::SMARTENEMY, 1);
     }
-    //third third (1 simple, 2 smart, 1 bfs)
-    m_movingObj.emplace_back(factory.create(ObjectType::SIMPLENEMY, { randX(), randYIn(2) }));
-    m_movingObj.emplace_back(factory.create(ObjectType::BFSENEMY, { randX(), randYIn(2) }));
+
+    // third third (1 simple, 2 smart, 1 bfs)
+    tryPlaceEnemy(ObjectType::SIMPLENEMY, 2);
+    tryPlaceEnemy(ObjectType::BFSENEMY, 2);
     for (int i = 0; i < NUM_OF_SMART_ENEMY; ++i)
     {
-        m_movingObj.emplace_back(factory.create(ObjectType::SMARTENEMY, { randX(), randYIn(2) }));
+        tryPlaceEnemy(ObjectType::SMARTENEMY, 2);
     }
 }
 
-void Map::loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj)
+void Map::loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj)
 {
+    constexpr float WALL_MARGIN = 50.f;
+    constexpr int maxTries = 10;
+
     std::mt19937 rng{ std::random_device{}() };
-    std::uniform_real_distribution<float> randX(0.f, MAP_WIDTH);
-    std::uniform_real_distribution<float> randY(0.f, MAP_HEIGHT);
+    std::uniform_real_distribution<float> randX(WALL_MARGIN, MAP_WIDTH - WALL_MARGIN);
+    std::uniform_real_distribution<float> randY(WALL_MARGIN, MAP_HEIGHT - WALL_MARGIN);
 
     auto& factory = Factory<StaticObject>::instance();
 
-    // e.g. 10 rocks
-    for (int i = 0; i < 20; ++i) {
-        sf::Vector2f pos{ randX(rng), randY(rng) };
-        m_staticObj.emplace_back(
-            factory.create(ObjectType::OBSTACLE1, pos));
-    }
+    auto tryPlaceObstacle = [&](ObjectType type)
+        {
+            for (int attempt = 0; attempt < maxTries; ++attempt)
+            {
+                sf::Vector2f pos{ randX(rng), randY(rng) };
+                auto temp = factory.create(type, pos);
+                if (isPositionFree(temp->getBounds(), m_staticObj, m_movingObj))
+                {
+                    m_staticObj.emplace_back(std::move(temp));
+                    break;
+                }
+            }
+        };
 
-    // 5 crates
-    for (int i = 0; i < 20; ++i) {
-        sf::Vector2f pos{ randX(rng), randY(rng) };
-        m_staticObj.emplace_back(
-            factory.create(ObjectType::OBSTACLE2, pos));
-    }
+    for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::OBSTACLE1);
+    for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::OBSTACLE2);
+    for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::OBSTACLE3);
+}
 
-    // 3 barrels
-    for (int i = 0; i < 20; ++i) {
-        sf::Vector2f pos{ randX(rng), randY(rng) };
-        m_staticObj.emplace_back(
-            factory.create(ObjectType::OBSTACLE3, pos));
-    }
+bool Map::isPositionFree(const sf::FloatRect& newBounds,
+    const std::vector<std::unique_ptr<StaticObject>>& staticObjs,
+    const std::vector<std::unique_ptr<UpdateableObject>>& movingObjs)
+{
+    for (const auto& obj : staticObjs)
+        if (obj->getBounds().intersects(newBounds))
+            return false;
+
+    for (const auto& obj : movingObjs)
+        if (obj->getBounds().intersects(newBounds))
+            return false;
+
+    return true;
 }

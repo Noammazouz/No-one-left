@@ -1,6 +1,6 @@
 ﻿configure_file ("ARCADE_N.TTF" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("gamebackground.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("Level1.csv" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Level1_cleaned.csv" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Rwall.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Player.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("player_machine_gun.png" ${CMAKE_BINARY_DIR} COPYONLY)

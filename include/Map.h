@@ -23,7 +23,10 @@ public:
 
 private:
 	void loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player);
-	void loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj);
-	void loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj);
+	void loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj, std::vector<std::unique_ptr<StaticObject>>& m_staticObj);
+	void loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj);
+	bool isPositionFree(const sf::FloatRect& newBounds,
+		const std::vector<std::unique_ptr<StaticObject>>& staticObj,
+		const std::vector<std::unique_ptr<UpdateableObject>>& movingObj);
 	std::vector<std::string> m_level;
 };
