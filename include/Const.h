@@ -97,8 +97,6 @@ const int MAX_BULLETS = 29; //Maximum number of bullets that a gun have.
 const int MIN_BOUND_BULLETS = 0; //Minimum number of bullets that a gun have.
 const int PLAYER_HEIGHT_53 = 53; //Height of the player sprite - right now this is the height of the player sprite for checking it.
 const int PLAYER_WIDTH_50 = 50; //Width of the player sprite - right now this is the height of the player sprite for checking it.
-//const int OBJECT_HEIGHT = 128; //Height of the player sprite
-//const int OBJECT_WIDTH = 128; //Width of the player sprite
 const int OBJECT_HEIGHT = 32; //Height of the player sprite.
 const int OBJECT_WIDTH = 25; //Width of the player sprite.
 
