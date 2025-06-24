@@ -15,17 +15,17 @@ GamePlay::GamePlay()
 }
 
 //-----------------------------------------------------------------------------
-void GamePlay::run(sf::RenderWindow& window, int& m_currrentScreen)
+void GamePlay::run(sf::RenderWindow& window, int& m_currentScreen)
 {
 	if (m_lost) resetGame();
-	Screen::run(window, m_currrentScreen);
+	Screen::run(window, m_currentScreen);
 	m_view.setCenter(m_player.getPos());
 	m_view.setCenter(clampViewPosition(worldBounds));
 	window.setView(m_view);
 }
 
 //-----------------------------------------------------------------------------
-void GamePlay::activate(sf::Clock& clock, int& m_currrentScreen)
+void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 {
 	if (m_paused)
 	{
@@ -55,7 +55,7 @@ void GamePlay::activate(sf::Clock& clock, int& m_currrentScreen)
 		calculateScore();
 		if (m_win)
 		{
-			m_currrentScreen = WIN_SCREEN;
+			m_currentScreen = WIN_SCREEN;
 			return;
 		}
 	}
@@ -71,7 +71,7 @@ void GamePlay::activate(sf::Clock& clock, int& m_currrentScreen)
 		}
 		else if (m_sound.getStatus() == sf::Sound::Stopped)
 		{
-			m_currrentScreen = LOSE_SCREEN;
+			m_currentScreen = LOSE_SCREEN;
 			m_lost = true;
 		}
 		return;
@@ -167,7 +167,8 @@ void GamePlay::handleCollision()
 			// Dynamic-cast to Enemy (or UpdateableObject) and call ClearAvoidance()
 			if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get()))
  {
-				if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get())) {
+				if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get())) 
+				{
 					//enemy->OnSuccessfulMove();
 				}
 			}

@@ -186,7 +186,6 @@ void Player::handleShooting(std::vector<std::unique_ptr<Projectile>>& bullets)
 	}
 }
 
-
 //-----------------------------------------------------------------------------
 void Player::setAttackBehavior(std::unique_ptr<AttackBehavior> attackBehavior)
 {
@@ -247,7 +246,7 @@ void handlePlayerEnemyCollision(GameObject& obj1, GameObject& obj2)
 //------------------------------------------------------------------------------
 void handlePlayerWallCollision(GameObject& obj1, GameObject& obj2)
 {
-	// Handle Player vs Wall collision (bidirectional)
+	//Handle Player vs Wall collision (bidirectional)
 	if (auto* player = dynamic_cast<Player*>(&obj1)) 
 	{
 		if (auto* wall = dynamic_cast<Wall*>(&obj2)) 
@@ -260,6 +259,29 @@ void handlePlayerWallCollision(GameObject& obj1, GameObject& obj2)
 	if (auto* wall = dynamic_cast<Wall*>(&obj1)) 
 	{
 		if (auto* player = dynamic_cast<Player*>(&obj2)) 
+		{
+			player->setPosition(player->getPrevLocation());
+			return;
+		}
+	}
+}
+
+//------------------------------------------------------------------------------
+void handlePlayerObstaclesCollision(GameObject& obj1, GameObject& obj2)
+{
+	//Handle Player vs Wall collision (bidirectional)
+	if (auto* player = dynamic_cast<Player*>(&obj1))
+	{
+		if (auto* wall = dynamic_cast<Obstacles*>(&obj2))
+		{
+			player->setPosition(player->getPrevLocation());
+			return;
+		}
+	}
+	// Handle Wall vs Player collision (reverse direction)
+	if (auto* wall = dynamic_cast<Obstacles*>(&obj1))
+	{
+		if (auto* player = dynamic_cast<Player*>(&obj2))
 		{
 			player->setPosition(player->getPrevLocation());
 			return;
@@ -297,6 +319,7 @@ static bool g_playerCollisionRegistered = []() {
 	auto& factory = CollisionFactory::getInstance();
 	factory.registerTypedCollision<Player, Enemy>(handlePlayerEnemyCollision);
 	factory.registerTypedCollision<Player, Wall>(handlePlayerWallCollision);
+	factory.registerTypedCollision<Player, Obstacles>(handlePlayerObstaclesCollision);
 	factory.registerTypedCollision<Player, Explosion>(handlePlayerExplosionCollision);
 	return true;
 	}();
