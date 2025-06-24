@@ -1,6 +1,11 @@
 //-----include section-----
 #include "GamePlay.h"
 
+
+// Static variables for death handling
+static bool s_deathSoundStarted = false;
+static sf::Clock s_deathTimer;
+
 //-----functions section------
 //-----------------------------------------------------------------------------
 GamePlay::GamePlay()
@@ -43,7 +48,30 @@ void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 		std::cerr << STARIC_OBLECTS_WARNING;
 	}
 
+	if (m_player.getLife() == END_GAME)
+	{
+		if (!s_deathSoundStarted)
+		{
+			// Play death sound once and stop game music
+			setMusicState(MusicState::MENU);
+			m_sound.setBuffer(ResourcesManager::getInstance().getSound(LOSING_SOUND));
+			m_sound.setVolume(100.f);
+			m_sound.setPlayingOffset(sf::seconds(1.f));
+			m_sound.play();
+			s_deathSoundStarted = true;
+			s_deathTimer.restart();
+		}
+		else if (s_deathTimer.getElapsedTime().asSeconds() >= 3.0f || m_sound.getStatus() != sf::Sound::Playing)
+		{
+			// Go to lose screen after 3 seconds OR when sound finishes playing
+			m_currentScreen = LOSE_SCREEN;
+			m_newGame = true;
+			s_deathSoundStarted = false; // Reset for next time
+		}
+		return; // STOP all game processing when dead
+	}
 
+	// Only process game logic if player is alive
 	move(clock);
 	handleCollision();
 	explosion();
@@ -63,23 +91,6 @@ void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 			m_newGame = true;
 			return;
 		}
-	}
-
-	if (m_player.getLife() == END_GAME)
-	{
-		if (m_sound.getStatus() != sf::Sound::Playing)
-		{
-			m_sound.setBuffer(ResourcesManager::getInstance().getSound(LOSING_SOUND));
-			m_sound.setVolume(100.f);
-			m_sound.setPlayingOffset(sf::seconds(1.f));
-			m_sound.play();
-		}
-		else if (m_sound.getStatus() == sf::Sound::Stopped)
-		{
-			m_currentScreen = LOSE_SCREEN;
-			m_newGame = true;
-		}
-		return;
 	}
 }
 
@@ -227,6 +238,14 @@ void GamePlay::handleErasing()
 }
 
 //-----------------------------------------------------------------------------
+void GamePlay::resetDeathState()
+{
+	// Reset the global static variables for death handling
+	s_deathSoundStarted = false;
+	s_deathTimer.restart(); // Reset the timer
+}
+
+//-----------------------------------------------------------------------------
 void GamePlay::explosion()
 {
 	/*auto bomb = Enemy::getNumOfGuardsAlive();
@@ -369,6 +388,7 @@ void GamePlay::resetGame()
 	m_newGame = false;
 	m_win = false;
 	handleLoadingLevel();
+	resetDeathState();
 }
 
 //-----------------------------------------------------------------------------
