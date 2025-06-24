@@ -1,10 +1,10 @@
 //-----include section-----
-#include "GameScreen.h"
+#include "GamePlay.h"
 
 //-----functions section------
 //-----------------------------------------------------------------------------
-GameScreen::GameScreen()
-	: worldBounds(0.f, 0.f, MAP_WIDTH, MAP_HEIGHT)
+GamePlay::GamePlay()
+	: worldBounds(0.f, 0.f, MAP_WIDTH, MAP_HEIGHT) //, m_player(*this)
 {
 	initButtons();
 	handleLoadingLevel();
@@ -15,7 +15,7 @@ GameScreen::GameScreen()
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::run(sf::RenderWindow& window, int& m_currentScreen)
+void GamePlay::run(sf::RenderWindow& window, int& m_currentScreen)
 {
 	if (m_lost) resetGame();
 	Screen::run(window, m_currentScreen);
@@ -25,7 +25,7 @@ void GameScreen::run(sf::RenderWindow& window, int& m_currentScreen)
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::activate(sf::Clock& clock, int& m_currentScreen)
+void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 {
 	if (m_paused)
 	{
@@ -79,7 +79,7 @@ void GameScreen::activate(sf::Clock& clock, int& m_currentScreen)
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::initButtons()
+void GamePlay::initButtons()
 {
 	sf::Vector2f pos(20.f, 20.f); // Fixed top-left with padding
 	m_buttons.emplace_back("pause", pos);
@@ -95,7 +95,7 @@ void GameScreen::initButtons()
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::draw(sf::RenderWindow& window)
+void GamePlay::draw(sf::RenderWindow& window)
 {
 	// Draw game world
 	sf::Sprite backround;
@@ -123,7 +123,7 @@ void GameScreen::draw(sf::RenderWindow& window)
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::move(sf::Clock& clock)
+void GamePlay::move(sf::Clock& clock)
 {
 	const auto deltaTime = clock.restart();
 
@@ -137,10 +137,11 @@ void GameScreen::move(sf::Clock& clock)
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::handleCollision()
+void GamePlay::handleCollision()
 {
 	auto& collisionHandler = CollisionFactory::getInstance();
 	
+	// Player vs Static Objects (walls)
 	for (const auto& staticObj : m_staticObj)
 	{
 		if (m_player.checkCollision(*staticObj))
@@ -182,9 +183,9 @@ void GameScreen::handleCollision()
 		{
 			if (m_player.checkCollision(*enemy))
 			{
-				m_sound.setBuffer(ResourcesManager::getInstance().getSound("death"));
+				/*m_sound.setBuffer(ResourcesManager::getInstance().getSound("death"));
 				m_sound.setVolume(100.f);
-				m_sound.play(); 
+				m_sound.play();*/
 				collisionHandler.processCollision(m_player, *enemy);
 				break;
 			}
@@ -205,13 +206,13 @@ void GameScreen::handleCollision()
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::setBomb()
+void GamePlay::setBomb()
 {
 	//m_movingObj.push_back(std::make_unique<Bombs>(sf::Vector2f(m_player.getPosition()), ResourcesManager::getInstance().getTexture("bomb")));
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::handleErasing()
+void GamePlay::handleErasing()
 {
 	std::erase_if(m_movingObj, [](const auto& item)
 		{return item->isDead(); });
@@ -221,7 +222,7 @@ void GameScreen::handleErasing()
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::explosion()
+void GamePlay::explosion()
 {
 	/*auto bomb = Enemy::getNumOfGuardsAlive();
 
@@ -241,7 +242,7 @@ void GameScreen::explosion()
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::calculateScore()
+void GamePlay::calculateScore()
 {
 	/*int points = 0;
 	points += ENDING_LEVEL;
@@ -251,7 +252,7 @@ void GameScreen::calculateScore()
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::setExpoDirection(int index)
+void GamePlay::setExpoDirection(int index)
 {
 	/*for (int direction = 0; direction < NUM_OF_DIRECTION; direction++)
 	{
@@ -280,7 +281,7 @@ void GameScreen::setExpoDirection(int index)
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::checkExpo()
+void GamePlay::checkExpo()
 {
 	/*auto explosion = m_movingObj.size() - NUM_OF_EXPLOSION;
 	for (; explosion < m_movingObj.size(); explosion++)
@@ -313,7 +314,7 @@ void GameScreen::checkExpo()
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::checkValidDraw()
+void GamePlay::checkValidDraw()
 {
 	/*auto explosion = m_movingObj.size() - NUM_OF_EXPLOSION;
 	for (; explosion < m_movingObj.size(); explosion++)
@@ -330,7 +331,7 @@ void GameScreen::checkValidDraw()
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::handleLoadingLevel()
+void GamePlay::handleLoadingLevel()
 {
 	m_movingObj.clear();
 	m_staticObj.clear();
@@ -340,7 +341,7 @@ void GameScreen::handleLoadingLevel()
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::handleScoreBoard()
+void GamePlay::handleScoreBoard()
 {
 	m_infoBar.updateTime(m_stopwatch);
 	m_infoBar.updateNumOfBullets(m_player.getNumOfBullets());
@@ -348,7 +349,7 @@ void GameScreen::handleScoreBoard()
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::removeGuard()
+void GamePlay::removeGuard()
 {
 	/*if (Enemy::getNumOfGuardsAlive() != 0)
 	{
@@ -358,7 +359,7 @@ void GameScreen::removeGuard()
 	}*/
 }
 
-void GameScreen::resetGame()
+void GamePlay::resetGame()
 {
 	m_lost = false;
 	m_win = false;
@@ -366,14 +367,14 @@ void GameScreen::resetGame()
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::decTime()
+void GamePlay::decTime()
 {
 	m_stopwatch -= sf::seconds(REMOVE_TIME);
 	m_infoBar.updateTime(m_stopwatch);
 }
 
 //-----------------------------------------------------------------------------
-void GameScreen::handleMouseClick(const sf::Vector2f& clickPos, int& screenState)
+void GamePlay::handleMouseClick(const sf::Vector2f& clickPos, int& screenState)
 {
 	if (!m_paused)
 	{
@@ -408,7 +409,7 @@ void GameScreen::handleMouseClick(const sf::Vector2f& clickPos, int& screenState
 }
 
 //---------------------------------------------------------------------------------------------------
-sf::Vector2f GameScreen::clampViewPosition(const sf::FloatRect& bounds)
+sf::Vector2f GamePlay::clampViewPosition(const sf::FloatRect& bounds)
 {
 	sf::Vector2f center = m_view.getCenter();
 	center.x = std::max(bounds.left + m_view.getSize().x / 2.f, std::min(center.x, bounds.left + bounds.width - m_view.getSize().x / 2.f));
