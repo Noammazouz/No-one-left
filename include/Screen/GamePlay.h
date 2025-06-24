@@ -21,10 +21,10 @@
 #include "CollisionFactory.h"
 
 //-----class section-----
-class GameScreen : public Screen
+class GamePlay : public Screen
 {
 public:
-	GameScreen();
+	GamePlay();
 
 	void draw(sf::RenderWindow& window) override;
 	virtual void activate(sf::Clock& clockin, int& m_currrentScreen) override;

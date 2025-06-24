@@ -17,17 +17,27 @@ int Player::m_bulletCount = NUM_OF_BULLETS;
 
 //-----------------------------------------------------------------------------
 Player::Player()
-	: UpdateableObject(), m_isShooting(false), /*m_attackBehavior(std::move(std::make_unique<OneDirectionAttackBehavior>())),*/ m_lives(NUM_OF_LIVES)
+	: UpdateableObject(), m_isShooting(false), m_lives(NUM_OF_LIVES)
 {
 }
 
 //-----------------------------------------------------------------------------
-Player::Player(sf::Vector2f position, std::string name)
-	: UpdateableObject(position, name), m_isShooting(false), /*m_attackBehavior(std::move(std::make_unique<OneDirectionAttackBehavior>())),*/ m_lives(NUM_OF_LIVES)
+//Player::Player(sf::Vector2f position, std::string name)
+//	: UpdateableObject(position, name), m_isShooting(false), /*m_attackBehavior(std::move(std::make_unique<OneDirectionAttackBehavior>())),*/ m_lives(NUM_OF_LIVES)
+//{
+//	m_numberOfFrames = m_pic.getTexture()->getSize().x / PLAYER_WIDTH; //Calculate number of frames based on texture width.
+//	m_pic.setRotation(180.f); //Set initial rotation to face down.
+//	set_frames(m_numberOfFrames, position);
+//}
+
+void Player::initialization(sf::Vector2f position, std::string name)
 {
+	auto& texture = ResourcesManager::getInstance().getTexture(name);
+	m_pic.setTexture(texture);
 	m_numberOfFrames = m_pic.getTexture()->getSize().x / PLAYER_WIDTH; //Calculate number of frames based on texture width.
 	m_pic.setRotation(180.f); //Set initial rotation to face down.
 	set_frames(m_numberOfFrames, position);
+	m_attackBehavior= std::move(std::make_unique<OneDirectionAttackBehavior>());
 }
 
 //-----------------------------------------------------------------------------
@@ -180,20 +190,20 @@ void Player::handleShooting(std::vector<std::unique_ptr<Projectile>>& bullets)
 //-----------------------------------------------------------------------------
 void Player::setAttackBehavior(std::unique_ptr<AttackBehavior> attackBehavior)
 {
-	//m_attackBehavior = std::move(attackBehavior);
+	m_attackBehavior = std::move(attackBehavior);
 }
 
 //-----------------------------------------------------------------------------
 void Player::doAttack(std::vector<std::unique_ptr<Projectile>>& bullets)
 {
-	//if (!m_attackBehavior) return;
+	if (!m_attackBehavior) return;
 
 	int bulletsNeeded = ONE_DIRECTION_BULLET; //default is one direction
 
-	//if (typeid(*m_attackBehavior) == typeid(AllDirectionsAttackBehavior)) //check if attack for all directions
-	//{
-	//	bulletsNeeded = ALL_DIRECTIONS_BULLETS;
-	//}
+	if (typeid(*m_attackBehavior) == typeid(AllDirectionsAttackBehavior)) //check if attack for all directions
+	{
+		bulletsNeeded = ALL_DIRECTIONS_BULLETS;
+	}
 
 	if (getNumOfBullets() >= bulletsNeeded)
 	{
