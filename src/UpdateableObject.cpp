@@ -125,13 +125,13 @@ void UpdateableObject::updateFrames(const sf::Vector2f& direction, const float f
 void UpdateableObject::set_frames(const int framesNumber, const sf::Vector2f position)
 {
     m_frames.clear();
-    m_frames.reserve(PLAYER_FRAME_COUNT);
-    for (int frameNumber = 0; frameNumber < PLAYER_FRAME_COUNT; frameNumber++)
+    m_frames.reserve(m_numberOfFrames);
+    for (int frameNumber = 0; frameNumber < m_numberOfFrames; frameNumber++)
     {
-        m_frames.emplace_back(sf::IntRect(frameNumber * PLAYER_WIDTH, 0, PLAYER_WIDTH, PLAYER_HEIGHT));
+        m_frames.emplace_back(sf::IntRect(frameNumber * OBJECT_WIDTH, 0, OBJECT_WIDTH, OBJECT_HEIGHT));
     }
 
     m_pic.setTextureRect(m_frames[currentPlayerFrame]); //set for the first frame at first.
-    m_pic.setOrigin(PLAYER_WIDTH / 2, PLAYER_HEIGHT / 2); //Set origin to center.
+    m_pic.setOrigin(OBJECT_WIDTH / 2, OBJECT_HEIGHT / 2); //Set origin to center.
     m_pic.setPosition(position);
 }

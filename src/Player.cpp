@@ -22,19 +22,11 @@ Player::Player()
 }
 
 //-----------------------------------------------------------------------------
-//Player::Player(sf::Vector2f position, std::string name)
-//	: UpdateableObject(position, name), m_isShooting(false), /*m_attackBehavior(std::move(std::make_unique<OneDirectionAttackBehavior>())),*/ m_lives(NUM_OF_LIVES)
-//{
-//	m_numberOfFrames = m_pic.getTexture()->getSize().x / PLAYER_WIDTH; //Calculate number of frames based on texture width.
-//	m_pic.setRotation(180.f); //Set initial rotation to face down.
-//	set_frames(m_numberOfFrames, position);
-//}
-
 void Player::initialization(sf::Vector2f position, std::string name)
 {
 	auto& texture = ResourcesManager::getInstance().getTexture(name);
 	m_pic.setTexture(texture);
-	m_numberOfFrames = m_pic.getTexture()->getSize().x / PLAYER_WIDTH; //Calculate number of frames based on texture width.
+	m_numberOfFrames = m_pic.getTexture()->getSize().x / OBJECT_WIDTH; //Calculate number of frames based on texture width.
 	m_pic.setRotation(180.f); //Set initial rotation to face down.
 	set_frames(m_numberOfFrames, position);
 	m_attackBehavior= std::move(std::make_unique<OneDirectionAttackBehavior>());
