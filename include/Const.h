@@ -115,6 +115,7 @@ const float ROTATION_SPEED = 135.f; //degrees per second
 const std::string MENU_MUSIC = "menu";
 const std::string GAME_MUSIC = "game";
 const std::string RETURN_BUTTON = "return";
+const std::string STARIC_OBLECTS_WARNING = "[WARN] No static objects were loaded are you sure your CSV has entries?\n";
 
 const sf::Color FONT_COLOR = sf::Color(128, 0, 128);
 
