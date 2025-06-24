@@ -119,13 +119,6 @@ void Infobar::draw(sf::RenderWindow& window)
 	window.draw(m_lifePercentages);
 	window.draw(m_bulletsIcon);
 	window.draw(m_BulletsAmount);
-     // Draw the infobar elements on the window
-	// This could include drawing text for lives, bullets, level, and time
-	// Example:
-	// window.draw(livesText);
-	// window.draw(bulletsText);
-	// window.draw(levelText);
-	// window.draw(timeText);
 }
 
 void Infobar::decreaseLifeLevel(float lifePercentage) 

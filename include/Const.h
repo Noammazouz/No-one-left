@@ -123,6 +123,11 @@ const float ROTATION_SPEED = 135.f; //degrees per second.
 const std::string MENU_MUSIC = "menu";
 const std::string GAME_MUSIC = "game";
 const std::string LOSING_SOUND = "death";
+const std::string WINNING_SOUND = "win sound effect";
+const std::string SHOOTING_SOUND = "shot";
+const std::string EXPLOSION_SOUND = "explosion";
+const std::string GAIN_HEALTH_SOUND = "health";
+const std::string GAIN_PRESENT_SOUND = "present";
 
 //-----------------buttons const----------------------------------------
 const std::string RETURN_BUTTON = "return";
