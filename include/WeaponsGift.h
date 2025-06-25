@@ -8,7 +8,7 @@ class WeaponsGift : public ItemsToCollect
 {
 public:
 	WeaponsGift(const std::string& name, const sf::Vector2f& position);
-	~WeaponsGift() = default;
+	virtual ~WeaponsGift() = default;
 
 	virtual const std::string& getWeaponType() const;
 
