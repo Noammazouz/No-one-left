@@ -20,8 +20,8 @@
 Enemy::Enemy(sf::Vector2f position, std::string name)
 	: UpdateableObject(position, name), m_direction(0, 0), m_prevlocation(position)
 {
- /*   m_num_of_enemies++;
-    m_num_of_enemies_alive++;*/
+    m_num_of_Enemies++;
+    m_num_of_Enemies_alive++;
 }
 
 //-----------------------------------------------------------------------------
@@ -51,6 +51,26 @@ void handleEnemyWallCollision(GameObject& obj1, GameObject& obj2)
         }
     }
 }
+//-----------------------------------------------------------------------------
+// Collision handler function for Enemy-Wall collisions (multimethods style)
+void handleEnemyEnemyCollision(GameObject& obj1, GameObject& obj2)
+{
+    // Cast to specific types and handle collision
+    // Only need to handle one direction since CollisionFactory handles symmetry
+    if (auto* enemy = dynamic_cast<Enemy*>(&obj1))
+    {
+        if (auto* enemy2 = dynamic_cast<Enemy*>(&obj2))
+        {
+            // Enemy hit another enemy - revert to previous position
+            enemy->setPosition(enemy->getPrevLocation());
+            enemy->SetDirection(-enemy->getDirection()); // Reverse direction
+
+            return;
+        }
+    }
+}
+
+
 
 //-----------------------------------------------------------------------------
 // Register Enemy-Wall collision handler (multimethods approach)
@@ -59,6 +79,13 @@ static bool enemyWallCollisionRegistered = []() {
     collisionFactory.registerTypedCollision<Enemy, Wall>(handleEnemyWallCollision);
     return true;
 }();
+
+// Register Enemy-Enemy collision handler (multimethods approach)
+static bool enemyenemyCollisionRegistered = []() {
+    auto& collisionFactory = CollisionFactory::getInstance();
+    collisionFactory.registerTypedCollision<Enemy, Enemy>(handleEnemyEnemyCollision);
+    return true;
+    }();
 
 static auto regSimple = Factory<UpdateableObject>::instance().registerType(
     ObjectType::SIMPLENEMY,
@@ -118,4 +145,46 @@ void Enemy::SetDirection(sf::Vector2f direction)
 sf::Vector2f Enemy::getDirection() const
 {
     return m_direction;
+}
+
+
+void Enemy::NotifyCollision()
+{
+    // revert movement
+    setPosition(getPrevLocation());
+    auto nudge = -getDirection() * 1.5f;
+    setPosition(getPosition() + nudge);
+    // tell the behavior to reset
+    if (m_MoveBehavior)
+    {
+        m_MoveBehavior->OnCollision();
+    }
+}
+
+void Enemy::OnSuccessfulMove() {
+    // Only clear avoidance if the current move behavior supports it
+    m_MoveBehavior->ClearAvoidance();
+    // (No need to know which concrete type it is)
+}
+
+//-------------------------------------
+Enemy::~Enemy()
+{
+    m_num_of_Enemies_alive--;
+
+}
+//-------------------------------------
+int Enemy::getNumOfEnemiesAlive()
+{
+    return m_num_of_Enemies_alive;
+}
+
+//-------------------------------------
+int Enemy::m_num_of_Enemies_alive = 0;
+//-------------------------------------
+int Enemy::m_num_of_Enemies = 0;
+
+int Enemy::getNumOfStartingEnemies(const std::vector<std::unique_ptr<UpdateableObject>>& movingObjs)
+{
+    return static_cast<int>(movingObjs.size());
 }

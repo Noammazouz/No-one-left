@@ -160,9 +160,8 @@ void GamePlay::handleCollision()
 			// Dynamic-cast to Enemy (or UpdateableObject) and call ClearAvoidance()
 			if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get()))
  {
-				if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get())) 
-				{
-					//enemy->OnSuccessfulMove();
+				if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get())) {
+					enemy->OnSuccessfulMove();
 				}
 			}
 		}
@@ -185,17 +184,20 @@ void GamePlay::handleCollision()
 		}
 	}
 
-	//// Enemy vs Enemy collisions
-	//for (int moveObj = 0; moveObj < (Enemy::getNumOfGuardsAlive() - 1); ++moveObj)
-	//{
-	//	for (int nextMoveObj = moveObj + 1; nextMoveObj < Enemy::getNumOfGuardsAlive(); ++nextMoveObj)
-	//	{
-	//		if (m_movingObj[moveObj]->checkCollision(*m_movingObj[nextMoveObj]))
-	//		{
-	//			collisionHandler.handleCollision(*m_movingObj[moveObj], *m_movingObj[nextMoveObj]);
-	//		}
-	//	}
-	//}
+	for (size_t i = 0; i < m_movingObj.size(); ++i)
+	{
+		for (size_t j = i + 1; j < m_movingObj.size(); ++j)
+		{
+			auto& a = *m_movingObj[i];
+			auto& b = *m_movingObj[j];
+
+			if (a.checkCollision(b))
+			{
+				// This will look up the Enemy,Enemy handler you registered
+				CollisionFactory::getInstance().processCollision(a, b);
+			}
+		}
+	}
 }
 
 //-----------------------------------------------------------------------------
