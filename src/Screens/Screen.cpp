@@ -99,7 +99,7 @@ void Screen::drawButtons(sf::RenderWindow& window)
 void Screen::setMusicState(MusicState newState)
 {
 	if (s_musicMuted) return; // Don't change music if muted
-	
+
 	if (s_currentMusicState == newState) 
 	{
 		// State is correct, but make sure music is actually playing

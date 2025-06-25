@@ -70,7 +70,8 @@ enum ObjectType
 
 enum  BulletOwner
 {
-	ENEMY = 1
+	_PLAYER,
+	ENEMY
 };
 
 enum WinScreenButoons
@@ -105,6 +106,7 @@ const int MIN_BOUND_BULLETS = 0; //Minimum number of bullets that a gun have.
 const int OBJECT_HEIGHT = 32; //Height of the player sprite.
 const int OBJECT_WIDTH = 25; //Width of the player sprite.
 const int EXPLOSION_DEC_LIVES = 30;
+const int PROJECTILE_DAMAGE = 20;
 
 //-----float const section-----
 const float PLAYER_FRAME_TIME = 0.1f; //seconds per frame for the player animation
@@ -117,6 +119,7 @@ const float BOMB_TIME = 4.f;
 const float REMOVE_TIME = 10.f;
 const float WINDOW_RATIO = 0.92f;
 const float ROTATION_SPEED = 135.f; //degrees per second.
+const float PROJECTILE_SPEED = 200.f;
 
 //-----music and sound effects const section-----
 const std::string MENU_MUSIC = "menu";
@@ -147,6 +150,9 @@ const std::string SIMPLE_ENEMY_MACHINE_GUN = "simple_enemy_machine_gun";
 const std::string SIMPLE_ENEMY_RIFLE = "simple_enemy_rifle";
 const std::string SMART_ENEMY_RIFLE = "smart_enemy_rifle";
 const std::string BFS_ENEMY_RIFLE = "bfs_enemy_rifle";
+
+//-----texture names const section-----
+const std::string PROJECTILE_NAME = "projectile";
 
 //-----warning const section-----
 const std::string STARIC_OBLECTS_WARNING = "[WARN] No static objects were loaded are you sure your CSV has entries?\n";

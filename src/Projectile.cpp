@@ -8,7 +8,7 @@
 //-----functions section------
 //-----------------------------------------------------------------------------
 Projectile::Projectile(sf::Vector2f position, sf::Vector2f direction, BulletOwner owner)
-    : UpdateableObject(position, "projectile"), isActive(true), m_elapsedTime(0.0f), m_direction(direction)
+    : UpdateableObject(position, PROJECTILE_NAME), isActive(true), m_elapsedTime(0.0f), m_direction(direction)
 {
     float length = std::sqrt(m_direction.x * m_direction.x + m_direction.y * m_direction.y); // to get same speed for all directions
     if (length > 0)
@@ -23,14 +23,9 @@ void Projectile::update(sf::Time deltaTime, sf::Vector2f playerPos)
 {
     if (!isActive) return;
 
-    float dt = deltaTime.asSeconds();
-    m_elapsedTime += dt;
+    this->updatePosition(m_direction * PROJECTILE_SPEED * deltaTime.asSeconds());
 
-    sf::Vector2f movement = m_direction * speed * dt;
-    sf::Vector2f currentPos = getPosition();
-    setPosition(sf::Vector2f(currentPos.x + movement.x, currentPos.y + movement.y));
-
-    if (isOutOfMap() || isExpired())
+    if (isExpired())
     {
         isActive = false;
     }
@@ -43,21 +38,9 @@ void Projectile::setDirection(sf::Vector2f dir)
 }
 
 //-----------------------------------------------------------------------------
-void Projectile::setSpeed(float spd)
-{
-    speed = spd;
-}
-
-//-----------------------------------------------------------------------------
 sf::Vector2f Projectile::getDirection() const
 {
     return m_direction;
-}
-
-//-----------------------------------------------------------------------------
-float Projectile::getSpeed() const
-{
-    return speed;
 }
 
 //-----------------------------------------------------------------------------
@@ -73,22 +56,9 @@ void Projectile::setActive(bool active)
 }
 
 //-----------------------------------------------------------------------------
-int Projectile::getDamage() const
-{
-    return damage;
-}
-
-//-----------------------------------------------------------------------------
 bool Projectile::isExpired() const
 {
     return m_elapsedTime >= 3.0f; // 3 seconds 
-}
-
-//-----------------------------------------------------------------------------
-bool Projectile::isOutOfMap() const
-{
-    sf::Vector2f pos = getPosition();
-    return (pos.x < -50 || pos.x > MAP_WIDTH + 50 || pos.y < -50 || pos.y > MAP_HEIGHT + 50);
 }
 
 //-----------------------------------------------------------------------------  
@@ -119,7 +89,7 @@ void handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2)
    if (bullet && enemy) 
    {  
        // Only player bullets can kill enemies  
-       if (bullet->getOwner() == PLAYER)  
+       if (bullet->getOwner() == _PLAYER)  
        {  
            std::cout << "Player bullet hit enemy - Enemy killed!" << std::endl;  
            enemy->setLife(true); // Mark enemy as dead  
@@ -162,10 +132,10 @@ void handleEnemyBulletPlayerCollision(GameObject& obj1, GameObject& obj2)
     if (bullet && player) 
     {
         // Only enemy bullets can hurt player
-        if (bullet->getOwner() == BulletOwner::ENEMY)
+        if (bullet->getOwner() == ENEMY)
         {
             std::cout << "Enemy bullet hit player!" << std::endl;
-            player->decLife();
+            player->decLife(PROJECTILE_DAMAGE);
             bullet->setActive(false); // Deactivate bullet
         }
         // Player bullets don't hurt player (self-protection)

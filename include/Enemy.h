@@ -28,8 +28,8 @@ private:
 	//void checktimer();
 	std::unique_ptr<AttackBehavior>	m_AttackBehavior;
 	std::unique_ptr<MoveBehavior>	m_MoveBehavior;
-	static int m_num_of_Enemies;
-	static int m_num_of_Enemies_alive;
+	static int m_numOfEnemies;
+	static int m_numOfEnemiesAlive;
 	bool m_freeze = false;
 
 	sf::Vector2f m_direction;

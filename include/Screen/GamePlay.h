@@ -52,6 +52,7 @@ private:
 	void decTime();
 	void handleWinState(int& m_currentScreen);
 	void handleDeathState(int& m_currentScreen);
+	void addProjectile(const sf::Vector2f& pos, const sf::Vector2f& direction, BulletOwner owner);
 	sf::Vector2f clampViewPosition(const sf::FloatRect& bounds);
 
 	sf::RenderWindow m_window;
