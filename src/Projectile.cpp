@@ -99,20 +99,25 @@ void handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2)
    Enemy* enemy = nullptr;  
 
    // Check both parameter orders  
-   if (auto* b = dynamic_cast<Projectile*>(&obj1)) {  
-       if (auto* e = dynamic_cast<Enemy*>(&obj2)) {  
+   if (auto* b = dynamic_cast<Projectile*>(&obj1)) 
+   {  
+       if (auto* e = dynamic_cast<Enemy*>(&obj2)) 
+       {  
            bullet = b;  
            enemy = e;  
        }  
    }  
-   else if (auto* b = dynamic_cast<Projectile*>(&obj2)) {  
-       if (auto* e = dynamic_cast<Enemy*>(&obj1)) {  
+   else if (auto* b = dynamic_cast<Projectile*>(&obj2)) 
+   {  
+       if (auto* e = dynamic_cast<Enemy*>(&obj1)) 
+       {  
            bullet = b;  
            enemy = e;  
        }  
    }  
 
-   if (bullet && enemy) {  
+   if (bullet && enemy) 
+   {  
        // Only player bullets can kill enemies  
        if (bullet->getOwner() == PLAYER)  
        {  
@@ -137,20 +142,25 @@ void handleEnemyBulletPlayerCollision(GameObject& obj1, GameObject& obj2)
     Player* player = nullptr;
 
     // Check both parameter orders
-    if (auto* b = dynamic_cast<Projectile*>(&obj1)) {
-        if (auto* p = dynamic_cast<Player*>(&obj2)) {
+    if (auto* b = dynamic_cast<Projectile*>(&obj1)) 
+    {
+        if (auto* p = dynamic_cast<Player*>(&obj2)) 
+        {
             bullet = b;
             player = p;
         }
     }
-    else if (auto* b = dynamic_cast<Projectile*>(&obj2)) {
-        if (auto* p = dynamic_cast<Player*>(&obj1)) {
+    else if (auto* b = dynamic_cast<Projectile*>(&obj2)) 
+    {
+        if (auto* p = dynamic_cast<Player*>(&obj1)) 
+        {
             bullet = b;
             player = p;
         }
     }
 
-    if (bullet && player) {
+    if (bullet && player) 
+    {
         // Only enemy bullets can hurt player
         if (bullet->getOwner() == BulletOwner::ENEMY)
         {
@@ -174,14 +184,17 @@ void handleBulletWallCollision(GameObject& obj1, GameObject& obj2)
     Projectile* bullet = nullptr;
 
     // Check both parameter orders
-    if (auto* b = dynamic_cast<Projectile*>(&obj1)) {
+    if (auto* b = dynamic_cast<Projectile*>(&obj1)) 
+    {
         bullet = b;
     }
-    else if (auto* b = dynamic_cast<Projectile*>(&obj2)) {
+    else if (auto* b = dynamic_cast<Projectile*>(&obj2)) 
+    {
         bullet = b;
     }
 
-    if (bullet) {
+    if (bullet) 
+    {
         std::cout << "Bullet hit wall - Bullet destroyed" << std::endl;
         bullet->setActive(false); // All bullets are stopped by walls
     }
