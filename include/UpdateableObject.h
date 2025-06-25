@@ -17,6 +17,7 @@ public:
 	virtual bool checkCollision(GameObject& otherObject);
 
 	sf::Vector2f getPrevLocation() const;
+	sf::Vector2f getStartingPosition() const;
 
 protected:
 	void setPrevLocation(const sf::Vector2f& position);
@@ -26,11 +27,14 @@ protected:
 	std::vector<sf::IntRect> m_frames;
 	sf::Clock m_animClock;
 	int currentPlayerFrame = 0;
+	int m_numberOfFrames; //Number of frames for animation.
 
 	void updateFrames(const sf::Vector2f& direction, const float frameTime, const int numberOfFrames);
+	void set_frames(const int framesNumber, const sf::Vector2f position);
+	void changeSpriteAnimation(const std::string& name);
 
 private:
 	sf::Vector2f m_startingPosition;
 	sf::Vector2f m_prevLocation;
-	float m_targetAngle = 0.f; //Target angle for rotation
+	float m_targetAngle = 0.f; //Target angle for rotation.
 };

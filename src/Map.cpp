@@ -16,23 +16,23 @@
 void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player)
 {
     std::ifstream file("Level1.csv");
-    if (!file.is_open()) 
+    if (!file.is_open())
     {
         throw std::runtime_error("[ERROR] Cannot open Level1.csv");
         return;
     }
 
-    auto trim = [&](std::string s) 
-    {
-        // remove leading/trailing whitespace (including '\r')
-        while (!s.empty() && std::isspace((unsigned char)s.front())) s.erase(s.begin());
-        while (!s.empty() && std::isspace((unsigned char)s.back()))  s.pop_back();
-        return s;
-    };
+    auto trim = [&](std::string s)
+        {
+            // remove leading/trailing whitespace (including '\r')
+            while (!s.empty() && std::isspace((unsigned char)s.front())) s.erase(s.begin());
+            while (!s.empty() && std::isspace((unsigned char)s.back()))  s.pop_back();
+            return s;
+        };
 
     std::string line;
     bool firstLine = true;
-    while (std::getline(file, line)) 
+    while (std::getline(file, line))
     {
         line = trim(line);
         if (line.empty()) continue;
@@ -42,21 +42,21 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
         {
             std::istringstream ss(line);
             std::string field;
-            while (std::getline(ss, field, ',')) 
+            while (std::getline(ss, field, ','))
             {
                 tokens.push_back(trim(field));
             }
         }
 
         // skip the header row
-        if (firstLine && tokens.size() > 0 && tokens[0] == "type") 
+        if (firstLine && tokens.size() > 0 && tokens[0] == "type")
         {
             firstLine = false;
             continue;
         }
         firstLine = false;
 
-        if (tokens.size() != 6) 
+        if (tokens.size() != 6)
         {
             std::cerr << "[WARN] expected 6 fields but got "
                 << tokens.size() << " in: " << line << "\n";
@@ -69,26 +69,26 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
         float w = std::stof(tokens[4]);
         float h = std::stof(tokens[5]);
 
-        if (tokens[0] == "wall") 
+        if (tokens[0] == "wall")
         {
             //ResourcesManager& res = ResourcesManager::getInstance();
             m_staticObj.emplace_back(std::make_unique<Wall>(tokens[1], sf::Vector2f(x, y)));
         }
-        // … handle other types …
     }
 
-	player = Player(sf::Vector2f(100, 100), "Player");
+    //player.initialization(FIRST_PLAYER_POSITION, "player_machine_gun");
+    player.initialization(FIRST_PLAYER_POSITION, PLAYER_RIFLE);
 }
 
 //-----------------------------------------------------------------------------
-void Map::loadlevelobj(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj, std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player)
+void Map::loadlevelobj(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj, 
+                       std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player)
 {
     m_staticObj.clear();
     m_movingObj.clear();
     loadFromCSV(m_staticObj, player);
     loadEnemies(m_movingObj);
     loadObstacles(m_staticObj);
-
 }
 
 //-----------------------------------------------------------------------------
@@ -98,7 +98,7 @@ void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingOb
     //mt19937 is a random engine.
     std::mt19937 rng{ std::random_device{}() };
     float thirdH = MAP_HEIGHT / 3.f;
-    // getting a random x value (can spawn everywhere from left to right)
+    //getting a random x value (can spawn everywhere from left to right)
     auto randX = [&]()
         {
             return std::uniform_real_distribution<float>(0.f, MAP_WIDTH)(rng);
@@ -133,6 +133,7 @@ void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingOb
     }
 }
 
+//-----------------------------------------------------------------------------
 void Map::loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj)
 {
     std::mt19937 rng{ std::random_device{}() };

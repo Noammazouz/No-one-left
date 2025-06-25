@@ -12,7 +12,7 @@ HelpScreen::HelpScreen()
 void HelpScreen::draw(sf::RenderWindow& window)
 {
 	window.setView(window.getDefaultView());
-	sf::Texture texture = ResourcesManager::getInstance().getTexture("help screen");
+	sf::Texture texture = ResourcesManager::getInstance().getTexture(HELP_SCREEN_BACKGROUND);
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
 	sf::Sprite helpMenu(texture);
 	helpMenu.setScale(desktop.width * WINDOW_RATIO / texture.getSize().x,
@@ -28,7 +28,13 @@ void HelpScreen::draw(sf::RenderWindow& window)
 
 //-----------------------------------------------------------------------------
 void HelpScreen::activate(sf::Clock& /*clockin*/, int& /*m_currrentScreen*/)
-{}
+{
+	// Ensure menu music is playing
+	if (getCurrentMusicState() != MusicState::MENU)
+	{
+		setMusicState(MusicState::MENU);
+	}
+}
 
 //-----------------------------------------------------------------------------
 void HelpScreen::initButtons()

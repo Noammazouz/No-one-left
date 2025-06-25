@@ -30,6 +30,12 @@ sf::Vector2f UpdateableObject::getPrevLocation() const
 };
 
 //-----------------------------------------------------------------------------
+sf::Vector2f UpdateableObject::getStartingPosition() const
+{
+	return m_startingPosition;
+};
+
+//-----------------------------------------------------------------------------
 void UpdateableObject::setPrevLocation(const sf::Vector2f& pos)
 {
     m_prevLocation = pos;
@@ -49,7 +55,7 @@ void UpdateableObject::setRotation(const sf::Vector2f& direction)
     if (length == 0.f) return;
     sf::Vector2f normDir = direction / length;
 
-    //Map normalized direction to fixed 8 angles (degrees, 0 degree = Up)
+    //Map normalized direction to fixed 8 angles (degrees, 0 degrees = Up)
     //Use thresholds to detect closest direction
     if (normDir.x > 0.7f && normDir.y < -0.7f)          m_targetAngle = 45.f;   // Up-Right
     else if (normDir.x > 0.7f && normDir.y > 0.7f)      m_targetAngle = 135.f;  // Down-Right
@@ -59,6 +65,8 @@ void UpdateableObject::setRotation(const sf::Vector2f& direction)
     else if (normDir.x < -0.5f)                         m_targetAngle = 270.f;  // Left
     else if (normDir.y < -0.5f)                         m_targetAngle = 0.f;    // Up
     else if (normDir.y > 0.5f)                          m_targetAngle = 180.f;  // Down
+
+    m_targetAngle = std::fmod(m_targetAngle + 180.f, 360.f);
 
     //Smooth rotation toward target angle
     float currentAngle = m_pic.getRotation();
@@ -111,4 +119,30 @@ void UpdateableObject::updateFrames(const sf::Vector2f& direction, const float f
         currentPlayerFrame = 0;
         m_pic.setTextureRect(m_frames[0]);
     }
+}
+
+//-----------------------------------------------------------------------------
+void UpdateableObject::set_frames(const int framesNumber, const sf::Vector2f position)
+{
+    m_frames.clear();
+    m_frames.reserve(m_numberOfFrames);
+    for (int frameNumber = 0; frameNumber < m_numberOfFrames; frameNumber++)
+    {
+        m_frames.emplace_back(sf::IntRect(frameNumber * OBJECT_WIDTH, 0, OBJECT_WIDTH, OBJECT_HEIGHT));
+    }
+
+    m_pic.setTextureRect(m_frames[currentPlayerFrame]); //set for the first frame at first.
+    m_pic.setOrigin(OBJECT_WIDTH / 2, OBJECT_HEIGHT / 2); //Set origin to center.
+    m_pic.setPosition(position);
+}
+
+//-----------------------------------------------------------------------------
+void UpdateableObject::changeSpriteAnimation(const std::string& name)
+{
+    auto samePosition = m_pic.getPosition();
+    auto& texture = ResourcesManager::getInstance().getTexture(name);
+    m_pic.setTexture(texture);
+    m_numberOfFrames = m_pic.getTexture()->getSize().x / OBJECT_WIDTH; //Calculate number of frames based on texture width.
+    m_pic.setRotation(180.f); //Set initial rotation to face down.
+    set_frames(m_numberOfFrames, samePosition);
 }

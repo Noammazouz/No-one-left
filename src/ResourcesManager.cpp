@@ -7,7 +7,7 @@
 ResourcesManager::ResourcesManager()
 {
     loadTexture();
-    //initializeMusic();
+    initializeMusic();
     initializeFont();
     intializeHelpText();
 }
@@ -52,7 +52,10 @@ void ResourcesManager::loadTexture()
     std::vector<std::pair<std::string, std::string>> textures =
     {
         {"background","gamebackground.png"},
-        {"Player", "Player.png"},
+        {"player_machine_gun", "player_machine_gun.png"},
+        {"player_rifle", "player_rifle.png"},
+        {"player_bazooka", "player_bazooka.png"},
+        {"simple_enemy_machine_gun", "simple_enemy_machine_gun.png"},
         {"wall","wall.png"},
         {"startScreen", "startScreen.png"},
         {"start game", "start game.png"},
@@ -65,6 +68,9 @@ void ResourcesManager::loadTexture()
         {"return", "return.png"},
         {"SimpleEnemy", "Enemy.png"},
         {"SmartEnemy", "Enemy.png"},
+        {"simple_enemy_rifle", "simple_enemy_rifle.png"},
+        {"smart_enemy_rifle", "smart_enemy_rifle.png"},
+        {"bfs_enemy_rifle", "bfs_enemy_rifle.png"},
         {"BfsEnemy", "boss.png"},
         {"life", "life.png"},
         {"bulletIcon", "bulletIcon.png"},
@@ -73,8 +79,8 @@ void ResourcesManager::loadTexture()
         {"obstacle2","obstacle2.png"},
         {"obstacle3","obstacle3.png"},
         {"game over", "lose_screen.png"},
-        {"start menu", "home.png"}
-        /*{"win", "win_screen.png"}*/
+        {"start menu", "home.png"},
+        {"winning screen", "win screen background.png"}
     };
 
     for (const auto& [name, filePath] : textures)
@@ -93,46 +99,51 @@ void ResourcesManager::loadTexture()
 
 //------------------------------------------------------------------------------
 void ResourcesManager::initializeMusic()
-{
-    //if (!m_menuMusic.openFromFile("menuMusic.ogg"))
-    //{
-    //    throw std::runtime_error("Error loading menu music");
-    //}
-    //if (!m_gameMusic.openFromFile("Liquidzz.ogg"))
-    //{
-    //    throw std::runtime_error("Error loading game music");
-    //}
-    //m_menuMusic.setLoop(true);
-    //m_gameMusic.setLoop(true);
-    //m_menuMusic.setVolume(50.f);
-    //m_gameMusic.setVolume(50.f);
+{ 
+    if (!m_menuMusic.openFromFile("menuMusic.ogg"))
+    {
+        throw std::runtime_error("Error loading menu music");
+    }
+    
+    if (!m_gameMusic.openFromFile("gameMusic.ogg"))
+    {
+        throw std::runtime_error("Error loading game music");
+    }
+    
+    m_menuMusic.setLoop(true);
+    m_gameMusic.setLoop(true);
+    m_menuMusic.setVolume(50.f);
+    m_gameMusic.setVolume(50.f);
 
 
-    //std::vector<std::pair<std::string, std::string>> music =
-    //{
-    //    {"hit", "hit.ogg"},
-    //    {"door", "door_sound.ogg"},
-    //    {"loss", "loss.ogg"},
-    //    {"explosion", "explosion.ogg"},
-    //    {"win", "win.ogg"}
-    //};
+    std::vector<std::pair<std::string, std::string>> music =
+    {
+        {"present", "present.ogg"},
+        {"shot", "shot.ogg"},
+        {"death", "death.ogg"},
+        {"explosion", "explosion.ogg"},
+        {"health", "addHealth.ogg"},
+        {"win sound effect", "win.ogg"}
+    };
 
-    //for (const auto& [name, filePath] : music)
-    //{
-    //    sf::SoundBuffer sound;
-    //    if (!sound.loadFromFile(filePath))
-    //    {
-    //        std::cout << "Failed to load texture " << filePath << std::endl;
-    //    }
+    for (const auto& [name, filePath] : music)
+    {
+        std::string errorMessage = "Failed to load sound: " + filePath;
+        sf::SoundBuffer sound;
+        if (!sound.loadFromFile(filePath))
+        {
+            throw std::runtime_error(errorMessage);
+        }
 
-    //    // Insert the soundBuffer into the unordered_map
-    //    m_music[name] = sound;
-    //}
+        // Insert the soundBuffer into the unordered_map
+        m_music[name] = sound;
+    }
 }
 
 //------------------------------------------------------------------------------
 sf::Music& ResourcesManager::getMusic(std::string name)
 {
+   
     if (name == "menu")
     {
         return m_menuMusic;
@@ -141,6 +152,8 @@ sf::Music& ResourcesManager::getMusic(std::string name)
     {
         return m_gameMusic;
     }
+
+    return m_menuMusic;
 }
 
 //------------------------------------------------------------------------------
@@ -161,10 +174,11 @@ const sf::Font& ResourcesManager::getFont() const
 //------------------------------------------------------------------------------
 sf::SoundBuffer& ResourcesManager::getSound(std::string name)
 {
+    std::string errorMessage = "Could not find sound: " + name;
     auto it = m_music.find(name);
     if (it == m_music.end())
     {
-        //std::cout << "Could not find sound: " << name << std::endl;
+        throw std::runtime_error(errorMessage);
     }
     return it->second;
 }

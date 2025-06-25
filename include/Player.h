@@ -5,9 +5,10 @@
 #include <SFML/Graphics.hpp>
 #include "UpdateableObject.h"
 #include "ResourcesManager.h"
-//#include "CollisionFactory.h"
+#include "CollisionFactory.h"
 #include "Enemy.h"
 #include "Wall.h"
+#include "Obstacles.h"
 #include "Bombs.h"
 #include "Explosion.h"
 #include "Bullets.h"
@@ -24,7 +25,6 @@ class Player : public UpdateableObject
 {
 public:
 	Player();
-	Player(sf::Vector2f position, std::string name);
 	~Player() = default;
 
 	virtual void update(sf::Time deltaTime, sf::Vector2f playerPos) override;
@@ -33,9 +33,10 @@ public:
     int getScore();
 	void setScore(int score);
 	void decLife();
-	void incLife();
+	void incLife(const int addLives);
 	int getLife();
 	sf::Vector2f getPos() const;
+	void initialization(sf::Vector2f pos, std::string name);
 
 	static int getNumOfBullets();
 	static void addBullets(int bullets);
@@ -56,6 +57,5 @@ private:
 	static int m_bulletCount;
 	bool m_win = false;
 	bool m_isShooting = false;
-	//std::unique_ptr<AttackBehavior> m_attackBehavior;
-	float m_targetAngle = 0.f; // add this to private section
+	std::unique_ptr<AttackBehavior> m_attackBehavior;
 };
