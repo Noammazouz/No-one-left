@@ -32,11 +32,12 @@ public:
 	bool getWin() const;
     int getScore();
 	void setScore(int score);
-	void decLife();
-	void incLife(const int addLives);
+	void decLife(int decLives = 1);
+	void incLife(int addLives);
 	int getLife();
 	sf::Vector2f getPos() const;
 	void initialization(sf::Vector2f pos, std::string name);
+	sf::Vector2f getDirection() const;
 
 	static int getNumOfBullets();
 	static void addBullets(int bullets);

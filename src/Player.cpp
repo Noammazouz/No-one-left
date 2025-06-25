@@ -77,9 +77,15 @@ bool Player::checkDirection()
 }
 
 //-----------------------------------------------------------------------------
-void Player::decLife()
+sf::Vector2f Player::getDirection() const
 {
-	m_lives--;
+	return m_direction;
+}
+
+//-----------------------------------------------------------------------------
+void Player::decLife(int decLives)
+{
+	m_lives -= decLives;
 }
 
 //-----------------------------------------------------------------------------
@@ -107,7 +113,7 @@ sf::Vector2f Player::getPos() const
 }
 
 //------------------------------------------------------------------------------
-void Player::incLife(const int addLives)
+void Player::incLife(int addLives)
 {
 	if (m_lives < NUM_OF_LIVES) m_lives += addLives;
 }
@@ -189,9 +195,9 @@ void Player::doAttack(std::vector<std::unique_ptr<Projectile>>& bullets)
 {
 	if (!m_attackBehavior) return;
 
-	int bulletsNeeded = ONE_DIRECTION_BULLET; //default is one direction
+	int bulletsNeeded = ONE_DIRECTION_BULLET; //default is one direction.
 
-	if (typeid(*m_attackBehavior) == typeid(AllDirectionsAttackBehavior)) //check if attack for all directions
+	if (typeid(*m_attackBehavior) == typeid(AllDirectionsAttackBehavior)) //check if attack for all directions.
 	{
 		bulletsNeeded = ALL_DIRECTIONS_BULLETS;
 	}
@@ -213,23 +219,21 @@ void Player::doAttack(std::vector<std::unique_ptr<Projectile>>& bullets)
 //------------------------------------------------------------------------------
 void handlePlayerEnemyCollision(GameObject& obj1, GameObject& obj2)
 {
-	// Handle Player vs Enemy collision (bidirectional)
+	//Handle Player vs Enemy collision (bidirectional)
 	if (auto* player = dynamic_cast<Player*>(&obj1)) 
 	{
 		if (auto* enemy = dynamic_cast<Enemy*>(&obj2)) 
 		{
 			player->decLife();
-			//player->setPosition(player->getStartingPosition());
 			return;
 		}
 	}
-	// Handle Enemy vs Player collision (reverse direction)
+	//Handle Enemy vs Player collision (reverse direction)
 	if (auto* enemy = dynamic_cast<Enemy*>(&obj1)) 
 	{
 		if (auto* player = dynamic_cast<Player*>(&obj2)) 
 		{
 			player->decLife();
-			//player->setPosition(player->getStartingPosition());
 			return;
 		}
 	}
@@ -247,7 +251,7 @@ void handlePlayerWallCollision(GameObject& obj1, GameObject& obj2)
 			return;
 		}
 	}
-	// Handle Wall vs Player collision (reverse direction)
+	//Handle Wall vs Player collision (reverse direction)
 	if (auto* wall = dynamic_cast<Wall*>(&obj1)) 
 	{
 		if (auto* player = dynamic_cast<Player*>(&obj2)) 
@@ -270,7 +274,7 @@ void handlePlayerObstaclesCollision(GameObject& obj1, GameObject& obj2)
 			return;
 		}
 	}
-	// Handle Wall vs Player collision (reverse direction)
+	//Handle Wall vs Player collision (reverse direction)
 	if (auto* wall = dynamic_cast<Obstacles*>(&obj1))
 	{
 		if (auto* player = dynamic_cast<Player*>(&obj2))
@@ -289,17 +293,18 @@ void handlePlayerExplosionCollision(GameObject& obj1, GameObject& obj2)
 	{
 		if (auto* explosion = dynamic_cast<Explosion*>(&obj2)) 
 		{
-			player->decLife();
+			player->decLife(EXPLOSION_DEC_LIVES);
 			//player->setPosition(player->getStartingPosition());
 			return;
 		}
 	}
+
 	//Handle Explosion vs Player collision (reverse direction)
 	if (auto* explosion = dynamic_cast<Explosion*>(&obj1)) 
 	{
 		if (auto* player = dynamic_cast<Player*>(&obj2)) 
 		{
-			player->decLife();
+			player->decLife(EXPLOSION_DEC_LIVES);
 			//player->setPosition(player->getStartingPosition());
 			return;
 		}
