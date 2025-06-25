@@ -8,7 +8,8 @@
 #include "UpdateableObject.h"
 #include "StaticObject.h"
 #include "Wall.h"
-//
+
+//-----forward declaration section-----
 class Player;
 class GamePlay;
 
