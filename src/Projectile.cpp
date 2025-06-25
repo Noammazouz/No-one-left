@@ -178,12 +178,12 @@ void handleEnemyBulletPlayerCollision(GameObject& obj1, GameObject& obj2)
 }
 
 //-----------------------------------------------------------------------------
-// Collision handler for Bullet vs Wall - Order independent
+//Collision handler for Bullet vs Wall - Order independent.
 void handleBulletWallCollision(GameObject& obj1, GameObject& obj2)
 {
     Projectile* bullet = nullptr;
 
-    // Check both parameter orders
+    //Check both parameter orders.
     if (auto* b = dynamic_cast<Projectile*>(&obj1)) 
     {
         bullet = b;
@@ -201,7 +201,7 @@ void handleBulletWallCollision(GameObject& obj1, GameObject& obj2)
 }
 
 //-----------------------------------------------------------------------------
-// Register bullet collision handlers
+//Register bullet collision handlers.
 void Projectile::registerBulletCollisions()
 {
     static bool registered = false;
@@ -222,7 +222,7 @@ void Projectile::registerBulletCollisions()
 }
 
 //-----------------------------------------------------------------------------
-// Auto-registration helper - runs when first Bullet is created
+//Auto-registration helper - runs when first Bullet is created.
 bool g_bulletCollisionRegistered = []()
     {
         Projectile::registerBulletCollisions();
