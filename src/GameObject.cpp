@@ -14,6 +14,10 @@ GameObject::GameObject(std::string name, const sf::Vector2f& position)
     m_pic.setTexture(texture);
 	m_pic.setOrigin(texture.getSize().x / 2, texture.getSize().y / 2); //Set origin to center.
     m_pic.setPosition(position);
+	if (name == "projectile")
+	{
+		std::cout << name << std::endl;
+	}
 }
 
 //-----------------------------------------------------------------------------

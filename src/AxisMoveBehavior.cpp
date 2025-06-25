@@ -10,7 +10,7 @@ sf::Vector2f AxisMoveBehavior::Move(sf::Vector2f playerPos, sf::Time, sf::Vector
         // Side?step perpendicular to lastDir
         if (m_preferHorizontal) {
             dir.x = 0.f;
-            dir.y = (m_lastDir.x > 0.f ? 1.f : -1.f);
+            dir.y += (m_lastDir.x > 0.f ? 1.f : -1.f);
         }
         else {
             dir.x = (m_lastDir.y > 0.f ? -1.f : 1.f);
@@ -41,7 +41,7 @@ sf::Vector2f AxisMoveBehavior::Move(sf::Vector2f playerPos, sf::Time, sf::Vector
 }
 
 void AxisMoveBehavior::OnCollision() {
-    // Enter avoidance mode and flip primary axis for side?step logic
+    // Enter avoidance mode and flip primary axis for side step logic
     m_avoiding = true;
     m_preferHorizontal = !m_preferHorizontal;
 }

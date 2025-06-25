@@ -22,7 +22,8 @@ public:
 	sf::Vector2f getDirection() const;
 	void NotifyCollision();
 	void OnSuccessfulMove();
-
+	bool wantsToFire() const { return m_shouldFire; }
+	void clearFireFlag() { m_shouldFire = false; }
 
 	static int getNumOfStartingEnemies(const std::vector<std::unique_ptr<UpdateableObject>>& movingObjs);
 	static int getNumOfEnemiesAlive();
@@ -35,7 +36,7 @@ private:
 	static int m_numOfEnemiesAlive;
 	bool m_freeze = false;
 	GamePlay* m_gamePlay;
-
+	bool m_shouldFire=false;
 	sf::Vector2f m_direction;
 	sf::Vector2f m_prevlocation;
 	//sf::Time m_freezeTime;

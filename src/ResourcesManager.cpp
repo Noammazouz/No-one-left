@@ -80,7 +80,8 @@ void ResourcesManager::loadTexture()
         {"obstacle3","obstacle3.png"},
         {"game over", "lose_screen.png"},
         {"start menu", "home.png"},
-        {"winning screen", "win screen background.png"}
+        {"winning screen", "win screen background.png"},
+        {"projectile", "Sprite_Effects_Exhaust_02_000.png"}
     };
 
     for (const auto& [name, filePath] : textures)
