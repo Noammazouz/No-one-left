@@ -12,17 +12,18 @@
 #include "Wall.h"
 
 //-----static member initialization-----
-//int Enemy::m_num_of_enemies = 0;
-//int Enemy::m_num_of_enemies_alive = 0;
+int Enemy::m_num_of_Enemies = 0;
+int Enemy::m_num_of_Enemies_alive = 0;
 
 //-----functions section------
 //-----------------------------------------------------------------------------
-Enemy::Enemy(sf::Vector2f position, std::string name)
-	: UpdateableObject(position, name), m_direction(0, 0), m_prevlocation(position)
+Enemy::Enemy(sf::Vector2f position, std::string name, GamePlay* gameplay)
+	: UpdateableObject(position, name), m_direction(0, 0), m_prevlocation(position), m_gamePlay(gameplay)
 {
     m_num_of_Enemies++;
     m_num_of_Enemies_alive++;
 }
+
 
 //-----------------------------------------------------------------------------
 // Collision handler function for Enemy-Wall collisions (bidirectional)
@@ -90,7 +91,7 @@ static bool enemyenemyCollisionRegistered = []() {
 static auto regSimple = Factory<UpdateableObject>::instance().registerType(
     ObjectType::SIMPLENEMY,
     [](const sf::Vector2f& pos, GamePlay* gamePlay) -> std::unique_ptr<UpdateableObject> {
-        auto enemy = std::make_unique<Enemy>(pos, "SimpleEnemy");
+        auto enemy = std::make_unique<Enemy>(pos, "SimpleEnemy",gamePlay);
         enemy->SetMoveBehavior(std::make_unique<RandomMoveBehavior>());
         enemy->SetAttackBehavior(std::make_unique<OneDirectionAttackBehavior>());
         return enemy;
@@ -99,7 +100,7 @@ static auto regSimple = Factory<UpdateableObject>::instance().registerType(
 static auto regSmart = Factory<UpdateableObject>::instance().registerType(
     ObjectType::SMARTENEMY,
     [](const sf::Vector2f& pos, GamePlay* gamePlay) -> std::unique_ptr<UpdateableObject> {
-        auto enemy = std::make_unique<Enemy>(pos, "SmartEnemy");
+        auto enemy = std::make_unique<Enemy>(pos, "SmartEnemy",gamePlay);
         enemy->SetMoveBehavior(std::make_unique<AxisMoveBehavior>());
         enemy->SetAttackBehavior(std::make_unique<OneDirectionAttackBehavior>());
         return enemy;
@@ -108,7 +109,7 @@ static auto regSmart = Factory<UpdateableObject>::instance().registerType(
 static auto regBfs = Factory<UpdateableObject>::instance().registerType(
     ObjectType::BFSENEMY,
     [](const sf::Vector2f& pos, GamePlay* gamePlay) -> std::unique_ptr<UpdateableObject> {
-        auto enemy = std::make_unique<Enemy>(pos, "BfsEnemy");
+        auto enemy = std::make_unique<Enemy>(pos, "BfsEnemy",gamePlay);
         enemy->SetMoveBehavior(std::make_unique<BfsMoveBehavior>());
         enemy->SetAttackBehavior(std::make_unique<AllDirectionsAttackBehavior>());
         return enemy;
@@ -152,8 +153,6 @@ void Enemy::NotifyCollision()
 {
     // revert movement
     setPosition(getPrevLocation());
-    auto nudge = -getDirection() * 1.5f;
-    setPosition(getPosition() + nudge);
     // tell the behavior to reset
     if (m_MoveBehavior)
     {
@@ -179,10 +178,6 @@ int Enemy::getNumOfEnemiesAlive()
     return m_num_of_Enemies_alive;
 }
 
-//-------------------------------------
-int Enemy::m_num_of_Enemies_alive = 0;
-//-------------------------------------
-int Enemy::m_num_of_Enemies = 0;
 
 int Enemy::getNumOfStartingEnemies(const std::vector<std::unique_ptr<UpdateableObject>>& movingObjs)
 {
