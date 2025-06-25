@@ -33,7 +33,7 @@ public:
     int getScore();
 	void setScore(int score);
 	void decLife();
-	void incLife();
+	void incLife(const int addLives);
 	int getLife();
 	sf::Vector2f getPos() const;
 	void initialization(sf::Vector2f pos, std::string name);
