@@ -25,9 +25,16 @@ protected:
 	virtual void drawButtons(sf::RenderWindow& window);
 	void handleMuting(int currrentScreen);
 	void handleKeyPressed(sf::Event::KeyEvent event, int& currentScreen);
-	void handleMusicTransition(bool toGameplay);
+	// New music management system
+	enum class MusicState { MENU, GAME };
+	static void setMusicState(MusicState newState);
+	static MusicState getCurrentMusicState();
+	static void ensureCorrectMusicPlaying();
 
-	bool m_inGameplay = false;
 	int m_previousScreen;
+	
+	// Static music state
+	static MusicState s_currentMusicState;
+	static bool s_musicMuted;
 	std::vector<Button> m_buttons;
 };

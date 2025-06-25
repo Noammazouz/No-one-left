@@ -25,7 +25,11 @@ void LoseScreen::draw(sf::RenderWindow& window)
 //-----------------------------------------------------------------------------
 void LoseScreen::activate(sf::Clock& /*clock*/, int& /*state*/) 
 {
-	handleMusicTransition(false); // Start menu music
+	// Ensure menu music is playing
+	if (getCurrentMusicState() != MusicState::MENU)
+	{
+		setMusicState(MusicState::MENU);
+	}
 }
 
 //-----------------------------------------------------------------------------

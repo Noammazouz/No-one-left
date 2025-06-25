@@ -48,7 +48,10 @@ private:
 	void handleScoreBoard();
 	void removeGuard();
 	void resetGame();
+	void resetGameOverStates();
 	void decTime();
+	void handleWinState(int& m_currentScreen);
+	void handleDeathState(int& m_currentScreen);
 	sf::Vector2f clampViewPosition(const sf::FloatRect& bounds);
 
 	sf::RenderWindow m_window;
@@ -60,9 +63,8 @@ private:
 	Player m_player;
 	Infobar m_infoBar;
 
-	bool m_win = false;
 	bool m_paused = false;
-	bool m_lost = false;
+	bool m_newGame = false;
 	std::vector<std::unique_ptr<UpdateableObject>> m_movingObj;
 	std::vector<std::unique_ptr<StaticObject>> m_staticObj;
 };
