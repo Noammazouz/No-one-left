@@ -15,7 +15,7 @@ BfsMoveBehavior::BfsMoveBehavior()
 
 sf::Vector2f BfsMoveBehavior::Move(sf::Vector2f playerPos, sf::Time /*deltaTime*/, sf::Vector2f enemyPos)
 {
-    sf::Vector2f direction = playerPos - enemyPos;
+            sf::Vector2f direction = playerPos - enemyPos;
     float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
     if (length == 0.f)
@@ -25,7 +25,7 @@ sf::Vector2f BfsMoveBehavior::Move(sf::Vector2f playerPos, sf::Time /*deltaTime*
     m_lastTriedDirection = direction;
 
     if (m_avoiding) {
-        // cycle through the three options until one “sticks”
+        // cycle through the three options until one ï¿½sticksï¿½
         for (int i = 0; i < 3; ++i) {
             // pick candidate and advance index
             auto cand = m_avoidOptions[m_avoidIndex];
