@@ -9,7 +9,9 @@
 #include "StaticObject.h"
 #include "Wall.h"
 
+//-----forward declaration section-----
 class Player;
+class GamePlay;
 
 //-----class section-----
 class Map
@@ -18,12 +20,11 @@ public:
 	Map() = default;
 	~Map() = default;
 	void loadlevelobj(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj,
-					  std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player);
-	void draw();
+					  std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player, GamePlay* gamePlay);
 
 private:
-	void loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player);
-	void loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj);
-	void loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj);
+	void loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player, GamePlay* gamePlay);
+	void loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj, GamePlay* gamePlay);
+	void loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, GamePlay* gamePlay);
 	std::vector<std::string> m_level;
 };

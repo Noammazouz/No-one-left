@@ -21,7 +21,7 @@ void AllDirectionsAttackBehavior::Attack(sf::Vector2f position, sf::Vector2f dir
     for (int directionBullet = 0; directionBullet < NUM_OF_DIRECTIONS; directionBullet++)
     {
         sf::Vector2f bulletDirection = directions[directionBullet];
-        auto bullet = std::make_unique<Projectile>(position, bulletDirection, 300.0f, owner);
+        auto bullet = std::make_unique<Projectile>(position, bulletDirection, owner);
         projectile.push_back(std::move(bullet));
     }
 }

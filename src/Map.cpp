@@ -1,6 +1,7 @@
 //-----include section-----
 #include "Map.h"
 #include "ResourcesManager.h"
+#include "GamePlay.h"
 #include "Player.h"
 #include <fstream>
 #include <sstream>
@@ -13,7 +14,7 @@
 
 //-----functions section------
 //-----------------------------------------------------------------------------
-void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player)
+void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player, GamePlay* gamePlay)
 {
     std::ifstream file("Level1.csv");
     if (!file.is_open())
@@ -82,17 +83,17 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
 
 //-----------------------------------------------------------------------------
 void Map::loadlevelobj(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj, 
-                       std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player)
+                       std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player, GamePlay* gamePlay)
 {
     m_staticObj.clear();
     m_movingObj.clear();
-    loadFromCSV(m_staticObj, player);
-    loadEnemies(m_movingObj);
-    loadObstacles(m_staticObj);
+    loadFromCSV(m_staticObj, player, gamePlay);
+    loadEnemies(m_movingObj, gamePlay);
+    loadObstacles(m_staticObj, gamePlay);
 }
 
 //-----------------------------------------------------------------------------
-void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj)
+void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj, GamePlay* gamePlay)
 {
     //random_device is a seed maker.
     //mt19937 is a random engine.
@@ -114,27 +115,27 @@ void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingOb
     //first third (3 simple enemies)
     for (int i = 0; i < NUM_OF_STUPID_ENEMY; ++i)
     {
-        m_movingObj.emplace_back(factory.create(ObjectType::BFSENEMY, { randX(), randYIn(0) }));
-        m_movingObj.emplace_back(factory.create(ObjectType::SMARTENEMY, { randX(), randYIn(0) }));
+        m_movingObj.emplace_back(factory.create(ObjectType::BFSENEMY, { randX(), randYIn(0) }, gamePlay));
+        m_movingObj.emplace_back(factory.create(ObjectType::SMARTENEMY, { randX(), randYIn(0) }, gamePlay));
     }
 
     //second third (1 simple, 2 smart)
-    m_movingObj.emplace_back(factory.create(ObjectType::SIMPLENEMY, { randX(), randYIn(1) }));
+    m_movingObj.emplace_back(factory.create(ObjectType::SIMPLENEMY, { randX(), randYIn(1) }, gamePlay));
     for (int i = 0; i < NUM_OF_SMART_ENEMY; ++i)
     {
-        m_movingObj.emplace_back(factory.create(ObjectType::SMARTENEMY, { randX(), randYIn(1) }));
+        m_movingObj.emplace_back(factory.create(ObjectType::SMARTENEMY, { randX(), randYIn(1) }, gamePlay));
     }
     //third third (1 simple, 2 smart, 1 bfs)
-    m_movingObj.emplace_back(factory.create(ObjectType::SIMPLENEMY, { randX(), randYIn(2) }));
-    m_movingObj.emplace_back(factory.create(ObjectType::BFSENEMY, { randX(), randYIn(2) }));
+    m_movingObj.emplace_back(factory.create(ObjectType::SIMPLENEMY, { randX(), randYIn(2) }, gamePlay));
+    m_movingObj.emplace_back(factory.create(ObjectType::BFSENEMY, { randX(), randYIn(2) }, gamePlay));
     for (int i = 0; i < NUM_OF_SMART_ENEMY; ++i)
     {
-        m_movingObj.emplace_back(factory.create(ObjectType::SMARTENEMY, { randX(), randYIn(2) }));
+        m_movingObj.emplace_back(factory.create(ObjectType::SMARTENEMY, { randX(), randYIn(2) }, gamePlay));
     }
 }
 
 //-----------------------------------------------------------------------------
-void Map::loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj)
+void Map::loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, GamePlay* gamePlay)
 {
     std::mt19937 rng{ std::random_device{}() };
     std::uniform_real_distribution<float> randX(0.f, MAP_WIDTH);
@@ -146,20 +147,20 @@ void Map::loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj)
     for (int i = 0; i < 20; ++i) {
         sf::Vector2f pos{ randX(rng), randY(rng) };
         m_staticObj.emplace_back(
-            factory.create(ObjectType::OBSTACLE1, pos));
+            factory.create(ObjectType::OBSTACLE1, pos, gamePlay));
     }
 
     // 5 crates
     for (int i = 0; i < 20; ++i) {
         sf::Vector2f pos{ randX(rng), randY(rng) };
         m_staticObj.emplace_back(
-            factory.create(ObjectType::OBSTACLE2, pos));
+            factory.create(ObjectType::OBSTACLE2, pos, gamePlay));
     }
 
     // 3 barrels
     for (int i = 0; i < 20; ++i) {
         sf::Vector2f pos{ randX(rng), randY(rng) };
         m_staticObj.emplace_back(
-            factory.create(ObjectType::OBSTACLE3, pos));
+            factory.create(ObjectType::OBSTACLE3, pos, gamePlay));
     }
 }

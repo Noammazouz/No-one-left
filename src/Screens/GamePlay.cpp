@@ -63,51 +63,12 @@ void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 		return; // STOP all game processing when won
 	}
 
-	//if (m_player.getLife() == END_GAME)
-	//{
-	//	if (!s_deathSoundStarted)
-	//	{
-	//		// Play death sound once and stop game music
-	//		setMusicState(MusicState::MENU);
-	//		m_sound.setBuffer(ResourcesManager::getInstance().getSound(LOSING_SOUND));
-	//		m_sound.setVolume(100.f);
-	//		m_sound.setPlayingOffset(sf::seconds(0.2f));
-	//		m_sound.play();
-	//		s_deathSoundStarted = true;
-	//		s_deathTimer.restart();
-	//	}
-	//	else if (s_deathTimer.getElapsedTime().asSeconds() >= 0.8f || m_sound.getStatus() != sf::Sound::Playing)
-	//	{
-	//		// Go to lose screen after 3 seconds OR when sound finishes playing
-	//		m_sound.stop();
-	//		m_currentScreen = LOSE_SCREEN;
-	//		m_newGame = true;
-	//		s_deathSoundStarted = false; // Reset for next time
-	//	}
-	//	return; // STOP all game processing when dead
-	//}
-
 	// Only process game logic if player is alive
 	move(clock);
 	handleCollision();
 	explosion();
 	handleErasing();
 	handleScoreBoard();
-
-	//if (m_player.getWin())
-	//{
-	//	m_sound.setBuffer(ResourcesManager::getInstance().getSound(WINNING_SOUND));
-	//	m_sound.setVolume(100.f);
-	//	//m_sound.setPlayingOffset(sf::seconds(0.95f));
-	//	m_sound.play();
-	//	calculateScore();
-	//	if (m_win)
-	//	{
-	//		m_currentScreen = WIN_SCREEN;
-	//		m_newGame = true;
-	//		return;
-	//	}
-	//}
 }
 
 //-----------------------------------------------------------------------------
@@ -368,7 +329,7 @@ void GamePlay::handleLoadingLevel()
 	m_movingObj.clear();
 	m_staticObj.clear();
 	
-	m_map.loadlevelobj(m_movingObj,m_staticObj, m_player);
+	m_map.loadlevelobj(m_movingObj,m_staticObj, m_player, this);
 	m_stopwatch = sf::seconds(0);
 }
 
