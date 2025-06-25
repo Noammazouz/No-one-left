@@ -416,48 +416,48 @@ sf::Vector2f GamePlay::clampViewPosition(const sf::FloatRect& bounds)
 //---------------------------------------------------------------------------------------------------
 void GamePlay::handleDeathState(int& m_currentScreen)
 {
-	if (!s_deathSoundStarted)
-	{
-		// Play death sound once and stop game music
-		setMusicState(MusicState::MENU);
-		m_sound.setBuffer(ResourcesManager::getInstance().getSound(LOSING_SOUND));
-		m_sound.setVolume(100.f);
-		m_sound.setPlayingOffset(sf::seconds(0.2f));
-		m_sound.play();
-		s_deathSoundStarted = true;
-		s_deathTimer.restart();
-	}
-	else if (s_deathTimer.getElapsedTime().asSeconds() >= 0.8f || m_sound.getStatus() != sf::Sound::Playing)
-	{
-		// Go to lose screen after 0.8 seconds OR when sound finishes playing
-		m_sound.stop();
-		m_currentScreen = LOSE_SCREEN;
-		m_newGame = true;
-		s_deathSoundStarted = false; // Reset for next time
-	}
+	//if (!s_deathSoundStarted)
+	//{
+	//	// Play death sound once and stop game music
+	//	setMusicState(MusicState::MENU);
+	//	m_sound.setBuffer(ResourcesManager::getInstance().getSound(LOSING_SOUND));
+	//	m_sound.setVolume(100.f);
+	//	m_sound.setPlayingOffset(sf::seconds(0.2f));
+	//	m_sound.play();
+	//	s_deathSoundStarted = true;
+	//	s_deathTimer.restart();
+	//}
+	//else if (s_deathTimer.getElapsedTime().asSeconds() >= 0.8f || m_sound.getStatus() != sf::Sound::Playing)
+	//{
+	//	// Go to lose screen after 0.8 seconds OR when sound finishes playing
+	//	m_sound.stop();
+	//	m_currentScreen = LOSE_SCREEN;
+	//	m_newGame = true;
+	//	s_deathSoundStarted = false; // Reset for next time
+	//}
 }
 
 //---------------------------------------------------------------------------------------------------
 void GamePlay::handleWinState(int& m_currentScreen)
 {
-	if (!s_winSoundStarted)
-	{
-		// Play win sound once
-		m_sound.setBuffer(ResourcesManager::getInstance().getSound(WINNING_SOUND));
-		m_sound.setVolume(100.f);
-		m_sound.play();
-		s_winSoundStarted = true;
-		s_winTimer.restart();
-	}
-	else if (s_winTimer.getElapsedTime().asSeconds() >= 1.0f || m_sound.getStatus() != sf::Sound::Playing)
-	{
-		// Go to win screen after 1 second OR when sound finishes playing
-		m_sound.stop();
-		calculateScore();
-		m_currentScreen = WIN_SCREEN;
-		m_newGame = true;
-		s_winSoundStarted = false; // Reset for next time
-	}
+	//if (!s_winSoundStarted)
+	//{
+	//	// Play win sound once
+	//	m_sound.setBuffer(ResourcesManager::getInstance().getSound(WINNING_SOUND));
+	//	m_sound.setVolume(100.f);
+	//	m_sound.play();
+	//	s_winSoundStarted = true;
+	//	s_winTimer.restart();
+	//}
+	//else if (s_winTimer.getElapsedTime().asSeconds() >= 1.0f || m_sound.getStatus() != sf::Sound::Playing)
+	//{
+	//	// Go to win screen after 1 second OR when sound finishes playing
+	//	m_sound.stop();
+	//	calculateScore();
+	//	m_currentScreen = WIN_SCREEN;
+	//	m_newGame = true;
+	//	s_winSoundStarted = false; // Reset for next time
+	//}
 }
 
 //-----------------------------------------------------------------------------

@@ -17,7 +17,7 @@ public:
     void ClearAvoidance();
 
 private:
-    bool         m_preferHorizontal = true;   // primary chase axis
-    bool         m_avoiding = false;  // currently side stepping
+    bool m_preferHorizontal = true;   // primary chase axis
+    bool m_avoiding = false;  // currently side stepping
     sf::Vector2f m_lastDir;                  // direction that caused collision
 };
