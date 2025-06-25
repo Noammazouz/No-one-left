@@ -16,7 +16,7 @@ void handleObstacleEnemyCollision(GameObject& obj1, GameObject& obj2)
     Obstacles* obs = dynamic_cast<Obstacles*>(&obj2);
     if (enemy && obs) {
         // revert position and reverse direction
-       // enemy->NotifyCollision();
+        enemy->NotifyCollision();
     }
 }
 
