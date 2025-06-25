@@ -1,6 +1,13 @@
 //-----include section-----
 #include "GamePlay.h"
 
+
+// Static variables for death handling
+static bool s_deathSoundStarted = false;
+static sf::Clock s_deathTimer;
+static bool s_winSoundStarted = false;
+static sf::Clock s_winTimer;
+
 //-----functions section------
 //-----------------------------------------------------------------------------
 GamePlay::GamePlay()
@@ -17,7 +24,7 @@ GamePlay::GamePlay()
 //-----------------------------------------------------------------------------
 void GamePlay::run(sf::RenderWindow& window, int& m_currentScreen)
 {
-	if (m_lost) resetGame();
+	if (m_newGame) resetGame();
 	Screen::run(window, m_currentScreen);
 	m_view.setCenter(m_player.getPos());
 	m_view.setCenter(clampViewPosition(worldBounds));
@@ -32,50 +39,75 @@ void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 		return;
 	}
 
-	handleMusicTransition(true);
+	// Always ensure game music is playing when in gameplay
+	if (getCurrentMusicState() != MusicState::GAME)
+	{
+		setMusicState(MusicState::GAME);
+	}
 
 	if (m_staticObj.empty()) 
 	{
 		std::cerr << STARIC_OBLECTS_WARNING;
 	}
 
+	// Handle game over states first (both stop normal game processing)
+	if (m_player.getLife() == END_GAME)
+	{
+		handleDeathState(m_currentScreen);
+		return; // STOP all game processing when dead
+	}
 
+	if (m_player.getWin())
+	{
+		handleWinState(m_currentScreen);
+		return; // STOP all game processing when won
+	}
+
+	//if (m_player.getLife() == END_GAME)
+	//{
+	//	if (!s_deathSoundStarted)
+	//	{
+	//		// Play death sound once and stop game music
+	//		setMusicState(MusicState::MENU);
+	//		m_sound.setBuffer(ResourcesManager::getInstance().getSound(LOSING_SOUND));
+	//		m_sound.setVolume(100.f);
+	//		m_sound.setPlayingOffset(sf::seconds(0.2f));
+	//		m_sound.play();
+	//		s_deathSoundStarted = true;
+	//		s_deathTimer.restart();
+	//	}
+	//	else if (s_deathTimer.getElapsedTime().asSeconds() >= 0.8f || m_sound.getStatus() != sf::Sound::Playing)
+	//	{
+	//		// Go to lose screen after 3 seconds OR when sound finishes playing
+	//		m_sound.stop();
+	//		m_currentScreen = LOSE_SCREEN;
+	//		m_newGame = true;
+	//		s_deathSoundStarted = false; // Reset for next time
+	//	}
+	//	return; // STOP all game processing when dead
+	//}
+
+	// Only process game logic if player is alive
 	move(clock);
 	handleCollision();
 	explosion();
 	handleErasing();
 	handleScoreBoard();
 
-	if (m_player.getWin())
-	{
-		/*m_sound.setBuffer(ResourcesManager::getInstance().getSound("door"));
-		m_sound.setVolume(100.f);
-		m_sound.setPlayingOffset(sf::seconds(0.95f));
-		m_sound.play();*/
-		calculateScore();
-		if (m_win)
-		{
-			m_currentScreen = WIN_SCREEN;
-			return;
-		}
-	}
-
-	if (m_player.getLife() == END_GAME)
-	{
-		if (m_sound.getStatus() != sf::Sound::Playing)
-		{
-			m_sound.setBuffer(ResourcesManager::getInstance().getSound(LOSING_SOUND));
-			m_sound.setVolume(100.f);
-			m_sound.setPlayingOffset(sf::seconds(1.f));
-			m_sound.play();
-		}
-		else if (m_sound.getStatus() == sf::Sound::Stopped)
-		{
-			m_currentScreen = LOSE_SCREEN;
-			m_lost = true;
-		}
-		return;
-	}
+	//if (m_player.getWin())
+	//{
+	//	m_sound.setBuffer(ResourcesManager::getInstance().getSound(WINNING_SOUND));
+	//	m_sound.setVolume(100.f);
+	//	//m_sound.setPlayingOffset(sf::seconds(0.95f));
+	//	m_sound.play();
+	//	calculateScore();
+	//	if (m_win)
+	//	{
+	//		m_currentScreen = WIN_SCREEN;
+	//		m_newGame = true;
+	//		return;
+	//	}
+	//}
 }
 
 //-----------------------------------------------------------------------------
@@ -361,9 +393,10 @@ void GamePlay::removeGuard()
 
 void GamePlay::resetGame()
 {
-	m_lost = false;
-	m_win = false;
+	m_newGame = false;
+	m_sound.stop();
 	handleLoadingLevel();
+	resetGameOverStates();
 }
 
 //-----------------------------------------------------------------------------
@@ -381,7 +414,7 @@ void GamePlay::handleMouseClick(const sf::Vector2f& clickPos, int& screenState)
 		if (m_buttons[PAUSE].getBounds().contains(clickPos))
 		{
 			m_paused = true;
-			handleMusicTransition(false); // Switch to menu music when pausing
+			setMusicState(MusicState::MENU); // Switch to menu music when pausing
 			return;
 		}
 		return; // If not paused, ignore other clicks
@@ -395,7 +428,7 @@ void GamePlay::handleMouseClick(const sf::Vector2f& clickPos, int& screenState)
 				case RESUME:
 				{
 					m_paused = false;
-					handleMusicTransition(true); // Switch back to game music when resuming
+					setMusicState(MusicState::GAME); // Switch back to game music when resuming
 					break;
 				}
 				case _HELP:
@@ -415,4 +448,63 @@ sf::Vector2f GamePlay::clampViewPosition(const sf::FloatRect& bounds)
 	center.x = std::max(bounds.left + m_view.getSize().x / 2.f, std::min(center.x, bounds.left + bounds.width - m_view.getSize().x / 2.f));
 	center.y = std::max(bounds.top + m_view.getSize().y / 2.f, std::min(center.y, bounds.top + bounds.height - m_view.getSize().y / 2.f));
 	return center;
+}
+
+//---------------------------------------------------------------------------------------------------
+void GamePlay::handleDeathState(int& m_currentScreen)
+{
+	if (!s_deathSoundStarted)
+	{
+		// Play death sound once and stop game music
+		setMusicState(MusicState::MENU);
+		m_sound.setBuffer(ResourcesManager::getInstance().getSound(LOSING_SOUND));
+		m_sound.setVolume(100.f);
+		m_sound.setPlayingOffset(sf::seconds(0.2f));
+		m_sound.play();
+		s_deathSoundStarted = true;
+		s_deathTimer.restart();
+	}
+	else if (s_deathTimer.getElapsedTime().asSeconds() >= 0.8f || m_sound.getStatus() != sf::Sound::Playing)
+	{
+		// Go to lose screen after 0.8 seconds OR when sound finishes playing
+		m_sound.stop();
+		m_currentScreen = LOSE_SCREEN;
+		m_newGame = true;
+		s_deathSoundStarted = false; // Reset for next time
+	}
+}
+
+//---------------------------------------------------------------------------------------------------
+void GamePlay::handleWinState(int& m_currentScreen)
+{
+	if (!s_winSoundStarted)
+	{
+		// Play win sound once
+		m_sound.setBuffer(ResourcesManager::getInstance().getSound(WINNING_SOUND));
+		m_sound.setVolume(100.f);
+		m_sound.play();
+		s_winSoundStarted = true;
+		s_winTimer.restart();
+	}
+	else if (s_winTimer.getElapsedTime().asSeconds() >= 1.0f || m_sound.getStatus() != sf::Sound::Playing)
+	{
+		// Go to win screen after 1 second OR when sound finishes playing
+		m_sound.stop();
+		calculateScore();
+		m_currentScreen = WIN_SCREEN;
+		m_newGame = true;
+		s_winSoundStarted = false; // Reset for next time
+	}
+}
+
+//-----------------------------------------------------------------------------
+void GamePlay::resetGameOverStates()
+{
+	// Reset death sound state
+	s_deathSoundStarted = false;
+	s_deathTimer.restart();
+
+	// Reset win sound state
+	s_winSoundStarted = false;
+	s_winTimer.restart();
 }

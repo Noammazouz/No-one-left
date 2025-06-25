@@ -1,19 +1,15 @@
 #pragma once
 
 //-----include section-----
-#include <SFML/Graphics.hpp>
 #include "ItemsToCollect.h"
+#include <SFML/Graphics.hpp>
 
 //-----class section-----
 class RemoveTime : public ItemsToCollect
 {
 public:
-	RemoveTime(sf::Vector2f position, const sf::Texture& texture);
+	RemoveTime(std::string name, const sf::Vector2f& position);
 	~RemoveTime() = default;
 
-	virtual void collide(GameObject& otherObject) override;
-	virtual void enemyCollide(Enemy& otherObject) override;
-	virtual void playerCollide(Player& otherObject) override;
-	virtual void explosionCollide(Explosion& otherobject) override;
 };
 

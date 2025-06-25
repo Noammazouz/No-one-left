@@ -29,7 +29,11 @@ void HelpScreen::draw(sf::RenderWindow& window)
 //-----------------------------------------------------------------------------
 void HelpScreen::activate(sf::Clock& /*clockin*/, int& /*m_currrentScreen*/)
 {
-	handleMusicTransition(false); // Start menu music
+	// Ensure menu music is playing
+	if (getCurrentMusicState() != MusicState::MENU)
+	{
+		setMusicState(MusicState::MENU);
+	}
 }
 
 //-----------------------------------------------------------------------------

@@ -2,7 +2,6 @@
 
 //-----include section-----
 #include "ItemsToCollect.h"
-#include "Const.h"
 #include <SFML/Graphics.hpp>
 
 //-----class section-----

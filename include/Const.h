@@ -72,6 +72,11 @@ enum  BulletOwner
 	ENEMY = 1
 };
 
+enum WinScreenButoons
+{
+	_EXIT = 1
+};
+
 //----------constants section----------
 //-----int const section-----
 const int MAP_WIDTH = 5000;
@@ -115,6 +120,11 @@ const float ROTATION_SPEED = 135.f; //degrees per second.
 const std::string MENU_MUSIC = "menu";
 const std::string GAME_MUSIC = "game";
 const std::string LOSING_SOUND = "death";
+const std::string WINNING_SOUND = "win sound effect";
+const std::string SHOOTING_SOUND = "shot";
+const std::string EXPLOSION_SOUND = "explosion";
+const std::string GAIN_HEALTH_SOUND = "health";
+const std::string GAIN_PRESENT_SOUND = "present";
 
 //-----buttons const section-----
 const std::string RETURN_BUTTON = "return";
@@ -144,6 +154,7 @@ const std::string START_SCREEN_BACKGROUND = "startScreen";
 const std::string GAME_BACKGROUND = "background";
 const std::string HELP_SCREEN_BACKGROUND = "help screen";
 const std::string LOSE_SCREEN_BACKGROUND = "game over";
+const std::string WIN_SCREEN_BACKGROUND = "winning screen";
 
 //-----InfoBar icons const section-----
 const std::string LIFE_ICON = "life";

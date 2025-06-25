@@ -79,8 +79,8 @@ void ResourcesManager::loadTexture()
         {"obstacle2","obstacle2.png"},
         {"obstacle3","obstacle3.png"},
         {"game over", "lose_screen.png"},
-        {"start menu", "home.png"}
-        /*{"win", "win_screen.png"}*/
+        {"start menu", "home.png"},
+        {"winning screen", "win screen background.png"}
     };
 
     for (const auto& [name, filePath] : textures)
@@ -122,7 +122,8 @@ void ResourcesManager::initializeMusic()
         {"shot", "shot.ogg"},
         {"death", "death.ogg"},
         {"explosion", "explosion.ogg"},
-        {"health", "addHealth.ogg"}
+        {"health", "addHealth.ogg"},
+        {"win sound effect", "win.ogg"}
     };
 
     for (const auto& [name, filePath] : music)
