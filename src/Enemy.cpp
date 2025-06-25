@@ -126,10 +126,22 @@ void Enemy::update(sf::Time deltaTime, sf::Vector2f playerPos)
 	this->setPrevLocation(this->getPosition());
 	this->updatePosition(m_direction * ENEMY_SPEED * deltaTime.asSeconds());
     this->updateFrames(m_direction, PLAYER_FRAME_TIME, m_numberOfFrames);
-    if ((playerPos.x - getPosition().x) < 0.1f)
+    // Calculate Euclidean distance between enemy and player
+    sf::Vector2f enemyPos = this->getPosition();
+    float deltaX = playerPos.x - enemyPos.x;
+    float deltaY = playerPos.y - enemyPos.y;
+    float squaredDistance = deltaX * deltaX + deltaY * deltaY;
+
+    m_fireTimer += deltaTime.asSeconds();
+
+    if (squaredDistance <= DISTANCE && m_fireTimer >= FIRE_COOLDOWN) 
     {
-        std::cout<<"entered"<< std::endl;
         m_shouldFire = true;
+        m_fireTimer = 0.0f; // Reset timer
+    }
+    else
+    {
+        m_shouldFire = false;
     }
 }
 

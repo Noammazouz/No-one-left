@@ -51,7 +51,7 @@ void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 	}
 
 	// Handle game over states first (both stop normal game processing)
-	if (m_player.getLife() == END_GAME)
+	if (m_player.getLife() <= END_GAME)
 	{
 		handleDeathState(m_currentScreen);
 		return; // STOP all game processing when dead
@@ -125,13 +125,13 @@ void GamePlay::move(sf::Clock& clock)
 	{
 	   movingObj->update(deltaTime, m_player.getPosition());
 	}
-	for (auto& m : m_movingObj)
+	for (int index = 0; index < Enemy::getNumOfEnemiesAlive(); ++index)
 	{
-		if (auto* e = dynamic_cast<Enemy*>(m.get()))
+		if (auto* e = dynamic_cast<Enemy*>(m_movingObj[index].get()))
 		{
 			if (e->wantsToFire())
 			{
-				addProjectile(e->getDirection(),e->getPosition(),ENEMY);
+				addProjectile(e->getPosition(), e->getDirection(), ENEMY);
 				e->clearFireFlag();
 			}
 		}
