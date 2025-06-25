@@ -21,7 +21,6 @@ public:
 	~Map() = default;
 	void loadlevelobj(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj,
 					  std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player, GamePlay* gamePlay);
-	void draw();
 
 private:
 	void loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player, GamePlay* gamePlay);
