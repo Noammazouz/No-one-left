@@ -156,11 +156,13 @@ void GamePlay::handleCollision()
 				break;
 			}
 		}
-		if (!collided) {
+		if (!collided) 
+		{
 			// Dynamic-cast to Enemy (or UpdateableObject) and call ClearAvoidance()
 			if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get()))
  {
-				if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get())) {
+				if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get())) 
+				{
 					enemy->OnSuccessfulMove();
 				}
 			}
@@ -171,30 +173,28 @@ void GamePlay::handleCollision()
 	// Player vs Enemies
 	for (const auto& movingObj : m_movingObj)
 	{
-		if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get()))
+
+		if (m_player.checkCollision(*movingObj))
 		{
-			if (m_player.checkCollision(*enemy))
-			{
-				/*m_sound.setBuffer(ResourcesManager::getInstance().getSound("death"));
-				m_sound.setVolume(100.f);
-				m_sound.play();*/
-				collisionHandler.processCollision(m_player, *enemy);
-				break;
-			}
+			/*m_sound.setBuffer(ResourcesManager::getInstance().getSound("death"));
+			m_sound.setVolume(100.f);
+			m_sound.play();*/
+			collisionHandler.processCollision(m_player, *movingObj);
+			break;
 		}
 	}
 
-	for (size_t i = 0; i < m_movingObj.size(); ++i)
+	for (int moveObj = 0; moveObj < (Enemy::getNumOfEnemiesAlive() - 1); ++moveObj)
 	{
-		for (size_t j = i + 1; j < m_movingObj.size(); ++j)
+		for (int nextMoveObj = moveObj + 1; nextMoveObj < Enemy::getNumOfEnemiesAlive(); ++nextMoveObj)
 		{
-			auto& a = *m_movingObj[i];
-			auto& b = *m_movingObj[j];
+			auto& a = *m_movingObj[moveObj];
+			auto& b = *m_movingObj[nextMoveObj];
 
 			if (a.checkCollision(b))
 			{
 				// This will look up the Enemy,Enemy handler you registered
-				CollisionFactory::getInstance().processCollision(a, b);
+				collisionHandler.processCollision(a, b);
 			}
 		}
 	}
@@ -346,12 +346,12 @@ void GamePlay::handleScoreBoard()
 //-----------------------------------------------------------------------------
 void GamePlay::removeGuard()
 {
-	/*if (Enemy::getNumOfGuardsAlive() != 0)
+	if (Enemy::getNumOfEnemiesAlive() != 0)
 	{
 		srand(time(NULL));
-		int index = rand() % Enemy::getNumOfGuardsAlive();
+		int index = rand() % Enemy::getNumOfEnemiesAlive();
 		m_movingObj[index]->setLife(true);
-	}*/
+	}
 }
 
 void GamePlay::resetGame()
@@ -470,4 +470,10 @@ void GamePlay::resetGameOverStates()
 	// Reset win sound state
 	s_winSoundStarted = false;
 	s_winTimer.restart();
+}
+
+//-----------------------------------------------------------------------------
+void GamePlay::addProjectile(const sf::Vector2f& pos, const sf::Vector2f& direction, BulletOwner owner)
+{
+	m_movingObj.push_back(std::make_unique<Projectile>(pos, direction, owner));
 }
