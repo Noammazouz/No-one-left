@@ -18,8 +18,7 @@ int Player::m_bulletCount = NUM_OF_BULLETS;
 //-----------------------------------------------------------------------------
 Player::Player()
 	: UpdateableObject(), m_isShooting(false), m_lives(NUM_OF_LIVES)
-{
-}
+{}
 
 //-----------------------------------------------------------------------------
 void Player::initialization(sf::Vector2f position, std::string name)
@@ -108,9 +107,9 @@ sf::Vector2f Player::getPos() const
 }
 
 //------------------------------------------------------------------------------
-void Player::incLife()
+void Player::incLife(const int addLives)
 {
-	if (m_lives < NUM_OF_LIVES) m_lives++;
+	if (m_lives < NUM_OF_LIVES) m_lives += addLives;
 }
 
 //------------------------------------------------------------------------------
