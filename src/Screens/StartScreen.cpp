@@ -12,7 +12,7 @@ StartScreen::StartScreen()
 void StartScreen::draw(sf::RenderWindow& window)
 {
 	window.setView(window.getDefaultView());
-	sf::Texture backgroundTexture = ResourcesManager::getInstance().getTexture("startScreen");
+	sf::Texture backgroundTexture = ResourcesManager::getInstance().getTexture(START_SCREEN_BACKGROUND);
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
 	sf::Sprite backgroundSprite(backgroundTexture);
 	backgroundSprite.setScale(desktop.width * WINDOW_RATIO / backgroundTexture.getSize().x, 
@@ -24,13 +24,15 @@ void StartScreen::draw(sf::RenderWindow& window)
 //-----------------------------------------------------------------------------
 void StartScreen::activate(sf::Clock& /*clocking*/, int& /*m_currentScreen*/)
 {
+	// Menu music should already be playing - just ensure it's correct
+	ensureCorrectMusicPlaying();
 }
 
 //-----------------------------------------------------------------------------
 void StartScreen::initButtons()
 {
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-	std::vector<std::string> buttonNames = { "start game", "help", "exit"};
+	std::vector<std::string> buttonNames = { START_NEW_GAME_BUTTON, HELP_MENU_BUTTON, EXIT_BUTTON};
 	for (int index = 0; index < buttonNames.size(); ++index)
 	{
 		sf::Vector2f position(static_cast<float>(desktop.width * WINDOW_RATIO / 2), static_cast<float>(desktop.height * WINDOW_RATIO / 5 + 300 * index));

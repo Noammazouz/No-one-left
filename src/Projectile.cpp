@@ -2,19 +2,19 @@
 #include "Projectile.h"
 #include <cmath>
 #include <iostream>
-#include <CollisionFactory.h>
+#include "CollisionFactory.h"
+#include "Factory.h"
 
 //-----functions section------
 //-----------------------------------------------------------------------------
-Projectile::Projectile(sf::Vector2f position, sf::Vector2f dir, float spd, int dmg)
-    : UpdateableObject(position, "projectile"), direction(dir), speed(spd),
-    isActive(true), damage(dmg), elapsedTime(0.0f)
+Projectile::Projectile(sf::Vector2f position, sf::Vector2f direction, BulletOwner owner)
+    : UpdateableObject(position, "projectile"), isActive(true), m_elapsedTime(0.0f), m_direction(direction)
 {
-    float length = std::sqrt(direction.x * direction.x + direction.y * direction.y); // to get same speed for all directions
+    float length = std::sqrt(m_direction.x * m_direction.x + m_direction.y * m_direction.y); // to get same speed for all directions
     if (length > 0)
     {
-        direction.x /= length;
-        direction.y /= length;
+        m_direction.x /= length;
+        m_direction.y /= length;
     }
 }
 
@@ -24,9 +24,9 @@ void Projectile::update(sf::Time deltaTime, sf::Vector2f playerPos)
     if (!isActive) return;
 
     float dt = deltaTime.asSeconds();
-    elapsedTime += dt;
+    m_elapsedTime += dt;
 
-    sf::Vector2f movement = direction * speed * dt;
+    sf::Vector2f movement = m_direction * speed * dt;
     sf::Vector2f currentPos = getPosition();
     setPosition(sf::Vector2f(currentPos.x + movement.x, currentPos.y + movement.y));
 
@@ -38,8 +38,8 @@ void Projectile::update(sf::Time deltaTime, sf::Vector2f playerPos)
 
 //-----------------------------------------------------------------------------
 void Projectile::setDirection(sf::Vector2f dir)
-{
-    direction = dir;
+{   
+    m_direction = dir;
 }
 
 //-----------------------------------------------------------------------------
@@ -51,7 +51,7 @@ void Projectile::setSpeed(float spd)
 //-----------------------------------------------------------------------------
 sf::Vector2f Projectile::getDirection() const
 {
-    return direction;
+    return m_direction;
 }
 
 //-----------------------------------------------------------------------------
@@ -81,7 +81,7 @@ int Projectile::getDamage() const
 //-----------------------------------------------------------------------------
 bool Projectile::isExpired() const
 {
-    return elapsedTime >= 3.0f; // 3 seconds 
+    return m_elapsedTime >= 3.0f; // 3 seconds 
 }
 
 //-----------------------------------------------------------------------------
@@ -90,6 +90,7 @@ bool Projectile::isOutOfMap() const
     sf::Vector2f pos = getPosition();
     return (pos.x < -50 || pos.x > MAP_WIDTH + 50 || pos.y < -50 || pos.y > MAP_HEIGHT + 50);
 }
+
 //-----------------------------------------------------------------------------  
 // Collision handler for Bullet vs Enemy - Order independent  
 void handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2)  
@@ -196,16 +197,15 @@ void Projectile::registerBulletCollisions()
     auto& collisionFactory = CollisionFactory::getInstance();
 
     // Register bullet-enemy collisions (handles both player and enemy bullets)
-    collisionFactory.registerTypedCollision<Bullets, Enemy>(handlePlayerBulletEnemyCollision);
+    collisionFactory.registerTypedCollision<Projectile, Enemy>(handlePlayerBulletEnemyCollision);
 
     // Register bullet-player collisions (handles both player and enemy bullets)
-    collisionFactory.registerTypedCollision<Bullets, Player>(handleEnemyBulletPlayerCollision);
+    collisionFactory.registerTypedCollision<Projectile, Player>(handleEnemyBulletPlayerCollision);
 
     // Register bullet-wall collisions (all bullets are stopped by walls)
-    collisionFactory.registerTypedCollision<Bullets, Wall>(handleBulletWallCollision);
+    collisionFactory.registerTypedCollision<Projectile, Wall>(handleBulletWallCollision);
 
     registered = true;
-    std::cout << "Bullet collisions registered." << std::endl;
 }
 
 //-----------------------------------------------------------------------------
@@ -221,6 +221,3 @@ BulletOwner Projectile::getOwner() const
 {
     return m_owner;
 }
-
-
-

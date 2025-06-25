@@ -5,6 +5,7 @@
 #include "AxisMoveBehavior.h"
 #include "BfsMoveBehavior.h"
 #include "OneDirectionAttackBehavior.h"
+#include "GamePlay.h"
 #include <iostream>
 #include "AllDirectionsAttackBehavior.h"
 #include "CollisionFactory.h"
@@ -24,14 +25,24 @@ Enemy::Enemy(sf::Vector2f position, std::string name)
 }
 
 //-----------------------------------------------------------------------------
-// Collision handler function for Enemy-Wall collisions (multimethods style)
+// Collision handler function for Enemy-Wall collisions (bidirectional)
 void handleEnemyWallCollision(GameObject& obj1, GameObject& obj2)
 {
-    // Cast to specific types and handle collision
-    // Only need to handle one direction since CollisionFactory handles symmetry
+    // Handle Enemy vs Wall collision (bidirectional)
     if (auto* enemy = dynamic_cast<Enemy*>(&obj1)) 
     {
         if (auto* wall = dynamic_cast<Wall*>(&obj2)) 
+        {
+            // Enemy hit wall - revert to previous position
+            enemy->setPosition(enemy->getPrevLocation());
+			enemy->SetDirection(-enemy->getDirection()); // Reverse direction
+            return;
+        }
+    }
+    // Handle Wall vs Enemy collision (reverse direction)
+    if (auto* wall = dynamic_cast<Wall*>(&obj1)) 
+    {
+        if (auto* enemy = dynamic_cast<Enemy*>(&obj2)) 
         {
             // Enemy hit wall - revert to previous position
             enemy->setPosition(enemy->getPrevLocation());
@@ -78,7 +89,7 @@ static bool enemyenemyCollisionRegistered = []() {
 
 static auto regSimple = Factory<UpdateableObject>::instance().registerType(
     ObjectType::SIMPLENEMY,
-    [](const sf::Vector2f& pos) -> std::unique_ptr<UpdateableObject> {
+    [](const sf::Vector2f& pos, GamePlay* gamePlay) -> std::unique_ptr<UpdateableObject> {
         auto enemy = std::make_unique<Enemy>(pos, "SimpleEnemy");
         enemy->SetMoveBehavior(std::make_unique<RandomMoveBehavior>());
         enemy->SetAttackBehavior(std::make_unique<OneDirectionAttackBehavior>());
@@ -87,7 +98,7 @@ static auto regSimple = Factory<UpdateableObject>::instance().registerType(
 
 static auto regSmart = Factory<UpdateableObject>::instance().registerType(
     ObjectType::SMARTENEMY,
-    [](const sf::Vector2f& pos) -> std::unique_ptr<UpdateableObject> {
+    [](const sf::Vector2f& pos, GamePlay* gamePlay) -> std::unique_ptr<UpdateableObject> {
         auto enemy = std::make_unique<Enemy>(pos, "SmartEnemy");
         enemy->SetMoveBehavior(std::make_unique<AxisMoveBehavior>());
         enemy->SetAttackBehavior(std::make_unique<OneDirectionAttackBehavior>());
@@ -96,7 +107,7 @@ static auto regSmart = Factory<UpdateableObject>::instance().registerType(
 
 static auto regBfs = Factory<UpdateableObject>::instance().registerType(
     ObjectType::BFSENEMY,
-    [](const sf::Vector2f& pos) -> std::unique_ptr<UpdateableObject> {
+    [](const sf::Vector2f& pos, GamePlay* gamePlay) -> std::unique_ptr<UpdateableObject> {
         auto enemy = std::make_unique<Enemy>(pos, "BfsEnemy");
         enemy->SetMoveBehavior(std::make_unique<BfsMoveBehavior>());
         enemy->SetAttackBehavior(std::make_unique<AllDirectionsAttackBehavior>());

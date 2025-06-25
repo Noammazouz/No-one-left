@@ -67,7 +67,7 @@ void Infobar::initializeLives()
 		livesFrames.push_back(sf::IntRect(i * frameWidth, 0, frameWidth, frameHeight));
 	}
 
-	m_livesIcon.setTexture(ResourcesManager::getInstance().getTexture("life"));
+	m_livesIcon.setTexture(ResourcesManager::getInstance().getTexture(LIFE_ICON));
 	m_livesIcon.setTextureRect(livesFrames[5]);
 	m_livesIcon.setOrigin(m_livesIcon.getGlobalBounds().width / 2, m_livesIcon.getGlobalBounds().height / 2);
 	m_livesIcon.setScale(0.9f, 0.9f); // Adjust scale as needed
@@ -82,7 +82,7 @@ void Infobar::initializeLives()
 }
 void Infobar::initializeBullets()
 {
-	m_bulletsIcon.setTexture(ResourcesManager::getInstance().getTexture("bulletIcon"));
+	m_bulletsIcon.setTexture(ResourcesManager::getInstance().getTexture(BULLETS_ICON));
 	m_bulletsIcon.setOrigin(m_bulletsIcon.getGlobalBounds().width / 2, m_bulletsIcon.getGlobalBounds().height / 2);
 	m_bulletsIcon.setScale(0.1f, 0.1f); // Adjust scale as needed
 	m_bulletsIcon.setPosition(sf::Vector2f(19, 175));
@@ -97,7 +97,7 @@ void Infobar::initializeBullets()
 
 void Infobar::initializeTime()
 {
-	m_timeIcon.setTexture(ResourcesManager::getInstance().getTexture("clock"));
+	m_timeIcon.setTexture(ResourcesManager::getInstance().getTexture(CLOCK_ICON));
 	m_timeIcon.setOrigin(m_timeIcon.getGlobalBounds().width / 2, m_timeIcon.getGlobalBounds().height / 2);
 	m_timeIcon.setPosition(sf::Vector2f(15, 57));
 
@@ -119,13 +119,6 @@ void Infobar::draw(sf::RenderWindow& window)
 	window.draw(m_lifePercentages);
 	window.draw(m_bulletsIcon);
 	window.draw(m_BulletsAmount);
-     // Draw the infobar elements on the window
-	// This could include drawing text for lives, bullets, level, and time
-	// Example:
-	// window.draw(livesText);
-	// window.draw(bulletsText);
-	// window.draw(levelText);
-	// window.draw(timeText);
 }
 
 void Infobar::decreaseLifeLevel(float lifePercentage) 

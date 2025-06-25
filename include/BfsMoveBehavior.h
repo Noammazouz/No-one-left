@@ -6,6 +6,7 @@
 #include <vector>
 #include <queue>
 #include <memory>
+#include <array>
 
 //-----struct section-----
 struct MapSection 
@@ -65,5 +66,5 @@ private:
     sf::Vector2f m_avoidDirection = { 0.f, 0.f };
     bool m_avoiding = false;
     std::array<sf::Vector2f, 3> m_avoidOptions;  // three candidate dodge vectors
-    int                        m_avoidIndex = 0;
+    int m_avoidIndex = 0;
 };

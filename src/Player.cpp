@@ -1,8 +1,13 @@
 //-----include section-----
 #include "Player.h"
+#include "CollisionFactory.h"
 #include "Factory.h"
 #include <OneDirectionAttackBehavior.h>
 #include <AllDirectionsAttackBehavior.h>
+#include "CollisionFactory.h"
+#include "Enemy.h"
+#include "Wall.h"
+#include "Explosion.h"
 
 //-----functions section------
 //-----------------------------------------------------------------------------
@@ -12,17 +17,19 @@ int Player::m_bulletCount = NUM_OF_BULLETS;
 
 //-----------------------------------------------------------------------------
 Player::Player()
-	: UpdateableObject(), m_isShooting(false), /*m_attackBehavior(std::move(std::make_unique<OneDirectionAttackBehavior>())),*/ m_lives(NUM_OF_LIVES)
-{
-}
+	: UpdateableObject(), m_isShooting(false), m_lives(NUM_OF_LIVES)
+{}
 
 //-----------------------------------------------------------------------------
-Player::Player(sf::Vector2f position, std::string name)
-	: UpdateableObject(position, name), m_isShooting(false), /*m_attackBehavior(std::move(std::make_unique<OneDirectionAttackBehavior>())),*/ m_lives(NUM_OF_LIVES)
+void Player::initialization(sf::Vector2f position, std::string name)
 {
-	m_numberOfFrames = m_pic.getTexture()->getSize().x / PLAYER_WIDTH; //Calculate number of frames based on texture width.
+	auto& texture = ResourcesManager::getInstance().getTexture(name);
+	m_pic.setTexture(texture);
+	m_numberOfFrames = m_pic.getTexture()->getSize().x / OBJECT_WIDTH; //Calculate number of frames based on texture width.
 	m_pic.setRotation(180.f); //Set initial rotation to face down.
 	set_frames(m_numberOfFrames, position);
+	m_attackBehavior= std::move(std::make_unique<OneDirectionAttackBehavior>());
+	m_lives = NUM_OF_LIVES;
 }
 
 //-----------------------------------------------------------------------------
@@ -70,9 +77,15 @@ bool Player::checkDirection()
 }
 
 //-----------------------------------------------------------------------------
-void Player::decLife()
+sf::Vector2f Player::getDirection() const
 {
-	m_lives--;
+	return m_direction;
+}
+
+//-----------------------------------------------------------------------------
+void Player::decLife(int decLives)
+{
+	m_lives -= decLives;
 }
 
 //-----------------------------------------------------------------------------
@@ -100,9 +113,9 @@ sf::Vector2f Player::getPos() const
 }
 
 //------------------------------------------------------------------------------
-void Player::incLife()
+void Player::incLife(int addLives)
 {
-	if (m_lives < NUM_OF_LIVES) m_lives++;
+	if (m_lives < NUM_OF_LIVES) m_lives += addLives;
 }
 
 //------------------------------------------------------------------------------
@@ -171,24 +184,23 @@ void Player::handleShooting(std::vector<std::unique_ptr<Projectile>>& bullets)
 	}
 }
 
-
 //-----------------------------------------------------------------------------
 void Player::setAttackBehavior(std::unique_ptr<AttackBehavior> attackBehavior)
 {
-	//m_attackBehavior = std::move(attackBehavior);
+	m_attackBehavior = std::move(attackBehavior);
 }
 
 //-----------------------------------------------------------------------------
 void Player::doAttack(std::vector<std::unique_ptr<Projectile>>& bullets)
 {
-	//if (!m_attackBehavior) return;
+	if (!m_attackBehavior) return;
 
-	int bulletsNeeded = ONE_DIRECTION_BULLET; // default is one direction
+	int bulletsNeeded = ONE_DIRECTION_BULLET; //default is one direction.
 
-	//if (typeid(*m_attackBehavior) == typeid(AllDirectionsAttackBehavior)) // check if attack for all directions
-	//{
-	//	bulletsNeeded = ALL_DIRECTIONS_BULLETS;
-	//}
+	if (typeid(*m_attackBehavior) == typeid(AllDirectionsAttackBehavior)) //check if attack for all directions.
+	{
+		bulletsNeeded = ALL_DIRECTIONS_BULLETS;
+	}
 
 	if (getNumOfBullets() >= bulletsNeeded)
 	{
@@ -205,73 +217,106 @@ void Player::doAttack(std::vector<std::unique_ptr<Projectile>>& bullets)
 }
 
 //------------------------------------------------------------------------------
-//Register player handle collisions.
-//void Player::registerPlayerCollisions()
-//{
-//	static bool registered = false;
-//	if (registered) return;
-//
-//	auto& collisionFactory = CollisionFactory::getInstance();
-//
-//	// Register player-enemy collisions
-//	collisionFactory.registerTypedCollision<Player, Enemy>(handlePlayerEnemyCollision);
-//	// Register player-wall collisions
-//	collisionFactory.registerTypedCollision<Player, Wall>(handlePlayerWallCollision);
-//
-//	registered = true;
-//	std::cout << "Player collisions registered." << std::endl;
-//}
-//
-////------------------------------------------------------------------------------
-////Auto-registration helper - runs when the player is created.
-//static bool g_playerCollisionRegistered = []()
-//	{
-//		Player::registerPlayerCollisions();
-//		return true;
-//	}();
-//
-////------------------------------------------------------------------------------
-//void handlePlayerEnemyCollision(GameObject& obj1, GameObject& obj2)
-//{
-//	if (auto* player = dynamic_cast<Player*>(&obj1))
-//	{
-//		if (auto* enemy = dynamic_cast<Enemy*>(&obj2))
-//		{
-//			std::cout << "Player collided with enemy - Player loses a life!" << std::endl;
-//			player->decLife();
-//			if (player->getLife() <= 0)
-//			{
-//				std::cout << "Player has no lives left - Game Over!" << std::endl;
-//				player->setWin(false); //Set win to false if player has no lives left.
-//			}
-//		}
-//	}
-//	else if (auto* player = dynamic_cast<Player*>(&obj2))
-//	{
-//		if (auto* enemy = dynamic_cast<Enemy*>(&obj1))
-//		{
-//			std::cout << "Player collided with enemy - Player loses a life!" << std::endl;
-//			player->decLife();
-//			if (player->getLife() <= 0)
-//			{
-//				std::cout << "Player has no lives left - Game Over!" << std::endl;
-//				player->setWin(false); //Set win to false if player has no lives left.
-//			}
-//		}
-//	}
-//}
-//
-////------------------------------------------------------------------------------
-//void handlePlayerWallCollision(GameObject& obj1, GameObject& obj2)
-//{
-//	if (auto* player = dynamic_cast<Player*>(&obj1))
-//	{
-//		std::cout << "Player collided with wall - Stopping movement!" << std::endl;
-//		player->setPosition(player->getPrevLocation()); //Reset position to previous location.
-//	}
-//	else if (auto* player = dynamic_cast<Player*>(&obj2))
-//	{
-//		std::cout << "Player collided with wall - Stopping movement!" << std::endl;
-//		player->setPosition(player->getPrevLocation()); //Reset position to previous location.
-//	}
-//}
+void handlePlayerEnemyCollision(GameObject& obj1, GameObject& obj2)
+{
+	//Handle Player vs Enemy collision (bidirectional)
+	if (auto* player = dynamic_cast<Player*>(&obj1)) 
+	{
+		if (auto* enemy = dynamic_cast<Enemy*>(&obj2)) 
+		{
+			player->decLife();
+			return;
+		}
+	}
+	//Handle Enemy vs Player collision (reverse direction)
+	if (auto* enemy = dynamic_cast<Enemy*>(&obj1)) 
+	{
+		if (auto* player = dynamic_cast<Player*>(&obj2)) 
+		{
+			player->decLife();
+			return;
+		}
+	}
+}
+
+//------------------------------------------------------------------------------
+void handlePlayerWallCollision(GameObject& obj1, GameObject& obj2)
+{
+	//Handle Player vs Wall collision (bidirectional)
+	if (auto* player = dynamic_cast<Player*>(&obj1)) 
+	{
+		if (auto* wall = dynamic_cast<Wall*>(&obj2)) 
+		{
+			player->setPosition(player->getPrevLocation());
+			return;
+		}
+	}
+	//Handle Wall vs Player collision (reverse direction)
+	if (auto* wall = dynamic_cast<Wall*>(&obj1)) 
+	{
+		if (auto* player = dynamic_cast<Player*>(&obj2)) 
+		{
+			player->setPosition(player->getPrevLocation());
+			return;
+		}
+	}
+}
+
+//------------------------------------------------------------------------------
+void handlePlayerObstaclesCollision(GameObject& obj1, GameObject& obj2)
+{
+	//Handle Player vs Wall collision (bidirectional)
+	if (auto* player = dynamic_cast<Player*>(&obj1))
+	{
+		if (auto* wall = dynamic_cast<Obstacles*>(&obj2))
+		{
+			player->setPosition(player->getPrevLocation());
+			return;
+		}
+	}
+	//Handle Wall vs Player collision (reverse direction)
+	if (auto* wall = dynamic_cast<Obstacles*>(&obj1))
+	{
+		if (auto* player = dynamic_cast<Player*>(&obj2))
+		{
+			player->setPosition(player->getPrevLocation());
+			return;
+		}
+	}
+}
+
+//------------------------------------------------------------------------------
+void handlePlayerExplosionCollision(GameObject& obj1, GameObject& obj2)
+{
+	//Handle Player vs Explosion collision (bidirectional)
+	if (auto* player = dynamic_cast<Player*>(&obj1)) 
+	{
+		if (auto* explosion = dynamic_cast<Explosion*>(&obj2)) 
+		{
+			player->decLife(EXPLOSION_DEC_LIVES);
+			//player->setPosition(player->getStartingPosition());
+			return;
+		}
+	}
+
+	//Handle Explosion vs Player collision (reverse direction)
+	if (auto* explosion = dynamic_cast<Explosion*>(&obj1)) 
+	{
+		if (auto* player = dynamic_cast<Player*>(&obj2)) 
+		{
+			player->decLife(EXPLOSION_DEC_LIVES);
+			//player->setPosition(player->getStartingPosition());
+			return;
+		}
+	}
+}
+
+//------------------------------------------------------------------------------
+static bool g_playerCollisionRegistered = []() {
+	auto& factory = CollisionFactory::getInstance();
+	factory.registerTypedCollision<Player, Enemy>(handlePlayerEnemyCollision);
+	factory.registerTypedCollision<Player, Wall>(handlePlayerWallCollision);
+	factory.registerTypedCollision<Player, Obstacles>(handlePlayerObstaclesCollision);
+	factory.registerTypedCollision<Player, Explosion>(handlePlayerExplosionCollision);
+	return true;
+	}();

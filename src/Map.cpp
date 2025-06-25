@@ -1,6 +1,7 @@
-//-----include section-----
+﻿//-----include section-----
 #include "Map.h"
 #include "ResourcesManager.h"
+#include "GamePlay.h"
 #include "Player.h"
 #include <fstream>
 #include <sstream>
@@ -13,7 +14,7 @@
 
 //-----functions section------
 //-----------------------------------------------------------------------------
-void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player)
+void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player, GamePlay* gamePlay)
 {
     std::ifstream file("Level1_cleaned.csv");
     if (!file.is_open()) 
@@ -54,23 +55,23 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
         // … else if for other object-types …
     }
 
-
-	player = Player(FIRST_PLAYER_POSITION, "player_machine_gun");
+    //player.initialization(FIRST_PLAYER_POSITION, "player_machine_gun");
+    player.initialization(FIRST_PLAYER_POSITION, PLAYER_RIFLE);
 }
 
 //-----------------------------------------------------------------------------
 void Map::loadlevelobj(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj, 
-                       std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player)
+                       std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player, GamePlay* gamePlay)
 {
     m_staticObj.clear();
     m_movingObj.clear();
-    loadFromCSV(m_staticObj, player);
-    loadEnemies(m_movingObj, m_staticObj);
-    loadObstacles(m_staticObj, m_movingObj);
+    loadFromCSV(m_staticObj, player, gamePlay);
+    loadEnemies(m_movingObj, m_staticObj, gamePlay);
+    loadObstacles(m_staticObj, m_movingObj, gamePlay);
 }
 
 //-----------------------------------------------------------------------------
-void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj, std::vector<std::unique_ptr<StaticObject>>& m_staticObj)
+void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj, std::vector<std::unique_ptr<StaticObject>>& m_staticObj, GamePlay* gamePlay)
 {
     ////random_device is a seed maker.
     ////mt19937 is a random engine.
@@ -107,7 +108,7 @@ void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingOb
             for (int attempt = 0; attempt < maxTries; ++attempt)
             {
                 sf::Vector2f pos{ randX(rng), randYIn(region) };
-                auto temp = factory.create(type, pos);
+                auto temp = factory.create(type, pos, gamePlay);
                 if (isPositionFree(temp->getBounds(), m_staticObj, m_movingObj))
                 {
                     m_movingObj.emplace_back(std::move(temp));
@@ -139,7 +140,7 @@ void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingOb
     }
 }
 
-void Map::loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj)
+void Map::loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj, GamePlay* gamePlay)
 {
     constexpr float WALL_MARGIN = 50.f;
     constexpr int maxTries = 10;
@@ -155,7 +156,7 @@ void Map::loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj,
             for (int attempt = 0; attempt < maxTries; ++attempt)
             {
                 sf::Vector2f pos{ randX(rng), randY(rng) };
-                auto temp = factory.create(type, pos);
+                auto temp = factory.create(type, pos, gamePlay);
                 if (isPositionFree(temp->getBounds(), m_staticObj, m_movingObj))
                 {
                     m_staticObj.emplace_back(std::move(temp));

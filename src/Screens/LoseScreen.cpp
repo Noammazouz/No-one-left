@@ -13,7 +13,7 @@ LoseScreen::LoseScreen()
 void LoseScreen::draw(sf::RenderWindow& window) 
 {
 	window.setView(window.getDefaultView());
-	sf::Texture texture = ResourcesManager::getInstance().getTexture("game over");
+	sf::Texture texture = ResourcesManager::getInstance().getTexture(LOSE_SCREEN_BACKGROUND);
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
 	sf::Sprite loseScreen(texture);
 	loseScreen.setScale(desktop.width * WINDOW_RATIO / texture.getSize().x,
@@ -25,7 +25,11 @@ void LoseScreen::draw(sf::RenderWindow& window)
 //-----------------------------------------------------------------------------
 void LoseScreen::activate(sf::Clock& /*clock*/, int& /*state*/) 
 {
-	handleMusicTransition(false); // Start menu music
+	// Ensure menu music is playing
+	if (getCurrentMusicState() != MusicState::MENU)
+	{
+		setMusicState(MusicState::MENU);
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -63,7 +67,7 @@ void LoseScreen::handleMouseClick(const sf::Vector2f& clickPos, int& screenState
 void LoseScreen::initButtons() 
 {
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-	std::vector<std::string> buttonNames = { "start game", "start menu" ,"exit"};
+	std::vector<std::string> buttonNames = { START_NEW_GAME_BUTTON, START_MENU_BUTTON , EXIT_BUTTON };
 	for (int index = 0; index < buttonNames.size(); ++index)
 	{
 		sf::Vector2f position(static_cast<float>(desktop.width * WINDOW_RATIO / 2),

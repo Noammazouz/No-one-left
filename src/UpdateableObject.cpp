@@ -30,6 +30,12 @@ sf::Vector2f UpdateableObject::getPrevLocation() const
 };
 
 //-----------------------------------------------------------------------------
+sf::Vector2f UpdateableObject::getStartingPosition() const
+{
+	return m_startingPosition;
+};
+
+//-----------------------------------------------------------------------------
 void UpdateableObject::setPrevLocation(const sf::Vector2f& pos)
 {
     m_prevLocation = pos;
@@ -119,13 +125,24 @@ void UpdateableObject::updateFrames(const sf::Vector2f& direction, const float f
 void UpdateableObject::set_frames(const int framesNumber, const sf::Vector2f position)
 {
     m_frames.clear();
-    m_frames.reserve(PLAYER_FRAME_COUNT);
-    for (int frameNumber = 0; frameNumber < PLAYER_FRAME_COUNT; frameNumber++)
+    m_frames.reserve(m_numberOfFrames);
+    for (int frameNumber = 0; frameNumber < m_numberOfFrames; frameNumber++)
     {
-        m_frames.emplace_back(sf::IntRect(frameNumber * PLAYER_WIDTH, 0, PLAYER_WIDTH, PLAYER_HEIGHT));
+        m_frames.emplace_back(sf::IntRect(frameNumber * OBJECT_WIDTH, 0, OBJECT_WIDTH, OBJECT_HEIGHT));
     }
 
     m_pic.setTextureRect(m_frames[currentPlayerFrame]); //set for the first frame at first.
-    m_pic.setOrigin(PLAYER_WIDTH / 2, PLAYER_HEIGHT / 2); //Set origin to center.
+    m_pic.setOrigin(OBJECT_WIDTH / 2, OBJECT_HEIGHT / 2); //Set origin to center.
     m_pic.setPosition(position);
+}
+
+//-----------------------------------------------------------------------------
+void UpdateableObject::changeSpriteAnimation(const std::string& name)
+{
+    auto samePosition = m_pic.getPosition();
+    auto& texture = ResourcesManager::getInstance().getTexture(name);
+    m_pic.setTexture(texture);
+    m_numberOfFrames = m_pic.getTexture()->getSize().x / OBJECT_WIDTH; //Calculate number of frames based on texture width.
+    m_pic.setRotation(180.f); //Set initial rotation to face down.
+    set_frames(m_numberOfFrames, samePosition);
 }

@@ -52,8 +52,10 @@ void ResourcesManager::loadTexture()
     std::vector<std::pair<std::string, std::string>> textures =
     {
         {"background","gamebackground.png"},
-        {"Player", "Player.png"},
         {"player_machine_gun", "player_machine_gun.png"},
+        {"player_rifle", "player_rifle.png"},
+        {"player_bazooka", "player_bazooka.png"},
+        {"simple_enemy_machine_gun", "simple_enemy_machine_gun.png"},
         {"wall","wall.png"},
         {"startScreen", "startScreen.png"},
         {"start game", "start game.png"},
@@ -66,6 +68,9 @@ void ResourcesManager::loadTexture()
         {"return", "return.png"},
         {"SimpleEnemy", "Enemy.png"},
         {"SmartEnemy", "Enemy.png"},
+        {"simple_enemy_rifle", "simple_enemy_rifle.png"},
+        {"smart_enemy_rifle", "smart_enemy_rifle.png"},
+        {"bfs_enemy_rifle", "bfs_enemy_rifle.png"},
         {"BfsEnemy", "boss.png"},
         {"life", "life.png"},
         {"bulletIcon", "bulletIcon.png"},
@@ -74,8 +79,8 @@ void ResourcesManager::loadTexture()
         {"obstacle2","obstacle2.png"},
         {"obstacle3","obstacle3.png"},
         {"game over", "lose_screen.png"},
-        {"start menu", "home.png"}
-        /*{"win", "win_screen.png"}*/
+        {"start menu", "home.png"},
+        {"winning screen", "win screen background.png"}
     };
 
     for (const auto& [name, filePath] : textures)
@@ -117,7 +122,8 @@ void ResourcesManager::initializeMusic()
         {"shot", "shot.ogg"},
         {"death", "death.ogg"},
         {"explosion", "explosion.ogg"},
-        {"health", "addHealth.ogg"}
+        {"health", "addHealth.ogg"},
+        {"win sound effect", "win.ogg"}
     };
 
     for (const auto& [name, filePath] : music)

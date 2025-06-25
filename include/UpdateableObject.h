@@ -17,6 +17,7 @@ public:
 	virtual bool checkCollision(GameObject& otherObject);
 
 	sf::Vector2f getPrevLocation() const;
+	sf::Vector2f getStartingPosition() const;
 
 protected:
 	void setPrevLocation(const sf::Vector2f& position);
@@ -30,6 +31,7 @@ protected:
 
 	void updateFrames(const sf::Vector2f& direction, const float frameTime, const int numberOfFrames);
 	void set_frames(const int framesNumber, const sf::Vector2f position);
+	void changeSpriteAnimation(const std::string& name);
 
 private:
 	sf::Vector2f m_startingPosition;
