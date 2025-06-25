@@ -12,16 +12,16 @@
 #include "Wall.h"
 
 //-----static member initialization-----
-int Enemy::m_num_of_Enemies = 0;
-int Enemy::m_num_of_Enemies_alive = 0;
+int Enemy::m_numOfEnemies = 0;
+int Enemy::m_numOfEnemiesAlive = 0;
 
 //-----functions section------
 //-----------------------------------------------------------------------------
 Enemy::Enemy(sf::Vector2f position, std::string name, GamePlay* gameplay)
 	: UpdateableObject(position, name), m_direction(0, 0), m_prevlocation(position), m_gamePlay(gameplay)
 {
-    m_num_of_Enemies++;
-    m_num_of_Enemies_alive++;
+    m_numOfEnemies++;
+    m_numOfEnemiesAlive++;
 }
 
 
@@ -169,16 +169,16 @@ void Enemy::OnSuccessfulMove() {
 //-------------------------------------
 Enemy::~Enemy()
 {
-    m_num_of_Enemies_alive--;
+    m_numOfEnemiesAlive--;
 
 }
 //-------------------------------------
 int Enemy::getNumOfEnemiesAlive()
 {
-    return m_num_of_Enemies_alive;
+    return m_numOfEnemiesAlive;
 }
 
-
+//--------------------------------------------------------------------------------------------------
 int Enemy::getNumOfStartingEnemies(const std::vector<std::unique_ptr<UpdateableObject>>& movingObjs)
 {
     return static_cast<int>(movingObjs.size());

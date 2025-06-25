@@ -4,24 +4,17 @@
 
 //-----functions section------
 //-----------------------------------------------------------------------------
-void AllDirectionsAttackBehavior::Attack(sf::Vector2f position, sf::Vector2f direction, std::vector<std::unique_ptr<Projectile>>& projectile, BulletOwner owner)
+std::vector<sf::Vector2f> AllDirectionsAttackBehavior::Attack(sf::Vector2f position)
 {
-    sf::Vector2f directions[NUM_OF_DIRECTIONS] =
-    {
-        sf::Vector2f(0, -1),    // up
-        sf::Vector2f(1, -1),    // right and up
-        sf::Vector2f(1, 0),     // right
-        sf::Vector2f(1, 1),     // right and down
-        sf::Vector2f(0, 1),     // down
-        sf::Vector2f(-1, 1),    // left and down
-        sf::Vector2f(-1, 0),    // left
-        sf::Vector2f(-1, -1)    // left and up
-    };
 
-    for (int directionBullet = 0; directionBullet < NUM_OF_DIRECTIONS; directionBullet++)
-    {
-        sf::Vector2f bulletDirection = directions[directionBullet];
-        auto bullet = std::make_unique<Projectile>(position, bulletDirection, owner);
-        projectile.push_back(std::move(bullet));
-    }
+    m_directrions.push_back(sf::Vector2f(0, -1));    // up
+    m_directrions.push_back(sf::Vector2f(1, -1));    // right and up
+    m_directrions.push_back(sf::Vector2f(1, 0));     // right
+    m_directrions.push_back(sf::Vector2f(1, 1));     // right and down
+    m_directrions.push_back(sf::Vector2f(0, 1));     // down
+    m_directrions.push_back(sf::Vector2f(-1, 1));    // left and down
+    m_directrions.push_back(sf::Vector2f(-1, 0));    // left
+    m_directrions.push_back(sf::Vector2f(-1, -1));   // left and up
+
+    return m_directrions;
 }
