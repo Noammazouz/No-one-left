@@ -8,7 +8,7 @@
 //-----functions section------
 //-----------------------------------------------------------------------------
 Projectile::Projectile(sf::Vector2f position, sf::Vector2f direction, BulletOwner owner)
-    : UpdateableObject(position, PROJECTILE_NAME), isActive(true), m_elapsedTime(0.0f), m_direction(direction)
+    : UpdateableObject(position, PROJECTILE_NAME), isActive(true), m_elapsedTime(0.0f), m_direction(direction), m_owner(owner)
 {
     float length = std::sqrt(m_direction.x * m_direction.x + m_direction.y * m_direction.y); // to get same speed for all directions
     if (length > 0)
@@ -16,18 +16,25 @@ Projectile::Projectile(sf::Vector2f position, sf::Vector2f direction, BulletOwne
         m_direction.x /= length;
         m_direction.y /= length;
     }
+
+    float angleRadians = std::atan2(m_direction.y, m_direction.x);
+    float angleDegrees = angleRadians * 180.0f / PI;
+    m_pic.setRotation(angleDegrees + 90.0f);
 }
 
 //-----------------------------------------------------------------------------
 void Projectile::update(sf::Time deltaTime, sf::Vector2f playerPos)
 {
+    //std::cout << isActive << std::endl;
     if (!isActive) return;
 
     this->updatePosition(m_direction * PROJECTILE_SPEED * deltaTime.asSeconds());
+    m_elapsedTime += deltaTime.asSeconds();
 
     if (isExpired())
     {
         isActive = false;
+        this->setLife(true);
     }
 }
 
@@ -94,6 +101,7 @@ void handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2)
            std::cout << "Player bullet hit enemy - Enemy killed!" << std::endl;  
            enemy->setLife(true); // Mark enemy as dead  
            bullet->setActive(false); // Deactivate bullet  
+           bullet->setLife(true);
        }  
        // If enemy bullet hits enemy, do nothing (no friendly fire)  
        else  
@@ -134,9 +142,10 @@ void handleEnemyBulletPlayerCollision(GameObject& obj1, GameObject& obj2)
         // Only enemy bullets can hurt player
         if (bullet->getOwner() == ENEMY)
         {
-            std::cout << "Enemy bullet hit player!" << std::endl;
+            //std::cout << "Enemy bullet hit player!" << std::endl;
             player->decLife(PROJECTILE_DAMAGE);
             bullet->setActive(false); // Deactivate bullet
+            bullet->setLife(true);
         }
         // Player bullets don't hurt player (self-protection)
         else
@@ -165,8 +174,31 @@ void handleBulletWallCollision(GameObject& obj1, GameObject& obj2)
 
     if (bullet) 
     {
-        std::cout << "Bullet hit wall - Bullet destroyed" << std::endl;
+        //std::cout << "Bullet hit wall - Bullet destroyed" << std::endl;
         bullet->setActive(false); // All bullets are stopped by walls
+        bullet->setLife(true);
+    }
+}
+
+void handleBulletObstacleCollision(GameObject& obj1, GameObject& obj2)
+{
+    Projectile* bullet = nullptr;
+
+    //Check both parameter orders.
+    if (auto* b = dynamic_cast<Projectile*>(&obj1))
+    {
+        bullet = b;
+    }
+    else if (auto* b = dynamic_cast<Projectile*>(&obj2))
+    {
+        bullet = b;
+    }
+
+    if (bullet)
+    {
+        //std::cout << "Bullet hit wall - Bullet destroyed" << std::endl;
+        bullet->setActive(false); // All bullets are stopped by walls
+        bullet->setLife(true);
     }
 }
 
@@ -187,6 +219,8 @@ void Projectile::registerBulletCollisions()
 
     // Register bullet-wall collisions (all bullets are stopped by walls)
     collisionFactory.registerTypedCollision<Projectile, Wall>(handleBulletWallCollision);
+
+    collisionFactory.registerTypedCollision<Projectile, Obstacles>(handleBulletObstacleCollision);
 
     registered = true;
 }

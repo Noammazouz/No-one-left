@@ -22,6 +22,9 @@ Enemy::Enemy(sf::Vector2f position, std::string name, GamePlay* gameplay)
 {
     m_numOfEnemies++;
     m_numOfEnemiesAlive++;
+    m_numberOfFrames = m_pic.getTexture()->getSize().x / OBJECT_WIDTH; //Calculate number of frames based on texture width.
+    m_pic.setRotation(180.f); //Set initial rotation to face down.
+    set_frames(m_numberOfFrames, position);
 }
 
 
@@ -91,7 +94,7 @@ static bool enemyenemyCollisionRegistered = []() {
 static auto regSimple = Factory<UpdateableObject>::instance().registerType(
     ObjectType::SIMPLENEMY,
     [](const sf::Vector2f& pos, GamePlay* gamePlay) -> std::unique_ptr<UpdateableObject> {
-        auto enemy = std::make_unique<Enemy>(pos, "SimpleEnemy",gamePlay);
+        auto enemy = std::make_unique<Enemy>(pos, "simple_enemy_rifle",gamePlay);
         enemy->SetMoveBehavior(std::make_unique<RandomMoveBehavior>());
         enemy->SetAttackBehavior(std::make_unique<OneDirectionAttackBehavior>());
         return enemy;
@@ -100,7 +103,7 @@ static auto regSimple = Factory<UpdateableObject>::instance().registerType(
 static auto regSmart = Factory<UpdateableObject>::instance().registerType(
     ObjectType::SMARTENEMY,
     [](const sf::Vector2f& pos, GamePlay* gamePlay) -> std::unique_ptr<UpdateableObject> {
-        auto enemy = std::make_unique<Enemy>(pos, "SmartEnemy",gamePlay);
+        auto enemy = std::make_unique<Enemy>(pos, "smart_enemy_rifle",gamePlay);
         enemy->SetMoveBehavior(std::make_unique<AxisMoveBehavior>());
         enemy->SetAttackBehavior(std::make_unique<OneDirectionAttackBehavior>());
         return enemy;
@@ -109,7 +112,7 @@ static auto regSmart = Factory<UpdateableObject>::instance().registerType(
 static auto regBfs = Factory<UpdateableObject>::instance().registerType(
     ObjectType::BFSENEMY,
     [](const sf::Vector2f& pos, GamePlay* gamePlay) -> std::unique_ptr<UpdateableObject> {
-        auto enemy = std::make_unique<Enemy>(pos, "BfsEnemy",gamePlay);
+        auto enemy = std::make_unique<Enemy>(pos, "bfs_enemy_rifle",gamePlay);
         enemy->SetMoveBehavior(std::make_unique<BfsMoveBehavior>());
         enemy->SetAttackBehavior(std::make_unique<AllDirectionsAttackBehavior>());
         return enemy;
@@ -119,9 +122,27 @@ static auto regBfs = Factory<UpdateableObject>::instance().registerType(
 void Enemy::update(sf::Time deltaTime, sf::Vector2f playerPos)
 {
     m_direction = m_MoveBehavior->Move(playerPos, deltaTime, this->getPosition());
-
+    this->setRotation(m_direction);
 	this->setPrevLocation(this->getPosition());
 	this->updatePosition(m_direction * ENEMY_SPEED * deltaTime.asSeconds());
+    this->updateFrames(m_direction, PLAYER_FRAME_TIME, m_numberOfFrames);
+    // Calculate Euclidean distance between enemy and player
+    sf::Vector2f enemyPos = this->getPosition();
+    float deltaX = playerPos.x - enemyPos.x;
+    float deltaY = playerPos.y - enemyPos.y;
+    float squaredDistance = deltaX * deltaX + deltaY * deltaY;
+
+    m_fireTimer += deltaTime.asSeconds();
+
+    if (squaredDistance <= DISTANCE && m_fireTimer >= FIRE_COOLDOWN) 
+    {
+        m_shouldFire = true;
+        m_fireTimer = 0.0f; // Reset timer
+    }
+    else
+    {
+        m_shouldFire = false;
+    }
 }
 
 //-----------------------------------------------------------------------------
