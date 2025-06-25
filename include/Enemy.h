@@ -6,10 +6,12 @@
 #include "MoveBehavior.h"
 
 //-----class section-----
+class GamePlay;
+
 class Enemy : public UpdateableObject
 {
 public:
-	Enemy(sf::Vector2f position, std::string name);
+	Enemy(sf::Vector2f position, std::string name, GamePlay* gameplay);
 	~Enemy();
 
 	void update(sf::Time deltaTime, sf::Vector2f playerPos) override;
@@ -20,6 +22,8 @@ public:
 	sf::Vector2f getDirection() const;
 	void NotifyCollision();
 	void OnSuccessfulMove();
+	bool wantsToFire() const { return m_shouldFire; }
+	void clearFireFlag() { m_shouldFire = false; }
 
 	static int getNumOfStartingEnemies(const std::vector<std::unique_ptr<UpdateableObject>>& movingObjs);
 	static int getNumOfEnemiesAlive();
@@ -31,7 +35,8 @@ private:
 	static int m_numOfEnemies;
 	static int m_numOfEnemiesAlive;
 	bool m_freeze = false;
-
+	GamePlay* m_gamePlay;
+	bool m_shouldFire=false;
 	sf::Vector2f m_direction;
 	sf::Vector2f m_prevlocation;
 	//sf::Time m_freezeTime;

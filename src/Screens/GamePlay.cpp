@@ -125,7 +125,17 @@ void GamePlay::move(sf::Clock& clock)
 	{
 	   movingObj->update(deltaTime, m_player.getPosition());
 	}
-
+	for (auto& m : m_movingObj)
+	{
+		if (auto* e = dynamic_cast<Enemy*>(m.get()))
+		{
+			if (e->wantsToFire())
+			{
+				addProjectile(e->getDirection(),e->getPosition(),ENEMY);
+				e->clearFireFlag();
+			}
+		}
+	}
 	m_stopwatch += deltaTime;
 }
 
@@ -444,7 +454,7 @@ void GamePlay::handleWinState(int& m_currentScreen)
 	{
 		// Play win sound once
 		m_sound.setBuffer(ResourcesManager::getInstance().getSound(WINNING_SOUND));
-		m_sound.setVolume(100.f);
+		m_sound.setVolume(200.f);
 		m_sound.play();
 		s_winSoundStarted = true;
 		s_winTimer.restart();

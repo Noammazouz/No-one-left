@@ -142,7 +142,7 @@ void Screen::ensureCorrectMusicPlaying()
 	
 	bool menuIsPlaying = (ResourcesManager::getInstance().getMusic(MENU_MUSIC).getStatus() == sf::Music::Playing);
 	bool gameIsPlaying = (ResourcesManager::getInstance().getMusic(GAME_MUSIC).getStatus() == sf::Music::Playing);
-	
+
 	// Fix any discrepancies
 	if (menuShouldPlay && !menuIsPlaying)
 	{

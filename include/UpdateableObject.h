@@ -34,6 +34,7 @@ protected:
 	void changeSpriteAnimation(const std::string& name);
 
 private:
+	sf::Clock m_rotationClock;
 	sf::Vector2f m_startingPosition;
 	sf::Vector2f m_prevLocation;
 	float m_targetAngle = 0.f; //Target angle for rotation.
