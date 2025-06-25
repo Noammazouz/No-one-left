@@ -31,6 +31,7 @@ sf::Vector2f BfsMoveBehavior::Move(sf::Vector2f playerPos, sf::Time /*deltaTime*
         else {
             direction.x = (m_lastDir.y > 0.f ? -1.f : 1.f);
             direction.y = 0.f;
+
         }
     }
     else {

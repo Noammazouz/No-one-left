@@ -31,7 +31,7 @@ public:
 
     // Register collision handler (automatically symmetric)
     void registerCollision(const std::type_index& type1, const std::type_index& type2, HitFunctionPtr handler);
-    
+
     // Template helper for type-safe registration
     template<typename T1, typename T2>
     void registerTypedCollision(void (*handler)(GameObject&, GameObject&));
