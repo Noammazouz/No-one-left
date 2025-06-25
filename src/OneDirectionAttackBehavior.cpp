@@ -11,6 +11,6 @@ void OneDirectionAttackBehavior::Attack(sf::Vector2f position, sf::Vector2f dire
 		direction = sf::Vector2f(1.0f, 0.0f); // the default direction is right if no movement 
     }
 
-    auto bullet = std::make_unique<Projectile>(position, direction, 300.0f, owner);
+    auto bullet = std::make_unique<Projectile>(position, direction, owner);
     projectile.push_back(std::move(bullet));
 }

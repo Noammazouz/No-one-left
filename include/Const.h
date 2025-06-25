@@ -64,7 +64,8 @@ enum ObjectType
 	BOMB,
 	TREE,
 	BUILDING,
-	EXPLOSION
+	EXPLOSION,
+	PROJECTILE
 };
 
 enum  BulletOwner

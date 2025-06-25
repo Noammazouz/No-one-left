@@ -63,51 +63,12 @@ void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 		return; // STOP all game processing when won
 	}
 
-	//if (m_player.getLife() == END_GAME)
-	//{
-	//	if (!s_deathSoundStarted)
-	//	{
-	//		// Play death sound once and stop game music
-	//		setMusicState(MusicState::MENU);
-	//		m_sound.setBuffer(ResourcesManager::getInstance().getSound(LOSING_SOUND));
-	//		m_sound.setVolume(100.f);
-	//		m_sound.setPlayingOffset(sf::seconds(0.2f));
-	//		m_sound.play();
-	//		s_deathSoundStarted = true;
-	//		s_deathTimer.restart();
-	//	}
-	//	else if (s_deathTimer.getElapsedTime().asSeconds() >= 0.8f || m_sound.getStatus() != sf::Sound::Playing)
-	//	{
-	//		// Go to lose screen after 3 seconds OR when sound finishes playing
-	//		m_sound.stop();
-	//		m_currentScreen = LOSE_SCREEN;
-	//		m_newGame = true;
-	//		s_deathSoundStarted = false; // Reset for next time
-	//	}
-	//	return; // STOP all game processing when dead
-	//}
-
 	// Only process game logic if player is alive
 	move(clock);
 	handleCollision();
 	explosion();
 	handleErasing();
 	handleScoreBoard();
-
-	//if (m_player.getWin())
-	//{
-	//	m_sound.setBuffer(ResourcesManager::getInstance().getSound(WINNING_SOUND));
-	//	m_sound.setVolume(100.f);
-	//	//m_sound.setPlayingOffset(sf::seconds(0.95f));
-	//	m_sound.play();
-	//	calculateScore();
-	//	if (m_win)
-	//	{
-	//		m_currentScreen = WIN_SCREEN;
-	//		m_newGame = true;
-	//		return;
-	//	}
-	//}
 }
 
 //-----------------------------------------------------------------------------
@@ -199,9 +160,8 @@ void GamePlay::handleCollision()
 			// Dynamic-cast to Enemy (or UpdateableObject) and call ClearAvoidance()
 			if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get()))
  {
-				if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get())) 
-				{
-					//enemy->OnSuccessfulMove();
+				if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get())) {
+					enemy->OnSuccessfulMove();
 				}
 			}
 		}
@@ -224,17 +184,20 @@ void GamePlay::handleCollision()
 		}
 	}
 
-	//// Enemy vs Enemy collisions
-	//for (int moveObj = 0; moveObj < (Enemy::getNumOfGuardsAlive() - 1); ++moveObj)
-	//{
-	//	for (int nextMoveObj = moveObj + 1; nextMoveObj < Enemy::getNumOfGuardsAlive(); ++nextMoveObj)
-	//	{
-	//		if (m_movingObj[moveObj]->checkCollision(*m_movingObj[nextMoveObj]))
-	//		{
-	//			collisionHandler.handleCollision(*m_movingObj[moveObj], *m_movingObj[nextMoveObj]);
-	//		}
-	//	}
-	//}
+	for (size_t i = 0; i < m_movingObj.size(); ++i)
+	{
+		for (size_t j = i + 1; j < m_movingObj.size(); ++j)
+		{
+			auto& a = *m_movingObj[i];
+			auto& b = *m_movingObj[j];
+
+			if (a.checkCollision(b))
+			{
+				// This will look up the Enemy,Enemy handler you registered
+				CollisionFactory::getInstance().processCollision(a, b);
+			}
+		}
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -368,7 +331,7 @@ void GamePlay::handleLoadingLevel()
 	m_movingObj.clear();
 	m_staticObj.clear();
 	
-	m_map.loadlevelobj(m_movingObj,m_staticObj, m_player);
+	m_map.loadlevelobj(m_movingObj,m_staticObj, m_player, this);
 	m_stopwatch = sf::seconds(0);
 }
 

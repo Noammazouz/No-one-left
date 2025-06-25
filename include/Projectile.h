@@ -11,37 +11,32 @@
 class Projectile : public UpdateableObject  
 {  
 public:  
-  Projectile(sf::Vector2f position, sf::Vector2f dir = sf::Vector2f(1, 0),  
-      float spd = 300.0f, int damage = 1);  
-  ~Projectile() override = default;  
+	  Projectile(sf::Vector2f position, sf::Vector2f direction, BulletOwner owner);  
+	  ~Projectile() override = default;  
 
-  void update(sf::Time deltaTime, sf::Vector2f playerPos) override;  
-  void setDirection(sf::Vector2f dir);  
-  void setSpeed(float spd);  
-  sf::Vector2f getDirection() const;  
-  float getSpeed() const;  
-  bool getIsActive() const;  
-  void setActive(bool active);  
-  bool isOutOfMap() const;  
+	  void update(sf::Time deltaTime, sf::Vector2f playerPos) override;  
+	  void setDirection(sf::Vector2f dir);  
+	  void setSpeed(float spd);  
+	  sf::Vector2f getDirection() const;  
+	  float getSpeed() const;  
+	  bool getIsActive() const;  
+	  void setActive(bool active);  
+	  bool isOutOfMap() const;  
 
-  int getDamage() const;  
-  bool isExpired() const;  
+	  int getDamage() const;  
+	  bool isExpired() const;  
 
-  //void handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2);
-  //void handleEnemyBulletPlayerCollision(GameObject& obj1, GameObject& obj2);
-  //void handleBulletWallCollision(GameObject& obj1, GameObject& obj2);
+	  static void registerBulletCollisions();
 
- static void registerBulletCollisions();
+	  BulletOwner getOwner() const;
 
-  BulletOwner getOwner() const;
+private:
+	  sf::Vector2f m_direction;  
+	  float speed;  
+	  bool isActive;  
+	  int damage;  
+	  float m_elapsedTime;   
+	  BulletOwner m_owner;
 
-private:  
-  sf::Vector2f direction;  
-  float speed;  
-  bool isActive;  
-  int damage;  
-  float elapsedTime;   
-  BulletOwner m_owner;
-
-  static bool g_bulletCollisionRegistered;
+	  static bool g_bulletCollisionRegistered;
 };
