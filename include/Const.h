@@ -154,6 +154,14 @@ const std::string SIMPLE_ENEMY_RIFLE = "simple_enemy_rifle";
 const std::string SMART_ENEMY_RIFLE = "smart_enemy_rifle";
 const std::string BFS_ENEMY_RIFLE = "bfs_enemy_rifle";
 
+//-----Weapons const section-----
+const std::string RIFLE_NAME = "rifle";
+const std::string MACHINE_GUN_NAME = "machine gun";
+const std::string BAZOOKA_NAME = "bazooka";
+const std::string MED_KIT_NAME = "medkit";
+const std::string REMOVE_ENEMY_NAME = "remove enemy";
+const std::string ADD_LIFE = "add life";
+
 //-----texture names const section-----
 const std::string PROJECTILE_NAME = "projectile";
 
@@ -183,3 +191,8 @@ const std::string FONT_NAME = "ARCADE_N.TTF"; //Name of the font file.
 
 //-----File Name const section-----
 const std::string HELP_FILE_NAME = "help.txt"; //Name of the help file.
+
+//-----Shooting Time const section-----
+const sf::Time SHOOTING_TIME_RIFLE = sf::seconds(0.2f); //Time between shots in seconds for rifle.
+const sf::Time SHOOTING_TIME_MACHINE_GUN = sf::seconds(0.1f); //Time between shots in seconds for machine gun.
+const sf::Time SHOOTING_TIME_BAZOOKA = sf::seconds(0.5f); //Time between shots in seconds for bazooka.

@@ -107,7 +107,7 @@ void handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2)
        //If enemy bullet hits enemy, do nothing (no friendly fire)  
        else  
        {  
-           std::cout << "Enemy bullet hit enemy - No effect (no friendly fire)" << std::endl;  
+           //std::cout << "Enemy bullet hit enemy - No effect (no friendly fire)" << std::endl;  
            //Bullet continues through enemy without effect  
        }  
    }  
@@ -151,7 +151,7 @@ void handleEnemyBulletPlayerCollision(GameObject& obj1, GameObject& obj2)
         // Player bullets don't hurt player (self-protection)
         else
         {
-            std::cout << "Player bullet hit player - No effect (self-protection)" << std::endl;
+            //std::cout << "Player bullet hit player - No effect (self-protection)" << std::endl;
             // Bullet continues without effect
         }
     }
@@ -181,6 +181,7 @@ void handleBulletWallCollision(GameObject& obj1, GameObject& obj2)
     }
 }
 
+//-----------------------------------------------------------------------------
 void handleBulletObstacleCollision(GameObject& obj1, GameObject& obj2)
 {
     Projectile* bullet = nullptr;
@@ -198,7 +199,7 @@ void handleBulletObstacleCollision(GameObject& obj1, GameObject& obj2)
     if (bullet)
     {
         //std::cout << "Bullet hit wall - Bullet destroyed" << std::endl;
-        bullet->setActive(false); // All bullets are stopped by walls
+        bullet->setActive(false); //All bullets are stopped by walls
         bullet->setLife(true);
     }
 }

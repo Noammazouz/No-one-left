@@ -37,29 +37,42 @@ Enemy::~Enemy()
 //Collision handler function for Enemy-Wall collisions (bidirectional)
 void handleEnemyWallCollision(GameObject& obj1, GameObject& obj2)
 {
+	Enemy* enemy = nullptr;
+	Wall* wall = nullptr;
+
     //Handle Enemy vs Wall collision (bidirectional)
-    if (auto* enemy = dynamic_cast<Enemy*>(&obj1)) 
+    if (auto* tempEnemy = dynamic_cast<Enemy*>(&obj1)) 
     {
-        if (auto* wall = dynamic_cast<Wall*>(&obj2)) 
+        if (auto* tempWallall = dynamic_cast<Wall*>(&obj2)) 
         {
-            // Enemy hit wall - revert to previous position
-            enemy->setPosition(enemy->getPrevLocation());
-			enemy->SetDirection(-enemy->getDirection()); // Reverse direction
-            return;
+			enemy = tempEnemy;
+			wall = tempWallall;
         }
     }
     //Handle Wall vs Enemy collision (reverse direction)
-    if (auto* wall = dynamic_cast<Wall*>(&obj1)) 
+    if (auto* tempWallall = dynamic_cast<Wall*>(&obj1))
     {
-        if (auto* enemy = dynamic_cast<Enemy*>(&obj2)) 
+        if (auto* tempEnemy = dynamic_cast<Enemy*>(&obj2))
         {
-            // Enemy hit wall - revert to previous position
-            enemy->setPosition(enemy->getPrevLocation());
-			enemy->SetDirection(-enemy->getDirection()); // Reverse direction
-            return;
+            enemy = tempEnemy;
+            wall = tempWallall;
         }
     }
+
+    if(enemy && wall) 
+    {
+        // Enemy hit wall - revert to previous position
+        enemy->setPosition(enemy->getPrevLocation());
+        enemy->SetDirection(-enemy->getDirection()); //Reverse direction
+        return;
+    }
+    else 
+    {
+        std::cout << "Enemy-Wall collision not handled properly!" << std::endl;
+        return;
+	}
 }
+
 //-----------------------------------------------------------------------------
 // Collision handler function for Enemy-Wall collisions (multimethods style)
 void handleEnemyEnemyCollision(GameObject& obj1, GameObject& obj2)

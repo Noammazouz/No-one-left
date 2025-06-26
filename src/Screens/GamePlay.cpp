@@ -366,6 +366,7 @@ void GamePlay::removeGuard()
 	}
 }
 
+//-----------------------------------------------------------------------------
 void GamePlay::resetGame()
 {
 	m_newGame = false;
@@ -389,10 +390,10 @@ void GamePlay::handleMouseClick(const sf::Vector2f& clickPos, int& screenState)
 		if (m_buttons[PAUSE].getBounds().contains(clickPos))
 		{
 			m_paused = true;
-			setMusicState(MusicState::MENU); // Switch to menu music when pausing
+			setMusicState(MusicState::MENU); //Switch to menu music when pausing
 			return;
 		}
-		return; // If not paused, ignore other clicks
+		return; //If not paused, ignore other clicks
 	}
 	for (int index = 1; index < m_buttons.size(); ++index)
 	{
@@ -403,7 +404,7 @@ void GamePlay::handleMouseClick(const sf::Vector2f& clickPos, int& screenState)
 				case RESUME:
 				{
 					m_paused = false;
-					setMusicState(MusicState::GAME); // Switch back to game music when resuming
+					setMusicState(MusicState::GAME); //Switch back to game music when resuming
 					break;
 				}
 				case _HELP:
