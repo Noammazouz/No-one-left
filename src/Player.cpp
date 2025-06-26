@@ -67,12 +67,12 @@ void Player::setDirection()
 	if (newDir != sf::Vector2f(0.f, 0.f))
 	{
 		newDir /= std::sqrt(newDir.x * newDir.x + newDir.y * newDir.y);
-		m_facingDirection = newDir; //Update facing direction when moving.
+    
+		m_facingDirection = newDir; // Update facing direction when moving
+		this->setRotation(m_facingDirection);
 	}
 
 	m_direction = newDir;
-
-	this->setRotation(m_direction);
 }
 
 //------------------------------------------------------------------------------
@@ -184,10 +184,11 @@ void Player::handleShooting()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
-		// If enough time has passed since last shot
 		if (m_shootClock.getElapsedTime() >= m_shootCooldown)
 		{
 			m_gamePlay->addProjectile(this->getPosition(), m_attackBehavior->Attack(m_facingDirection), _PLAYER);
+			m_isShooting = true;
+			decBullets();
 			m_shootClock.restart();  // Reset timer
 		}
 	}	
