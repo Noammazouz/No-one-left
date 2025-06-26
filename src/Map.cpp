@@ -55,7 +55,6 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
         // … else if for other object-types …
     }
 
-    //player.initialization(FIRST_PLAYER_POSITION, "player_machine_gun");
     player.initialization(FIRST_PLAYER_POSITION, PLAYER_RIFLE);
 }
 
@@ -106,7 +105,7 @@ void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingOb
         };
 
     // first third (3 simple + 3 smart)
-    for (int i = 0; i < NUM_OF_STUPID_ENEMY; ++i)
+    for (int i = 0; i < 2; ++i)
     {
         tryPlaceEnemy(ObjectType::SIMPLENEMY, 0);
         tryPlaceEnemy(ObjectType::BFSENEMY, 0);

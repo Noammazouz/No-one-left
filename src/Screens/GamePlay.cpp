@@ -121,6 +121,7 @@ void GamePlay::move(sf::Clock& clock)
 	const auto deltaTime = clock.restart();
 
 	m_player.update(deltaTime, sf::Vector2f());
+	//m_player.handleShooting()
 	for (const auto& movingObj : m_movingObj)
 	{
 	   movingObj->update(deltaTime, m_player.getPosition());
@@ -131,7 +132,7 @@ void GamePlay::move(sf::Clock& clock)
 		{
 			if (e->wantsToFire())
 			{
-				addProjectile(e->getPosition(), e->getDirection(), ENEMY);
+				addProjectile(e->getPosition(), e->getShottingDirections(), ENEMY);
 				e->clearFireFlag();
 			}
 		}
@@ -483,7 +484,10 @@ void GamePlay::resetGameOverStates()
 }
 
 //-----------------------------------------------------------------------------
-void GamePlay::addProjectile(const sf::Vector2f& pos, const sf::Vector2f& direction, BulletOwner owner)
+void GamePlay::addProjectile(const sf::Vector2f& pos, std::vector<sf::Vector2f> directions, BulletOwner owner)
 {
-	m_movingObj.push_back(std::make_unique<Projectile>(pos, direction, owner));
+	for (int index = 0; index < directions.size(); ++index)
+	{
+		m_movingObj.push_back(std::make_unique<Projectile>(pos, directions[index], owner));
+	}
 }

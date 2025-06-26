@@ -158,6 +158,12 @@ void Enemy::SetAttackBehavior(std::unique_ptr<AttackBehavior> pAttackBehavior)
 }
 
 //-----------------------------------------------------------------------------
+std::vector<sf::Vector2f> Enemy::getShottingDirections()
+{
+    return m_AttackBehavior->Attack(this->getDirection());
+}
+
+//-----------------------------------------------------------------------------
 void Enemy::SetDirection(sf::Vector2f direction)
 {
 	m_direction = direction;
