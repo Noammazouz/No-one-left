@@ -104,28 +104,27 @@ void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingOb
             }
         };
 
-    // first third (3 simple + 3 smart)
+    // first third (5 simple + 5 smart)
     for (int i = 0; i < NUM_OF_STUPID_ENEMY; ++i)
     {
-        tryPlaceEnemy(ObjectType::SIMPLENEMY, 0);
-        tryPlaceEnemy(ObjectType::BFSENEMY, 0);
-        tryPlaceEnemy(ObjectType::SMARTENEMY, 0);
+        tryPlaceEnemy(ObjectType::SIMPLEENEMY, FIRST_SECTION);
+        tryPlaceEnemy(ObjectType::SMARTENEMY, FIRST_SECTION);
     }
 
-    //// second third (1 simple, 2 smart)
-    //tryPlaceEnemy(ObjectType::SIMPLENEMY, 1);
-    //for (int i = 0; i < NUM_OF_SMART_ENEMY; ++i)
-    //{
-    //    tryPlaceEnemy(ObjectType::SMARTENEMY, 1);
-    //}
+    // second third (1 simple, 10 smart)
+    tryPlaceEnemy(ObjectType::SIMPLEENEMY, SECOND_SECTION);
+    for (int i = 0; i < NUM_OF_SMART_ENEMY; ++i)
+    {
+        tryPlaceEnemy(ObjectType::SMARTENEMY, SECOND_SECTION);
+    }
 
-    //// third third (1 simple, 2 smart, 1 bfs)
-    //tryPlaceEnemy(ObjectType::SIMPLENEMY, 2);
-    //tryPlaceEnemy(ObjectType::BFSENEMY, 2);
-    //for (int i = 0; i < NUM_OF_SMART_ENEMY; ++i)
-    //{
-    //    tryPlaceEnemy(ObjectType::SMARTENEMY, 2);
-    //}
+    // third third (1 simple, 10 smart, 1 bfs)
+    tryPlaceEnemy(ObjectType::SIMPLEENEMY, THIRD_SECTION);
+    tryPlaceEnemy(ObjectType::BFSENEMY, THIRD_SECTION);
+    for (int i = 0; i < NUM_OF_SMART_ENEMY; ++i)
+    {
+        tryPlaceEnemy(ObjectType::SMARTENEMY, THIRD_SECTION);
+    }
 }
 
 void Map::loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj, GamePlay* gamePlay)
@@ -156,6 +155,9 @@ void Map::loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj,
     for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::OBSTACLE1);
     for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::OBSTACLE2);
     for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::OBSTACLE3);
+
+    auto temp = factory.create(RIFLE, sf::Vector2f(100, 100), gamePlay);
+    m_staticObj.emplace_back(std::move(temp));
 }
 
 bool Map::isPositionFree(const sf::FloatRect& newBounds,

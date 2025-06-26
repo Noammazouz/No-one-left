@@ -5,10 +5,9 @@
 #include <SFML/Graphics.hpp>
 
 //-----class section-----
-class Bullets : public ItemsToCollect
+class BulletsGift : public ItemsToCollect
 {
 public:
-    Bullets(std::string name, const sf::Vector2f& position);
-    ~Bullets() = default;
-
+    BulletsGift(std::string name, const sf::Vector2f& position);
+    ~BulletsGift() = default;
 };
