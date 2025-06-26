@@ -11,13 +11,13 @@ static sf::Clock s_winTimer;
 //-----functions section------
 //-----------------------------------------------------------------------------
 GamePlay::GamePlay()
-	: worldBounds(0.f, 0.f, MAP_WIDTH, MAP_HEIGHT) //, m_player(*this)
+	: worldBounds(0.f, 0.f, MAP_WIDTH, MAP_HEIGHT)
 {
 	initButtons();
 	handleLoadingLevel();
 	if (m_staticObj.empty()) 
 	{
-		std::cerr << STARIC_OBLECTS_WARNING;
+		std::cerr << STARIC_OBJECTS_WARNING;
 	}
 }
 
@@ -26,7 +26,7 @@ void GamePlay::run(sf::RenderWindow& window, int& m_currentScreen)
 {
 	if (m_newGame) resetGame();
 	Screen::run(window, m_currentScreen);
-	m_view.setCenter(m_player.getPos());
+	m_view.setCenter(m_player.getPosition());
 	m_view.setCenter(clampViewPosition(worldBounds));
 	window.setView(m_view);
 }
@@ -34,12 +34,9 @@ void GamePlay::run(sf::RenderWindow& window, int& m_currentScreen)
 //-----------------------------------------------------------------------------
 void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 {
-	if (m_paused)
-	{
-		return;
-	}
+	if (m_paused) return;
 
-	// Always ensure game music is playing when in gameplay
+	//Always ensure game music is playing when in gameplay
 	if (getCurrentMusicState() != MusicState::GAME)
 	{
 		setMusicState(MusicState::GAME);
@@ -47,23 +44,23 @@ void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 
 	if (m_staticObj.empty()) 
 	{
-		std::cerr << STARIC_OBLECTS_WARNING;
+		std::cerr << STARIC_OBJECTS_WARNING;
 	}
 
-	// Handle game over states first (both stop normal game processing)
+	//Handle game over states first (both stop normal game processing)
 	if (m_player.getLife() <= END_GAME)
 	{
 		handleDeathState(m_currentScreen);
-		return; // STOP all game processing when dead
+		return; //STOP all game processing when dead
 	}
 
 	if (m_player.getWin())
 	{
 		handleWinState(m_currentScreen);
-		return; // STOP all game processing when won
+		return; //STOP all game processing when won
 	}
 
-	// Only process game logic if player is alive
+	//Only process game logic if player is alive
 	move(clock);
 	handleCollision();
 	explosion();
@@ -121,6 +118,8 @@ void GamePlay::move(sf::Clock& clock)
 	const auto deltaTime = clock.restart();
 
 	m_player.update(deltaTime, sf::Vector2f());
+	m_player.handleShooting();
+
 	for (const auto& movingObj : m_movingObj)
 	{
 	   movingObj->update(deltaTime, m_player.getPosition());
@@ -131,7 +130,7 @@ void GamePlay::move(sf::Clock& clock)
 		{
 			if (e->wantsToFire())
 			{
-				addProjectile(e->getPosition(), e->getDirection(), ENEMY);
+				addProjectile(e->getPosition(), e->getShottingDirections(), ENEMY);
 				e->clearFireFlag();
 			}
 		}
@@ -211,9 +210,9 @@ void GamePlay::handleCollision()
 }
 
 //-----------------------------------------------------------------------------
-void GamePlay::setBomb()
+void GamePlay::addGrenade()
 {
-	//m_movingObj.push_back(std::make_unique<Bombs>(sf::Vector2f(m_player.getPosition()), ResourcesManager::getInstance().getTexture("bomb")));
+	//m_movingObj.push_back(std::make_unique<Projectile>(pos, directions[index], owner));
 }
 
 //-----------------------------------------------------------------------------
@@ -364,6 +363,7 @@ void GamePlay::removeGuard()
 	}
 }
 
+//-----------------------------------------------------------------------------
 void GamePlay::resetGame()
 {
 	m_newGame = false;
@@ -387,10 +387,10 @@ void GamePlay::handleMouseClick(const sf::Vector2f& clickPos, int& screenState)
 		if (m_buttons[PAUSE].getBounds().contains(clickPos))
 		{
 			m_paused = true;
-			setMusicState(MusicState::MENU); // Switch to menu music when pausing
+			setMusicState(MusicState::MENU); //Switch to menu music when pausing
 			return;
 		}
-		return; // If not paused, ignore other clicks
+		return; //If not paused, ignore other clicks
 	}
 	for (int index = 1; index < m_buttons.size(); ++index)
 	{
@@ -401,7 +401,7 @@ void GamePlay::handleMouseClick(const sf::Vector2f& clickPos, int& screenState)
 				case RESUME:
 				{
 					m_paused = false;
-					setMusicState(MusicState::GAME); // Switch back to game music when resuming
+					setMusicState(MusicState::GAME); //Switch back to game music when resuming
 					break;
 				}
 				case _HELP:
@@ -483,7 +483,10 @@ void GamePlay::resetGameOverStates()
 }
 
 //-----------------------------------------------------------------------------
-void GamePlay::addProjectile(const sf::Vector2f& pos, const sf::Vector2f& direction, BulletOwner owner)
+void GamePlay::addProjectile(const sf::Vector2f& pos, std::vector<sf::Vector2f> directions, BulletOwner owner)
 {
-	m_movingObj.push_back(std::make_unique<Projectile>(pos, direction, owner));
+	for (int index = 0; index < directions.size(); ++index)
+	{
+		m_movingObj.push_back(std::make_unique<Projectile>(pos, directions[index], owner));
+	}
 }

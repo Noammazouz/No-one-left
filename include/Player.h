@@ -2,7 +2,11 @@
 
 //-----include section-----
 #include <iostream>
+#include <vector>
+#include <utility>
+#include <memory>
 #include <SFML/Graphics.hpp>
+#include "Const.h"
 #include "UpdateableObject.h"
 #include "ResourcesManager.h"
 #include "CollisionFactory.h"
@@ -14,10 +18,11 @@
 #include "Bullets.h"
 #include "Projectile.h"
 #include "AttackBehavior.h"
-#include <vector>
-#include <memory>
-#include "Const.h"
+#include "RifleGift.h"
+#include "MachineGunGift.h"
+#include "BazookaGift.h"
 
+class GamePlay;
 class GameObject;
 
 //-----class section-----
@@ -35,22 +40,20 @@ public:
 	void decLife(int decLives = 1);
 	void incLife(int addLives);
 	int getLife();
-	sf::Vector2f getPos() const;
-	void initialization(sf::Vector2f pos, std::string name);
-	sf::Vector2f getDirection() const;
+	void initialization(sf::Vector2f pos, std::string name, GamePlay* gamePlay);
 
 	static int getNumOfBullets();
 	static void addBullets(int bullets);
 	static void decBullets();
 	static bool isBulletsAvailable();
 	sf::Vector2f getCurrentDirection() const;
-	void handleShooting(std::vector<std::unique_ptr<Projectile>>& bullets);
+	void handleShooting();
 	void setAttackBehavior(std::unique_ptr<AttackBehavior> attackBehavior);
+	void setShootCooldown(const std::string& weaponName);
 
 private:
 	bool checkDirection();
 	void setDirection();
-	void doAttack(std::vector<std::unique_ptr<Projectile>>& bullets);
 
 	sf::Vector2f m_direction;
 	int m_lives;
@@ -59,4 +62,16 @@ private:
 	bool m_win = false;
 	bool m_isShooting = false;
 	std::unique_ptr<AttackBehavior> m_attackBehavior;
+	GamePlay* m_gamePlay;
+	sf::Vector2f m_facingDirection = sf::Vector2f(0.f, -1.f); //Default facing up.
+
+	//Shooting cooldown times for each type of weapon.
+	std::vector<std::pair<std::string, sf::Time>> m_shootCooldowns = {
+		{RIFLE_NAME, SHOOTING_TIME_RIFLE},
+		{MACHINE_GUN_NAME, SHOOTING_TIME_MACHINE_GUN},
+		{BAZOOKA_NAME, SHOOTING_TIME_BAZOOKA}
+	};
+
+	sf::Clock m_shootClock;
+	sf::Time m_shootCooldown;
 };

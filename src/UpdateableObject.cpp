@@ -44,12 +44,11 @@ void UpdateableObject::setPrevLocation(const sf::Vector2f& pos)
 //-----------------------------------------------------------------------------
 void UpdateableObject::setRotation(const sf::Vector2f& direction)
 {
-    
     // Ignore zero‐length vectors
     if (direction == sf::Vector2f(0.f, 0.f)) return;
 
     // Compute the angle in degrees: atan2 returns radians, so multiply by 180/π.
-    float angle = std::atan2(direction.y, direction.x) * 180.f / 3.14159265f;
+    float angle = std::atan2(direction.y, direction.x) * 180.f / std::numbers::pi;
 
     // (Optionally add an offset so 0° points “up” instead of “right”)
     angle -= 90.f;  
@@ -59,10 +58,8 @@ void UpdateableObject::setRotation(const sf::Vector2f& direction)
     float delta   = std::fmod(angle - current + 540.f, 360.f) - 180.f;
     float step    = ROTATION_SPEED * m_rotationClock.restart().asSeconds();
 
-    if (std::abs(delta) < step)
-        current = angle;
-    else
-        current += (delta > 0 ? step : -step);
+    if (std::abs(delta) < step) current = angle;
+    else current += (delta > 0 ? step : -step);
 
     // Normalize to [0,360)
     if (current < 0)   current += 360.f;

@@ -20,6 +20,7 @@ public:
 	void SetAttackBehavior(std::unique_ptr<AttackBehavior>	pAttackBehavior);
 	void SetDirection(sf::Vector2f direction);
 	sf::Vector2f getDirection() const;
+	std::vector<sf::Vector2f> getShottingDirections();
 	void NotifyCollision();
 	void OnSuccessfulMove();
 	bool wantsToFire() const { return m_shouldFire; }

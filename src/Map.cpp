@@ -55,8 +55,7 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
         // … else if for other object-types …
     }
 
-    //player.initialization(FIRST_PLAYER_POSITION, "player_machine_gun");
-    player.initialization(FIRST_PLAYER_POSITION, PLAYER_RIFLE);
+    player.initialization(FIRST_PLAYER_POSITION, PLAYER_RIFLE, gamePlay);
 }
 
 //-----------------------------------------------------------------------------

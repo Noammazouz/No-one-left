@@ -68,7 +68,7 @@ enum ObjectType
 	PROJECTILE
 };
 
-enum  BulletOwner
+enum BulletOwner
 {
 	_PLAYER,
 	ENEMY
@@ -106,23 +106,23 @@ const int MIN_BOUND_BULLETS = 0; //Minimum number of bullets that a gun have.
 const int OBJECT_HEIGHT = 32; //Height of the player sprite.
 const int OBJECT_WIDTH = 25; //Width of the player sprite.
 const int EXPLOSION_DEC_LIVES = 30;
-const int PROJECTILE_DAMAGE = 20;
+const int PROJECTILE_DAMAGE = 5;
 
 //-----float const section-----
 const float PLAYER_FRAME_TIME = 0.1f; //seconds per frame for the player animation
 const float CHANGE_DIRECTION_TIME = 0.f;
 const float PLAYER_SPEED = 1250.f;
-const float ENEMY_SPEED = 125.f;
+const float ENEMY_SPEED = 300.f;
 const float DEFUALT_WIDTH = 32.f;
 const float DEFUALT_HEIGHT = 32.f;
 const float BOMB_TIME = 4.f;
 const float REMOVE_TIME = 10.f;
 const float WINDOW_RATIO = 0.92f;
 const float ROTATION_SPEED = 135.f; //degrees per second.
-const float PROJECTILE_SPEED = 200.f;
-const float PI = 3.14159265358979323846f;
+const float PROJECTILE_SPEED = 750.f;
 const float DISTANCE = 90000.0f;
 const float FIRE_COOLDOWN = 0.2f;
+const float PROJECTILE_AIR_TIME = 1.0f;
 
 //-----music and sound effects const section-----
 const std::string MENU_MUSIC = "menu";
@@ -154,11 +154,20 @@ const std::string SIMPLE_ENEMY_RIFLE = "simple_enemy_rifle";
 const std::string SMART_ENEMY_RIFLE = "smart_enemy_rifle";
 const std::string BFS_ENEMY_RIFLE = "bfs_enemy_rifle";
 
+//-----Items const section-----
+const std::string RIFLE_NAME = "rifle";
+const std::string MACHINE_GUN_NAME = "machine gun";
+const std::string BAZOOKA_NAME = "bazooka";
+const std::string MED_KIT_NAME = "medkit";
+const std::string REMOVE_ENEMY_NAME = "remove enemy";
+const std::string ADD_LIFE_NAME = "add life";
+const std::string REMOVE_TIME_NAME = "remove time";
+
 //-----texture names const section-----
 const std::string PROJECTILE_NAME = "projectile";
 
 //-----warning const section-----
-const std::string STARIC_OBLECTS_WARNING = "[WARN] No static objects were loaded are you sure your CSV has entries?\n";
+const std::string STARIC_OBJECTS_WARNING = "[WARN] No static objects were loaded are you sure your CSV has entries?\n";
 
 //-----background const section-----
 const std::string START_SCREEN_BACKGROUND = "startScreen";
@@ -177,3 +186,14 @@ const sf::Color FONT_COLOR = sf::Color(128, 0, 128);
 
 //-----sf::Vector2f const section-----
 const sf::Vector2f FIRST_PLAYER_POSITION(2500.f, 100.f); //Initial position of the player.
+
+//-----Font const section-----
+const std::string FONT_NAME = "ARCADE_N.TTF"; //Name of the font file.
+
+//-----File Name const section-----
+const std::string HELP_FILE_NAME = "help.txt"; //Name of the help file.
+
+//-----Shooting Time const section-----
+const sf::Time SHOOTING_TIME_RIFLE = sf::seconds(0.2f); //Time between shots in seconds for rifle.
+const sf::Time SHOOTING_TIME_MACHINE_GUN = sf::seconds(0.1f); //Time between shots in seconds for machine gun.
+const sf::Time SHOOTING_TIME_BAZOOKA = sf::seconds(0.5f); //Time between shots in seconds for bazooka.

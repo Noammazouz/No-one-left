@@ -2,6 +2,7 @@
 #include "Projectile.h"
 #include <cmath>
 #include <iostream>
+#include <numbers>
 #include "CollisionFactory.h"
 #include "Factory.h"
 
@@ -18,7 +19,7 @@ Projectile::Projectile(sf::Vector2f position, sf::Vector2f direction, BulletOwne
     }
 
     float angleRadians = std::atan2(m_direction.y, m_direction.x);
-    float angleDegrees = angleRadians * 180.0f / PI;
+    float angleDegrees = angleRadians * 180.0f / std::numbers::pi;
     m_pic.setRotation(angleDegrees + 90.0f);
 }
 
@@ -65,11 +66,11 @@ void Projectile::setActive(bool active)
 //-----------------------------------------------------------------------------
 bool Projectile::isExpired() const
 {
-    return m_elapsedTime >= 3.0f; // 3 seconds 
+    return m_elapsedTime >= PROJECTILE_AIR_TIME;
 }
 
 //-----------------------------------------------------------------------------  
-// Collision handler for Bullet vs Enemy - Order independent  
+//Collision handler for Bullet vs Enemy - Order independent.  
 void handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2)  
 {  
    Projectile* bullet = nullptr;  
@@ -95,25 +96,25 @@ void handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2)
 
    if (bullet && enemy) 
    {  
-       // Only player bullets can kill enemies  
+       //Only player bullets can kill enemies
        if (bullet->getOwner() == _PLAYER)  
        {  
            std::cout << "Player bullet hit enemy - Enemy killed!" << std::endl;  
-           enemy->setLife(true); // Mark enemy as dead  
-           bullet->setActive(false); // Deactivate bullet  
+           enemy->setLife(true); //Mark enemy as dead  
+           bullet->setActive(false); //Deactivate bullet  
            bullet->setLife(true);
        }  
-       // If enemy bullet hits enemy, do nothing (no friendly fire)  
+       //If enemy bullet hits enemy, do nothing (no friendly fire)  
        else  
        {  
-           std::cout << "Enemy bullet hit enemy - No effect (no friendly fire)" << std::endl;  
-           // Bullet continues through enemy without effect  
+           //std::cout << "Enemy bullet hit enemy - No effect (no friendly fire)" << std::endl;  
+           //Bullet continues through enemy without effect  
        }  
    }  
 }
 
 //-----------------------------------------------------------------------------
-// Collision handler for Bullet vs Player - Order independent
+// Collision handler for Bullet vs Player - Order independent.
 void handleEnemyBulletPlayerCollision(GameObject& obj1, GameObject& obj2)
 {
     Projectile* bullet = nullptr;
@@ -150,7 +151,7 @@ void handleEnemyBulletPlayerCollision(GameObject& obj1, GameObject& obj2)
         // Player bullets don't hurt player (self-protection)
         else
         {
-            std::cout << "Player bullet hit player - No effect (self-protection)" << std::endl;
+            //std::cout << "Player bullet hit player - No effect (self-protection)" << std::endl;
             // Bullet continues without effect
         }
     }
@@ -180,6 +181,7 @@ void handleBulletWallCollision(GameObject& obj1, GameObject& obj2)
     }
 }
 
+//-----------------------------------------------------------------------------
 void handleBulletObstacleCollision(GameObject& obj1, GameObject& obj2)
 {
     Projectile* bullet = nullptr;
@@ -197,7 +199,7 @@ void handleBulletObstacleCollision(GameObject& obj1, GameObject& obj2)
     if (bullet)
     {
         //std::cout << "Bullet hit wall - Bullet destroyed" << std::endl;
-        bullet->setActive(false); // All bullets are stopped by walls
+        bullet->setActive(false); //All bullets are stopped by walls
         bullet->setLife(true);
     }
 }

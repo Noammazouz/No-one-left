@@ -27,34 +27,52 @@ Enemy::Enemy(sf::Vector2f position, std::string name, GamePlay* gameplay)
     set_frames(m_numberOfFrames, position);
 }
 
+//-----------------------------------------------------------------------------
+Enemy::~Enemy()
+{
+    m_numOfEnemiesAlive--;
+}
 
 //-----------------------------------------------------------------------------
-// Collision handler function for Enemy-Wall collisions (bidirectional)
+//Collision handler function for Enemy-Wall collisions (bidirectional)
 void handleEnemyWallCollision(GameObject& obj1, GameObject& obj2)
 {
-    // Handle Enemy vs Wall collision (bidirectional)
-    if (auto* enemy = dynamic_cast<Enemy*>(&obj1)) 
+	Enemy* enemy = nullptr;
+	Wall* wall = nullptr;
+
+    //Handle Enemy vs Wall collision (bidirectional)
+    if (auto* tempEnemy = dynamic_cast<Enemy*>(&obj1)) 
     {
-        if (auto* wall = dynamic_cast<Wall*>(&obj2)) 
+        if (auto* tempWallall = dynamic_cast<Wall*>(&obj2)) 
         {
-            // Enemy hit wall - revert to previous position
-            enemy->setPosition(enemy->getPrevLocation());
-			enemy->SetDirection(-enemy->getDirection()); // Reverse direction
-            return;
+			enemy = tempEnemy;
+			wall = tempWallall;
         }
     }
-    // Handle Wall vs Enemy collision (reverse direction)
-    if (auto* wall = dynamic_cast<Wall*>(&obj1)) 
+    //Handle Wall vs Enemy collision (reverse direction)
+    if (auto* tempWallall = dynamic_cast<Wall*>(&obj1))
     {
-        if (auto* enemy = dynamic_cast<Enemy*>(&obj2)) 
+        if (auto* tempEnemy = dynamic_cast<Enemy*>(&obj2))
         {
-            // Enemy hit wall - revert to previous position
-            enemy->setPosition(enemy->getPrevLocation());
-			enemy->SetDirection(-enemy->getDirection()); // Reverse direction
-            return;
+            enemy = tempEnemy;
+            wall = tempWallall;
         }
     }
+
+    if(enemy && wall) 
+    {
+        // Enemy hit wall - revert to previous position
+        enemy->setPosition(enemy->getPrevLocation());
+        enemy->SetDirection(-enemy->getDirection()); //Reverse direction
+        return;
+    }
+    else 
+    {
+        std::cout << "Enemy-Wall collision not handled properly!" << std::endl;
+        return;
+	}
 }
+
 //-----------------------------------------------------------------------------
 // Collision handler function for Enemy-Wall collisions (multimethods style)
 void handleEnemyEnemyCollision(GameObject& obj1, GameObject& obj2)
@@ -74,10 +92,8 @@ void handleEnemyEnemyCollision(GameObject& obj1, GameObject& obj2)
     }
 }
 
-
-
 //-----------------------------------------------------------------------------
-// Register Enemy-Wall collision handler (multimethods approach)
+//Register Enemy-Wall collision handler (multimethods approach)
 static bool enemyWallCollisionRegistered = []() {
     auto& collisionFactory = CollisionFactory::getInstance();
     collisionFactory.registerTypedCollision<Enemy, Wall>(handleEnemyWallCollision);
@@ -139,10 +155,7 @@ void Enemy::update(sf::Time deltaTime, sf::Vector2f playerPos)
         m_shouldFire = true;
         m_fireTimer = 0.0f; // Reset timer
     }
-    else
-    {
-        m_shouldFire = false;
-    }
+    else m_shouldFire = false;
 }
 
 //-----------------------------------------------------------------------------
@@ -158,6 +171,12 @@ void Enemy::SetAttackBehavior(std::unique_ptr<AttackBehavior> pAttackBehavior)
 }
 
 //-----------------------------------------------------------------------------
+std::vector<sf::Vector2f> Enemy::getShottingDirections()
+{
+    return m_AttackBehavior->Attack(this->getDirection());
+}
+
+//-----------------------------------------------------------------------------
 void Enemy::SetDirection(sf::Vector2f direction)
 {
 	m_direction = direction;
@@ -169,37 +188,31 @@ sf::Vector2f Enemy::getDirection() const
     return m_direction;
 }
 
-
+//-----------------------------------------------------------------------------
 void Enemy::NotifyCollision()
 {
-    // revert movement
+    //revert movement.
     setPosition(getPrevLocation());
-    // tell the behavior to reset
-    if (m_MoveBehavior)
-    {
-        m_MoveBehavior->OnCollision();
-    }
+
+    //tell the behavior to reset.
+    if (m_MoveBehavior) m_MoveBehavior->OnCollision();
 }
 
-void Enemy::OnSuccessfulMove() {
+//-----------------------------------------------------------------------------
+void Enemy::OnSuccessfulMove() 
+{
     // Only clear avoidance if the current move behavior supports it
     m_MoveBehavior->ClearAvoidance();
     // (No need to know which concrete type it is)
 }
 
-//-------------------------------------
-Enemy::~Enemy()
-{
-    m_numOfEnemiesAlive--;
-
-}
-//-------------------------------------
+//-----------------------------------------------------------------------------
 int Enemy::getNumOfEnemiesAlive()
 {
     return m_numOfEnemiesAlive;
 }
 
-//--------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 int Enemy::getNumOfStartingEnemies(const std::vector<std::unique_ptr<UpdateableObject>>& movingObjs)
 {
     return static_cast<int>(movingObjs.size());
