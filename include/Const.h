@@ -106,23 +106,23 @@ const int MIN_BOUND_BULLETS = 0; //Minimum number of bullets that a gun have.
 const int OBJECT_HEIGHT = 32; //Height of the player sprite.
 const int OBJECT_WIDTH = 25; //Width of the player sprite.
 const int EXPLOSION_DEC_LIVES = 30;
-const int PROJECTILE_DAMAGE = 20;
+const int PROJECTILE_DAMAGE = 5;
 
 //-----float const section-----
 const float PLAYER_FRAME_TIME = 0.1f; //seconds per frame for the player animation
 const float CHANGE_DIRECTION_TIME = 0.f;
 const float PLAYER_SPEED = 1250.f;
-const float ENEMY_SPEED = 125.f;
+const float ENEMY_SPEED = 300.f;
 const float DEFUALT_WIDTH = 32.f;
 const float DEFUALT_HEIGHT = 32.f;
 const float BOMB_TIME = 4.f;
 const float REMOVE_TIME = 10.f;
 const float WINDOW_RATIO = 0.92f;
 const float ROTATION_SPEED = 135.f; //degrees per second.
-const float PROJECTILE_SPEED = 200.f;
-const float PI = 3.14159265358979323846f;
+const float PROJECTILE_SPEED = 750.f;
 const float DISTANCE = 90000.0f;
 const float FIRE_COOLDOWN = 0.2f;
+const float PROJECTILE_AIR_TIME = 1.0f;
 
 //-----music and sound effects const section-----
 const std::string MENU_MUSIC = "menu";

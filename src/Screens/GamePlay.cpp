@@ -11,7 +11,7 @@ static sf::Clock s_winTimer;
 //-----functions section------
 //-----------------------------------------------------------------------------
 GamePlay::GamePlay()
-	: worldBounds(0.f, 0.f, MAP_WIDTH, MAP_HEIGHT) //, m_player(*this)
+	: worldBounds(0.f, 0.f, MAP_WIDTH, MAP_HEIGHT)
 {
 	initButtons();
 	handleLoadingLevel();
@@ -122,6 +122,7 @@ void GamePlay::move(sf::Clock& clock)
 
 	m_player.update(deltaTime, sf::Vector2f());
 	m_player.handleShooting();
+
 	for (const auto& movingObj : m_movingObj)
 	{
 	   movingObj->update(deltaTime, m_player.getPosition());
@@ -132,7 +133,7 @@ void GamePlay::move(sf::Clock& clock)
 		{
 			if (e->wantsToFire())
 			{
-				addProjectile(e->getPosition(), e->getDirection(), ENEMY);
+				addProjectile(e->getPosition(), e->getShottingDirections(), ENEMY);
 				e->clearFireFlag();
 			}
 		}
@@ -212,9 +213,9 @@ void GamePlay::handleCollision()
 }
 
 //-----------------------------------------------------------------------------
-void GamePlay::setBomb()
+void GamePlay::addGrenade()
 {
-	//m_movingObj.push_back(std::make_unique<Bombs>(sf::Vector2f(m_player.getPosition()), ResourcesManager::getInstance().getTexture("bomb")));
+	//m_movingObj.push_back(std::make_unique<Projectile>(pos, directions[index], owner));
 }
 
 //-----------------------------------------------------------------------------
@@ -484,7 +485,10 @@ void GamePlay::resetGameOverStates()
 }
 
 //-----------------------------------------------------------------------------
-void GamePlay::addProjectile(const sf::Vector2f& pos, const sf::Vector2f& direction, BulletOwner owner)
+void GamePlay::addProjectile(const sf::Vector2f& pos, std::vector<sf::Vector2f> directions, BulletOwner owner)
 {
-	m_movingObj.push_back(std::make_unique<Projectile>(pos, direction, owner));
+	for (int index = 0; index < directions.size(); ++index)
+	{
+		m_movingObj.push_back(std::make_unique<Projectile>(pos, directions[index], owner));
+	}
 }

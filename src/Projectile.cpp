@@ -2,6 +2,7 @@
 #include "Projectile.h"
 #include <cmath>
 #include <iostream>
+#include <numbers>
 #include "CollisionFactory.h"
 #include "Factory.h"
 
@@ -18,7 +19,7 @@ Projectile::Projectile(sf::Vector2f position, sf::Vector2f direction, BulletOwne
     }
 
     float angleRadians = std::atan2(m_direction.y, m_direction.x);
-    float angleDegrees = angleRadians * 180.0f / PI;
+    float angleDegrees = angleRadians * 180.0f / std::numbers::pi;
     m_pic.setRotation(angleDegrees + 90.0f);
 }
 
@@ -65,7 +66,7 @@ void Projectile::setActive(bool active)
 //-----------------------------------------------------------------------------
 bool Projectile::isExpired() const
 {
-    return m_elapsedTime >= 3.0f; // 3 seconds 
+    return m_elapsedTime >= PROJECTILE_AIR_TIME;
 }
 
 //-----------------------------------------------------------------------------  
