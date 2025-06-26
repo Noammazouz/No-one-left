@@ -63,7 +63,10 @@ void Player::setDirection()
 
 	//Normalize direction if moving diagonally
 	if (newDir != sf::Vector2f(0.f, 0.f))
+	{
 		newDir /= std::sqrt(newDir.x * newDir.x + newDir.y * newDir.y);
+		m_facingDirection = newDir; // Update facing direction when moving
+	}
 
 	m_direction = newDir;
 
@@ -165,7 +168,7 @@ void Player::handleShooting()
 	{
 		if (!m_isShooting)
 		{
-			m_gamePlay->addProjectile(this->getPosition(), m_attackBehavior->Attack(m_direction), _PLAYER);
+			m_gamePlay->addProjectile(this->getPosition(), m_attackBehavior->Attack(m_facingDirection), _PLAYER);
 			m_isShooting = true;
 		}
 	}
