@@ -45,3 +45,15 @@ static bool regObsColl = []() {
     cf.registerTypedCollision<Enemy, Obstacles>(handleObstacleEnemyCollision);
     return true;
     }();
+
+void Obstacles::decLife()
+{
+    if (m_life > 0)
+        --m_life;
+
+    if (m_life == 0)
+    {
+        this->setLife(true); // Mark for removal in GamePlay::handleErasing()
+    }
+}
+

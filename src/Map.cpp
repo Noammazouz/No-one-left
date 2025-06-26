@@ -16,7 +16,7 @@
 //-----------------------------------------------------------------------------
 void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player, GamePlay* gamePlay)
 {
-    std::ifstream file("Level1_cleaned.csv");
+    std::ifstream file("level1_try.csv");
     if (!file.is_open()) 
     {
         throw std::runtime_error("[ERROR] Cannot open Level1.csv");
@@ -108,8 +108,8 @@ void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingOb
     // first third (3 simple + 3 smart)
     for (int i = 0; i < NUM_OF_STUPID_ENEMY; ++i)
     {
-        tryPlaceEnemy(ObjectType::SIMPLENEMY, 0);
-        tryPlaceEnemy(ObjectType::BFSENEMY, 0);
+        /*tryPlaceEnemy(ObjectType::SIMPLENEMY, 0);
+        tryPlaceEnemy(ObjectType::BFSENEMY, 0);*/
         tryPlaceEnemy(ObjectType::SMARTENEMY, 0);
     }
 

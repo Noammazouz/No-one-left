@@ -204,3 +204,13 @@ int Enemy::getNumOfStartingEnemies(const std::vector<std::unique_ptr<UpdateableO
 {
     return static_cast<int>(movingObjs.size());
 }
+
+bool Enemy::wantsToFire() const 
+{ 
+    return m_shouldFire;
+}
+
+void Enemy::clearFireFlag() 
+{
+    m_shouldFire = false; 
+}

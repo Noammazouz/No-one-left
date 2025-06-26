@@ -56,7 +56,7 @@ void ResourcesManager::loadTexture()
         {"player_rifle", "player_rifle.png"},
         {"player_bazooka", "player_bazooka.png"},
         {"simple_enemy_machine_gun", "simple_enemy_machine_gun.png"},
-        {"wall","wall.png"},
+        {"wall","wall_new.png"},
         {"startScreen", "startScreen.png"},
         {"start game", "start game.png"},
         {"exit", "exit.png"},
@@ -81,7 +81,8 @@ void ResourcesManager::loadTexture()
         {"game over", "lose_screen.png"},
         {"start menu", "home.png"},
         {"winning screen", "win screen background.png"},
-        {"projectile", "Sprite_Effects_Exhaust_02_000.png"}
+        {"projectile", "Sprite_Effects_Exhaust_02_000.png"},
+        {"rifle", "rifletest.png"}
     };
 
     for (const auto& [name, filePath] : textures)

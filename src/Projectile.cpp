@@ -183,22 +183,32 @@ void handleBulletWallCollision(GameObject& obj1, GameObject& obj2)
 void handleBulletObstacleCollision(GameObject& obj1, GameObject& obj2)
 {
     Projectile* bullet = nullptr;
-
+    Obstacles* obstacle = nullptr;
     //Check both parameter orders.
     if (auto* b = dynamic_cast<Projectile*>(&obj1))
     {
-        bullet = b;
+        if (auto* o = dynamic_cast<Obstacles*>(&obj2))
+        {
+            bullet = b;
+            obstacle= o;
+        }
     }
     else if (auto* b = dynamic_cast<Projectile*>(&obj2))
     {
-        bullet = b;
+        if (auto* o = dynamic_cast<Obstacles*>(&obj1))
+        {
+            bullet = b;
+            obstacle = o;
+        }
+
     }
 
-    if (bullet)
+    if (bullet && obstacle)
     {
-        //std::cout << "Bullet hit wall - Bullet destroyed" << std::endl;
-        bullet->setActive(false); // All bullets are stopped by walls
+        //std::cout << "Bullet hit obstacle - Bullet destroyed" << std::endl;
+        bullet->setActive(false); // All bullets are stopped by obstacle
         bullet->setLife(true);
+        obstacle->decLife();
     }
 }
 

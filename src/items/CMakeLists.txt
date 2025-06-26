@@ -1,4 +1,2 @@
 ﻿file (GLOB_RECURSE MY_SOURCE_FILES CONFIGURE_DEPENDS LIST_DIRECTORIES false RELATIVE ${CMAKE_CURRENT_LIST_DIR} *.cpp)
-add_subdirectory(Screens)
-add_subdirectory(items)
 target_sources (${CMAKE_PROJECT_NAME} PRIVATE ${MY_SOURCE_FILES})

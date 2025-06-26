@@ -4,5 +4,5 @@
 //-----functions section------
 //-----------------------------------------------------------------------------
 BazookaGift::BazookaGift(const std::string& name, const sf::Vector2f& position)
-	: WeaponsGift(name, position)
+	: ItemsToCollect(name, position)
 {}

@@ -7,7 +7,7 @@ sf::Vector2f AxisMoveBehavior::Move(sf::Vector2f playerPos, sf::Time, sf::Vector
     sf::Vector2f dir(0.f, 0.f);
 
     if (m_avoiding) {
-        // Side?step perpendicular to lastDir
+        // Side step perpendicular to lastDir
         if (m_preferHorizontal) {
             dir.x = 0.f;
             dir.y += (m_lastDir.x > 0.f ? 1.f : -1.f);
