@@ -66,11 +66,16 @@ void Player::setDirection()
 	{
 		newDir /= std::sqrt(newDir.x * newDir.x + newDir.y * newDir.y);
 		m_facingDirection = newDir; // Update facing direction when moving
+		this->setRotation(m_facingDirection);
 	}
 
 	m_direction = newDir;
 
-	this->setRotation(m_direction);
+	/* //ADD THIS PART:
+	if (m_facingDirection != sf::Vector2f(0.f, 0.f))
+	{
+		this->setRotation(m_facingDirection);
+	}*/
 }
 
 //------------------------------------------------------------------------------
@@ -164,12 +169,13 @@ sf::Vector2f Player::getCurrentDirection() const
 //-----------------------------------------------------------------------------
 void Player::handleShooting()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
-		if (!m_isShooting)
+		if (!m_isShooting && isBulletsAvailable())
 		{
 			m_gamePlay->addProjectile(this->getPosition(), m_attackBehavior->Attack(m_facingDirection), _PLAYER);
 			m_isShooting = true;
+			decBullets();
 		}
 	}
 	else m_isShooting = false;

@@ -196,17 +196,17 @@ void GamePlay::handleCollision()
 		}
 	}
 
-	for (int moveObj = 0; moveObj < (Enemy::getNumOfEnemiesAlive() - 1); ++moveObj)
+	for (int moveObj = 0; moveObj < m_movingObj.size() - 1; ++moveObj)
 	{
-		for (int nextMoveObj = moveObj + 1; nextMoveObj < Enemy::getNumOfEnemiesAlive(); ++nextMoveObj)
+		for (int nextMoveObj = moveObj + 1; nextMoveObj < m_movingObj.size(); ++nextMoveObj)
 		{
-			auto& a = *m_movingObj[moveObj];
-			auto& b = *m_movingObj[nextMoveObj];
+			auto& movingObject1 = *m_movingObj[moveObj];
+			auto& movingObject2 = *m_movingObj[nextMoveObj];
 
-			if (a.checkCollision(b))
+			if (movingObject1.checkCollision(movingObject2))
 			{
 				// This will look up the Enemy,Enemy handler you registered
-				collisionHandler.processCollision(a, b);
+				collisionHandler.processCollision(movingObject1, movingObject2);
 			}
 		}
 	}

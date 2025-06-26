@@ -26,9 +26,7 @@ Projectile::Projectile(sf::Vector2f position, sf::Vector2f direction, BulletOwne
 //-----------------------------------------------------------------------------
 void Projectile::update(sf::Time deltaTime, sf::Vector2f playerPos)
 {
-    //std::cout << isActive << std::endl;
     if (!isActive) return;
-
     this->updatePosition(m_direction * PROJECTILE_SPEED * deltaTime.asSeconds());
     m_elapsedTime += deltaTime.asSeconds();
 
@@ -73,6 +71,7 @@ bool Projectile::isExpired() const
 //Collision handler for Bullet vs Enemy - Order independent.  
 void handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2)  
 {  
+    //std::cout << "in PlayerBulletEnemyCollision" << std::endl;
    Projectile* bullet = nullptr;  
    Enemy* enemy = nullptr;  
 
@@ -99,7 +98,7 @@ void handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2)
        //Only player bullets can kill enemies
        if (bullet->getOwner() == _PLAYER)  
        {  
-           std::cout << "Player bullet hit enemy - Enemy killed!" << std::endl;  
+           //std::cout << "Player bullet hit enemy - Enemy killed!" << std::endl;  
            enemy->setLife(true); //Mark enemy as dead  
            bullet->setActive(false); //Deactivate bullet  
            bullet->setLife(true);
@@ -107,7 +106,7 @@ void handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2)
        //If enemy bullet hits enemy, do nothing (no friendly fire)  
        else  
        {  
-           std::cout << "Enemy bullet hit enemy - No effect (no friendly fire)" << std::endl;  
+           //std::cout << "Enemy bullet hit enemy - No effect (no friendly fire)" << std::endl;  
            //Bullet continues through enemy without effect  
        }  
    }  
@@ -151,7 +150,7 @@ void handleEnemyBulletPlayerCollision(GameObject& obj1, GameObject& obj2)
         // Player bullets don't hurt player (self-protection)
         else
         {
-            std::cout << "Player bullet hit player - No effect (self-protection)" << std::endl;
+            //std::cout << "Player bullet hit player - No effect (self-protection)" << std::endl;
             // Bullet continues without effect
         }
     }
@@ -203,6 +202,10 @@ void handleBulletObstacleCollision(GameObject& obj1, GameObject& obj2)
     }
 }
 
+void handleBulletVSBulletCollision(GameObject& obj1, GameObject& obj2)
+{
+}
+
 //-----------------------------------------------------------------------------
 //Register bullet collision handlers.
 void Projectile::registerBulletCollisions()
@@ -222,6 +225,8 @@ void Projectile::registerBulletCollisions()
     collisionFactory.registerTypedCollision<Projectile, Wall>(handleBulletWallCollision);
 
     collisionFactory.registerTypedCollision<Projectile, Obstacles>(handleBulletObstacleCollision);
+
+    collisionFactory.registerTypedCollision<Projectile, Projectile>(handleBulletVSBulletCollision);
 
     registered = true;
 }
