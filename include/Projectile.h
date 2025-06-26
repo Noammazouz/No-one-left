@@ -15,15 +15,10 @@ public:
 	  ~Projectile() override = default;  
 
 	  void update(sf::Time deltaTime, sf::Vector2f playerPos) override;  
-	  void setDirection(sf::Vector2f dir);  
-	  void setSpeed(float spd);  
-	  sf::Vector2f getDirection() const;  
-	  float getSpeed() const;  
+	  void setDirection(sf::Vector2f dir); 
+	  sf::Vector2f getDirection() const;   
 	  bool getIsActive() const;  
 	  void setActive(bool active);  
-	  bool isOutOfMap() const;  
-
-	  int getDamage() const;  
 	  bool isExpired() const;  
 
 	  static void registerBulletCollisions();
@@ -31,10 +26,8 @@ public:
 	  BulletOwner getOwner() const;
 
 private:
-	  sf::Vector2f m_direction;  
-	  float speed;  
+	  sf::Vector2f m_direction;    
 	  bool isActive;  
-	  int damage;  
 	  float m_elapsedTime;   
 	  BulletOwner m_owner;
 

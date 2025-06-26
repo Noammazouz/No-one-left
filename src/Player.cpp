@@ -207,7 +207,7 @@ void Player::doAttack(std::vector<std::unique_ptr<Projectile>>& bullets)
 		sf::Vector2f position = getPos();
 		sf::Vector2f direction = getCurrentDirection();
 
-		//m_attackBehavior->Attack(position, direction, bullets);
+		//m_attackBehavior->Attack(position, m_direction, bullets);
 
 		for (int bullet = 0; bullet < bulletsNeeded; bullet++)
 		{

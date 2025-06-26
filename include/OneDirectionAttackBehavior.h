@@ -14,5 +14,5 @@ public:
     OneDirectionAttackBehavior() = default;
     virtual ~OneDirectionAttackBehavior() = default;
 
-    virtual void Attack(sf::Vector2f position, sf::Vector2f direction, std::vector<std::unique_ptr<Projectile>>& projectile, BulletOwner owner) override;
+    virtual std::vector<sf::Vector2f> Attack(sf::Vector2f position) override;
 };

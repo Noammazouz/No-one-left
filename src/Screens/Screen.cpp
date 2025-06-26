@@ -99,7 +99,7 @@ void Screen::drawButtons(sf::RenderWindow& window)
 void Screen::setMusicState(MusicState newState)
 {
 	if (s_musicMuted) return; // Don't change music if muted
-	
+
 	if (s_currentMusicState == newState) 
 	{
 		// State is correct, but make sure music is actually playing
@@ -142,7 +142,7 @@ void Screen::ensureCorrectMusicPlaying()
 	
 	bool menuIsPlaying = (ResourcesManager::getInstance().getMusic(MENU_MUSIC).getStatus() == sf::Music::Playing);
 	bool gameIsPlaying = (ResourcesManager::getInstance().getMusic(GAME_MUSIC).getStatus() == sf::Music::Playing);
-	
+
 	// Fix any discrepancies
 	if (menuShouldPlay && !menuIsPlaying)
 	{

@@ -30,6 +30,7 @@ public:
 	virtual void activate(sf::Clock& clockin, int& m_currrentScreen) override;
 	virtual void run(sf::RenderWindow& window, int& m_currrentScreen) override;
 	virtual void handleMouseClick(const sf::Vector2f& clickPos, int& screenState) override;
+	void addProjectile(const sf::Vector2f& pos, const sf::Vector2f& direction, BulletOwner owner);
 
 protected:
 	void initButtons() override;

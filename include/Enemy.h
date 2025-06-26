@@ -6,10 +6,12 @@
 #include "MoveBehavior.h"
 
 //-----class section-----
+class GamePlay;
+
 class Enemy : public UpdateableObject
 {
 public:
-	Enemy(sf::Vector2f position, std::string name);
+	Enemy(sf::Vector2f position, std::string name, GamePlay* gameplay);
 	~Enemy();
 
 	void update(sf::Time deltaTime, sf::Vector2f playerPos) override;
@@ -20,6 +22,8 @@ public:
 	sf::Vector2f getDirection() const;
 	void NotifyCollision();
 	void OnSuccessfulMove();
+	bool wantsToFire() const { return m_shouldFire; }
+	void clearFireFlag() { m_shouldFire = false; }
 
 	static int getNumOfStartingEnemies(const std::vector<std::unique_ptr<UpdateableObject>>& movingObjs);
 	static int getNumOfEnemiesAlive();
@@ -28,10 +32,11 @@ private:
 	//void checktimer();
 	std::unique_ptr<AttackBehavior>	m_AttackBehavior;
 	std::unique_ptr<MoveBehavior>	m_MoveBehavior;
-	static int m_num_of_Enemies;
-	static int m_num_of_Enemies_alive;
-	bool m_freeze = false;
-
+	static int m_numOfEnemies;
+	static int m_numOfEnemiesAlive;
+	float m_fireTimer = 0.0f;
+	GamePlay* m_gamePlay;
+	bool m_shouldFire=false;
 	sf::Vector2f m_direction;
 	sf::Vector2f m_prevlocation;
 	//sf::Time m_freezeTime;
