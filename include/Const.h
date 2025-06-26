@@ -154,19 +154,20 @@ const std::string SIMPLE_ENEMY_RIFLE = "simple_enemy_rifle";
 const std::string SMART_ENEMY_RIFLE = "smart_enemy_rifle";
 const std::string BFS_ENEMY_RIFLE = "bfs_enemy_rifle";
 
-//-----Weapons const section-----
+//-----Items const section-----
 const std::string RIFLE_NAME = "rifle";
 const std::string MACHINE_GUN_NAME = "machine gun";
 const std::string BAZOOKA_NAME = "bazooka";
 const std::string MED_KIT_NAME = "medkit";
 const std::string REMOVE_ENEMY_NAME = "remove enemy";
-const std::string ADD_LIFE = "add life";
+const std::string ADD_LIFE_NAME = "add life";
+const std::string REMOVE_TIME_NAME = "remove time";
 
 //-----texture names const section-----
 const std::string PROJECTILE_NAME = "projectile";
 
 //-----warning const section-----
-const std::string STARIC_OBLECTS_WARNING = "[WARN] No static objects were loaded are you sure your CSV has entries?\n";
+const std::string STARIC_OBJECTS_WARNING = "[WARN] No static objects were loaded are you sure your CSV has entries?\n";
 
 //-----background const section-----
 const std::string START_SCREEN_BACKGROUND = "startScreen";
