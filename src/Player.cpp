@@ -70,12 +70,6 @@ void Player::setDirection()
 	}
 
 	m_direction = newDir;
-
-	/* //ADD THIS PART:
-	if (m_facingDirection != sf::Vector2f(0.f, 0.f))
-	{
-		this->setRotation(m_facingDirection);
-	}*/
 }
 
 //------------------------------------------------------------------------------
