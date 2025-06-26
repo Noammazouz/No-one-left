@@ -1,5 +1,6 @@
 //-----include section-----
 #include "BulletsGift.h"
+#include "Factory.h"
 
 //-----functions section------
 //-----------------------------------------------------------------------------

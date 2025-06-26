@@ -15,7 +15,7 @@
 #include "Obstacles.h"
 #include "Bombs.h"
 #include "Explosion.h"
-#include "Bullets.h"
+#include "BulletsGift.h"
 #include "Projectile.h"
 #include "AttackBehavior.h"
 #include "RifleGift.h"
