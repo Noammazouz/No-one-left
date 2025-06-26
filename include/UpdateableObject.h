@@ -19,6 +19,8 @@ public:
 	sf::Vector2f getPrevLocation() const;
 	sf::Vector2f getStartingPosition() const;
 
+	void changeSpriteAnimation(const std::string& name);
+
 protected:
 	void setPrevLocation(const sf::Vector2f& position);
 	void updatePosition(const sf::Vector2f& direction);
@@ -31,7 +33,6 @@ protected:
 
 	void updateFrames(const sf::Vector2f& direction, const float frameTime, const int numberOfFrames);
 	void set_frames(const int framesNumber, const sf::Vector2f position);
-	void changeSpriteAnimation(const std::string& name);
 
 private:
 	sf::Clock m_rotationClock;
