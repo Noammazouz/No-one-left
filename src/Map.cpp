@@ -104,6 +104,7 @@ void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingOb
             }
         };
 
+
     // first third (5 simple + 5 smart)
     for (int i = 0; i < NUM_OF_STUPID_ENEMY; ++i)
     {
