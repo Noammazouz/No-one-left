@@ -66,7 +66,7 @@ void Projectile::setActive(bool active)
 //-----------------------------------------------------------------------------
 bool Projectile::isExpired() const
 {
-    return m_elapsedTime >= 3.0f; // 3 seconds 
+    return m_elapsedTime >= PROJECTILE_AIR_TIME;
 }
 
 //-----------------------------------------------------------------------------  

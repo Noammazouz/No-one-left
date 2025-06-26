@@ -32,6 +32,7 @@ public:
 	virtual void run(sf::RenderWindow& window, int& m_currrentScreen) override;
 	virtual void handleMouseClick(const sf::Vector2f& clickPos, int& screenState) override;
 	void addProjectile(const sf::Vector2f& pos, std::vector<sf::Vector2f> directions, BulletOwner owner);
+	void addGrenade();
 
 protected:
 	void initButtons() override;
@@ -39,7 +40,6 @@ protected:
 private:
 	void move(sf::Clock& clock);
 	void handleCollision();
-	void setBomb();
 	void handleErasing();
 	void explosion();
 	void calculateScore();

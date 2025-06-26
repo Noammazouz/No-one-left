@@ -11,7 +11,7 @@ static sf::Clock s_winTimer;
 //-----functions section------
 //-----------------------------------------------------------------------------
 GamePlay::GamePlay()
-	: worldBounds(0.f, 0.f, MAP_WIDTH, MAP_HEIGHT) //, m_player(*this)
+	: worldBounds(0.f, 0.f, MAP_WIDTH, MAP_HEIGHT)
 {
 	initButtons();
 	handleLoadingLevel();
@@ -212,9 +212,9 @@ void GamePlay::handleCollision()
 }
 
 //-----------------------------------------------------------------------------
-void GamePlay::setBomb()
+void GamePlay::addGrenade()
 {
-	//m_movingObj.push_back(std::make_unique<Bombs>(sf::Vector2f(m_player.getPosition()), ResourcesManager::getInstance().getTexture("bomb")));
+	//m_movingObj.push_back(std::make_unique<Projectile>(pos, directions[index], owner));
 }
 
 //-----------------------------------------------------------------------------

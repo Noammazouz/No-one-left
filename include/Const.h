@@ -68,7 +68,7 @@ enum ObjectType
 	PROJECTILE
 };
 
-enum  BulletOwner
+enum BulletOwner
 {
 	_PLAYER,
 	ENEMY
@@ -119,9 +119,10 @@ const float BOMB_TIME = 4.f;
 const float REMOVE_TIME = 10.f;
 const float WINDOW_RATIO = 0.92f;
 const float ROTATION_SPEED = 135.f; //degrees per second.
-const float PROJECTILE_SPEED = 1000.f;
+const float PROJECTILE_SPEED = 750.f;
 const float DISTANCE = 90000.0f;
 const float FIRE_COOLDOWN = 0.2f;
+const float PROJECTILE_AIR_TIME = 1.0f;
 
 //-----music and sound effects const section-----
 const std::string MENU_MUSIC = "menu";
