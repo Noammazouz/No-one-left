@@ -1,6 +1,7 @@
 #pragma once
 
 //-----include section-----
+#include <string>
 #include <SFML/Graphics.hpp>
 #include "Const.h"
 #include "ResourcesManager.h"

@@ -29,7 +29,9 @@ void Player::initialization(sf::Vector2f position, std::string name, GamePlay* g
 	m_pic.setRotation(180.f); //Set initial rotation to face down.
 	set_frames(m_numberOfFrames, position);
 
-	m_attackBehavior= std::move(std::make_unique<OneDirectionAttackBehavior>());
+	setShootCooldown(RIFLE_NAME); //Set the shoot cooldown based on the weapon name.
+
+	m_attackBehavior = std::move(std::make_unique<OneDirectionAttackBehavior>());
 	m_lives = NUM_OF_LIVES;
 
 	m_gamePlay = gamePlay;
@@ -61,15 +63,32 @@ void Player::setDirection()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) newDir.y -= 1.f;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) newDir.y += 1.f;
 
-	//Normalize direction if moving diagonally
+	//Normalize direction if moving diagonally.
 	if (newDir != sf::Vector2f(0.f, 0.f))
 	{
 		newDir /= std::sqrt(newDir.x * newDir.x + newDir.y * newDir.y);
+    
 		m_facingDirection = newDir; // Update facing direction when moving
 		this->setRotation(m_facingDirection);
 	}
 
 	m_direction = newDir;
+}
+
+//------------------------------------------------------------------------------
+void Player::setShootCooldown(const std::string& weaponName)
+{
+	for (const auto& pair : m_shootCooldowns)
+	{
+		if (pair.first == weaponName)
+		{
+			m_shootCooldown = pair.second;
+			return;
+		}
+	}
+
+	std::cerr << "Weapon name not found in cooldowns: " << weaponName << std::endl;
+	m_shootCooldown = sf::seconds(0.25); //Default cooldown if not found.
 }
 
 //------------------------------------------------------------------------------
@@ -165,14 +184,14 @@ void Player::handleShooting()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
-		if (!m_isShooting && isBulletsAvailable())
+		if (m_shootClock.getElapsedTime() >= m_shootCooldown)
 		{
 			m_gamePlay->addProjectile(this->getPosition(), m_attackBehavior->Attack(m_facingDirection), _PLAYER);
 			m_isShooting = true;
 			decBullets();
+			m_shootClock.restart();  // Reset timer
 		}
-	}
-	else m_isShooting = false;
+	}	
 }
 
 //-----------------------------------------------------------------------------
@@ -208,7 +227,7 @@ void handlePlayerEnemyCollision(GameObject& obj1, GameObject& obj2)
 
 	if (player && enemy) 
 	{
-		player->decLife();
+		//don't do anything if the player hit the enemy.
 		return;
 	}
 	else
@@ -344,6 +363,7 @@ void handlePlayerRifleGiftCollision(GameObject& obj1, GameObject& obj2)
 	if(player && rifleGift) 
 	{
 		player->changeSpriteAnimation(PLAYER_RIFLE);
+		player->setShootCooldown(RIFLE_NAME); //Set the shoot cooldown for rifle.
 		rifleGift->setLife(true); //Mark the gift as collected.
 		return;
 	}
@@ -382,11 +402,12 @@ void handlePlayerMachineGunGiftCollision(GameObject& obj1, GameObject& obj2)
 	if (player && machineGunGift)
 	{
 		player->changeSpriteAnimation(PLAYER_MACHINE_GUN);
+		player->setShootCooldown(MACHINE_GUN_NAME); //Set the shoot cooldown for machine-gun.
 		machineGunGift->setLife(true); //Mark the gift as collected.
 		return;
 	}
 	else
-	{
+	{	
 		std::cout << "Player-MachineGunGift collision not handled properly!" << std::endl;
 		return;
 	}
@@ -418,8 +439,9 @@ void handlePlayerBazookaGiftCollision(GameObject& obj1, GameObject& obj2)
 	}
 
 	if (player && bazookaGift) 
-	{
+	{	
 		player->changeSpriteAnimation(PLAYER_BAZOOKA);
+		player->setShootCooldown(BAZOOKA_NAME); //Set the shoot cooldown for bazooka.
 		bazookaGift->setLife(true); //Mark the gift as collected.
 		return;
 	}

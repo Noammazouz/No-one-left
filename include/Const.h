@@ -107,6 +107,7 @@ const int OBJECT_HEIGHT = 32; //Height of the player sprite.
 const int OBJECT_WIDTH = 25; //Width of the player sprite.
 const int EXPLOSION_DEC_LIVES = 30;
 const int PROJECTILE_DAMAGE = 5;
+const int NUM_OF_LIFE_OBSTACLE = 3;
 
 //-----float const section-----
 const float PLAYER_FRAME_TIME = 0.1f; //seconds per frame for the player animation
@@ -154,11 +155,20 @@ const std::string SIMPLE_ENEMY_RIFLE = "simple_enemy_rifle";
 const std::string SMART_ENEMY_RIFLE = "smart_enemy_rifle";
 const std::string BFS_ENEMY_RIFLE = "bfs_enemy_rifle";
 
+//-----Items const section-----
+const std::string RIFLE_NAME = "rifle";
+const std::string MACHINE_GUN_NAME = "machine gun";
+const std::string BAZOOKA_NAME = "bazooka";
+const std::string MED_KIT_NAME = "medkit";
+const std::string REMOVE_ENEMY_NAME = "remove enemy";
+const std::string ADD_LIFE_NAME = "add life";
+const std::string REMOVE_TIME_NAME = "remove time";
+
 //-----texture names const section-----
 const std::string PROJECTILE_NAME = "projectile";
 
 //-----warning const section-----
-const std::string STARIC_OBLECTS_WARNING = "[WARN] No static objects were loaded are you sure your CSV has entries?\n";
+const std::string STARIC_OBJECTS_WARNING = "[WARN] No static objects were loaded are you sure your CSV has entries?\n";
 
 //-----background const section-----
 const std::string START_SCREEN_BACKGROUND = "startScreen";
@@ -183,3 +193,8 @@ const std::string FONT_NAME = "ARCADE_N.TTF"; //Name of the font file.
 
 //-----File Name const section-----
 const std::string HELP_FILE_NAME = "help.txt"; //Name of the help file.
+
+//-----Shooting Time const section-----
+const sf::Time SHOOTING_TIME_RIFLE = sf::seconds(0.2f); //Time between shots in seconds for rifle.
+const sf::Time SHOOTING_TIME_MACHINE_GUN = sf::seconds(0.1f); //Time between shots in seconds for machine gun.
+const sf::Time SHOOTING_TIME_BAZOOKA = sf::seconds(0.5f); //Time between shots in seconds for bazooka.

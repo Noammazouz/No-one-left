@@ -17,7 +17,7 @@ GamePlay::GamePlay()
 	handleLoadingLevel();
 	if (m_staticObj.empty()) 
 	{
-		std::cerr << STARIC_OBLECTS_WARNING;
+		std::cerr << STARIC_OBJECTS_WARNING;
 	}
 }
 
@@ -34,12 +34,9 @@ void GamePlay::run(sf::RenderWindow& window, int& m_currentScreen)
 //-----------------------------------------------------------------------------
 void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 {
-	if (m_paused)
-	{
-		return;
-	}
+	if (m_paused) return;
 
-	// Always ensure game music is playing when in gameplay
+	//Always ensure game music is playing when in gameplay
 	if (getCurrentMusicState() != MusicState::GAME)
 	{
 		setMusicState(MusicState::GAME);
@@ -47,23 +44,23 @@ void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 
 	if (m_staticObj.empty()) 
 	{
-		std::cerr << STARIC_OBLECTS_WARNING;
+		std::cerr << STARIC_OBJECTS_WARNING;
 	}
 
-	// Handle game over states first (both stop normal game processing)
+	//Handle game over states first (both stop normal game processing)
 	if (m_player.getLife() <= END_GAME)
 	{
 		handleDeathState(m_currentScreen);
-		return; // STOP all game processing when dead
+		return; //STOP all game processing when dead
 	}
 
 	if (m_player.getWin())
 	{
 		handleWinState(m_currentScreen);
-		return; // STOP all game processing when won
+		return; //STOP all game processing when won
 	}
 
-	// Only process game logic if player is alive
+	//Only process game logic if player is alive
 	move(clock);
 	handleCollision();
 	explosion();
@@ -366,6 +363,7 @@ void GamePlay::removeGuard()
 	}
 }
 
+//-----------------------------------------------------------------------------
 void GamePlay::resetGame()
 {
 	m_newGame = false;
@@ -389,10 +387,10 @@ void GamePlay::handleMouseClick(const sf::Vector2f& clickPos, int& screenState)
 		if (m_buttons[PAUSE].getBounds().contains(clickPos))
 		{
 			m_paused = true;
-			setMusicState(MusicState::MENU); // Switch to menu music when pausing
+			setMusicState(MusicState::MENU); //Switch to menu music when pausing
 			return;
 		}
-		return; // If not paused, ignore other clicks
+		return; //If not paused, ignore other clicks
 	}
 	for (int index = 1; index < m_buttons.size(); ++index)
 	{
@@ -403,7 +401,7 @@ void GamePlay::handleMouseClick(const sf::Vector2f& clickPos, int& screenState)
 				case RESUME:
 				{
 					m_paused = false;
-					setMusicState(MusicState::GAME); // Switch back to game music when resuming
+					setMusicState(MusicState::GAME); //Switch back to game music when resuming
 					break;
 				}
 				case _HELP:
