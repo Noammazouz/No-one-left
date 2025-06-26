@@ -161,22 +161,35 @@ void handleEnemyBulletPlayerCollision(GameObject& obj1, GameObject& obj2)
 void handleBulletWallCollision(GameObject& obj1, GameObject& obj2)
 {
     Projectile* bullet = nullptr;
+	Wall* wall = nullptr;
 
     //Check both parameter orders.
     if (auto* b = dynamic_cast<Projectile*>(&obj1)) 
     {
-        bullet = b;
+        if (auto* w = dynamic_cast<Wall*>(&obj2)) 
+        {
+            bullet = b;
+            wall = w;
+		}
+
     }
     else if (auto* b = dynamic_cast<Projectile*>(&obj2)) 
     {
-        bullet = b;
+      if (auto* w = dynamic_cast<Wall*>(&obj1)) 
+      {
+            wall = w;
+            bullet = b;
+	   }
+        
     }
 
-    if (bullet) 
+    if (bullet&& wall) 
     {
         //std::cout << "Bullet hit wall - Bullet destroyed" << std::endl;
         bullet->setActive(false); // All bullets are stopped by walls
         bullet->setLife(true);
+        if(bullet->getOwner() == _PLAYER)
+		wall->setLife(true); // Mark wall as destroyed (if needed)
     }
 }
 
