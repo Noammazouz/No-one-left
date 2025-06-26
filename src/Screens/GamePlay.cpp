@@ -26,7 +26,7 @@ void GamePlay::run(sf::RenderWindow& window, int& m_currentScreen)
 {
 	if (m_newGame) resetGame();
 	Screen::run(window, m_currentScreen);
-	m_view.setCenter(m_player.getPos());
+	m_view.setCenter(m_player.getPosition());
 	m_view.setCenter(clampViewPosition(worldBounds));
 	window.setView(m_view);
 }
@@ -121,6 +121,7 @@ void GamePlay::move(sf::Clock& clock)
 	const auto deltaTime = clock.restart();
 
 	m_player.update(deltaTime, sf::Vector2f());
+	m_player.handleShooting();
 	for (const auto& movingObj : m_movingObj)
 	{
 	   movingObj->update(deltaTime, m_player.getPosition());

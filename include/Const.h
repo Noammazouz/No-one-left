@@ -68,7 +68,7 @@ enum ObjectType
 	PROJECTILE
 };
 
-enum  BulletOwner
+enum BulletOwner
 {
 	_PLAYER,
 	ENEMY
@@ -177,3 +177,9 @@ const sf::Color FONT_COLOR = sf::Color(128, 0, 128);
 
 //-----sf::Vector2f const section-----
 const sf::Vector2f FIRST_PLAYER_POSITION(2500.f, 100.f); //Initial position of the player.
+
+//-----Font const section-----
+const std::string FONT_NAME = "ARCADE_N.TTF"; //Name of the font file.
+
+//-----File Name const section-----
+const std::string HELP_FILE_NAME = "help.txt"; //Name of the help file.

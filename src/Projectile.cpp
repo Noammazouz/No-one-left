@@ -69,7 +69,7 @@ bool Projectile::isExpired() const
 }
 
 //-----------------------------------------------------------------------------  
-// Collision handler for Bullet vs Enemy - Order independent  
+//Collision handler for Bullet vs Enemy - Order independent.  
 void handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2)  
 {  
    Projectile* bullet = nullptr;  
@@ -95,25 +95,25 @@ void handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2)
 
    if (bullet && enemy) 
    {  
-       // Only player bullets can kill enemies  
+       //Only player bullets can kill enemies
        if (bullet->getOwner() == _PLAYER)  
        {  
            std::cout << "Player bullet hit enemy - Enemy killed!" << std::endl;  
-           enemy->setLife(true); // Mark enemy as dead  
-           bullet->setActive(false); // Deactivate bullet  
+           enemy->setLife(true); //Mark enemy as dead  
+           bullet->setActive(false); //Deactivate bullet  
            bullet->setLife(true);
        }  
-       // If enemy bullet hits enemy, do nothing (no friendly fire)  
+       //If enemy bullet hits enemy, do nothing (no friendly fire)  
        else  
        {  
            std::cout << "Enemy bullet hit enemy - No effect (no friendly fire)" << std::endl;  
-           // Bullet continues through enemy without effect  
+           //Bullet continues through enemy without effect  
        }  
    }  
 }
 
 //-----------------------------------------------------------------------------
-// Collision handler for Bullet vs Player - Order independent
+// Collision handler for Bullet vs Player - Order independent.
 void handleEnemyBulletPlayerCollision(GameObject& obj1, GameObject& obj2)
 {
     Projectile* bullet = nullptr;
