@@ -165,7 +165,7 @@ void Player::handleShooting()
 	{
 		if (!m_isShooting)
 		{
-			m_gamePlay->addProjectile(this->getPosition(), m_direction, _PLAYER);
+			m_gamePlay->addProjectile(this->getPosition(), m_attackBehavior->Attack(m_direction), _PLAYER);
 			m_isShooting = true;
 		}
 	}
