@@ -182,7 +182,7 @@ sf::Vector2f Player::getCurrentDirection() const
 //-----------------------------------------------------------------------------
 void Player::handleShooting()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
 		// If enough time has passed since last shot
 		if (m_shootClock.getElapsedTime() >= m_shootCooldown)

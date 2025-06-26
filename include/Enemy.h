@@ -23,8 +23,8 @@ public:
 	std::vector<sf::Vector2f> getShottingDirections();
 	void NotifyCollision();
 	void OnSuccessfulMove();
-	bool wantsToFire() const { return m_shouldFire; }
-	void clearFireFlag() { m_shouldFire = false; }
+	bool wantsToFire() const;
+	void clearFireFlag();
 
 	static int getNumOfStartingEnemies(const std::vector<std::unique_ptr<UpdateableObject>>& movingObjs);
 	static int getNumOfEnemiesAlive();
