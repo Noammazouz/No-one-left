@@ -16,7 +16,7 @@
 //-----------------------------------------------------------------------------
 void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player, GamePlay* gamePlay)
 {
-    std::ifstream file("Level1_cleaned.csv");
+    std::ifstream file("Level1.csv");
     if (!file.is_open()) 
     {
         throw std::runtime_error("[ERROR] Cannot open Level1.csv");

@@ -207,6 +207,18 @@ void Enemy::OnSuccessfulMove()
 }
 
 //-----------------------------------------------------------------------------
+bool Enemy::wantsToFire() const
+{
+    return m_shouldFire;
+}
+
+//-----------------------------------------------------------------------------
+void Enemy::clearFireFlag()
+{
+    m_shouldFire = false;
+}
+
+//-----------------------------------------------------------------------------
 int Enemy::getNumOfEnemiesAlive()
 {
     return m_numOfEnemiesAlive;
