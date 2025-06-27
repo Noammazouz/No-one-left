@@ -54,7 +54,7 @@ void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 		return; //STOP all game processing when dead
 	}
 
-	if (m_player.getWin())
+	if (Enemy::getNumOfEnemiesAlive() <= END_GAME)
 	{
 		handleWinState(m_currentScreen);
 		return; //STOP all game processing when won
@@ -376,4 +376,13 @@ void GamePlay::addProjectile(const sf::Vector2f& pos, std::vector<sf::Vector2f> 
 	{
 		m_movingObj.push_back(std::make_unique<Projectile>(pos, directions[index], owner));
 	}
+}
+
+//----------------------------------------------------------------------------
+void GamePlay::playMedkitSound()
+{
+	m_sound.setBuffer(ResourcesManager::getInstance().getSound(GAIN_HEALTH_SOUND));
+	m_sound.setVolume(100.f);
+	m_sound.setPlayingOffset(sf::seconds(0.2f));
+	m_sound.play();
 }

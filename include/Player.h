@@ -13,14 +13,13 @@
 #include "Enemy.h"
 #include "Wall.h"
 #include "Obstacles.h"
-#include "Bombs.h"
-#include "Explosion.h"
 #include "BulletsGift.h"
 #include "Projectile.h"
 #include "AttackBehavior.h"
 #include "RifleGift.h"
 #include "MachineGunGift.h"
 #include "BazookaGift.h"
+#include "MedkitGift.h"
 
 class GamePlay;
 class GameObject;
@@ -50,6 +49,7 @@ public:
 	void handleShooting();
 	void setAttackBehavior(std::unique_ptr<AttackBehavior> attackBehavior);
 	void setShootCooldown(const std::string& weaponName);
+	void medkitSound();
 
 private:
 	bool checkDirection();
@@ -64,6 +64,7 @@ private:
 	std::unique_ptr<AttackBehavior> m_attackBehavior;
 	GamePlay* m_gamePlay;
 	sf::Vector2f m_facingDirection = sf::Vector2f(0.f, -1.f); //Default facing up.
+	sf::Sound m_sound;
 
 	//Shooting cooldown times for each type of weapon.
 	std::vector<std::pair<std::string, sf::Time>> m_shootCooldowns = {
