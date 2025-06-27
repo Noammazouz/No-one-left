@@ -123,9 +123,8 @@ void ResourcesManager::initializeMusic()
     std::vector<std::pair<std::string, std::string>> music =
     {
         {"present", "present.ogg"},
-        {"shot", "shot.ogg"},
+        {"shoot", "shoot.ogg"},
         {"death", "death.ogg"},
-        {"explosion", "explosion.ogg"},
         {"health", "addHealth.ogg"},
         {"win sound effect", "win.ogg"}
     };

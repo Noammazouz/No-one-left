@@ -63,7 +63,6 @@ void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 	//Only process game logic if player is alive
 	move(clock);
 	handleCollision();
-	explosion();
 	handleErasing();
 	handleScoreBoard();
 }
@@ -202,23 +201,10 @@ void GamePlay::handleCollision()
 
 			if (movingObject1.checkCollision(movingObject2))
 			{
-				// This will look up the Enemy,Enemy handler you registered
-				try {
-					collisionHandler.processCollision(movingObject1, movingObject2);
-				}
-				catch (const UnknownCollision& e) 
-				{
-					std::cerr << e.what() << std::endl;
-				}
+				collisionHandler.processCollision(movingObject1, movingObject2);
 			}
 		}
 	}
-}
-
-//-----------------------------------------------------------------------------
-void GamePlay::addGrenade()
-{
-	//m_movingObj.push_back(std::make_unique<Projectile>(pos, directions[index], owner));
 }
 
 //-----------------------------------------------------------------------------
@@ -229,115 +215,6 @@ void GamePlay::handleErasing()
 
 	std::erase_if(m_staticObj, [](const auto& item)
 		{return item->isDead(); });
-}
-
-//-----------------------------------------------------------------------------
-void GamePlay::explosion()
-{
-	/*auto bomb = Enemy::getNumOfGuardsAlive();
-
-	for (; bomb < m_movingObj.size(); bomb++)
-	{
-		if (m_movingObj[bomb]->getExpo())
-		{
-			m_sound.setBuffer(ResourcesManager::getInstance().getSound("explosion"));
-			m_sound.setVolume(100.f);
-			m_sound.play();
-			setExpoDirection(bomb);
-			checkValidDraw();
-			drawWindow();
-			checkExpo();
-		}
-	}*/
-}
-
-//-----------------------------------------------------------------------------
-void GamePlay::calculateScore()
-{
-	/*int points = 0;
-	points += ENDING_LEVEL;
-	points += (Enemy::getNumOfStartingGuards() * POINT_FOR_GUARD);
-	points += (std::abs(Enemy::getNumOfGuardsAlive() - Enemy::getNumOfStartingGuards()) * KILL_GUARD);
-	m_player.setScore(points);*/
-}
-
-//-----------------------------------------------------------------------------
-void GamePlay::setExpoDirection(int index)
-{
-	/*for (int direction = 0; direction < NUM_OF_DIRECTION; direction++)
-	{
-		switch (direction)
-		{
-		case UP:
-			m_movingObj.push_back(std::make_unique<Explosion>(sf::Vector2f(m_movingObj[index]->getPosition()), ResourcesManager::getInstance().getTexture("explosion")));
-			m_movingObj[m_movingObj.size() - 1]->setDirection(sf::Vector2f(0, -DEFUALT_WIDTH));
-			break;
-		case DOWN:
-			m_movingObj.push_back(std::make_unique<Explosion>(sf::Vector2f(m_movingObj[index]->getPosition()), ResourcesManager::getInstance().getTexture("explosion")));
-			m_movingObj[m_movingObj.size() - 1]->setDirection(sf::Vector2f(0, DEFUALT_WIDTH));
-			break;
-		case LEFT:
-			m_movingObj.push_back(std::make_unique<Explosion>(sf::Vector2f(m_movingObj[index]->getPosition()), ResourcesManager::getInstance().getTexture("explosion")));
-			m_movingObj[m_movingObj.size() - 1]->setDirection(sf::Vector2f(-DEFUALT_WIDTH, 0));
-			break;
-		case RIGHT:
-			m_movingObj.push_back(std::make_unique<Explosion>(sf::Vector2f(m_movingObj[index]->getPosition()), ResourcesManager::getInstance().getTexture("explosion")));
-			m_movingObj[m_movingObj.size() - 1]->setDirection(sf::Vector2f(DEFUALT_WIDTH, 0));
-			break;
-		}
-	}
-	m_movingObj.push_back(std::make_unique<Explosion>(sf::Vector2f(m_movingObj[index]->getPosition()), ResourcesManager::getInstance().getTexture("explosion")));
-}*/
-}
-
-//-----------------------------------------------------------------------------
-void GamePlay::checkExpo()
-{
-	/*auto explosion = m_movingObj.size() - NUM_OF_EXPLOSION;
-	for (; explosion < m_movingObj.size(); explosion++)
-	{
-		for (int guard = 0; guard < Enemy::getNumOfGuardsAlive(); guard++)
-		{
-			if (m_movingObj[explosion]->checkCollision(*m_movingObj[guard]))
-			{
-				m_movingObj[explosion]->collide(*m_movingObj[guard]);
-
-			}
-		}
-		for (const auto& staticObj : m_staticObj)
-		{
-			if (m_movingObj[explosion]->checkCollision(*staticObj))
-			{
-				m_movingObj[explosion]->collide(*staticObj);
-			}
-		}
-		if (m_movingObj[explosion]->checkCollision(m_player))
-		{
-			m_sound.setBuffer(ResourcesManager::getInstance().getSound("hit"));
-			m_sound.setVolume(100.f);
-			m_sound.play();
-			m_movingObj[explosion]->collide(m_player);
-			resetLevel();
-			break;
-		}
-	}*/
-}
-
-//-----------------------------------------------------------------------------
-void GamePlay::checkValidDraw()
-{
-	/*auto explosion = m_movingObj.size() - NUM_OF_EXPLOSION;
-	for (; explosion < m_movingObj.size(); explosion++)
-	{
-		for (const auto& staticObj : m_staticObj)
-		{
-			if (m_movingObj[explosion]->checkCollision(*staticObj))
-			{
-				m_movingObj[explosion]->collide(*staticObj);
-			}
-		}
-	}
-	handleErasing();*/
 }
 
 //-----------------------------------------------------------------------------
@@ -469,7 +346,6 @@ void GamePlay::handleWinState(int& m_currentScreen)
 	{
 		// Go to win screen after 1 second OR when sound finishes playing
 		m_sound.stop();
-		calculateScore();
 		m_currentScreen = WIN_SCREEN;
 		m_newGame = true;
 		s_winSoundStarted = false; // Reset for next time
@@ -491,6 +367,11 @@ void GamePlay::resetGameOverStates()
 //-----------------------------------------------------------------------------
 void GamePlay::addProjectile(const sf::Vector2f& pos, std::vector<sf::Vector2f> directions, BulletOwner owner)
 {
+	m_sound.setBuffer(ResourcesManager::getInstance().getSound(SHOOTING_SOUND));
+	m_sound.setVolume(100.f);
+	m_sound.setPlayingOffset(sf::seconds(0.2f));
+	m_sound.play();
+
 	for (int index = 0; index < directions.size(); ++index)
 	{
 		m_movingObj.push_back(std::make_unique<Projectile>(pos, directions[index], owner));

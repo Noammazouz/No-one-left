@@ -11,6 +11,6 @@ BulletsGift::BulletsGift(std::string name, const sf::Vector2f& position)
 //-----------------------------------------------------------------------------
 static bool bulletsGift = Factory<StaticObject>::instance().registerType(
     ObjectType::BULLET,
-    [](const sf::Vector2f& pos, GamePlay* gamePlay) -> std::unique_ptr<StaticObject> {
+    [](const sf::Vector2f& pos) -> std::unique_ptr<StaticObject> {
         return std::make_unique<BulletsGift>(BULLETS_NAME, pos);
     });

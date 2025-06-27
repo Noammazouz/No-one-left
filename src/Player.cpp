@@ -157,16 +157,13 @@ void Player::addBullets(int bullets)
 //-----------------------------------------------------------------------------
 void Player::decBullets()
 {
-	if (m_bulletCount > 0)
-	{
-		m_bulletCount--;
-	}
+	m_bulletCount--;
 }
 
 //-----------------------------------------------------------------------------
 bool Player::isBulletsAvailable()
 {
-	if (m_bulletCount > 0)
+	if (m_bulletCount > MIN_BOUND_BULLETS)
 	{
 		return true;
 	}
@@ -184,7 +181,7 @@ void Player::handleShooting()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
-		if (m_shootClock.getElapsedTime() >= m_shootCooldown)
+		if (m_shootClock.getElapsedTime() >= m_shootCooldown && isBulletsAvailable())
 		{
 			m_gamePlay->addProjectile(this->getPosition(), m_attackBehavior->Attack(m_facingDirection), _PLAYER);
 			m_isShooting = true;
