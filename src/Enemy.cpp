@@ -100,7 +100,7 @@ static bool enemyWallCollisionRegistered = []() {
     return true;
 }();
 
-// Register Enemy-Enemy collision handler (multimethods approach)
+//Register Enemy-Enemy collision handler (multimethods approach)
 static bool enemyenemyCollisionRegistered = []() {
     auto& collisionFactory = CollisionFactory::getInstance();
     collisionFactory.registerTypedCollision<Enemy, Enemy>(handleEnemyEnemyCollision);
@@ -108,9 +108,9 @@ static bool enemyenemyCollisionRegistered = []() {
     }();
 
 static auto regSimple = Factory<UpdateableObject>::instance().registerType(
-    ObjectType::SIMPLENEMY,
+    ObjectType::SIMPLEENEMY,
     [](const sf::Vector2f& pos, GamePlay* gamePlay) -> std::unique_ptr<UpdateableObject> {
-        auto enemy = std::make_unique<Enemy>(pos, "simple_enemy_rifle",gamePlay);
+        auto enemy = std::make_unique<Enemy>(pos, SIMPLE_ENEMY_RIFLE, gamePlay);
         enemy->SetMoveBehavior(std::make_unique<RandomMoveBehavior>());
         enemy->SetAttackBehavior(std::make_unique<OneDirectionAttackBehavior>());
         return enemy;
@@ -119,7 +119,7 @@ static auto regSimple = Factory<UpdateableObject>::instance().registerType(
 static auto regSmart = Factory<UpdateableObject>::instance().registerType(
     ObjectType::SMARTENEMY,
     [](const sf::Vector2f& pos, GamePlay* gamePlay) -> std::unique_ptr<UpdateableObject> {
-        auto enemy = std::make_unique<Enemy>(pos, "smart_enemy_rifle",gamePlay);
+        auto enemy = std::make_unique<Enemy>(pos, SMART_ENEMY_RIFLE, gamePlay);
         enemy->SetMoveBehavior(std::make_unique<AxisMoveBehavior>());
         enemy->SetAttackBehavior(std::make_unique<OneDirectionAttackBehavior>());
         return enemy;
@@ -128,7 +128,7 @@ static auto regSmart = Factory<UpdateableObject>::instance().registerType(
 static auto regBfs = Factory<UpdateableObject>::instance().registerType(
     ObjectType::BFSENEMY,
     [](const sf::Vector2f& pos, GamePlay* gamePlay) -> std::unique_ptr<UpdateableObject> {
-        auto enemy = std::make_unique<Enemy>(pos, "bfs_enemy_rifle",gamePlay);
+        auto enemy = std::make_unique<Enemy>(pos, BFS_ENEMY_RIFLE, gamePlay);
         enemy->SetMoveBehavior(std::make_unique<BfsMoveBehavior>());
         enemy->SetAttackBehavior(std::make_unique<AllDirectionsAttackBehavior>());
         return enemy;

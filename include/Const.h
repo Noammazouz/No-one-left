@@ -54,7 +54,7 @@ enum ScreenType
 enum ObjectType
 {
 	PLAYER,
-	SIMPLENEMY,
+	SIMPLEENEMY,
 	SMARTENEMY,
 	BFSENEMY,
 	OBSTACLE1,
@@ -65,7 +65,10 @@ enum ObjectType
 	TREE,
 	BUILDING,
 	EXPLOSION,
-	PROJECTILE
+	PROJECTILE,
+	RIFLE,
+	MACHINE_GUN,
+	BAZOOKA
 };
 
 enum BulletOwner
@@ -77,6 +80,13 @@ enum BulletOwner
 enum WinScreenButoons
 {
 	_EXIT = 1
+};
+
+enum SectionType
+{
+	FIRST_SECTION,
+	SECOND_SECTION,
+	THIRD_SECTION
 };
 
 //----------constants section----------
@@ -99,8 +109,8 @@ const int NUM_OF_DIRECTIONS = 8;
 const int NUM_OF_BULLETS = 29;
 const int ONE_DIRECTION_BULLET = 1;
 const int ALL_DIRECTIONS_BULLETS = 8;
-const int NUM_OF_STUPID_ENEMY = 10;
-const int NUM_OF_SMART_ENEMY = 5;
+const int NUM_OF_STUPID_ENEMY = 5;
+const int NUM_OF_SMART_ENEMY = 10;
 const int MAX_BULLETS = 29; //Maximum number of bullets that a gun have.
 const int MIN_BOUND_BULLETS = 0; //Minimum number of bullets that a gun have.
 const int OBJECT_HEIGHT = 32; //Height of the player sprite.
@@ -130,7 +140,7 @@ const std::string MENU_MUSIC = "menu";
 const std::string GAME_MUSIC = "game";
 const std::string LOSING_SOUND = "death";
 const std::string WINNING_SOUND = "win sound effect";
-const std::string SHOOTING_SOUND = "shot";
+const std::string SHOOTING_SOUND = "shoot";
 const std::string EXPLOSION_SOUND = "explosion";
 const std::string GAIN_HEALTH_SOUND = "health";
 const std::string GAIN_PRESENT_SOUND = "present";
@@ -159,6 +169,7 @@ const std::string BFS_ENEMY_RIFLE = "bfs_enemy_rifle";
 const std::string RIFLE_NAME = "rifle";
 const std::string MACHINE_GUN_NAME = "machine gun";
 const std::string BAZOOKA_NAME = "bazooka";
+const std::string BULLETS_NAME = "bullets";
 const std::string MED_KIT_NAME = "medkit";
 const std::string REMOVE_ENEMY_NAME = "remove enemy";
 const std::string ADD_LIFE_NAME = "add life";

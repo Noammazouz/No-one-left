@@ -1,16 +1,16 @@
 //-----include section-----
-#include "RifleGift.h"
+#include "BulletsGift.h"
 #include "Factory.h"
 
 //-----functions section------
 //-----------------------------------------------------------------------------
-RifleGift::RifleGift(const std::string& name, const sf::Vector2f& position)
-	: WeaponsGift(name, position)
+BulletsGift::BulletsGift(std::string name, const sf::Vector2f& position)
+    : ItemsToCollect(name, position)
 {}
 
 //-----------------------------------------------------------------------------
-static bool rifleGift = Factory<StaticObject>::instance().registerType(
-    ObjectType::RIFLE,
+static bool bulletsGift = Factory<StaticObject>::instance().registerType(
+    ObjectType::BULLET,
     [](const sf::Vector2f& pos, GamePlay* gamePlay) -> std::unique_ptr<StaticObject> {
-        return std::make_unique<RifleGift>(RIFLE_NAME, pos);
+        return std::make_unique<BulletsGift>(BULLETS_NAME, pos);
     });
