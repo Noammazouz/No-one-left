@@ -8,6 +8,7 @@ Controller::Controller()
 {
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
 	m_window.create(sf::VideoMode(desktop.width * WINDOW_RATIO, desktop.height * WINDOW_RATIO), GAME_NAME);
+	m_window.setFramerateLimit(60);
 	initScreen();
 }
 

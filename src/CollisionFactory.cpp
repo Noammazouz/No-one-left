@@ -18,11 +18,11 @@ void CollisionFactory::registerCollision(const std::type_index& type1, const std
 void CollisionFactory::processCollision(GameObject& object1, GameObject& object2)
 {
     auto handler = lookup(typeid(object1), typeid(object2));
-    if (!handler)
+    if (handler)
     {
-        throw UnknownCollision(object1, object2);
+        handler(object1, object2);
     }
-    handler(object1, object2);
+   
 }
 
 //-----Internal Methods-----

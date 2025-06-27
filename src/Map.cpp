@@ -65,12 +65,12 @@ void Map::loadlevelobj(std::vector<std::unique_ptr<UpdateableObject>>& m_movingO
     m_staticObj.clear();
     m_movingObj.clear();
     loadFromCSV(m_staticObj, player, gamePlay);
-    loadEnemies(m_movingObj, m_staticObj, gamePlay);
-    loadObstacles(m_staticObj, m_movingObj, gamePlay);
+    loadEnemies(m_movingObj, m_staticObj);
+    loadObstacles(m_staticObj, m_movingObj);
 }
 
 //-----------------------------------------------------------------------------
-void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj, std::vector<std::unique_ptr<StaticObject>>& m_staticObj, GamePlay* gamePlay)
+void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj, std::vector<std::unique_ptr<StaticObject>>& m_staticObj)
 {
     
     constexpr float WALL_MARGIN = 50.f;
@@ -95,7 +95,7 @@ void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingOb
             for (int attempt = 0; attempt < maxTries; ++attempt)
             {
                 sf::Vector2f pos{ randX(rng), randYIn(region) };
-                auto temp = factory.create(type, pos, gamePlay);
+                auto temp = factory.create(type, pos);
                 if (isPositionFree(temp->getBounds(), m_staticObj, m_movingObj))
                 {
                     m_movingObj.emplace_back(std::move(temp));
@@ -128,7 +128,7 @@ void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingOb
     }
 }
 
-void Map::loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj, GamePlay* gamePlay)
+void Map::loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj)
 {
     constexpr float WALL_MARGIN = 50.f;
     constexpr int maxTries = 10;
@@ -144,7 +144,7 @@ void Map::loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj,
             for (int attempt = 0; attempt < maxTries; ++attempt)
             {
                 sf::Vector2f pos{ randX(rng), randY(rng) };
-                auto temp = factory.create(type, pos, gamePlay);
+                auto temp = factory.create(type, pos);
                 if (isPositionFree(temp->getBounds(), m_staticObj, m_movingObj))
                 {
                     m_staticObj.emplace_back(std::move(temp));
@@ -157,7 +157,7 @@ void Map::loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj,
     for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::OBSTACLE2);
     for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::OBSTACLE3);
 
-    auto temp = factory.create(RIFLE, sf::Vector2f(100, 100), gamePlay);
+    auto temp = factory.create(RIFLE, sf::Vector2f(100, 100));
     m_staticObj.emplace_back(std::move(temp));
 }
 
