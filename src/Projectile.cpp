@@ -27,7 +27,7 @@ Projectile::Projectile(sf::Vector2f position, sf::Vector2f direction, BulletOwne
 void Projectile::update(sf::Time deltaTime, sf::Vector2f playerPos)
 {
     if (!isActive) return;
-    this->updatePosition(m_direction * PROJECTILE_SPEED * deltaTime.asSeconds());
+    m_pic.move(m_direction * PROJECTILE_SPEED * deltaTime.asSeconds());
     m_elapsedTime += deltaTime.asSeconds();
 
     if (isExpired())
