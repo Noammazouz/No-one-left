@@ -61,14 +61,14 @@ enum ObjectType
 	OBSTACLE2,
 	OBSTACLE3,
 	BULLET,
-	BOMB,
 	TREE,
 	BUILDING,
 	EXPLOSION,
 	PROJECTILE,
 	RIFLE,
 	MACHINE_GUN,
-	BAZOOKA
+	BAZOOKA,
+	MEDKIT
 };
 
 enum BulletOwner
@@ -111,21 +111,20 @@ const int OBJECT_WIDTH = 25; //Width of the player sprite.
 const int EXPLOSION_DEC_LIVES = 30;
 const int PROJECTILE_DAMAGE = 5;
 const int NUM_OF_LIFE_OBSTACLE = 3;
+const int ADD_LIFE = 20;
 
 //-----float const section-----
 const float PLAYER_FRAME_TIME = 0.1f; //seconds per frame for the player animation
 const float CHANGE_DIRECTION_TIME = 0.f;
-const float PLAYER_SPEED = 500.f;
-const float ENEMY_SPEED = 200.f;
-//const float DEFUALT_WIDTH = 32.f;
-//const float DEFUALT_HEIGHT = 32.f;
+const float PLAYER_SPEED = 250.f;
+const float ENEMY_SPEED = 100.f;
 const float BOMB_TIME = 4.f;
 const float REMOVE_TIME = 10.f;
 const float WINDOW_RATIO = 0.92f;
 const float ROTATION_SPEED = 135.f; //degrees per second.
 const float PROJECTILE_SPEED = 750.f;
 const float DISTANCE = 90000.0f;
-const float FIRE_COOLDOWN = 0.2f;
+const float FIRE_COOLDOWN = 0.5f;
 const float PROJECTILE_AIR_TIME = 1.0f;
 
 //-----music and sound effects const section-----
@@ -162,10 +161,9 @@ const std::string BFS_ENEMY_RIFLE = "bfs_enemy_rifle";
 const std::string RIFLE_NAME = "rifle";
 const std::string MACHINE_GUN_NAME = "machine gun";
 const std::string BAZOOKA_NAME = "bazooka";
-const std::string BULLETS_NAME = "bullets";
+const std::string BULLETS_NAME = "Bullet";
 const std::string MED_KIT_NAME = "medkit";
 const std::string REMOVE_ENEMY_NAME = "remove enemy";
-const std::string ADD_LIFE_NAME = "add life";
 const std::string REMOVE_TIME_NAME = "remove time";
 
 //-----texture names const section-----

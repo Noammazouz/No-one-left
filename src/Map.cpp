@@ -52,7 +52,6 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
                 std::make_unique<Wall>(key, sf::Vector2f{ x,y })
             );
         }
-        // … else if for other object-types …
     }
 
     player.initialization(FIRST_PLAYER_POSITION, PLAYER_RIFLE, gamePlay);
@@ -67,6 +66,7 @@ void Map::loadlevelobj(std::vector<std::unique_ptr<UpdateableObject>>& m_movingO
     loadFromCSV(m_staticObj, player, gamePlay);
     loadEnemies(m_movingObj, m_staticObj);
     loadObstacles(m_staticObj, m_movingObj);
+    loadPresents(m_staticObj, m_movingObj);
 }
 
 //-----------------------------------------------------------------------------
@@ -157,8 +157,38 @@ void Map::loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj,
     for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::OBSTACLE2);
     for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::OBSTACLE3);
 
-    auto temp = factory.create(RIFLE, sf::Vector2f(100, 100));
-    m_staticObj.emplace_back(std::move(temp));
+}
+
+void Map::loadPresents(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj)
+{
+    constexpr float WALL_MARGIN = 50.f;
+    constexpr int maxTries = 10;
+    std::mt19937 rng{ std::random_device{}() };
+    std::uniform_real_distribution<float> randX(WALL_MARGIN, MAP_WIDTH - WALL_MARGIN);
+    std::uniform_real_distribution<float> randY(WALL_MARGIN, MAP_HEIGHT - WALL_MARGIN);
+
+    auto& factory = Factory<StaticObject>::instance();
+
+    auto tryPlaceObstacle = [&](ObjectType type)
+        {
+            for (int attempt = 0; attempt < maxTries; ++attempt)
+            {
+                sf::Vector2f pos{ randX(rng), randY(rng) };
+                auto temp = factory.create(type, pos);
+                if (isPositionFree(temp->getBounds(), m_staticObj, m_movingObj))
+                {
+                    m_staticObj.emplace_back(std::move(temp));
+                    break;
+                }
+            }
+        };
+
+    for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::RIFLE);
+    //for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::MACHINE_GUN);
+    //for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::BAZOOKA);
+    for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::BULLET);
+    for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::MEDKIT);
+
 }
 
 bool Map::isPositionFree(const sf::FloatRect& newBounds,

@@ -1,7 +1,8 @@
 #pragma once  
 
 //-----include section-----  
-#include "StaticObject.h"  
+#include "StaticObject.h"
+#include "Factory.h"
 
 //-----class section-----  
 class ItemsToCollect : public StaticObject  
