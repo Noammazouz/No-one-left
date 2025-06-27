@@ -20,7 +20,8 @@ void CollisionFactory::processCollision(GameObject& object1, GameObject& object2
     auto handler = lookup(typeid(object1), typeid(object2));
     if (!handler)
     {
-        throw UnknownCollision(object1, object2);
+        //throw UnknownCollision(object1, object2);
+        return;
     }
     handler(object1, object2);
 }

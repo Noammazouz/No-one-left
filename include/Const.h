@@ -111,7 +111,7 @@ const int PROJECTILE_DAMAGE = 5;
 //-----float const section-----
 const float PLAYER_FRAME_TIME = 0.1f; //seconds per frame for the player animation
 const float CHANGE_DIRECTION_TIME = 0.f;
-const float PLAYER_SPEED = 1250.f;
+const float PLAYER_SPEED = 500.f;
 const float ENEMY_SPEED = 300.f;
 const float DEFUALT_WIDTH = 32.f;
 const float DEFUALT_HEIGHT = 32.f;

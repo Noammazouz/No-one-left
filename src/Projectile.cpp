@@ -202,9 +202,9 @@ void handleBulletObstacleCollision(GameObject& obj1, GameObject& obj2)
     }
 }
 
-void handleBulletVSBulletCollision(GameObject& obj1, GameObject& obj2)
-{
-}
+//void handleBulletVSBulletCollision(GameObject& obj1, GameObject& obj2)
+//{
+//}
 
 //-----------------------------------------------------------------------------
 //Register bullet collision handlers.
@@ -226,7 +226,7 @@ void Projectile::registerBulletCollisions()
 
     collisionFactory.registerTypedCollision<Projectile, Obstacles>(handleBulletObstacleCollision);
 
-    collisionFactory.registerTypedCollision<Projectile, Projectile>(handleBulletVSBulletCollision);
+    //collisionFactory.registerTypedCollision<Projectile, Projectile>(handleBulletVSBulletCollision);
 
     registered = true;
 }

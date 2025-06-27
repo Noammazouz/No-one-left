@@ -206,7 +206,13 @@ void GamePlay::handleCollision()
 			if (movingObject1.checkCollision(movingObject2))
 			{
 				// This will look up the Enemy,Enemy handler you registered
-				collisionHandler.processCollision(movingObject1, movingObject2);
+				try {
+					collisionHandler.processCollision(movingObject1, movingObject2);
+				}
+				catch (const UnknownCollision& e) 
+				{
+					std::cerr << e.what() << std::endl;
+				}
 			}
 		}
 	}
