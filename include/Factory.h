@@ -7,7 +7,6 @@
 #include "GameObject.h"
 #include <SFML/Graphics.hpp>
 #include "Const.h"
-#include "GamePlay.h"
 
 //-----class section-----
 template <typename T>
@@ -20,7 +19,7 @@ public:
 		return instance;
 	}
   
-	using FuncType = std::unique_ptr<T>(*)(const sf::Vector2f&, GamePlay*);
+	using FuncType = std::unique_ptr<T>(*)(const sf::Vector2f&);
 
 	bool registerType(ObjectType t, FuncType f)
 	{
@@ -29,13 +28,13 @@ public:
 		
 	}
  
-	std::unique_ptr<T> create(ObjectType t, const sf::Vector2f& position, GamePlay* gamePlay) const
+	std::unique_ptr<T> create(ObjectType t, const sf::Vector2f& position) const
 	{
 		if (!m_map.contains(t))
 		{
 			return nullptr;
 		}
-		return m_map.at(t)(position, gamePlay);
+		return m_map.at(t)(position);
 	}
   
 private:

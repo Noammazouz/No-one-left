@@ -1,4 +1,5 @@
 #include "Infobar.h"
+#include "Enemy.h"
 #include <iostream>
 
 
@@ -7,11 +8,13 @@ Infobar::Infobar()
 	initializeLives();
 	initializeBullets();
 	initializeTime();
+	initializeNumOfEnemies();
 }
 
 //-----------------------------------------------------------------------------
 void Infobar::updateLives(int numberOfLives)
 {
+	if (numberOfLives < 0) return;
 	std::string temp = std::to_string(numberOfLives) + "%";
 	m_lifePercentages.setString(":" + temp);
 	decreaseLifeLevel(numberOfLives);
@@ -29,6 +32,11 @@ void Infobar::updateTime(sf::Time deltaTime)
 {
 	int minutes = deltaTime.asSeconds() / 60,
 		seconds = int(deltaTime.asSeconds()) % 60;
+	if (seconds < 0 && minutes < 0)
+	{
+		minutes = 0;
+		seconds = 0;
+	}
 
 	std::string temp = std::to_string(minutes) + ":" + std::to_string(seconds);
 
@@ -36,28 +44,13 @@ void Infobar::updateTime(sf::Time deltaTime)
 	
 }
 
-//-----------------------------------------------------------------------------
-//void Infobar::initializeBattery() {
-//	if (!batteryTexture.loadFromFile("path/to/spritesheet.png")) {
-//		// Handle error
-//	}
-//	batterySprite.setTexture(batteryTexture);
-//
-//	int frameWidth = 50; // Example width
-//	int frameHeight = 100; // Example height
-//	for (int i = 0; i < 6; ++i) {
-//		batteryFrames.push_back(sf::IntRect(i * frameWidth, 0, frameWidth, frameHeight));
-//	}
-//	batterySprite.setTextureRect(batteryFrames[0]);
-//}
-//
-//void Infobar::decreaseBatteryLevel() {
-//	if (currentFrame > 0) {
-//		currentFrame--;
-//		batterySprite.setTextureRect(batteryFrames[currentFrame]);
-//	}
-//}
+void Infobar::updateNumOfEnemiesAlive()
+{
+	std::string temp = std::to_string(Enemy::getNumOfEnemiesAlive()) + "/" + std::to_string(Enemy::getNumOfEnemiesAtTheStart());
+	m_Enemies.setString(":" + temp);
+}
 
+//------------------------------------------------------------------------------------------
 void Infobar::initializeLives()
 {
 	int frameWidth = 33; 
@@ -75,11 +68,13 @@ void Infobar::initializeLives()
 
 	m_lifePercentages.setCharacterSize(20);
 	m_lifePercentages.setFont(ResourcesManager::getInstance().getFont());
-	m_lifePercentages.setFillColor(sf::Color(128, 0, 128));
+	m_lifePercentages.setFillColor(FONT_COLOR);
 	m_lifePercentages.setOutlineColor(sf::Color::Black);
 	m_lifePercentages.setOutlineThickness(1);
 	m_lifePercentages.setPosition(sf::Vector2f(25, 110));
 }
+
+//------------------------------------------------------------------------------------------
 void Infobar::initializeBullets()
 {
 	m_bulletsIcon.setTexture(ResourcesManager::getInstance().getTexture(BULLETS_ICON));
@@ -95,6 +90,7 @@ void Infobar::initializeBullets()
 	m_BulletsAmount.setPosition(sf::Vector2f(34, 170));
 }
 
+//------------------------------------------------------------------------------------------
 void Infobar::initializeTime()
 {
 	m_timeIcon.setTexture(ResourcesManager::getInstance().getTexture(CLOCK_ICON));
@@ -111,6 +107,22 @@ void Infobar::initializeTime()
 }
 
 //-----------------------------------------------------------------------------
+void Infobar::initializeNumOfEnemies()
+{
+	m_enemiesIcon.setTexture(ResourcesManager::getInstance().getTexture(ENEMIES_ICON));
+	m_enemiesIcon.setOrigin(m_bulletsIcon.getGlobalBounds().width / 2, m_bulletsIcon.getGlobalBounds().height / 2);
+	m_enemiesIcon.setScale(0.1f, 0.1f); // Adjust scale as needed
+	m_enemiesIcon.setPosition(sf::Vector2f(3, 200));
+
+	m_Enemies.setCharacterSize(20);
+	m_Enemies.setFont(ResourcesManager::getInstance().getFont());
+	m_Enemies.setFillColor(FONT_COLOR);
+	m_Enemies.setOutlineColor(sf::Color::Black);
+	m_Enemies.setOutlineThickness(1);
+	m_Enemies.setPosition(sf::Vector2f(50, 225));
+}
+
+//-----------------------------------------------------------------------------
 void Infobar::draw(sf::RenderWindow& window)
 {
 	window.draw(m_timeIcon);
@@ -119,8 +131,11 @@ void Infobar::draw(sf::RenderWindow& window)
 	window.draw(m_lifePercentages);
 	window.draw(m_bulletsIcon);
 	window.draw(m_BulletsAmount);
+	window.draw(m_enemiesIcon);
+	window.draw(m_Enemies);
 }
 
+//------------------------------------------------------------------------------------------
 void Infobar::decreaseLifeLevel(float lifePercentage) 
 {
     // Assuming batteryFrames.size() is the total number of frames

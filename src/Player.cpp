@@ -6,7 +6,6 @@
 #include <AllDirectionsAttackBehavior.h>
 #include "Enemy.h"
 #include "Wall.h"
-#include "Explosion.h"
 #include "GamePlay.h"
 
 //-----static member initialization-----
@@ -128,6 +127,7 @@ bool Player::getWin() const
 void Player::incLife(int addLives)
 {
 	if (m_lives < NUM_OF_LIVES) m_lives += addLives;
+	if (m_lives > NUM_OF_LIVES) m_lives = NUM_OF_LIVES;
 }
 
 //------------------------------------------------------------------------------
@@ -157,16 +157,13 @@ void Player::addBullets(int bullets)
 //-----------------------------------------------------------------------------
 void Player::decBullets()
 {
-	if (m_bulletCount > 0)
-	{
-		m_bulletCount--;
-	}
+	m_bulletCount--;
 }
 
 //-----------------------------------------------------------------------------
 bool Player::isBulletsAvailable()
 {
-	if (m_bulletCount > 0)
+	if (m_bulletCount > MIN_BOUND_BULLETS)
 	{
 		return true;
 	}
@@ -184,7 +181,7 @@ void Player::handleShooting()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
-		if (m_shootClock.getElapsedTime() >= m_shootCooldown)
+		if (m_shootClock.getElapsedTime() >= m_shootCooldown && isBulletsAvailable())
 		{
 			m_gamePlay->addProjectile(this->getPosition(), m_attackBehavior->Attack(m_facingDirection), _PLAYER);
 			m_isShooting = true;
@@ -198,6 +195,30 @@ void Player::handleShooting()
 void Player::setAttackBehavior(std::unique_ptr<AttackBehavior> attackBehavior)
 {
 	m_attackBehavior = std::move(attackBehavior);
+}
+
+//------------------------------------------------------------------------------
+void Player::presentSound()
+{
+	m_gamePlay->playPresentSound();
+}
+
+//------------------------------------------------------------------------------
+void Player::medkitSound()
+{
+	m_gamePlay->playMedkitSound();
+}
+
+//------------------------------------------------------------------------------
+void Player::removeEnemyGift()
+{
+	m_gamePlay->removeEnemy();
+}
+
+//------------------------------------------------------------------------------
+void Player::removeTimeGift()
+{
+	m_gamePlay->decTime();
 }
 
 //------------------------------------------------------------------------------
@@ -228,11 +249,6 @@ void handlePlayerEnemyCollision(GameObject& obj1, GameObject& obj2)
 	if (player && enemy) 
 	{
 		//don't do anything if the player hit the enemy.
-		return;
-	}
-	else
-	{
-		std::cout << "Player-Enemy collision not handled properly!" << std::endl;
 		return;
 	}
 }
@@ -267,70 +283,36 @@ void handlePlayerWallCollision(GameObject& obj1, GameObject& obj2)
 		player->setPosition(player->getPrevLocation());
 		return;
 	}
-	else
-	{
-		std::cout << "Player-Wall collision not handled properly!" << std::endl;
-		return;
-	}
 }
 
 //------------------------------------------------------------------------------
 void handlePlayerObstaclesCollision(GameObject& obj1, GameObject& obj2)
 {
+	Player* player = nullptr;
+	Obstacles* obstacle = nullptr;
+
 	//Handle Player vs Wall collision (bidirectional)
-	if (auto* player = dynamic_cast<Player*>(&obj1))
+	if (auto* tempPlayer = dynamic_cast<Player*>(&obj1))
 	{
-		if (auto* wall = dynamic_cast<Obstacles*>(&obj2))
+		if (auto* tempObstacle = dynamic_cast<Obstacles*>(&obj2))
 		{
-			player->setPosition(player->getPrevLocation());
-			return;
+			player = tempPlayer;
+			obstacle = tempObstacle;
 		}
 	}
 	//Handle Wall vs Player collision (reverse direction)
-	if (auto* wall = dynamic_cast<Obstacles*>(&obj1))
-	{
-		if (auto* player = dynamic_cast<Player*>(&obj2))
-		{
-			player->setPosition(player->getPrevLocation());
-			return;
-		}
-	}
-}
-
-//------------------------------------------------------------------------------
-void handlePlayerExplosionCollision(GameObject& obj1, GameObject& obj2)
-{
-	Player* player = nullptr;
-	Explosion* explosion = nullptr;
-
-	//Handle Player vs Explosion collision (bidirectional)
-	if (auto* tempPlayer = dynamic_cast<Player*>(&obj1)) 
-	{
-		if (auto* tempExplosion = dynamic_cast<Explosion*>(&obj2)) 
-		{
-			player = tempPlayer;
-			explosion = tempExplosion;
-		}
-	}
-
-	//Handle Explosion vs Player collision (reverse direction)
-	if (auto* tempExplosion = dynamic_cast<Explosion*>(&obj1))
+	if (auto* tempObstacle = dynamic_cast<Obstacles*>(&obj1))
 	{
 		if (auto* tempPlayer = dynamic_cast<Player*>(&obj2))
 		{
 			player = tempPlayer;
-			explosion = tempExplosion;
+			obstacle = tempObstacle;
 		}
 	}
 
-	if (player && explosion) 
+	if (player && obstacle)
 	{
-		player->decLife(EXPLOSION_DEC_LIVES);
-		return;
-	}
-	else
-	{
-		std::cout << "Player-Explosion collision not handled properly!" << std::endl;
+		player->setPosition(player->getPrevLocation());
 		return;
 	}
 }
@@ -362,14 +344,10 @@ void handlePlayerRifleGiftCollision(GameObject& obj1, GameObject& obj2)
 
 	if(player && rifleGift) 
 	{
+		player->presentSound();
 		player->changeSpriteAnimation(PLAYER_RIFLE);
 		player->setShootCooldown(RIFLE_NAME); //Set the shoot cooldown for rifle.
 		rifleGift->setLife(true); //Mark the gift as collected.
-		return;
-	}
-	else
-	{
-		std::cout << "Player-RifleGift collision not handled properly!" << std::endl;
 		return;
 	}
 }
@@ -401,14 +379,10 @@ void handlePlayerMachineGunGiftCollision(GameObject& obj1, GameObject& obj2)
 
 	if (player && machineGunGift)
 	{
+		player->presentSound();
 		player->changeSpriteAnimation(PLAYER_MACHINE_GUN);
 		player->setShootCooldown(MACHINE_GUN_NAME); //Set the shoot cooldown for machine-gun.
 		machineGunGift->setLife(true); //Mark the gift as collected.
-		return;
-	}
-	else
-	{	
-		std::cout << "Player-MachineGunGift collision not handled properly!" << std::endl;
 		return;
 	}
 }
@@ -440,17 +414,148 @@ void handlePlayerBazookaGiftCollision(GameObject& obj1, GameObject& obj2)
 
 	if (player && bazookaGift) 
 	{	
+		player->presentSound();
 		player->changeSpriteAnimation(PLAYER_BAZOOKA);
 		player->setShootCooldown(BAZOOKA_NAME); //Set the shoot cooldown for bazooka.
 		bazookaGift->setLife(true); //Mark the gift as collected.
 		return;
 	}
-	else
+}
+
+//------------------------------------------------------------------------------
+void handlePlayerBulletsGiftCollision(GameObject& obj1, GameObject& obj2)
+{
+	Player* player = nullptr;
+	BulletsGift* bullentsGift = nullptr;
+
+	//Handle Player vs Bazooka Gift collision (bidirectional)
+	if (auto* tempPlayer = dynamic_cast<Player*>(&obj1))
 	{
-		std::cout << "Player-BazookaGift collision not handled properly!" << std::endl;
+		if (auto* tempBullentsGift = dynamic_cast<BulletsGift*>(&obj2))
+		{
+			player = tempPlayer;
+			bullentsGift = tempBullentsGift;
+		}
+	}
+	//Handle Bazooka Gift vs Player collision (reverse direction)
+	if (auto* tempBullentsGift = dynamic_cast<BulletsGift*>(&obj1))
+	{
+		if (auto* tempPlayer = dynamic_cast<Player*>(&obj2))
+		{
+			player = tempPlayer;
+			bullentsGift = tempBullentsGift;
+		}
+	}
+
+	if (player && bullentsGift)
+	{
+		player->presentSound();
+		player->addBullets(NUM_OF_BULLETS);
+		bullentsGift->setLife(true); //Mark the gift as collected.
 		return;
 	}
 }
+
+//------------------------------------------------------------------------------
+void handlePlayerMedkitGiftCollision(GameObject& obj1, GameObject& obj2)
+{
+	Player* player = nullptr;
+	MedkitGift* medkitGift = nullptr;
+
+	//Handle Player vs Bazooka Gift collision (bidirectional)
+	if (auto* tempPlayer = dynamic_cast<Player*>(&obj1))
+	{
+		if (auto* tempMedkitsGift = dynamic_cast<MedkitGift*>(&obj2))
+		{
+			player = tempPlayer;
+			medkitGift = tempMedkitsGift;
+		}
+	}
+	//Handle Bazooka Gift vs Player collision (reverse direction)
+	if (auto* tempMedkitsGift = dynamic_cast<MedkitGift*>(&obj1))
+	{
+		if (auto* tempPlayer = dynamic_cast<Player*>(&obj2))
+		{
+			player = tempPlayer;
+			medkitGift = tempMedkitsGift;
+		}
+	}
+
+	if (player && medkitGift)
+	{
+		player->medkitSound();
+		player->incLife(ADD_LIFE);
+		medkitGift->setLife(true); //Mark the gift as collected.
+		return;
+	}
+}
+
+//------------------------------------------------------------------------------
+void handlePlayerRemoveTimeGiftCollision(GameObject& obj1, GameObject& obj2)
+{
+	Player* player = nullptr;
+	RemoveTime* RemoveTimeGift = nullptr;
+
+	if (auto* tempPlayer = dynamic_cast<Player*>(&obj1))
+	{
+		if (auto* tempRemoveTimeGift = dynamic_cast<RemoveTime*>(&obj2))
+		{
+			player = tempPlayer;
+			RemoveTimeGift = tempRemoveTimeGift;
+		}
+	}
+
+	if (auto* tempRemoveTimeGift = dynamic_cast<RemoveTime*>(&obj1))
+	{
+		if (auto* tempPlayer = dynamic_cast<Player*>(&obj2))
+		{
+			player = tempPlayer;
+			RemoveTimeGift = tempRemoveTimeGift;
+		}
+	}
+
+	if (player && RemoveTimeGift)
+	{
+		player->presentSound();
+		player->removeTimeGift();
+		RemoveTimeGift->setLife(true); 
+		return;
+	}
+}
+
+//------------------------------------------------------------------------------
+void handlePlayerRemoveEnemyGiftCollision(GameObject& obj1, GameObject& obj2)
+{
+	Player* player = nullptr;
+	RemoveEnemy* RemoveEnemyGift = nullptr;
+
+	if (auto* tempPlayer = dynamic_cast<Player*>(&obj1))
+	{
+		if (auto* tempRemoveEnemyGift = dynamic_cast<RemoveEnemy*>(&obj2))
+		{
+			player = tempPlayer;
+			RemoveEnemyGift = tempRemoveEnemyGift;
+		}
+	}
+
+	if (auto* tempRemoveEnemyGift = dynamic_cast<RemoveEnemy*>(&obj1))
+	{
+		if (auto* tempPlayer = dynamic_cast<Player*>(&obj2))
+		{
+			player = tempPlayer;
+			RemoveEnemyGift = tempRemoveEnemyGift;
+		}
+	}
+
+	if (player && RemoveEnemyGift)
+	{
+		player->presentSound();
+		player->removeEnemyGift();
+		RemoveEnemyGift->setLife(true); 
+		return;
+	}
+}
+
 
 //------------------------------------------------------------------------------
 static bool g_playerCollisionRegistered = []() {
@@ -458,9 +563,12 @@ static bool g_playerCollisionRegistered = []() {
 	factory.registerTypedCollision<Player, Enemy>(handlePlayerEnemyCollision);
 	factory.registerTypedCollision<Player, Wall>(handlePlayerWallCollision);
 	factory.registerTypedCollision<Player, Obstacles>(handlePlayerObstaclesCollision);
-	factory.registerTypedCollision<Player, Explosion>(handlePlayerExplosionCollision);
 	factory.registerTypedCollision<Player, RifleGift>(handlePlayerRifleGiftCollision);
 	factory.registerTypedCollision<Player, MachineGunGift>(handlePlayerMachineGunGiftCollision);
 	factory.registerTypedCollision<Player, BazookaGift>(handlePlayerRifleGiftCollision);
+	factory.registerTypedCollision<Player, BulletsGift>(handlePlayerBulletsGiftCollision);
+	factory.registerTypedCollision<Player, MedkitGift>(handlePlayerMedkitGiftCollision);
+	factory.registerTypedCollision<Player, RemoveTime>(handlePlayerRemoveTimeGiftCollision);
+	factory.registerTypedCollision<Player, RemoveEnemy>(handlePlayerRemoveEnemyGiftCollision);
 	return true;
 	}();

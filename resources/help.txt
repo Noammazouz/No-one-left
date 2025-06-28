@@ -10,9 +10,11 @@
 
  HOW TO PLAY:
  Eliminate all enemies to win the game and avoid their fire.
- 3 ifferent levels of difficulty.
+ 3 different levels of difficulty.
  Each enemy moves and shoots differently.
  Use obstacles to your advantage (for cover or to block enemeis).
+ The obstacles have 3 lifes.
+ Shoot the wall to distroy it.
 
 
  TIPS:

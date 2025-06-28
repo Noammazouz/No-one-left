@@ -8,7 +8,6 @@
 class RemoveEnemy : public ItemsToCollect
 {
 public:
-	RemoveEnemy(std::string name, const sf::Vector2f& position);
-	~RemoveEnemy() = default;
-
+	RemoveEnemy(const std::string& name, const sf::Vector2f& position);
+	virtual ~RemoveEnemy() = default;
 };

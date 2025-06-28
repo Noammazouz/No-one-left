@@ -36,13 +36,11 @@ std::vector<sf::Text> ResourcesManager::getHelpText() const
 const sf::Texture& ResourcesManager::getTexture(std::string name) const
 {
 	std::string errorMessage = "Could not find texture: " + name;
-	//std::cout << "Getting texture: " << name << std::endl;
     auto it = m_textures.find(name);
     if (it == m_textures.end())
     {
         throw std::runtime_error(errorMessage);
     }
-	//std::cout << "Found texture: " << name << std::endl;
     return it->second;
 }
 
@@ -66,12 +64,9 @@ void ResourcesManager::loadTexture()
         {"resume", "resume.png"},
         {"help screen", "help screen.png"},
         {"return", "return.png"},
-        {"SimpleEnemy", "Enemy.png"},
-        {"SmartEnemy", "Enemy.png"},
         {"simple_enemy_rifle", "simple_enemy_rifle.png"},
         {"smart_enemy_rifle", "smart_enemy_rifle.png"},
         {"bfs_enemy_rifle", "bfs_enemy_rifle.png"},
-        {"BfsEnemy", "boss.png"},
         {"life", "life.png"},
         {"bulletIcon", "bulletIcon.png"},
         {"clock", "clock.png"},
@@ -84,7 +79,10 @@ void ResourcesManager::loadTexture()
         {"projectile", "Sprite_Effects_Exhaust_02_000.png"},
         {"rifle", "rifle.png"},
         {"medkit", "medkit.png"},
-        {"Bullet", "Bullet.png"}
+        {"Bullet", "Bullet.png"},
+        {"remove time", "clock.png"},
+        {"remove enemy", "skull.png"},
+        {"enemeis icon", "enemiesIcon.png"}
     };
 
     for (const auto& [name, filePath] : textures)
@@ -123,9 +121,8 @@ void ResourcesManager::initializeMusic()
     std::vector<std::pair<std::string, std::string>> music =
     {
         {"present", "present.ogg"},
-        {"shot", "shot.ogg"},
+        {"shoot", "shoot.ogg"},
         {"death", "death.ogg"},
-        {"explosion", "explosion.ogg"},
         {"health", "addHealth.ogg"},
         {"win sound effect", "win.ogg"}
     };

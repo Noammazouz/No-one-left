@@ -61,14 +61,16 @@ enum ObjectType
 	OBSTACLE2,
 	OBSTACLE3,
 	BULLET,
-	BOMB,
 	TREE,
 	BUILDING,
 	EXPLOSION,
 	PROJECTILE,
 	RIFLE,
 	MACHINE_GUN,
-	BAZOOKA
+	BAZOOKA,
+	MEDKIT,
+	REMOVE_ENEMY,
+	REMOVE_TIME
 };
 
 enum BulletOwner
@@ -93,22 +95,15 @@ enum SectionType
 //-----int const section-----
 const int MAP_WIDTH = 5000;
 const int MAP_HEIGHT = 5000;
-const int SECTION_SIZE = 100;
-const int LOCAL_GRID_SIZE = 10;
 const int START_WINDOW_BUTTONS_NUM = 3;
 const int FONT_CHARACTERS_SIZE = 26;
 const int END_GAME = 0;
 const int NUM_OF_BUTTON = 4;
 const int NUM_OF_LIVES = 100;
-const int POINT_FOR_ENEMY = 3;
-const int ENDING_LEVEL = 25;
-const int KILL_ENEMY = 5;
 const int NUM_OF_DIRECTION = 4;
 const int NUM_OF_EXPLOSION = 5;
 const int NUM_OF_DIRECTIONS = 8;
 const int NUM_OF_BULLETS = 29;
-const int ONE_DIRECTION_BULLET = 1;
-const int ALL_DIRECTIONS_BULLETS = 8;
 const int NUM_OF_STUPID_ENEMY = 5;
 const int NUM_OF_SMART_ENEMY = 10;
 const int MAX_BULLETS = 29; //Maximum number of bullets that a gun have.
@@ -118,21 +113,20 @@ const int OBJECT_WIDTH = 25; //Width of the player sprite.
 const int EXPLOSION_DEC_LIVES = 30;
 const int PROJECTILE_DAMAGE = 5;
 const int NUM_OF_LIFE_OBSTACLE = 3;
+const int ADD_LIFE = 20;
 
 //-----float const section-----
 const float PLAYER_FRAME_TIME = 0.1f; //seconds per frame for the player animation
 const float CHANGE_DIRECTION_TIME = 0.f;
-const float PLAYER_SPEED = 1250.f;
-const float ENEMY_SPEED = 300.f;
-const float DEFUALT_WIDTH = 32.f;
-const float DEFUALT_HEIGHT = 32.f;
+const float PLAYER_SPEED = 250.f;
+const float ENEMY_SPEED = 100.f;
 const float BOMB_TIME = 4.f;
-const float REMOVE_TIME = 10.f;
+const float TIME_TO_REMOVE = 10.f;
 const float WINDOW_RATIO = 0.92f;
 const float ROTATION_SPEED = 135.f; //degrees per second.
 const float PROJECTILE_SPEED = 750.f;
 const float DISTANCE = 90000.0f;
-const float FIRE_COOLDOWN = 0.2f;
+const float FIRE_COOLDOWN = 0.5f;
 const float PROJECTILE_AIR_TIME = 1.0f;
 
 //-----music and sound effects const section-----
@@ -169,10 +163,9 @@ const std::string BFS_ENEMY_RIFLE = "bfs_enemy_rifle";
 const std::string RIFLE_NAME = "rifle";
 const std::string MACHINE_GUN_NAME = "machine gun";
 const std::string BAZOOKA_NAME = "bazooka";
-const std::string BULLETS_NAME = "bullets";
+const std::string BULLETS_NAME = "Bullet";
 const std::string MED_KIT_NAME = "medkit";
 const std::string REMOVE_ENEMY_NAME = "remove enemy";
-const std::string ADD_LIFE_NAME = "add life";
 const std::string REMOVE_TIME_NAME = "remove time";
 
 //-----texture names const section-----
@@ -192,6 +185,7 @@ const std::string WIN_SCREEN_BACKGROUND = "winning screen";
 const std::string LIFE_ICON = "life";
 const std::string BULLETS_ICON = "bulletIcon";
 const std::string CLOCK_ICON = "clock";
+const std::string ENEMIES_ICON = "enemeis icon";
 
 //-----color const section-----
 const sf::Color FONT_COLOR = sf::Color(128, 0, 128);

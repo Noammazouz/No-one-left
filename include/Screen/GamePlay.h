@@ -9,7 +9,6 @@
 #include <stack>
 #include "Map.h"
 #include "Player.h"
-#include "Bombs.h"
 #include "Enemy.h"
 #include "ResourcesManager.h"
 #include "Const.h"
@@ -17,7 +16,6 @@
 #include "StaticObject.h"
 #include "GameObject.h"
 #include "Infobar.h"
-#include "Explosion.h"
 #include "CollisionFactory.h"
 #include "Projectile.h"
 
@@ -32,7 +30,10 @@ public:
 	virtual void run(sf::RenderWindow& window, int& m_currrentScreen) override;
 	virtual void handleMouseClick(const sf::Vector2f& clickPos, int& screenState) override;
 	void addProjectile(const sf::Vector2f& pos, std::vector<sf::Vector2f> directions, BulletOwner owner);
-	void addGrenade();
+	void playPresentSound();
+	void playMedkitSound();
+	void removeEnemy();
+	void decTime();
 
 protected:
 	void initButtons() override;
@@ -41,17 +42,11 @@ private:
 	void move(sf::Clock& clock);
 	void handleCollision();
 	void handleErasing();
-	void explosion();
-	void calculateScore();
 	void setExpoDirection(int index);
-	void checkExpo();
-	void checkValidDraw();
 	void handleLoadingLevel();
 	void handleScoreBoard();
-	void removeGuard();
 	void resetGame();
 	void resetGameOverStates();
-	void decTime();
 	void handleWinState(int& m_currentScreen);
 	void handleDeathState(int& m_currentScreen);
 	sf::Vector2f clampViewPosition(const sf::FloatRect& bounds);
