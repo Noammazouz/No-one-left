@@ -1,4 +1,5 @@
 #include "Infobar.h"
+#include "Enemy.h"
 #include <iostream>
 
 
@@ -7,6 +8,7 @@ Infobar::Infobar()
 	initializeLives();
 	initializeBullets();
 	initializeTime();
+	initializeNumOfEnemies();
 }
 
 //-----------------------------------------------------------------------------
@@ -30,11 +32,22 @@ void Infobar::updateTime(sf::Time deltaTime)
 {
 	int minutes = deltaTime.asSeconds() / 60,
 		seconds = int(deltaTime.asSeconds()) % 60;
+	if (seconds < 0 && minutes < 0)
+	{
+		minutes = 0;
+		seconds = 0;
+	}
 
 	std::string temp = std::to_string(minutes) + ":" + std::to_string(seconds);
 
 	m_Time.setString(":" + temp);
 	
+}
+
+void Infobar::updateNumOfEnemiesAlive()
+{
+	std::string temp = std::to_string(Enemy::getNumOfEnemiesAlive()) + "/" + std::to_string(Enemy::getNumOfEnemiesAtTheStart());
+	m_Enemies.setString(":" + temp);
 }
 
 //------------------------------------------------------------------------------------------
@@ -60,6 +73,8 @@ void Infobar::initializeLives()
 	m_lifePercentages.setOutlineThickness(1);
 	m_lifePercentages.setPosition(sf::Vector2f(25, 110));
 }
+
+//------------------------------------------------------------------------------------------
 void Infobar::initializeBullets()
 {
 	m_bulletsIcon.setTexture(ResourcesManager::getInstance().getTexture(BULLETS_ICON));
@@ -75,6 +90,7 @@ void Infobar::initializeBullets()
 	m_BulletsAmount.setPosition(sf::Vector2f(34, 170));
 }
 
+//------------------------------------------------------------------------------------------
 void Infobar::initializeTime()
 {
 	m_timeIcon.setTexture(ResourcesManager::getInstance().getTexture(CLOCK_ICON));
@@ -91,6 +107,22 @@ void Infobar::initializeTime()
 }
 
 //-----------------------------------------------------------------------------
+void Infobar::initializeNumOfEnemies()
+{
+	m_enemiesIcon.setTexture(ResourcesManager::getInstance().getTexture(ENEMIES_ICON));
+	m_enemiesIcon.setOrigin(m_bulletsIcon.getGlobalBounds().width / 2, m_bulletsIcon.getGlobalBounds().height / 2);
+	m_enemiesIcon.setScale(0.1f, 0.1f); // Adjust scale as needed
+	m_enemiesIcon.setPosition(sf::Vector2f(3, 200));
+
+	m_Enemies.setCharacterSize(20);
+	m_Enemies.setFont(ResourcesManager::getInstance().getFont());
+	m_Enemies.setFillColor(FONT_COLOR);
+	m_Enemies.setOutlineColor(sf::Color::Black);
+	m_Enemies.setOutlineThickness(1);
+	m_Enemies.setPosition(sf::Vector2f(50, 225));
+}
+
+//-----------------------------------------------------------------------------
 void Infobar::draw(sf::RenderWindow& window)
 {
 	window.draw(m_timeIcon);
@@ -99,8 +131,11 @@ void Infobar::draw(sf::RenderWindow& window)
 	window.draw(m_lifePercentages);
 	window.draw(m_bulletsIcon);
 	window.draw(m_BulletsAmount);
+	window.draw(m_enemiesIcon);
+	window.draw(m_Enemies);
 }
 
+//------------------------------------------------------------------------------------------
 void Infobar::decreaseLifeLevel(float lifePercentage) 
 {
     // Assuming batteryFrames.size() is the total number of frames

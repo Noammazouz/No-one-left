@@ -25,10 +25,10 @@ public:
 
 	void takeDamage(int damage);
 	bool isAlive() const;
-	int getNumOfLives() const;
 
 	static int getNumOfStartingEnemies(const std::vector<std::unique_ptr<UpdateableObject>>& movingObjs);
 	static int getNumOfEnemiesAlive();
+	static int getNumOfEnemiesAtTheStart();
 
 private:
 	//void checktimer();

@@ -36,13 +36,11 @@ std::vector<sf::Text> ResourcesManager::getHelpText() const
 const sf::Texture& ResourcesManager::getTexture(std::string name) const
 {
 	std::string errorMessage = "Could not find texture: " + name;
-	//std::cout << "Getting texture: " << name << std::endl;
     auto it = m_textures.find(name);
     if (it == m_textures.end())
     {
         throw std::runtime_error(errorMessage);
     }
-	//std::cout << "Found texture: " << name << std::endl;
     return it->second;
 }
 
@@ -82,8 +80,9 @@ void ResourcesManager::loadTexture()
         {"rifle", "rifle.png"},
         {"medkit", "medkit.png"},
         {"Bullet", "Bullet.png"},
-        { "remove time", "clock.png" },
-        { "remove enemy", "skull.png" }
+        {"remove time", "clock.png"},
+        {"remove enemy", "skull.png"},
+        {"enemeis icon", "enemiesIcon.png"}
     };
 
     for (const auto& [name, filePath] : textures)

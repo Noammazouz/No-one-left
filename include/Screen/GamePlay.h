@@ -30,9 +30,11 @@ public:
 	virtual void run(sf::RenderWindow& window, int& m_currrentScreen) override;
 	virtual void handleMouseClick(const sf::Vector2f& clickPos, int& screenState) override;
 	void addProjectile(const sf::Vector2f& pos, std::vector<sf::Vector2f> directions, BulletOwner owner);
+	void playPresentSound();
 	void playMedkitSound();
 	void removeEnemy();
 	void decTime();
+
 protected:
 	void initButtons() override;
 

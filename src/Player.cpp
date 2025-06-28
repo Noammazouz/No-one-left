@@ -198,6 +198,12 @@ void Player::setAttackBehavior(std::unique_ptr<AttackBehavior> attackBehavior)
 }
 
 //------------------------------------------------------------------------------
+void Player::presentSound()
+{
+	m_gamePlay->playPresentSound();
+}
+
+//------------------------------------------------------------------------------
 void Player::medkitSound()
 {
 	m_gamePlay->playMedkitSound();
@@ -338,6 +344,7 @@ void handlePlayerRifleGiftCollision(GameObject& obj1, GameObject& obj2)
 
 	if(player && rifleGift) 
 	{
+		player->presentSound();
 		player->changeSpriteAnimation(PLAYER_RIFLE);
 		player->setShootCooldown(RIFLE_NAME); //Set the shoot cooldown for rifle.
 		rifleGift->setLife(true); //Mark the gift as collected.
@@ -372,6 +379,7 @@ void handlePlayerMachineGunGiftCollision(GameObject& obj1, GameObject& obj2)
 
 	if (player && machineGunGift)
 	{
+		player->presentSound();
 		player->changeSpriteAnimation(PLAYER_MACHINE_GUN);
 		player->setShootCooldown(MACHINE_GUN_NAME); //Set the shoot cooldown for machine-gun.
 		machineGunGift->setLife(true); //Mark the gift as collected.
@@ -406,6 +414,7 @@ void handlePlayerBazookaGiftCollision(GameObject& obj1, GameObject& obj2)
 
 	if (player && bazookaGift) 
 	{	
+		player->presentSound();
 		player->changeSpriteAnimation(PLAYER_BAZOOKA);
 		player->setShootCooldown(BAZOOKA_NAME); //Set the shoot cooldown for bazooka.
 		bazookaGift->setLife(true); //Mark the gift as collected.
@@ -440,6 +449,7 @@ void handlePlayerBulletsGiftCollision(GameObject& obj1, GameObject& obj2)
 
 	if (player && bullentsGift)
 	{
+		player->presentSound();
 		player->addBullets(NUM_OF_BULLETS);
 		bullentsGift->setLife(true); //Mark the gift as collected.
 		return;
@@ -506,9 +516,9 @@ void handlePlayerRemoveTimeGiftCollision(GameObject& obj1, GameObject& obj2)
 
 	if (player && RemoveTimeGift)
 	{
-		//sound
+		player->presentSound();
 		player->removeTimeGift();
-		RemoveTimeGift->setLife(true); //Mark the gift as collected.
+		RemoveTimeGift->setLife(true); 
 		return;
 	}
 }
@@ -539,9 +549,9 @@ void handlePlayerRemoveEnemyGiftCollision(GameObject& obj1, GameObject& obj2)
 
 	if (player && RemoveEnemyGift)
 	{
-		//sound
+		player->presentSound();
 		player->removeEnemyGift();
-		RemoveEnemyGift->setLife(true); //Mark the gift as collected.
+		RemoveEnemyGift->setLife(true); 
 		return;
 	}
 }

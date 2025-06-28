@@ -121,7 +121,7 @@ const float CHANGE_DIRECTION_TIME = 0.f;
 const float PLAYER_SPEED = 250.f;
 const float ENEMY_SPEED = 100.f;
 const float BOMB_TIME = 4.f;
-const float TIME_TO_REMOVE = 5.f;
+const float TIME_TO_REMOVE = 10.f;
 const float WINDOW_RATIO = 0.92f;
 const float ROTATION_SPEED = 135.f; //degrees per second.
 const float PROJECTILE_SPEED = 750.f;
@@ -185,6 +185,7 @@ const std::string WIN_SCREEN_BACKGROUND = "winning screen";
 const std::string LIFE_ICON = "life";
 const std::string BULLETS_ICON = "bulletIcon";
 const std::string CLOCK_ICON = "clock";
+const std::string ENEMIES_ICON = "enemeis icon";
 
 //-----color const section-----
 const sf::Color FONT_COLOR = sf::Color(128, 0, 128);
