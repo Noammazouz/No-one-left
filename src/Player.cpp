@@ -203,6 +203,11 @@ void Player::presentSound()
 	m_gamePlay->playPresentSound();
 }
 
+//------------------------------------------------------------------------------
+void Player::medkitSound()
+{
+	m_gamePlay->playMedkitSound();
+}
 
 //------------------------------------------------------------------------------
 void Player::removeEnemyGift()
@@ -339,6 +344,7 @@ void handlePlayerRifleGiftCollision(GameObject& obj1, GameObject& obj2)
 
 	if(player && rifleGift) 
 	{
+		player->presentSound();
 		player->changeSpriteAnimation(PLAYER_RIFLE);
 		player->setShootCooldown(RIFLE_NAME); //Set the shoot cooldown for rifle.
 		rifleGift->setLife(true); //Mark the gift as collected.
@@ -373,6 +379,7 @@ void handlePlayerMachineGunGiftCollision(GameObject& obj1, GameObject& obj2)
 
 	if (player && machineGunGift)
 	{
+		player->presentSound();
 		player->changeSpriteAnimation(PLAYER_MACHINE_GUN);
 		player->setShootCooldown(MACHINE_GUN_NAME); //Set the shoot cooldown for machine-gun.
 		machineGunGift->setLife(true); //Mark the gift as collected.
@@ -407,6 +414,7 @@ void handlePlayerBazookaGiftCollision(GameObject& obj1, GameObject& obj2)
 
 	if (player && bazookaGift) 
 	{	
+		player->presentSound();
 		player->changeSpriteAnimation(PLAYER_BAZOOKA);
 		player->setShootCooldown(BAZOOKA_NAME); //Set the shoot cooldown for bazooka.
 		bazookaGift->setLife(true); //Mark the gift as collected.
@@ -441,6 +449,7 @@ void handlePlayerBulletsGiftCollision(GameObject& obj1, GameObject& obj2)
 
 	if (player && bullentsGift)
 	{
+		player->presentSound();
 		player->addBullets(NUM_OF_BULLETS);
 		bullentsGift->setLife(true); //Mark the gift as collected.
 		return;
@@ -474,7 +483,7 @@ void handlePlayerMedkitGiftCollision(GameObject& obj1, GameObject& obj2)
 
 	if (player && medkitGift)
 	{
-		player->presentSound();
+		player->medkitSound();
 		player->incLife(ADD_LIFE);
 		medkitGift->setLife(true); //Mark the gift as collected.
 		return;
