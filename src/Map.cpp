@@ -188,6 +188,8 @@ void Map::loadPresents(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, 
     //for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::BAZOOKA);
     for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::BULLET);
     for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::MEDKIT);
+    for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::REMOVE_ENEMY);
+    for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::REMOVE_TIME);
 
 }
 
