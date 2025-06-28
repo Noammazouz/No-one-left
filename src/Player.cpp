@@ -204,6 +204,18 @@ void Player::medkitSound()
 }
 
 //------------------------------------------------------------------------------
+void Player::removeEnemyGift()
+{
+	m_gamePlay->removeEnemy();
+}
+
+//------------------------------------------------------------------------------
+void Player::removeTimeGift()
+{
+	m_gamePlay->decTime();
+}
+
+//------------------------------------------------------------------------------
 void handlePlayerEnemyCollision(GameObject& obj1, GameObject& obj2)
 {
 	Player* player = nullptr;
@@ -469,6 +481,73 @@ void handlePlayerMedkitGiftCollision(GameObject& obj1, GameObject& obj2)
 }
 
 //------------------------------------------------------------------------------
+void handlePlayerRemoveTimeGiftCollision(GameObject& obj1, GameObject& obj2)
+{
+	Player* player = nullptr;
+	RemoveTime* RemoveTimeGift = nullptr;
+
+	if (auto* tempPlayer = dynamic_cast<Player*>(&obj1))
+	{
+		if (auto* tempRemoveTimeGift = dynamic_cast<RemoveTime*>(&obj2))
+		{
+			player = tempPlayer;
+			RemoveTimeGift = tempRemoveTimeGift;
+		}
+	}
+
+	if (auto* tempRemoveTimeGift = dynamic_cast<RemoveTime*>(&obj1))
+	{
+		if (auto* tempPlayer = dynamic_cast<Player*>(&obj2))
+		{
+			player = tempPlayer;
+			RemoveTimeGift = tempRemoveTimeGift;
+		}
+	}
+
+	if (player && RemoveTimeGift)
+	{
+		//sound
+		player->removeTimeGift();
+		RemoveTimeGift->setLife(true); //Mark the gift as collected.
+		return;
+	}
+}
+
+//------------------------------------------------------------------------------
+void handlePlayerRemoveEnemyGiftCollision(GameObject& obj1, GameObject& obj2)
+{
+	Player* player = nullptr;
+	RemoveEnemy* RemoveEnemyGift = nullptr;
+
+	if (auto* tempPlayer = dynamic_cast<Player*>(&obj1))
+	{
+		if (auto* tempRemoveEnemyGift = dynamic_cast<RemoveEnemy*>(&obj2))
+		{
+			player = tempPlayer;
+			RemoveEnemyGift = tempRemoveEnemyGift;
+		}
+	}
+
+	if (auto* tempRemoveEnemyGift = dynamic_cast<RemoveEnemy*>(&obj1))
+	{
+		if (auto* tempPlayer = dynamic_cast<Player*>(&obj2))
+		{
+			player = tempPlayer;
+			RemoveEnemyGift = tempRemoveEnemyGift;
+		}
+	}
+
+	if (player && RemoveEnemyGift)
+	{
+		//sound
+		player->removeEnemyGift();
+		RemoveEnemyGift->setLife(true); //Mark the gift as collected.
+		return;
+	}
+}
+
+
+//------------------------------------------------------------------------------
 static bool g_playerCollisionRegistered = []() {
 	auto& factory = CollisionFactory::getInstance();
 	factory.registerTypedCollision<Player, Enemy>(handlePlayerEnemyCollision);
@@ -479,5 +558,7 @@ static bool g_playerCollisionRegistered = []() {
 	factory.registerTypedCollision<Player, BazookaGift>(handlePlayerRifleGiftCollision);
 	factory.registerTypedCollision<Player, BulletsGift>(handlePlayerBulletsGiftCollision);
 	factory.registerTypedCollision<Player, MedkitGift>(handlePlayerMedkitGiftCollision);
+	factory.registerTypedCollision<Player, RemoveTime>(handlePlayerRemoveTimeGiftCollision);
+	factory.registerTypedCollision<Player, RemoveEnemy>(handlePlayerRemoveEnemyGiftCollision);
 	return true;
 	}();

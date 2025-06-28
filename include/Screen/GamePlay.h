@@ -31,7 +31,8 @@ public:
 	virtual void handleMouseClick(const sf::Vector2f& clickPos, int& screenState) override;
 	void addProjectile(const sf::Vector2f& pos, std::vector<sf::Vector2f> directions, BulletOwner owner);
 	void playMedkitSound();
-
+	void removeEnemy();
+	void decTime();
 protected:
 	void initButtons() override;
 
@@ -42,10 +43,8 @@ private:
 	void setExpoDirection(int index);
 	void handleLoadingLevel();
 	void handleScoreBoard();
-	void removeGuard();
 	void resetGame();
 	void resetGameOverStates();
-	void decTime();
 	void handleWinState(int& m_currentScreen);
 	void handleDeathState(int& m_currentScreen);
 	sf::Vector2f clampViewPosition(const sf::FloatRect& bounds);

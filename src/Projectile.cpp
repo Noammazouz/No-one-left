@@ -93,15 +93,18 @@ void handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2)
        }  
    }  
 
-   if (bulletPtr && enemyPtr) 
+   if (bulletPtr && enemyPtr)
    {  
        //Only player bullets can kill enemies
        if (bulletPtr->getOwner() == _PLAYER)  
        {  
-           //std::cout << "Player bullet hit enemy - Enemy killed!" << std::endl;  
-           enemyPtr->setLife(true); //Mark enemy as dead  
+           enemyPtr->takeDamage(1);
            bulletPtr->setActive(false); //Deactivate bullet  
            bulletPtr->setLife(true);
+           if (!enemyPtr->isAlive())
+           {
+               enemyPtr->setLife(true); //Mark enemy as dead  
+           }
        }  
    }  
 }

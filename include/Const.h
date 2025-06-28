@@ -68,7 +68,9 @@ enum ObjectType
 	RIFLE,
 	MACHINE_GUN,
 	BAZOOKA,
-	MEDKIT
+	MEDKIT,
+	REMOVE_ENEMY,
+	REMOVE_TIME
 };
 
 enum BulletOwner
@@ -119,7 +121,7 @@ const float CHANGE_DIRECTION_TIME = 0.f;
 const float PLAYER_SPEED = 250.f;
 const float ENEMY_SPEED = 100.f;
 const float BOMB_TIME = 4.f;
-const float REMOVE_TIME = 10.f;
+const float TIME_TO_REMOVE = 5.f;
 const float WINDOW_RATIO = 0.92f;
 const float ROTATION_SPEED = 135.f; //degrees per second.
 const float PROJECTILE_SPEED = 750.f;

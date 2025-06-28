@@ -20,6 +20,8 @@
 #include "MachineGunGift.h"
 #include "BazookaGift.h"
 #include "MedkitGift.h"
+#include "RemoveTime.h"
+#include "RemoveEnemy.h"
 
 class GamePlay;
 class GameObject;
@@ -50,6 +52,8 @@ public:
 	void setAttackBehavior(std::unique_ptr<AttackBehavior> attackBehavior);
 	void setShootCooldown(const std::string& weaponName);
 	void medkitSound();
+	void removeEnemyGift();
+	void removeTimeGift();
 
 private:
 	bool checkDirection();
