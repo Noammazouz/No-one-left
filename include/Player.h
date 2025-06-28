@@ -50,8 +50,8 @@ public:
 	sf::Vector2f getCurrentDirection() const;
 	void handleShooting();
 	void setAttackBehavior(std::unique_ptr<AttackBehavior> attackBehavior);
+	void presentSound();
 	void setShootCooldown(const std::string& weaponName);
-	void medkitSound();
 	void removeEnemyGift();
 	void removeTimeGift();
 

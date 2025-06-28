@@ -384,7 +384,7 @@ void GamePlay::addProjectile(const sf::Vector2f& pos, std::vector<sf::Vector2f> 
 }
 
 //----------------------------------------------------------------------------
-void GamePlay::playMedkitSound()
+void GamePlay::playPresentSound()
 {
 	m_sound.setBuffer(ResourcesManager::getInstance().getSound(GAIN_HEALTH_SOUND));
 	m_sound.setVolume(100.f);

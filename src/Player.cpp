@@ -198,10 +198,11 @@ void Player::setAttackBehavior(std::unique_ptr<AttackBehavior> attackBehavior)
 }
 
 //------------------------------------------------------------------------------
-void Player::medkitSound()
+void Player::presentSound()
 {
-	m_gamePlay->playMedkitSound();
+	m_gamePlay->playPresentSound();
 }
+
 
 //------------------------------------------------------------------------------
 void Player::removeEnemyGift()
@@ -473,7 +474,7 @@ void handlePlayerMedkitGiftCollision(GameObject& obj1, GameObject& obj2)
 
 	if (player && medkitGift)
 	{
-		player->medkitSound();
+		player->presentSound();
 		player->incLife(ADD_LIFE);
 		medkitGift->setLife(true); //Mark the gift as collected.
 		return;
@@ -506,9 +507,9 @@ void handlePlayerRemoveTimeGiftCollision(GameObject& obj1, GameObject& obj2)
 
 	if (player && RemoveTimeGift)
 	{
-		//sound
+		player->presentSound();
 		player->removeTimeGift();
-		RemoveTimeGift->setLife(true); //Mark the gift as collected.
+		RemoveTimeGift->setLife(true); 
 		return;
 	}
 }
@@ -539,9 +540,9 @@ void handlePlayerRemoveEnemyGiftCollision(GameObject& obj1, GameObject& obj2)
 
 	if (player && RemoveEnemyGift)
 	{
-		//sound
+		player->presentSound();
 		player->removeEnemyGift();
-		RemoveEnemyGift->setLife(true); //Mark the gift as collected.
+		RemoveEnemyGift->setLife(true); 
 		return;
 	}
 }
