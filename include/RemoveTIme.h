@@ -8,8 +8,7 @@
 class RemoveTime : public ItemsToCollect
 {
 public:
-	RemoveTime(std::string name, const sf::Vector2f& position);
-	~RemoveTime() = default;
-
+	RemoveTime(const std::string& name, const sf::Vector2f& position);
+	virtual ~RemoveTime() = default;
 };
 

@@ -81,7 +81,9 @@ void ResourcesManager::loadTexture()
         {"projectile", "Sprite_Effects_Exhaust_02_000.png"},
         {"rifle", "rifle.png"},
         {"medkit", "medkit.png"},
-        {"Bullet", "Bullet.png"}
+        {"Bullet", "Bullet.png"},
+        { "remove time", "clock.png" },
+        { "remove enemy", "skull.png" }
     };
 
     for (const auto& [name, filePath] : textures)

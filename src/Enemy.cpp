@@ -16,8 +16,9 @@ int Enemy::m_numOfEnemiesAlive = 0;
 
 //-----functions section------
 //-----------------------------------------------------------------------------
-Enemy::Enemy(sf::Vector2f position, std::string name)
-	: UpdateableObject(position, name), m_direction(0, 0), m_prevlocation(position)
+Enemy::Enemy(sf::Vector2f position, std::string name, int numOfLives)
+    : UpdateableObject(position, name), m_direction(0, 0), m_prevlocation(position),
+    m_numOfLives(numOfLives)
 {
     m_numOfEnemies++;
     m_numOfEnemiesAlive++;
@@ -30,6 +31,24 @@ Enemy::Enemy(sf::Vector2f position, std::string name)
 Enemy::~Enemy()
 {
     m_numOfEnemiesAlive--;
+}
+
+//-----------------------------------------------------------------------------
+void Enemy::takeDamage(int damage)
+{
+    m_numOfLives -= damage;
+}
+
+//-----------------------------------------------------------------------------
+bool Enemy::isAlive() const
+{
+    return m_numOfLives > 0;
+}
+
+//-----------------------------------------------------------------------------
+int Enemy::getNumOfLives() const
+{
+    return m_numOfLives;
 }
 
 //-----------------------------------------------------------------------------
@@ -109,7 +128,7 @@ static bool enemyenemyCollisionRegistered = []() {
 static auto regSimple = Factory<UpdateableObject>::instance().registerType(
     ObjectType::SIMPLEENEMY,
     [](const sf::Vector2f& pos) -> std::unique_ptr<UpdateableObject> {
-        auto enemy = std::make_unique<Enemy>(pos, SIMPLE_ENEMY_RIFLE);
+        auto enemy = std::make_unique<Enemy>(pos, SIMPLE_ENEMY_RIFLE, 1);
         enemy->SetMoveBehavior(std::make_unique<RandomMoveBehavior>());
         enemy->SetAttackBehavior(std::make_unique<OneDirectionAttackBehavior>());
         return enemy;
@@ -118,7 +137,7 @@ static auto regSimple = Factory<UpdateableObject>::instance().registerType(
 static auto regSmart = Factory<UpdateableObject>::instance().registerType(
     ObjectType::SMARTENEMY,
     [](const sf::Vector2f& pos) -> std::unique_ptr<UpdateableObject> {
-        auto enemy = std::make_unique<Enemy>(pos, SMART_ENEMY_RIFLE);
+        auto enemy = std::make_unique<Enemy>(pos, SMART_ENEMY_RIFLE, 2);
         enemy->SetMoveBehavior(std::make_unique<AxisMoveBehavior>());
         enemy->SetAttackBehavior(std::make_unique<OneDirectionAttackBehavior>());
         return enemy;
@@ -127,7 +146,7 @@ static auto regSmart = Factory<UpdateableObject>::instance().registerType(
 static auto regBfs = Factory<UpdateableObject>::instance().registerType(
     ObjectType::BFSENEMY,
     [](const sf::Vector2f& pos) -> std::unique_ptr<UpdateableObject> {
-        auto enemy = std::make_unique<Enemy>(pos, BFS_ENEMY_RIFLE);
+        auto enemy = std::make_unique<Enemy>(pos, BFS_ENEMY_RIFLE, 3);
         enemy->SetMoveBehavior(std::make_unique<BfsMoveBehavior>());
         enemy->SetAttackBehavior(std::make_unique<AllDirectionsAttackBehavior>());
         return enemy;

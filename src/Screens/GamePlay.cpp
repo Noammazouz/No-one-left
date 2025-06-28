@@ -236,7 +236,7 @@ void GamePlay::handleScoreBoard()
 }
 
 //-----------------------------------------------------------------------------
-void GamePlay::removeGuard()
+void GamePlay::removeEnemy()
 {
 	if (Enemy::getNumOfEnemiesAlive() != 0)
 	{
@@ -258,7 +258,12 @@ void GamePlay::resetGame()
 //-----------------------------------------------------------------------------
 void GamePlay::decTime()
 {
-	m_stopwatch -= sf::seconds(REMOVE_TIME);
+	if (m_stopwatch <= sf::seconds(TIME_TO_REMOVE))
+	{
+		m_stopwatch = sf::seconds(0); 
+		return;
+	}
+	m_stopwatch -= sf::seconds(TIME_TO_REMOVE);
 	m_infoBar.updateTime(m_stopwatch);
 }
 
