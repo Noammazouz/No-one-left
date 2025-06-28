@@ -12,6 +12,7 @@ Infobar::Infobar()
 //-----------------------------------------------------------------------------
 void Infobar::updateLives(int numberOfLives)
 {
+	if (numberOfLives < 0) return;
 	std::string temp = std::to_string(numberOfLives) + "%";
 	m_lifePercentages.setString(":" + temp);
 	decreaseLifeLevel(numberOfLives);
@@ -36,28 +37,7 @@ void Infobar::updateTime(sf::Time deltaTime)
 	
 }
 
-//-----------------------------------------------------------------------------
-//void Infobar::initializeBattery() {
-//	if (!batteryTexture.loadFromFile("path/to/spritesheet.png")) {
-//		// Handle error
-//	}
-//	batterySprite.setTexture(batteryTexture);
-//
-//	int frameWidth = 50; // Example width
-//	int frameHeight = 100; // Example height
-//	for (int i = 0; i < 6; ++i) {
-//		batteryFrames.push_back(sf::IntRect(i * frameWidth, 0, frameWidth, frameHeight));
-//	}
-//	batterySprite.setTextureRect(batteryFrames[0]);
-//}
-//
-//void Infobar::decreaseBatteryLevel() {
-//	if (currentFrame > 0) {
-//		currentFrame--;
-//		batterySprite.setTextureRect(batteryFrames[currentFrame]);
-//	}
-//}
-
+//------------------------------------------------------------------------------------------
 void Infobar::initializeLives()
 {
 	int frameWidth = 33; 
@@ -75,7 +55,7 @@ void Infobar::initializeLives()
 
 	m_lifePercentages.setCharacterSize(20);
 	m_lifePercentages.setFont(ResourcesManager::getInstance().getFont());
-	m_lifePercentages.setFillColor(sf::Color(128, 0, 128));
+	m_lifePercentages.setFillColor(FONT_COLOR);
 	m_lifePercentages.setOutlineColor(sf::Color::Black);
 	m_lifePercentages.setOutlineThickness(1);
 	m_lifePercentages.setPosition(sf::Vector2f(25, 110));

@@ -66,12 +66,9 @@ void ResourcesManager::loadTexture()
         {"resume", "resume.png"},
         {"help screen", "help screen.png"},
         {"return", "return.png"},
-        {"SimpleEnemy", "Enemy.png"},
-        {"SmartEnemy", "Enemy.png"},
         {"simple_enemy_rifle", "simple_enemy_rifle.png"},
         {"smart_enemy_rifle", "smart_enemy_rifle.png"},
         {"bfs_enemy_rifle", "bfs_enemy_rifle.png"},
-        {"BfsEnemy", "boss.png"},
         {"life", "life.png"},
         {"bulletIcon", "bulletIcon.png"},
         {"clock", "clock.png"},
@@ -80,7 +77,11 @@ void ResourcesManager::loadTexture()
         {"obstacle3","obstacle3.png"},
         {"game over", "lose_screen.png"},
         {"start menu", "home.png"},
-        {"winning screen", "win screen background.png"}
+        {"winning screen", "win screen background.png"},
+        {"projectile", "Sprite_Effects_Exhaust_02_000.png"},
+        {"rifle", "rifle.png"},
+        {"medkit", "medkit.png"},
+        {"Bullet", "Bullet.png"}
     };
 
     for (const auto& [name, filePath] : textures)
@@ -119,9 +120,8 @@ void ResourcesManager::initializeMusic()
     std::vector<std::pair<std::string, std::string>> music =
     {
         {"present", "present.ogg"},
-        {"shot", "shot.ogg"},
+        {"shoot", "shoot.ogg"},
         {"death", "death.ogg"},
-        {"explosion", "explosion.ogg"},
         {"health", "addHealth.ogg"},
         {"win sound effect", "win.ogg"}
     };
@@ -143,7 +143,6 @@ void ResourcesManager::initializeMusic()
 //------------------------------------------------------------------------------
 sf::Music& ResourcesManager::getMusic(std::string name)
 {
-   
     if (name == "menu")
     {
         return m_menuMusic;
@@ -159,9 +158,10 @@ sf::Music& ResourcesManager::getMusic(std::string name)
 //------------------------------------------------------------------------------
 void ResourcesManager::initializeFont()
 {
-    if (!m_font.loadFromFile("ARCADE_N.TTF"))
+	std::string errorMessage = "Failed to load font: " + FONT_NAME;
+    if (!m_font.loadFromFile(FONT_NAME))
     {
-        throw std::runtime_error("Failed to load font ARCADE_N.TTF (the font)");
+        throw std::runtime_error(errorMessage);
     }
 }
 
@@ -174,7 +174,7 @@ const sf::Font& ResourcesManager::getFont() const
 //------------------------------------------------------------------------------
 sf::SoundBuffer& ResourcesManager::getSound(std::string name)
 {
-    std::string errorMessage = "Could not find sound: " + name;
+    std::string errorMessage = "Could not find the sound: " + name;
     auto it = m_music.find(name);
     if (it == m_music.end())
     {
@@ -186,7 +186,7 @@ sf::SoundBuffer& ResourcesManager::getSound(std::string name)
 //------------------------------------------------------------------------------
 void ResourcesManager::intializeHelpText()
 {
-    std::ifstream file("help.txt");
+    std::ifstream file(HELP_FILE_NAME);
     if (!file) 
     {
         throw std::runtime_error("[ERROR] Cannot open help.txt");

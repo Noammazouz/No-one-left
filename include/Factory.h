@@ -27,7 +27,7 @@ public:
 		return m_map.emplace(t, f).second;
 		
 	}
-  
+ 
 	std::unique_ptr<T> create(ObjectType t, const sf::Vector2f& position) const
 	{
 		if (!m_map.contains(t))

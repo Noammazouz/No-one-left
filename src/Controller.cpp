@@ -8,6 +8,7 @@ Controller::Controller()
 {
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
 	m_window.create(sf::VideoMode(desktop.width * WINDOW_RATIO, desktop.height * WINDOW_RATIO), GAME_NAME);
+	m_window.setFramerateLimit(60);
 	initScreen();
 }
 
@@ -23,8 +24,7 @@ void Controller::run()
 		m_window.display();
 		m_screens[m_currentScreen]->activate(clock, m_currentScreen);
 		m_screens[m_currentScreen]->run(m_window, m_currentScreen);
-		if (m_currentScreen  != HELP_SCREEN)
-		m_screens[HELP_SCREEN]->setPreviousScreen(m_currentScreen);
+		if (m_currentScreen != HELP_SCREEN) m_screens[HELP_SCREEN]->setPreviousScreen(m_currentScreen);
 	}
 }
 

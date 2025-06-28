@@ -1,4 +1,4 @@
-//-----include section-----
+﻿//-----include section-----
 #include "UpdateableObject.h"
 #include <iostream>
 #include <SFML/System.hpp>
@@ -44,43 +44,28 @@ void UpdateableObject::setPrevLocation(const sf::Vector2f& pos)
 //-----------------------------------------------------------------------------
 void UpdateableObject::setRotation(const sf::Vector2f& direction)
 {
-    static sf::Clock rotationClock;
-    float deltaTime = rotationClock.restart().asSeconds();
-
-    //Ignore zero direction
+    // Ignore zero‐length vectors
     if (direction == sf::Vector2f(0.f, 0.f)) return;
 
-    //Normalize direction vector
-    float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
-    if (length == 0.f) return;
-    sf::Vector2f normDir = direction / length;
+    // Compute the angle in degrees: atan2 returns radians, so multiply by 180/π.
+    float angle = std::atan2(direction.y, direction.x) * 180.f / std::numbers::pi;
 
-    //Map normalized direction to fixed 8 angles (degrees, 0 degrees = Up)
-    //Use thresholds to detect closest direction
-    if (normDir.x > 0.7f && normDir.y < -0.7f)          m_targetAngle = 45.f;   // Up-Right
-    else if (normDir.x > 0.7f && normDir.y > 0.7f)      m_targetAngle = 135.f;  // Down-Right
-    else if (normDir.x < -0.7f && normDir.y > 0.7f)     m_targetAngle = 225.f;  // Down-Left
-    else if (normDir.x < -0.7f && normDir.y < -0.7f)    m_targetAngle = 315.f;  // Up-Left
-    else if (normDir.x > 0.5f)                          m_targetAngle = 90.f;   // Right
-    else if (normDir.x < -0.5f)                         m_targetAngle = 270.f;  // Left
-    else if (normDir.y < -0.5f)                         m_targetAngle = 0.f;    // Up
-    else if (normDir.y > 0.5f)                          m_targetAngle = 180.f;  // Down
+    // (Optionally add an offset so 0° points “up” instead of “right”)
+    angle -= 90.f;  
 
-    m_targetAngle = std::fmod(m_targetAngle + 180.f, 360.f);
+    // Smoothly interpolate current rotation → target rotation
+    float current = m_pic.getRotation();
+    float delta   = std::fmod(angle - current + 540.f, 360.f) - 180.f;
+    float step    = ROTATION_SPEED * m_rotationClock.restart().asSeconds();
 
-    //Smooth rotation toward target angle
-    float currentAngle = m_pic.getRotation();
-    float deltaAngle = std::fmod(m_targetAngle - currentAngle + 540.f, 360.f) - 180.f;
-    float rotationStep = ROTATION_SPEED * deltaTime;
+    if (std::abs(delta) < step) current = angle;
+    else current += (delta > 0 ? step : -step);
 
-    if (std::abs(deltaAngle) < rotationStep) currentAngle = m_targetAngle;
-    else currentAngle += (deltaAngle > 0.f ? 1.f : -1.f) * rotationStep;
+    // Normalize to [0,360)
+    if (current < 0)   current += 360.f;
+    if (current >=360) current -= 360.f;
 
-    //Normalize current angle to [0, 360).
-    if (currentAngle < 0.f) currentAngle += 360.f;
-    else if (currentAngle >= 360.f) currentAngle -= 360.f;
-    
-    m_pic.setRotation(currentAngle);
+    m_pic.setRotation(current);
 }
 
 //-----------------------------------------------------------------------------

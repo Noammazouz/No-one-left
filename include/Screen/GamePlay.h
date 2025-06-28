@@ -9,7 +9,6 @@
 #include <stack>
 #include "Map.h"
 #include "Player.h"
-#include "Bombs.h"
 #include "Enemy.h"
 #include "ResourcesManager.h"
 #include "Const.h"
@@ -17,8 +16,8 @@
 #include "StaticObject.h"
 #include "GameObject.h"
 #include "Infobar.h"
-#include "Explosion.h"
 #include "CollisionFactory.h"
+#include "Projectile.h"
 
 //-----class section-----
 class GamePlay : public Screen
@@ -30,6 +29,8 @@ public:
 	virtual void activate(sf::Clock& clockin, int& m_currrentScreen) override;
 	virtual void run(sf::RenderWindow& window, int& m_currrentScreen) override;
 	virtual void handleMouseClick(const sf::Vector2f& clickPos, int& screenState) override;
+	void addProjectile(const sf::Vector2f& pos, std::vector<sf::Vector2f> directions, BulletOwner owner);
+	void playMedkitSound();
 
 protected:
 	void initButtons() override;
@@ -37,13 +38,8 @@ protected:
 private:
 	void move(sf::Clock& clock);
 	void handleCollision();
-	void setBomb();
 	void handleErasing();
-	void explosion();
-	void calculateScore();
 	void setExpoDirection(int index);
-	void checkExpo();
-	void checkValidDraw();
 	void handleLoadingLevel();
 	void handleScoreBoard();
 	void removeGuard();

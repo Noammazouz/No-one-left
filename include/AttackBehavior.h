@@ -14,5 +14,7 @@ class AttackBehavior
 {
 public:
     virtual ~AttackBehavior() = default;
-    virtual void Attack(sf::Vector2f position, sf::Vector2f direction, std::vector<std::unique_ptr<Projectile>>& projectile, BulletOwner owner) = 0;
+    virtual std::vector<sf::Vector2f> Attack(sf::Vector2f position) = 0;
+protected:
+    std::vector<sf::Vector2f> m_directrions;
 };

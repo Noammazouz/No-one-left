@@ -2,7 +2,7 @@
 
  CONTROLS:
  - Movement: Use Arrow Keys (Left, Right, Up, Down).
- - To Shoot: Press Spacebar.
+ - To Shoot: Press 'S' button.
  - To Pause: Press The Button In The Top Left Corner.
  - Music: Press M to mute/unmute.
  - Back to Menu: Press Escape.
@@ -10,9 +10,11 @@
 
  HOW TO PLAY:
  Eliminate all enemies to win the game and avoid their fire.
- 3 ifferent levels of difficulty.
+ 3 different levels of difficulty.
  Each enemy moves and shoots differently.
  Use obstacles to your advantage (for cover or to block enemeis).
+ The obstacles have 3 lifes.
+ Shoot the wall to distroy it.
 
 
  TIPS:
@@ -22,4 +24,4 @@
 
 
  GOOD LUCK!
- Have fun, good luck soldier!
+ Have fun, and keep safe soldier!

@@ -4,11 +4,13 @@
 #include "ItemsToCollect.h"
 
 //-----class section-----
-class Weapons : public ItemsToCollect
+class WeaponsGift : public ItemsToCollect
 {
 public:
-	Weapons(const std::string& name, const sf::Vector2f& position);
-	~Weapons() = default;
+	WeaponsGift(const std::string& name, const sf::Vector2f& position);
+	virtual ~WeaponsGift() = default;
+
+	virtual const std::string& getWeaponType() const;
 
 private:
 	std::string m_weaponType; //Type of weapon (e.g., "rifle", "machine gun", "bazooka").

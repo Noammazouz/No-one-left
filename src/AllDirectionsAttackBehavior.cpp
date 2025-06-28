@@ -4,10 +4,10 @@
 
 //-----functions section------
 //-----------------------------------------------------------------------------
-void AllDirectionsAttackBehavior::Attack(sf::Vector2f position, sf::Vector2f direction, std::vector<std::unique_ptr<Projectile>>& projectile, BulletOwner owner)
+std::vector<sf::Vector2f> AllDirectionsAttackBehavior::Attack(sf::Vector2f position)
 {
-    sf::Vector2f directions[NUM_OF_DIRECTIONS] =
-    {
+    // Use static const vector to avoid repeated allocations
+    static const std::vector<sf::Vector2f> directions = {
         sf::Vector2f(0, -1),    // up
         sf::Vector2f(1, -1),    // right and up
         sf::Vector2f(1, 0),     // right
@@ -17,11 +17,6 @@ void AllDirectionsAttackBehavior::Attack(sf::Vector2f position, sf::Vector2f dir
         sf::Vector2f(-1, 0),    // left
         sf::Vector2f(-1, -1)    // left and up
     };
-
-    for (int directionBullet = 0; directionBullet < NUM_OF_DIRECTIONS; directionBullet++)
-    {
-        sf::Vector2f bulletDirection = directions[directionBullet];
-        auto bullet = std::make_unique<Projectile>(position, bulletDirection, 300.0f, owner);
-        projectile.push_back(std::move(bullet));
-    }
+    
+    return directions;
 }

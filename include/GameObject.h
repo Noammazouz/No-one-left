@@ -1,6 +1,7 @@
 #pragma once
 
 //-----include section-----
+#include <string>
 #include <SFML/Graphics.hpp>
 #include "Const.h"
 #include "ResourcesManager.h"
@@ -36,7 +37,6 @@ private:
 	bool checkDirection();
 
 	sf::Vector2f m_direction; 
-	float m_cellSize[2]; 
 	bool m_isDead = false;
 	bool m_facingRight = true;
 };

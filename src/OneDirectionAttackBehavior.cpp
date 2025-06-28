@@ -4,13 +4,9 @@
 
 //-----functions section------
 //-----------------------------------------------------------------------------
-void OneDirectionAttackBehavior::Attack(sf::Vector2f position, sf::Vector2f direction, std::vector<std::unique_ptr<Projectile>>& projectile, BulletOwner owner)
+std::vector<sf::Vector2f> OneDirectionAttackBehavior::Attack(sf::Vector2f position)
 {
-    if (direction.x == 0 && direction.y == 0)
-    {
-		direction = sf::Vector2f(1.0f, 0.0f); // the default direction is right if no movement 
-    }
-
-    auto bullet = std::make_unique<Projectile>(position, direction, 300.0f, owner);
-    projectile.push_back(std::move(bullet));
+    m_directrions.clear();
+    m_directrions.push_back(sf::Vector2f(position.x / 2, position.y));
+    return m_directrions;
 }

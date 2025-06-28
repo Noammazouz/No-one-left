@@ -4,32 +4,36 @@
 #include "Factory.h"
 #include <OneDirectionAttackBehavior.h>
 #include <AllDirectionsAttackBehavior.h>
-#include "CollisionFactory.h"
 #include "Enemy.h"
 #include "Wall.h"
-#include "Explosion.h"
+#include "GamePlay.h"
 
-//-----functions section------
-//-----------------------------------------------------------------------------
+//-----static member initialization-----
 //Defines the static members.
 int Player::m_score = 0;
 int Player::m_bulletCount = NUM_OF_BULLETS;
 
+//-----functions section------
 //-----------------------------------------------------------------------------
 Player::Player()
 	: UpdateableObject(), m_isShooting(false), m_lives(NUM_OF_LIVES)
 {}
 
 //-----------------------------------------------------------------------------
-void Player::initialization(sf::Vector2f position, std::string name)
+void Player::initialization(sf::Vector2f position, std::string name, GamePlay* gamePlay)
 {
 	auto& texture = ResourcesManager::getInstance().getTexture(name);
 	m_pic.setTexture(texture);
 	m_numberOfFrames = m_pic.getTexture()->getSize().x / OBJECT_WIDTH; //Calculate number of frames based on texture width.
 	m_pic.setRotation(180.f); //Set initial rotation to face down.
 	set_frames(m_numberOfFrames, position);
-	m_attackBehavior= std::move(std::make_unique<OneDirectionAttackBehavior>());
+
+	setShootCooldown(RIFLE_NAME); //Set the shoot cooldown based on the weapon name.
+
+	m_attackBehavior = std::move(std::make_unique<OneDirectionAttackBehavior>());
 	m_lives = NUM_OF_LIVES;
+
+	m_gamePlay = gamePlay;
 }
 
 //-----------------------------------------------------------------------------
@@ -58,13 +62,32 @@ void Player::setDirection()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) newDir.y -= 1.f;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) newDir.y += 1.f;
 
-	//Normalize direction if moving diagonally
+	//Normalize direction if moving diagonally.
 	if (newDir != sf::Vector2f(0.f, 0.f))
+	{
 		newDir /= std::sqrt(newDir.x * newDir.x + newDir.y * newDir.y);
+    
+		m_facingDirection = newDir; // Update facing direction when moving
+		this->setRotation(m_facingDirection);
+	}
 
 	m_direction = newDir;
+}
 
-	this->setRotation(m_direction);
+//------------------------------------------------------------------------------
+void Player::setShootCooldown(const std::string& weaponName)
+{
+	for (const auto& pair : m_shootCooldowns)
+	{
+		if (pair.first == weaponName)
+		{
+			m_shootCooldown = pair.second;
+			return;
+		}
+	}
+
+	std::cerr << "Weapon name not found in cooldowns: " << weaponName << std::endl;
+	m_shootCooldown = sf::seconds(0.25); //Default cooldown if not found.
 }
 
 //------------------------------------------------------------------------------
@@ -74,12 +97,6 @@ bool Player::checkDirection()
 		   sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
 		   sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
 		   sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
-}
-
-//-----------------------------------------------------------------------------
-sf::Vector2f Player::getDirection() const
-{
-	return m_direction;
 }
 
 //-----------------------------------------------------------------------------
@@ -106,16 +123,11 @@ bool Player::getWin() const
 	return m_win;
 }
 
-//-----------------------------------------------------------------------------
-sf::Vector2f Player::getPos() const
-{
-	return getPosition();
-}
-
 //------------------------------------------------------------------------------
 void Player::incLife(int addLives)
 {
 	if (m_lives < NUM_OF_LIVES) m_lives += addLives;
+	if (m_lives > NUM_OF_LIVES) m_lives = NUM_OF_LIVES;
 }
 
 //------------------------------------------------------------------------------
@@ -145,16 +157,13 @@ void Player::addBullets(int bullets)
 //-----------------------------------------------------------------------------
 void Player::decBullets()
 {
-	if (m_bulletCount > 0)
-	{
-		m_bulletCount--;
-	}
+	m_bulletCount--;
 }
 
 //-----------------------------------------------------------------------------
 bool Player::isBulletsAvailable()
 {
-	if (m_bulletCount > 0)
+	if (m_bulletCount > MIN_BOUND_BULLETS)
 	{
 		return true;
 	}
@@ -168,20 +177,18 @@ sf::Vector2f Player::getCurrentDirection() const
 }
 
 //-----------------------------------------------------------------------------
-void Player::handleShooting(std::vector<std::unique_ptr<Projectile>>& bullets)
+void Player::handleShooting()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
-		if (!m_isShooting)
+		if (m_shootClock.getElapsedTime() >= m_shootCooldown && isBulletsAvailable())
 		{
-			doAttack(bullets);
+			m_gamePlay->addProjectile(this->getPosition(), m_attackBehavior->Attack(m_facingDirection), _PLAYER);
 			m_isShooting = true;
+			decBullets();
+			m_shootClock.restart();  // Reset timer
 		}
-	}
-	else
-	{
-		m_isShooting = false;
-	}
+	}	
 }
 
 //-----------------------------------------------------------------------------
@@ -190,124 +197,274 @@ void Player::setAttackBehavior(std::unique_ptr<AttackBehavior> attackBehavior)
 	m_attackBehavior = std::move(attackBehavior);
 }
 
-//-----------------------------------------------------------------------------
-void Player::doAttack(std::vector<std::unique_ptr<Projectile>>& bullets)
+//------------------------------------------------------------------------------
+void Player::medkitSound()
 {
-	if (!m_attackBehavior) return;
-
-	int bulletsNeeded = ONE_DIRECTION_BULLET; //default is one direction.
-
-	if (typeid(*m_attackBehavior) == typeid(AllDirectionsAttackBehavior)) //check if attack for all directions.
-	{
-		bulletsNeeded = ALL_DIRECTIONS_BULLETS;
-	}
-
-	if (getNumOfBullets() >= bulletsNeeded)
-	{
-		sf::Vector2f position = getPos();
-		sf::Vector2f direction = getCurrentDirection();
-
-		//m_attackBehavior->Attack(position, direction, bullets);
-
-		for (int bullet = 0; bullet < bulletsNeeded; bullet++)
-		{
-			decBullets();
-		}
-	}
+	m_gamePlay->playMedkitSound();
 }
 
 //------------------------------------------------------------------------------
 void handlePlayerEnemyCollision(GameObject& obj1, GameObject& obj2)
 {
-	//Handle Player vs Enemy collision (bidirectional)
-	if (auto* player = dynamic_cast<Player*>(&obj1)) 
+	Player* player = nullptr;
+	Enemy* enemy = nullptr;
+
+	//Handle Player vs Enemy collision (bidirectional).
+	if (auto* tempPlayer = dynamic_cast<Player*>(&obj1)) 
 	{
-		if (auto* enemy = dynamic_cast<Enemy*>(&obj2)) 
+		if (auto* tempEnemy = dynamic_cast<Enemy*>(&obj2))
 		{
-			player->decLife();
-			return;
+			player = tempPlayer;
+			enemy = tempEnemy;
 		}
 	}
-	//Handle Enemy vs Player collision (reverse direction)
-	if (auto* enemy = dynamic_cast<Enemy*>(&obj1)) 
+	//Handle Enemy vs Player collision (reverse direction).
+	if (auto* tempEnemy = dynamic_cast<Enemy*>(&obj1)) 
 	{
-		if (auto* player = dynamic_cast<Player*>(&obj2)) 
+		if (auto* tempPlayer = dynamic_cast<Player*>(&obj2))
 		{
-			player->decLife();
-			return;
+			player = tempPlayer;
+			enemy = tempEnemy;
 		}
+	}
+
+	if (player && enemy) 
+	{
+		//don't do anything if the player hit the enemy.
+		return;
 	}
 }
 
 //------------------------------------------------------------------------------
 void handlePlayerWallCollision(GameObject& obj1, GameObject& obj2)
 {
+	Player* player = nullptr;
+	Wall* wall = nullptr;
+
 	//Handle Player vs Wall collision (bidirectional)
-	if (auto* player = dynamic_cast<Player*>(&obj1)) 
+	if (auto* tempPlayer = dynamic_cast<Player*>(&obj1)) 
 	{
-		if (auto* wall = dynamic_cast<Wall*>(&obj2)) 
+		if (auto* tempWall = dynamic_cast<Wall*>(&obj2)) 
 		{
-			player->setPosition(player->getPrevLocation());
-			return;
+			player = tempPlayer;
+			wall = tempWall;
 		}
 	}
 	//Handle Wall vs Player collision (reverse direction)
-	if (auto* wall = dynamic_cast<Wall*>(&obj1)) 
+	if (auto* tempWall = dynamic_cast<Wall*>(&obj1))
 	{
-		if (auto* player = dynamic_cast<Player*>(&obj2)) 
+		if (auto* tempPlayer = dynamic_cast<Player*>(&obj2))
 		{
-			player->setPosition(player->getPrevLocation());
-			return;
+			player = tempPlayer;
+			wall = tempWall;
 		}
+	}
+
+	if (player && wall) 
+	{
+		player->setPosition(player->getPrevLocation());
+		return;
 	}
 }
 
 //------------------------------------------------------------------------------
 void handlePlayerObstaclesCollision(GameObject& obj1, GameObject& obj2)
 {
+	Player* player = nullptr;
+	Obstacles* obstacle = nullptr;
+
 	//Handle Player vs Wall collision (bidirectional)
-	if (auto* player = dynamic_cast<Player*>(&obj1))
+	if (auto* tempPlayer = dynamic_cast<Player*>(&obj1))
 	{
-		if (auto* wall = dynamic_cast<Obstacles*>(&obj2))
+		if (auto* tempObstacle = dynamic_cast<Obstacles*>(&obj2))
 		{
-			player->setPosition(player->getPrevLocation());
-			return;
+			player = tempPlayer;
+			obstacle = tempObstacle;
 		}
 	}
 	//Handle Wall vs Player collision (reverse direction)
-	if (auto* wall = dynamic_cast<Obstacles*>(&obj1))
+	if (auto* tempObstacle = dynamic_cast<Obstacles*>(&obj1))
 	{
-		if (auto* player = dynamic_cast<Player*>(&obj2))
+		if (auto* tempPlayer = dynamic_cast<Player*>(&obj2))
 		{
-			player->setPosition(player->getPrevLocation());
-			return;
+			player = tempPlayer;
+			obstacle = tempObstacle;
 		}
+	}
+
+	if (player && obstacle)
+	{
+		player->setPosition(player->getPrevLocation());
+		return;
 	}
 }
 
 //------------------------------------------------------------------------------
-void handlePlayerExplosionCollision(GameObject& obj1, GameObject& obj2)
+void handlePlayerRifleGiftCollision(GameObject& obj1, GameObject& obj2)
 {
-	//Handle Player vs Explosion collision (bidirectional)
-	if (auto* player = dynamic_cast<Player*>(&obj1)) 
+	Player* player = nullptr;
+	RifleGift* rifleGift = nullptr;
+
+	//Handle Player vs Rifle Gift collision (bidirectional)
+	if (auto* tempPlayer = dynamic_cast<Player*>(&obj1)) 
 	{
-		if (auto* explosion = dynamic_cast<Explosion*>(&obj2)) 
+		if (auto* tempRifleGift = dynamic_cast<RifleGift*>(&obj2)) 
 		{
-			player->decLife(EXPLOSION_DEC_LIVES);
-			//player->setPosition(player->getStartingPosition());
-			return;
+			player = tempPlayer;
+			rifleGift = tempRifleGift;
+		}
+	}
+	//Handle Rifle Gift vs Player collision (reverse direction)
+	if (auto* tempRifleGift = dynamic_cast<RifleGift*>(&obj1))
+	{
+		if (auto* tempPlayer = dynamic_cast<Player*>(&obj2))
+		{
+			player = tempPlayer;
+			rifleGift = tempRifleGift;
 		}
 	}
 
-	//Handle Explosion vs Player collision (reverse direction)
-	if (auto* explosion = dynamic_cast<Explosion*>(&obj1)) 
+	if(player && rifleGift) 
 	{
-		if (auto* player = dynamic_cast<Player*>(&obj2)) 
+		player->changeSpriteAnimation(PLAYER_RIFLE);
+		player->setShootCooldown(RIFLE_NAME); //Set the shoot cooldown for rifle.
+		rifleGift->setLife(true); //Mark the gift as collected.
+		return;
+	}
+}
+
+//------------------------------------------------------------------------------
+void handlePlayerMachineGunGiftCollision(GameObject& obj1, GameObject& obj2)
+{
+	Player* player = nullptr;
+	MachineGunGift* machineGunGift = nullptr;
+
+	//Handle Player vs Machine-Gun Gift collision (bidirectional)
+	if (auto* tempPlayer = dynamic_cast<Player*>(&obj1))
+	{
+		if (auto* tempMachineGunGift = dynamic_cast<MachineGunGift*>(&obj2))
 		{
-			player->decLife(EXPLOSION_DEC_LIVES);
-			//player->setPosition(player->getStartingPosition());
-			return;
+			player = tempPlayer;
+			machineGunGift = tempMachineGunGift;
 		}
+	}
+	//Handle Machine-Gun Gift vs Player collision (reverse direction)
+	if (auto* tempMachineGunGift = dynamic_cast<MachineGunGift*>(&obj1))
+	{
+		if (auto* tempPlayer = dynamic_cast<Player*>(&obj2))
+		{
+			player = tempPlayer;
+			machineGunGift = tempMachineGunGift;
+		}
+	}
+
+	if (player && machineGunGift)
+	{
+		player->changeSpriteAnimation(PLAYER_MACHINE_GUN);
+		player->setShootCooldown(MACHINE_GUN_NAME); //Set the shoot cooldown for machine-gun.
+		machineGunGift->setLife(true); //Mark the gift as collected.
+		return;
+	}
+}
+
+//------------------------------------------------------------------------------
+void handlePlayerBazookaGiftCollision(GameObject& obj1, GameObject& obj2)
+{
+	Player* player = nullptr;
+	BazookaGift* bazookaGift = nullptr;
+
+	//Handle Player vs Bazooka Gift collision (bidirectional)
+	if (auto* tempPlayer = dynamic_cast<Player*>(&obj1)) 
+	{
+		if (auto* tempBazookaGift = dynamic_cast<BazookaGift*>(&obj2)) 
+		{
+			player = tempPlayer;
+			bazookaGift = tempBazookaGift;
+		}
+	}
+	//Handle Bazooka Gift vs Player collision (reverse direction)
+	if (auto* tempBazookaGift = dynamic_cast<BazookaGift*>(&obj1))
+	{
+		if (auto* tempPlayer = dynamic_cast<Player*>(&obj2))
+		{
+			player = tempPlayer;
+			bazookaGift = tempBazookaGift;
+		}
+	}
+
+	if (player && bazookaGift) 
+	{	
+		player->changeSpriteAnimation(PLAYER_BAZOOKA);
+		player->setShootCooldown(BAZOOKA_NAME); //Set the shoot cooldown for bazooka.
+		bazookaGift->setLife(true); //Mark the gift as collected.
+		return;
+	}
+}
+
+//------------------------------------------------------------------------------
+void handlePlayerBulletsGiftCollision(GameObject& obj1, GameObject& obj2)
+{
+	Player* player = nullptr;
+	BulletsGift* bullentsGift = nullptr;
+
+	//Handle Player vs Bazooka Gift collision (bidirectional)
+	if (auto* tempPlayer = dynamic_cast<Player*>(&obj1))
+	{
+		if (auto* tempBullentsGift = dynamic_cast<BulletsGift*>(&obj2))
+		{
+			player = tempPlayer;
+			bullentsGift = tempBullentsGift;
+		}
+	}
+	//Handle Bazooka Gift vs Player collision (reverse direction)
+	if (auto* tempBullentsGift = dynamic_cast<BulletsGift*>(&obj1))
+	{
+		if (auto* tempPlayer = dynamic_cast<Player*>(&obj2))
+		{
+			player = tempPlayer;
+			bullentsGift = tempBullentsGift;
+		}
+	}
+
+	if (player && bullentsGift)
+	{
+		player->addBullets(NUM_OF_BULLETS);
+		bullentsGift->setLife(true); //Mark the gift as collected.
+		return;
+	}
+}
+
+//------------------------------------------------------------------------------
+void handlePlayerMedkitGiftCollision(GameObject& obj1, GameObject& obj2)
+{
+	Player* player = nullptr;
+	MedkitGift* medkitGift = nullptr;
+
+	//Handle Player vs Bazooka Gift collision (bidirectional)
+	if (auto* tempPlayer = dynamic_cast<Player*>(&obj1))
+	{
+		if (auto* tempMedkitsGift = dynamic_cast<MedkitGift*>(&obj2))
+		{
+			player = tempPlayer;
+			medkitGift = tempMedkitsGift;
+		}
+	}
+	//Handle Bazooka Gift vs Player collision (reverse direction)
+	if (auto* tempMedkitsGift = dynamic_cast<MedkitGift*>(&obj1))
+	{
+		if (auto* tempPlayer = dynamic_cast<Player*>(&obj2))
+		{
+			player = tempPlayer;
+			medkitGift = tempMedkitsGift;
+		}
+	}
+
+	if (player && medkitGift)
+	{
+		player->medkitSound();
+		player->incLife(ADD_LIFE);
+		medkitGift->setLife(true); //Mark the gift as collected.
+		return;
 	}
 }
 
@@ -317,6 +474,10 @@ static bool g_playerCollisionRegistered = []() {
 	factory.registerTypedCollision<Player, Enemy>(handlePlayerEnemyCollision);
 	factory.registerTypedCollision<Player, Wall>(handlePlayerWallCollision);
 	factory.registerTypedCollision<Player, Obstacles>(handlePlayerObstaclesCollision);
-	factory.registerTypedCollision<Player, Explosion>(handlePlayerExplosionCollision);
+	factory.registerTypedCollision<Player, RifleGift>(handlePlayerRifleGiftCollision);
+	factory.registerTypedCollision<Player, MachineGunGift>(handlePlayerMachineGunGiftCollision);
+	factory.registerTypedCollision<Player, BazookaGift>(handlePlayerRifleGiftCollision);
+	factory.registerTypedCollision<Player, BulletsGift>(handlePlayerBulletsGiftCollision);
+	factory.registerTypedCollision<Player, MedkitGift>(handlePlayerMedkitGiftCollision);
 	return true;
 	}();

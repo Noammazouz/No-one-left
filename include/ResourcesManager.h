@@ -6,6 +6,7 @@
 #include <SFML/Audio.hpp>
 #include <unordered_map>
 #include <fstream>
+#include "Const.h"
 
 //-----class section-----
 class ResourcesManager 

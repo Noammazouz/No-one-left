@@ -2,62 +2,51 @@
 #include "Projectile.h"
 #include <cmath>
 #include <iostream>
-#include <CollisionFactory.h>
+#include <numbers>
+#include "CollisionFactory.h"
+#include "Factory.h"
 
 //-----functions section------
 //-----------------------------------------------------------------------------
-Projectile::Projectile(sf::Vector2f position, sf::Vector2f dir, float spd, int dmg)
-    : UpdateableObject(position, "projectile"), direction(dir), speed(spd),
-    isActive(true), damage(dmg), elapsedTime(0.0f)
+Projectile::Projectile(sf::Vector2f position, sf::Vector2f direction, BulletOwner owner)
+    : UpdateableObject(position, PROJECTILE_NAME), isActive(true), m_elapsedTime(0.0f), m_direction(direction), m_owner(owner)
 {
-    float length = std::sqrt(direction.x * direction.x + direction.y * direction.y); // to get same speed for all directions
+    float length = std::sqrt(m_direction.x * m_direction.x + m_direction.y * m_direction.y); // to get same speed for all directions
     if (length > 0)
     {
-        direction.x /= length;
-        direction.y /= length;
+        m_direction.x /= length;
+        m_direction.y /= length;
     }
+
+    float angleRadians = std::atan2(m_direction.y, m_direction.x);
+    float angleDegrees = angleRadians * 180.0f / std::numbers::pi;
+    m_pic.setRotation(angleDegrees + 90.0f);
 }
 
 //-----------------------------------------------------------------------------
 void Projectile::update(sf::Time deltaTime, sf::Vector2f playerPos)
 {
     if (!isActive) return;
+    m_pic.move(m_direction * PROJECTILE_SPEED * deltaTime.asSeconds());
+    m_elapsedTime += deltaTime.asSeconds();
 
-    float dt = deltaTime.asSeconds();
-    elapsedTime += dt;
-
-    sf::Vector2f movement = direction * speed * dt;
-    sf::Vector2f currentPos = getPosition();
-    setPosition(sf::Vector2f(currentPos.x + movement.x, currentPos.y + movement.y));
-
-    if (isOutOfMap() || isExpired())
+    if (isExpired())
     {
         isActive = false;
+        this->setLife(true);
     }
 }
 
 //-----------------------------------------------------------------------------
 void Projectile::setDirection(sf::Vector2f dir)
-{
-    direction = dir;
-}
-
-//-----------------------------------------------------------------------------
-void Projectile::setSpeed(float spd)
-{
-    speed = spd;
+{   
+    m_direction = dir;
 }
 
 //-----------------------------------------------------------------------------
 sf::Vector2f Projectile::getDirection() const
 {
-    return direction;
-}
-
-//-----------------------------------------------------------------------------
-float Projectile::getSpeed() const
-{
-    return speed;
+    return m_direction;
 }
 
 //-----------------------------------------------------------------------------
@@ -73,121 +62,159 @@ void Projectile::setActive(bool active)
 }
 
 //-----------------------------------------------------------------------------
-int Projectile::getDamage() const
-{
-    return damage;
-}
-
-//-----------------------------------------------------------------------------
 bool Projectile::isExpired() const
 {
-    return elapsedTime >= 3.0f; // 3 seconds 
+    return m_elapsedTime >= PROJECTILE_AIR_TIME;
 }
 
-//-----------------------------------------------------------------------------
-bool Projectile::isOutOfMap() const
-{
-    sf::Vector2f pos = getPosition();
-    return (pos.x < -50 || pos.x > MAP_WIDTH + 50 || pos.y < -50 || pos.y > MAP_HEIGHT + 50);
-}
 //-----------------------------------------------------------------------------  
-// Collision handler for Bullet vs Enemy - Order independent  
+//Collision handler for Bullet vs Enemy - Order independent.  
 void handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2)  
 {  
-   Projectile* bullet = nullptr;  
-   Enemy* enemy = nullptr;  
+    //std::cout << "in PlayerBulletEnemyCollision" << std::endl;
+   Projectile* bulletPtr = nullptr;  
+   Enemy* enemyPtr = nullptr;  
 
    // Check both parameter orders  
-   if (auto* b = dynamic_cast<Projectile*>(&obj1)) {  
-       if (auto* e = dynamic_cast<Enemy*>(&obj2)) {  
-           bullet = b;  
-           enemy = e;  
+   if (auto* bullet = dynamic_cast<Projectile*>(&obj1)) 
+   {  
+       if (auto* enemy = dynamic_cast<Enemy*>(&obj2)) 
+       {  
+           bulletPtr = bullet;
+           enemyPtr = enemy;
        }  
    }  
-   else if (auto* b = dynamic_cast<Projectile*>(&obj2)) {  
-       if (auto* e = dynamic_cast<Enemy*>(&obj1)) {  
-           bullet = b;  
-           enemy = e;  
+   else if (auto* bullet = dynamic_cast<Projectile*>(&obj2))
+   {  
+       if (auto* enemy = dynamic_cast<Enemy*>(&obj1))
+       {  
+           bulletPtr = bullet;
+           enemyPtr = enemy;
        }  
    }  
 
-   if (bullet && enemy) {  
-       // Only player bullets can kill enemies  
-       if (bullet->getOwner() == PLAYER)  
+   if (bulletPtr && enemyPtr) 
+   {  
+       //Only player bullets can kill enemies
+       if (bulletPtr->getOwner() == _PLAYER)  
        {  
-           std::cout << "Player bullet hit enemy - Enemy killed!" << std::endl;  
-           enemy->setLife(true); // Mark enemy as dead  
-           bullet->setActive(false); // Deactivate bullet  
-       }  
-       // If enemy bullet hits enemy, do nothing (no friendly fire)  
-       else  
-       {  
-           std::cout << "Enemy bullet hit enemy - No effect (no friendly fire)" << std::endl;  
-           // Bullet continues through enemy without effect  
+           //std::cout << "Player bullet hit enemy - Enemy killed!" << std::endl;  
+           enemyPtr->setLife(true); //Mark enemy as dead  
+           bulletPtr->setActive(false); //Deactivate bullet  
+           bulletPtr->setLife(true);
        }  
    }  
 }
 
 //-----------------------------------------------------------------------------
-// Collision handler for Bullet vs Player - Order independent
+// Collision handler for Bullet vs Player - Order independent.
 void handleEnemyBulletPlayerCollision(GameObject& obj1, GameObject& obj2)
 {
-    Projectile* bullet = nullptr;
-    Player* player = nullptr;
+    Projectile* bulletPtr = nullptr;
+    Player* playerPtr = nullptr;
 
     // Check both parameter orders
-    if (auto* b = dynamic_cast<Projectile*>(&obj1)) {
-        if (auto* p = dynamic_cast<Player*>(&obj2)) {
-            bullet = b;
-            player = p;
+    if (auto* bullet = dynamic_cast<Projectile*>(&obj1)) 
+    {
+        if (auto* player = dynamic_cast<Player*>(&obj2)) 
+        {
+            bulletPtr = bullet;
+            playerPtr = player;
         }
     }
-    else if (auto* b = dynamic_cast<Projectile*>(&obj2)) {
-        if (auto* p = dynamic_cast<Player*>(&obj1)) {
-            bullet = b;
-            player = p;
+    else if (auto* bullet = dynamic_cast<Projectile*>(&obj2)) 
+    {
+        if (auto* player = dynamic_cast<Player*>(&obj1))
+        {
+            bulletPtr = bullet;
+            playerPtr = player;
         }
     }
 
-    if (bullet && player) {
+    if (bulletPtr && playerPtr)
+    {
         // Only enemy bullets can hurt player
-        if (bullet->getOwner() == BulletOwner::ENEMY)
+        if (bulletPtr->getOwner() == ENEMY)
         {
-            std::cout << "Enemy bullet hit player!" << std::endl;
-            player->decLife();
-            bullet->setActive(false); // Deactivate bullet
-        }
-        // Player bullets don't hurt player (self-protection)
-        else
-        {
-            std::cout << "Player bullet hit player - No effect (self-protection)" << std::endl;
-            // Bullet continues without effect
+            //std::cout << "Enemy bullet hit player!" << std::endl;
+            playerPtr->decLife(PROJECTILE_DAMAGE);
+            bulletPtr->setActive(false); // Deactivate bullet
+            bulletPtr->setLife(true);
         }
     }
 }
 
 //-----------------------------------------------------------------------------
-// Collision handler for Bullet vs Wall - Order independent
+//Collision handler for Bullet vs Wall - Order independent.
 void handleBulletWallCollision(GameObject& obj1, GameObject& obj2)
 {
-    Projectile* bullet = nullptr;
+    Projectile* bulletPtr = nullptr;
+	Wall* wallPtr = nullptr;
 
-    // Check both parameter orders
-    if (auto* b = dynamic_cast<Projectile*>(&obj1)) {
-        bullet = b;
+    //Check both parameter orders.
+    if (auto* bullet = dynamic_cast<Projectile*>(&obj1))
+    {
+        if (auto* wall = dynamic_cast<Wall*>(&obj2)) 
+        {
+            bulletPtr = bullet;
+            wallPtr = wall;
+		}
+
     }
-    else if (auto* b = dynamic_cast<Projectile*>(&obj2)) {
-        bullet = b;
+    else if (auto* bullet = dynamic_cast<Projectile*>(&obj2)) 
+    {
+      if (auto* wall = dynamic_cast<Wall*>(&obj1)) 
+      {
+            wallPtr = wall;
+            bulletPtr = bullet;
+	   }
+        
     }
 
-    if (bullet) {
-        std::cout << "Bullet hit wall - Bullet destroyed" << std::endl;
-        bullet->setActive(false); // All bullets are stopped by walls
+    if (bulletPtr && wallPtr)
+    {
+        //std::cout << "Bullet hit wall - Bullet destroyed" << std::endl;
+        bulletPtr->setActive(false); // All bullets are stopped by walls
+        bulletPtr->setLife(true);
+        if(bulletPtr->getOwner() == _PLAYER)
+		wallPtr->setLife(true); // Mark wall as destroyed (if needed)
     }
 }
 
 //-----------------------------------------------------------------------------
-// Register bullet collision handlers
+void handleBulletObstacleCollision(GameObject& obj1, GameObject& obj2)
+{
+    Projectile* bulletPtr = nullptr;
+    Obstacles* obstaclePtr = nullptr;
+
+    //Check both parameter orders.
+    if (auto* bullet = dynamic_cast<Projectile*>(&obj1))
+    {
+        if (auto* obstacle = dynamic_cast<Obstacles*>(&obj2))
+        {
+            bulletPtr = bullet;
+            obstaclePtr = obstacle;
+		}
+    }
+    else if (auto* obstacle = dynamic_cast<Obstacles*>(&obj1))
+    {
+        if (auto* bullet = dynamic_cast<Projectile*>(&obj2))
+        {
+            bulletPtr = bullet;
+            obstaclePtr = obstacle;
+        }
+    }
+
+    if (bulletPtr && obstaclePtr)
+    {
+        bulletPtr->setActive(false); //All bullets are stopped by obstacle.
+        bulletPtr->setLife(true);
+        obstaclePtr->decLife();
+    }
+}
+
+//-----------------------------------------------------------------------------
+//Register bullet collision handlers.
 void Projectile::registerBulletCollisions()
 {
     static bool registered = false;
@@ -196,20 +223,21 @@ void Projectile::registerBulletCollisions()
     auto& collisionFactory = CollisionFactory::getInstance();
 
     // Register bullet-enemy collisions (handles both player and enemy bullets)
-    collisionFactory.registerTypedCollision<Bullets, Enemy>(handlePlayerBulletEnemyCollision);
+    collisionFactory.registerTypedCollision<Projectile, Enemy>(handlePlayerBulletEnemyCollision);
 
     // Register bullet-player collisions (handles both player and enemy bullets)
-    collisionFactory.registerTypedCollision<Bullets, Player>(handleEnemyBulletPlayerCollision);
+    collisionFactory.registerTypedCollision<Projectile, Player>(handleEnemyBulletPlayerCollision);
 
     // Register bullet-wall collisions (all bullets are stopped by walls)
-    collisionFactory.registerTypedCollision<Bullets, Wall>(handleBulletWallCollision);
+    collisionFactory.registerTypedCollision<Projectile, Wall>(handleBulletWallCollision);
+
+    collisionFactory.registerTypedCollision<Projectile, Obstacles>(handleBulletObstacleCollision);
 
     registered = true;
-    std::cout << "Bullet collisions registered." << std::endl;
 }
 
 //-----------------------------------------------------------------------------
-// Auto-registration helper - runs when first Bullet is created
+//Auto-registration helper - runs when first Bullet is created.
 bool g_bulletCollisionRegistered = []()
     {
         Projectile::registerBulletCollisions();
@@ -221,6 +249,3 @@ BulletOwner Projectile::getOwner() const
 {
     return m_owner;
 }
-
-
-
