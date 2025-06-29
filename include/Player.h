@@ -51,6 +51,7 @@ public:
 	void handleShooting();
 	void setAttackBehavior(std::unique_ptr<AttackBehavior> attackBehavior);
 	void presentSound();
+	void medkitSound();
 	void setShootCooldown(const std::string& weaponName);
 	void removeEnemyGift();
 	void removeTimeGift();

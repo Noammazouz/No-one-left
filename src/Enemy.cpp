@@ -46,9 +46,9 @@ bool Enemy::isAlive() const
 }
 
 //-----------------------------------------------------------------------------
-int Enemy::getNumOfLives() const
+int Enemy::getNumOfEnemiesAtTheStart()
 {
-    return m_numOfLives;
+    return m_numOfEnemies;
 }
 
 //-----------------------------------------------------------------------------

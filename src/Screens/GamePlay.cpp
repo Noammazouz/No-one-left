@@ -233,6 +233,7 @@ void GamePlay::handleScoreBoard()
 	m_infoBar.updateTime(m_stopwatch);
 	m_infoBar.updateNumOfBullets(m_player.getNumOfBullets());
 	m_infoBar.updateLives(m_player.getLife());
+	m_infoBar.updateNumOfEnemiesAlive();
 }
 
 //-----------------------------------------------------------------------------
@@ -385,6 +386,14 @@ void GamePlay::addProjectile(const sf::Vector2f& pos, std::vector<sf::Vector2f> 
 
 //----------------------------------------------------------------------------
 void GamePlay::playPresentSound()
+{
+	m_sound.setBuffer(ResourcesManager::getInstance().getSound(GAIN_PRESENT_SOUND));
+	m_sound.setVolume(100.f);
+	m_sound.setPlayingOffset(sf::seconds(0.2f));
+	m_sound.play();
+}
+
+void GamePlay::playMedkitSound()
 {
 	m_sound.setBuffer(ResourcesManager::getInstance().getSound(GAIN_HEALTH_SOUND));
 	m_sound.setVolume(100.f);

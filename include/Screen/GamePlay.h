@@ -34,6 +34,7 @@ public:
 	void playMedkitSound();
 	void removeEnemy();
 	void decTime();
+
 protected:
 	void initButtons() override;
 
