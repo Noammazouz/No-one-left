@@ -33,6 +33,12 @@ Enemy::~Enemy()
     m_numOfEnemiesAlive--;
 }
 
+//-------------------------------------
+void Enemy::resetNumOfEnemeis()
+{
+    m_numOfEnemies = 0;
+    //m_numOfEnemiesAlive = 0;
+}
 //-----------------------------------------------------------------------------
 void Enemy::takeDamage(int damage)
 {
@@ -240,10 +246,4 @@ void Enemy::clearFireFlag()
 int Enemy::getNumOfEnemiesAlive()
 {
     return m_numOfEnemiesAlive;
-}
-
-//-----------------------------------------------------------------------------
-int Enemy::getNumOfStartingEnemies(const std::vector<std::unique_ptr<UpdateableObject>>& movingObjs)
-{
-    return static_cast<int>(movingObjs.size());
 }
