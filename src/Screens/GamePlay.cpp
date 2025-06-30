@@ -252,6 +252,7 @@ void GamePlay::resetGame()
 {
 	m_newGame = false;
 	m_sound.stop();
+	Enemy::resetNumOfEnemeis();
 	handleLoadingLevel();
 	resetGameOverStates();
 }
