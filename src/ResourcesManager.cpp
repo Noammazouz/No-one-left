@@ -82,6 +82,8 @@ void ResourcesManager::loadTexture()
         {"Bullet", "Bullet.png"},
         {"remove time", "clock.png"},
         {"remove enemy", "skull.png"},
+        {"bomb", "bomb.png"},
+        {"explosion", "Explosion.png"},
         {"enemeis icon", "enemiesIcon.png"}
     };
 

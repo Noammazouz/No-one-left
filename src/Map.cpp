@@ -108,8 +108,8 @@ void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingOb
     // first third (5 simple + 5 smart)
     for (int i = 0; i < NUM_OF_STUPID_ENEMY; ++i)
     {
-        tryPlaceEnemy(ObjectType::SIMPLEENEMY, FIRST_SECTION);
-        tryPlaceEnemy(ObjectType::SMARTENEMY, FIRST_SECTION);
+        tryPlaceEnemy(ObjectType::BFSENEMY, FIRST_SECTION);
+        //tryPlaceEnemy(ObjectType::SMARTENEMY, FIRST_SECTION);
     }
 
     // second third (1 simple, 10 smart)

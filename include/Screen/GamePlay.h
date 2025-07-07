@@ -18,6 +18,8 @@
 #include "Infobar.h"
 #include "CollisionFactory.h"
 #include "Projectile.h"
+#include "Bomb.h"
+#include "Explosion.h"
 
 //-----class section-----
 class GamePlay : public Screen
@@ -30,6 +32,8 @@ public:
 	virtual void run(sf::RenderWindow& window, int& m_currrentScreen) override;
 	virtual void handleMouseClick(const sf::Vector2f& clickPos, int& screenState) override;
 	void addProjectile(const sf::Vector2f& pos, std::vector<sf::Vector2f> directions, BulletOwner owner);
+	void addExplosion(const sf::Vector2f& pos);
+	void addBomb(const sf::Vector2f& pos);
 	void playPresentSound();
 	void playMedkitSound();
 	void removeEnemy();
