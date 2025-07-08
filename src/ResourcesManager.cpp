@@ -84,7 +84,9 @@ void ResourcesManager::loadTexture()
         {"remove enemy", "skull.png"},
         {"bomb", "bomb.png"},
         {"explosion", "Explosion.png"},
-        {"enemeis icon", "enemiesIcon.png"}
+        {"enemeis icon", "enemiesIcon.png"},
+        {"machine gun", "machine_gun.png"},
+        {"bazooka", "Bazooka-sized.png"}
     };
 
     for (const auto& [name, filePath] : textures)
