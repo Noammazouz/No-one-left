@@ -9,6 +9,7 @@ Infobar::Infobar()
 	initializeBullets();
 	initializeTime();
 	initializeNumOfEnemies();
+	initializeBombs();
 }
 
 //-----------------------------------------------------------------------------
@@ -23,8 +24,15 @@ void Infobar::updateLives(int numberOfLives)
 //-----------------------------------------------------------------------------
 void Infobar::updateNumOfBullets(int BulletsAmount)
 {
-	std::string temp = std::to_string(BulletsAmount) + "/" + std::to_string(MAX_BULLETS);
-	m_BulletsAmount.setString(":" + temp);
+	std::string temp = std::to_string(BulletsAmount) + "/" + std::to_string(NUM_OF_BULLETS);
+	m_amountOfBullets.setString(":" + temp);
+}
+
+//-----------------------------------------------------------------------------
+void Infobar::updateNumOfBombs(int AmountOfBombs)
+{
+	std::string temp = std::to_string(AmountOfBombs) + "/" + std::to_string(NUM_OF_BOMBS);
+	m_amountOfBombs.setString(":" + temp);
 }
 
 //-----------------------------------------------------------------------------
@@ -40,14 +48,14 @@ void Infobar::updateTime(sf::Time deltaTime)
 
 	std::string temp = std::to_string(minutes) + ":" + std::to_string(seconds);
 
-	m_Time.setString(":" + temp);
+	m_time.setString(":" + temp);
 	
 }
 
 void Infobar::updateNumOfEnemiesAlive()
 {
 	std::string temp = std::to_string(Enemy::getNumOfEnemiesAlive()) + "/" + std::to_string(Enemy::getNumOfEnemiesAtTheStart());
-	m_Enemies.setString(":" + temp);
+	m_enemies.setString(":" + temp);
 }
 
 //------------------------------------------------------------------------------------------
@@ -82,12 +90,27 @@ void Infobar::initializeBullets()
 	m_bulletsIcon.setScale(0.1f, 0.1f); // Adjust scale as needed
 	m_bulletsIcon.setPosition(sf::Vector2f(19, 175));
 
-	m_BulletsAmount.setCharacterSize(20);
-	m_BulletsAmount.setFont(ResourcesManager::getInstance().getFont());
-	m_BulletsAmount.setFillColor(FONT_COLOR);
-	m_BulletsAmount.setOutlineColor(sf::Color::Black);
-	m_BulletsAmount.setOutlineThickness(1);
-	m_BulletsAmount.setPosition(sf::Vector2f(34, 170));
+	m_amountOfBullets.setCharacterSize(20);
+	m_amountOfBullets.setFont(ResourcesManager::getInstance().getFont());
+	m_amountOfBullets.setFillColor(FONT_COLOR);
+	m_amountOfBullets.setOutlineColor(sf::Color::Black);
+	m_amountOfBullets.setOutlineThickness(1);
+	m_amountOfBullets.setPosition(sf::Vector2f(34, 170));
+}
+
+//------------------------------------------------------------------------------------------
+void Infobar::initializeBombs()
+{
+	m_bombsIcon.setTexture(ResourcesManager::getInstance().getTexture(BOMBS_ICON));
+	m_bombsIcon.setOrigin(m_bombsIcon.getGlobalBounds().width / 2, m_bombsIcon.getGlobalBounds().height / 2);
+	m_bombsIcon.setPosition(sf::Vector2f(19, 280));
+
+	m_amountOfBombs.setCharacterSize(20);
+	m_amountOfBombs.setFont(ResourcesManager::getInstance().getFont());
+	m_amountOfBombs.setFillColor(FONT_COLOR);
+	m_amountOfBombs.setOutlineColor(sf::Color::Black);
+	m_amountOfBombs.setOutlineThickness(1);
+	m_amountOfBombs.setPosition(sf::Vector2f(38, 278));
 }
 
 //------------------------------------------------------------------------------------------
@@ -98,12 +121,12 @@ void Infobar::initializeTime()
 	m_timeIcon.setPosition(sf::Vector2f(15, 57));
 
 
-	m_Time.setCharacterSize(20);
-	m_Time.setFont(ResourcesManager::getInstance().getFont());
-	m_Time.setFillColor(sf::Color(128, 0, 128));
-	m_Time.setOutlineColor(sf::Color::Black);
-	m_Time.setOutlineThickness(1);
-	m_Time.setPosition(sf::Vector2f(30, 50));
+	m_time.setCharacterSize(20);
+	m_time.setFont(ResourcesManager::getInstance().getFont());
+	m_time.setFillColor(sf::Color(128, 0, 128));
+	m_time.setOutlineColor(sf::Color::Black);
+	m_time.setOutlineThickness(1);
+	m_time.setPosition(sf::Vector2f(30, 50));
 }
 
 //-----------------------------------------------------------------------------
@@ -114,25 +137,27 @@ void Infobar::initializeNumOfEnemies()
 	m_enemiesIcon.setScale(0.1f, 0.1f); // Adjust scale as needed
 	m_enemiesIcon.setPosition(sf::Vector2f(3, 200));
 
-	m_Enemies.setCharacterSize(20);
-	m_Enemies.setFont(ResourcesManager::getInstance().getFont());
-	m_Enemies.setFillColor(FONT_COLOR);
-	m_Enemies.setOutlineColor(sf::Color::Black);
-	m_Enemies.setOutlineThickness(1);
-	m_Enemies.setPosition(sf::Vector2f(50, 225));
+	m_enemies.setCharacterSize(20);
+	m_enemies.setFont(ResourcesManager::getInstance().getFont());
+	m_enemies.setFillColor(FONT_COLOR);
+	m_enemies.setOutlineColor(sf::Color::Black);
+	m_enemies.setOutlineThickness(1);
+	m_enemies.setPosition(sf::Vector2f(50, 225));
 }
 
 //-----------------------------------------------------------------------------
 void Infobar::draw(sf::RenderWindow& window)
 {
 	window.draw(m_timeIcon);
-	window.draw(m_Time);
+	window.draw(m_time);
 	window.draw(m_livesIcon);
 	window.draw(m_lifePercentages);
 	window.draw(m_bulletsIcon);
-	window.draw(m_BulletsAmount);
+	window.draw(m_amountOfBullets);
 	window.draw(m_enemiesIcon);
-	window.draw(m_Enemies);
+	window.draw(m_enemies);
+	window.draw(m_amountOfBombs);
+	window.draw(m_bombsIcon);
 }
 
 //------------------------------------------------------------------------------------------

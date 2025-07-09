@@ -64,7 +64,7 @@ void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 	move(clock);
 	handleCollision();
 	handleErasing();
-	handleScoreBoard();
+	handleInfobar();
 }
 
 //-----------------------------------------------------------------------------
@@ -228,10 +228,11 @@ void GamePlay::handleLoadingLevel()
 }
 
 //-----------------------------------------------------------------------------
-void GamePlay::handleScoreBoard()
+void GamePlay::handleInfobar()
 {
 	m_infoBar.updateTime(m_stopwatch);
 	m_infoBar.updateNumOfBullets(m_player.getNumOfBullets());
+	m_infoBar.updateNumOfBombs(10);
 	m_infoBar.updateLives(m_player.getLife());
 	m_infoBar.updateNumOfEnemiesAlive();
 }
