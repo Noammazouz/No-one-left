@@ -129,7 +129,7 @@ void GamePlay::move(sf::Clock& clock)
 		{
 			if (e->wantsToFire())
 			{
-				addProjectile(e->getPosition(), e->getShottingDirections(), ENEMY);
+				addProjectile(e->getPosition(), e->getShottingDirections(), ENEMY, PROJECTILE_NAME);
 				e->clearFireFlag();
 			}
 		}
@@ -166,7 +166,7 @@ void GamePlay::handleCollision()
 		}
 		if (!collided) 
 		{
-			// Dynamic-cast to Enemy (or UpdateableObject) and call ClearAvoidance()
+			//Dynamic-cast to Enemy (or UpdateableObject) and call ClearAvoidance()
 			if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get()))
  {
 				if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get())) 
@@ -373,7 +373,10 @@ void GamePlay::resetGameOverStates()
 }
 
 //-----------------------------------------------------------------------------
-void GamePlay::addProjectile(const sf::Vector2f& pos, std::vector<sf::Vector2f> directions, BulletOwner owner)
+void GamePlay::addProjectile(const sf::Vector2f& pos, 
+							 std::vector<sf::Vector2f> directions, 
+							 BulletOwner owner,
+							 const std::string& weaponName)
 {
 	m_sound.setBuffer(ResourcesManager::getInstance().getSound(SHOOTING_SOUND));
 	m_sound.setVolume(100.f);
@@ -382,14 +385,16 @@ void GamePlay::addProjectile(const sf::Vector2f& pos, std::vector<sf::Vector2f> 
 
 	for (int index = 0; index < directions.size(); ++index)
 	{
-		m_movingObj.push_back(std::make_unique<Projectile>(pos, directions[index], owner));
+		m_movingObj.push_back(std::make_unique<Projectile>(pos, directions[index], owner, weaponName));
 	}
 }
+
 //-----------------------------------------------------------------------------
 void GamePlay::addExplosion(const sf::Vector2f& pos)
 {
 	m_movingObj.push_back(std::make_unique<Explosion>(pos));
 }
+
 //-----------------------------------------------------------------------------
 void GamePlay::addBomb(const sf::Vector2f& pos)
 {

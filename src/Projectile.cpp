@@ -8,19 +8,37 @@
 
 //-----functions section------
 //-----------------------------------------------------------------------------
-Projectile::Projectile(sf::Vector2f position, sf::Vector2f direction, BulletOwner owner)
-    : UpdateableObject(position, PROJECTILE_NAME), isActive(true), m_elapsedTime(0.0f), m_direction(direction), m_owner(owner)
+Projectile::Projectile(sf::Vector2f position, sf::Vector2f direction, 
+                       BulletOwner owner, const std::string& weaponName)
+    : UpdateableObject(position, PROJECTILE_NAME), isActive(true), 
+	  m_elapsedTime(0.0f), m_direction(direction), m_owner(owner), 
+      m_weaponName(weaponName)
 {
-    float length = std::sqrt(m_direction.x * m_direction.x + m_direction.y * m_direction.y); // to get same speed for all directions
+    float length = std::sqrt(m_direction.x * m_direction.x + m_direction.y * m_direction.y); //to get same speed for all directions
     if (length > 0)
     {
         m_direction.x /= length;
         m_direction.y /= length;
     }
 
+	int addedAngle = 0;
+
+    if (m_weaponName == RIFLE_NAME || m_weaponName == MACHINE_GUN_NAME)
+    {
+        m_pic.setTexture(ResourcesManager::getInstance().getTexture(PROJECTILE_NAME));
+		addedAngle = 90; //Rifle and Machine Gun bullets face up.
+    }
+    else if (m_weaponName == BAZOOKA_NAME)
+    {
+        m_pic.setTexture(ResourcesManager::getInstance().getTexture(BAZOOKA_MISLE_NAME));
+        m_pic.setOrigin(m_pic.getTexture()->getSize().x * 0.5f,
+                        m_pic.getTexture()->getSize().y * 0.5f);
+		addedAngle = 0; //Bazooka bullets face right.
+    }
+
     float angleRadians = std::atan2(m_direction.y, m_direction.x);
     float angleDegrees = angleRadians * 180.0f / std::numbers::pi;
-    m_pic.setRotation(angleDegrees + 90.0f);
+    m_pic.setRotation(angleDegrees + addedAngle);
 }
 
 //-----------------------------------------------------------------------------
@@ -71,11 +89,10 @@ bool Projectile::isExpired() const
 //Collision handler for Bullet vs Enemy - Order independent.  
 void handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2)  
 {  
-    //std::cout << "in PlayerBulletEnemyCollision" << std::endl;
    Projectile* bulletPtr = nullptr;  
    Enemy* enemyPtr = nullptr;  
 
-   // Check both parameter orders  
+   //Check both parameter orders  
    if (auto* bullet = dynamic_cast<Projectile*>(&obj1)) 
    {  
        if (auto* enemy = dynamic_cast<Enemy*>(&obj2)) 
@@ -116,7 +133,7 @@ void handleEnemyBulletPlayerCollision(GameObject& obj1, GameObject& obj2)
     Projectile* bulletPtr = nullptr;
     Player* playerPtr = nullptr;
 
-    // Check both parameter orders
+    //Check both parameter orders
     if (auto* bullet = dynamic_cast<Projectile*>(&obj1)) 
     {
         if (auto* player = dynamic_cast<Player*>(&obj2)) 
@@ -136,12 +153,11 @@ void handleEnemyBulletPlayerCollision(GameObject& obj1, GameObject& obj2)
 
     if (bulletPtr && playerPtr)
     {
-        // Only enemy bullets can hurt player
+        //Only enemy bullets can hurt player
         if (bulletPtr->getOwner() == ENEMY)
         {
-            //std::cout << "Enemy bullet hit player!" << std::endl;
             playerPtr->decLife(PROJECTILE_DAMAGE);
-            bulletPtr->setActive(false); // Deactivate bullet
+            bulletPtr->setActive(false); //Deactivate bullet
             bulletPtr->setLife(true);
         }
     }

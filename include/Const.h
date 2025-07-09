@@ -175,8 +175,10 @@ const std::string REMOVE_TIME_NAME = "remove time";
 
 //-----texture names const section-----
 const std::string PROJECTILE_NAME = "projectile";
+const std::string BAZOOKA_MISLE_NAME = "bazooka_misle";
 const std::string BOMB_NAME = "bomb";
 const std::string EXPLOSION_NAME = "explosion";
+
 //-----warning const section-----
 const std::string STARIC_OBJECTS_WARNING = "[WARN] No static objects were loaded are you sure your CSV has entries?\n";
 

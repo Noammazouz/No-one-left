@@ -10,7 +10,8 @@
 class Projectile : public UpdateableObject  
 {  
 public:  
-	  Projectile(sf::Vector2f position, sf::Vector2f direction, BulletOwner owner);  
+	  Projectile(sf::Vector2f position, sf::Vector2f direction,
+				 BulletOwner owner, const std::string& weaponName);
 	  ~Projectile() override = default;  
 
 	  void update(sf::Time deltaTime, sf::Vector2f playerPos) override;  
@@ -29,6 +30,7 @@ private:
 	  bool isActive;  
 	  float m_elapsedTime;   
 	  BulletOwner m_owner;
+	  std::string m_weaponName;
 
 	  static bool g_bulletCollisionRegistered;
 };

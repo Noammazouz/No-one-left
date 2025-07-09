@@ -159,7 +159,10 @@ void Map::loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj,
 
 }
 
-void Map::loadPresents(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj, Player& player)
+//-----------------------------------------------------------------------------
+void Map::loadPresents(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, 
+                       std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj, 
+                       Player& player)
 {
     constexpr float WALL_MARGIN = 50.f;
     constexpr int maxTries = 10;
@@ -183,14 +186,13 @@ void Map::loadPresents(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, 
             }
         };
 
-    for (int i = 0; i < 100; ++i) tryPlaceObstacle(ObjectType::RIFLE);
-    for (int i = 0; i < 100; ++i) tryPlaceObstacle(ObjectType::MACHINE_GUN);
-    for (int i = 0; i < 100; ++i) tryPlaceObstacle(ObjectType::BAZOOKA);
-    for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::BULLET);
+    for (int i = 0; i < 10; ++i) tryPlaceObstacle(ObjectType::RIFLE);
+    for (int i = 0; i < 10; ++i) tryPlaceObstacle(ObjectType::MACHINE_GUN);
+    for (int i = 0; i < 10; ++i) tryPlaceObstacle(ObjectType::BAZOOKA);
+    for (int i = 0; i < 10; ++i) tryPlaceObstacle(ObjectType::BULLET);
     for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::MEDKIT);
     for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::REMOVE_ENEMY);
     for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::REMOVE_TIME);
-
 }
 
 //-----------------------------------------------------------------------------

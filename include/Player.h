@@ -57,6 +57,8 @@ public:
 	void removeTimeGift();
 	bool isBombsAvailable();
 	int getNumOfBombs() const;
+	std::string getCurrentWeaponName() const;
+	void setCurrentWeapon(const std::string& weapon);
 
 private:
 	bool checkDirection();
@@ -84,4 +86,5 @@ private:
 
 	int m_bombsCount;
 	bool m_bKeyPressed; 
+	std::string m_currentWeapon;
 };

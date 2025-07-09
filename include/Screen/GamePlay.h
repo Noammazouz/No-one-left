@@ -31,7 +31,10 @@ public:
 	virtual void activate(sf::Clock& clockin, int& m_currrentScreen) override;
 	virtual void run(sf::RenderWindow& window, int& m_currrentScreen) override;
 	virtual void handleMouseClick(const sf::Vector2f& clickPos, int& screenState) override;
-	void addProjectile(const sf::Vector2f& pos, std::vector<sf::Vector2f> directions, BulletOwner owner);
+	void addProjectile(const sf::Vector2f& pos,
+					   std::vector<sf::Vector2f> directions,
+					   BulletOwner owner,
+					   const std::string& weaponName);
 	void addExplosion(const sf::Vector2f& pos);
 	void addBomb(const sf::Vector2f& pos);
 	void playPresentSound();
