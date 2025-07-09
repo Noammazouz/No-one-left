@@ -120,6 +120,7 @@ void handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2)
            enemyPtr->takeDamage(1);
            bulletPtr->setActive(false); //Deactivate bullet  
            bulletPtr->setLife(true);
+
            if (!enemyPtr->isAlive())
            {
                enemyPtr->beginDying(OBJECT_DEATH_WIDTH, OBJECT_DEATH_HEIGHT, PLAYER_DEATH_FRAME_TIME,
