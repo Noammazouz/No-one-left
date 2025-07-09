@@ -15,7 +15,8 @@ public:
 	void updateLives(int numberOfLives);
 	void updateNumOfBullets(int BulletsAmount);
 	void updateTime(sf::Time deltaTime);
-	void updateNumOfEnemiesAlive();
+	void updateNumOfEnemiesAlive(); 
+	void updateNumOfBombs(int AmountOfBombs);
 	void draw(sf::RenderWindow& window);
 
 private:
@@ -24,10 +25,11 @@ private:
 	void initializeBullets();
 	void initializeTime();
 	void initializeNumOfEnemies();
+	void initializeBombs();
 	void decreaseLifeLevel(float lifePercentage);
 
-	sf::Text m_lifePercentages, m_BulletsAmount, m_Time, m_Enemies;
-	sf::Sprite m_livesIcon, m_bulletsIcon, m_timeIcon, m_enemiesIcon;
+	sf::Text m_lifePercentages, m_amountOfBullets, m_time, m_enemies, m_amountOfBombs;
+	sf::Sprite m_livesIcon, m_bulletsIcon, m_timeIcon, m_enemiesIcon, m_bombsIcon;
 
 	std::vector<sf::IntRect> livesFrames;
 };

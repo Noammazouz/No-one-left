@@ -107,7 +107,7 @@ const int NUM_OF_DIRECTIONS = 8;
 const int NUM_OF_BULLETS = 29;
 const int NUM_OF_STUPID_ENEMY = 5;
 const int NUM_OF_SMART_ENEMY = 10;
-const int MAX_BULLETS = 29; //Maximum number of bullets that a gun have.
+const int NUM_OF_BOMBS = 10; //Maximum number of bullets that a gun have.
 const int MIN_BOUND_BULLETS = 0; //Minimum number of bullets that a gun have.
 const int OBJECT_HEIGHT = 32; //Height of the player sprite.
 const int OBJECT_WIDTH = 25; //Width of the player sprite.
@@ -160,7 +160,6 @@ const std::string HELP_MENU_BUTTON = "help";
 const std::string PLAYER_RIFLE = "player_rifle";
 const std::string PLAYER_MACHINE_GUN = "player_machine_gun";
 const std::string PLAYER_BAZOOKA = "player_bazooka";
-const std::string SIMPLE_ENEMY_MACHINE_GUN = "simple_enemy_machine_gun";
 const std::string SIMPLE_ENEMY_RIFLE = "simple_enemy_rifle";
 const std::string SMART_ENEMY_RIFLE = "smart_enemy_rifle";
 const std::string BFS_ENEMY_RIFLE = "bfs_enemy_rifle";
@@ -173,6 +172,7 @@ const std::string BULLETS_NAME = "Bullet";
 const std::string MED_KIT_NAME = "medkit";
 const std::string REMOVE_ENEMY_NAME = "remove enemy";
 const std::string REMOVE_TIME_NAME = "remove time";
+ 
 
 //-----texture names const section-----
 const std::string PROJECTILE_NAME = "projectile";
@@ -193,6 +193,7 @@ const std::string LIFE_ICON = "life";
 const std::string BULLETS_ICON = "bulletIcon";
 const std::string CLOCK_ICON = "clock";
 const std::string ENEMIES_ICON = "enemeis icon";
+const std::string BOMBS_ICON = "bombs icon";
 
 //-----color const section-----
 const sf::Color FONT_COLOR = sf::Color(128, 0, 128);

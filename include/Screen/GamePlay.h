@@ -48,7 +48,7 @@ private:
 	void handleErasing();
 	void setExpoDirection(int index);
 	void handleLoadingLevel();
-	void handleScoreBoard();
+	void handleInfobar();
 	void resetGame();
 	void resetGameOverStates();
 	void handleWinState(int& m_currentScreen);

@@ -16,7 +16,7 @@ int Player::m_bulletCount = NUM_OF_BULLETS;
 //-----functions section------
 //-----------------------------------------------------------------------------
 Player::Player()
-	: UpdateableObject(), m_isShooting(false), m_lives(NUM_OF_LIVES)
+	: UpdateableObject(), m_lives(NUM_OF_LIVES)
 {}
 
 //-----------------------------------------------------------------------------
@@ -184,7 +184,6 @@ void Player::handleShooting()
 		if (m_shootClock.getElapsedTime() >= m_shootCooldown && isBulletsAvailable())
 		{
 			m_gamePlay->addProjectile(this->getPosition(), m_attackBehavior->Attack(m_facingDirection), _PLAYER);
-			m_isShooting = true;
 			decBullets();
 			m_shootClock.restart();  // Reset timer
 		}

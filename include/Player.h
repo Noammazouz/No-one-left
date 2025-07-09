@@ -65,7 +65,6 @@ private:
 	static int m_score;
 	static int m_bulletCount;
 	bool m_win = false;
-	bool m_isShooting = false;
 	std::unique_ptr<AttackBehavior> m_attackBehavior;
 	GamePlay* m_gamePlay;
 	sf::Vector2f m_facingDirection = sf::Vector2f(0.f, -1.f); //Default facing up.
