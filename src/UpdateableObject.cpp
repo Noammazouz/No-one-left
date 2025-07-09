@@ -45,7 +45,7 @@ void UpdateableObject::setPrevLocation(const sf::Vector2f& pos)
 void UpdateableObject::setRotation(const sf::Vector2f& direction)
 {
     //Ignore zero‐length vectors
-    if (direction == sf::Vector2f(0.f, 0.f)) return;
+    if (direction == DEFAULT_VECTOR) return;
 
     //Compute the angle in degrees: atan2 returns radians, so multiply by 180/π.
     float angle = std::atan2(direction.y, direction.x) * 180.f / std::numbers::pi;
@@ -90,7 +90,7 @@ void UpdateableObject::updatePosition(const sf::Vector2f& direction)
 //-----------------------------------------------------------------------------
 void UpdateableObject::updateFrames(const sf::Vector2f& direction, const float frameTime, const int numberOfFrames)
 {
-    if (direction != sf::Vector2f(0.f, 0.f))
+    if (direction != DEFAULT_VECTOR)
     {
         if (m_animClock.getElapsedTime().asSeconds() >= frameTime)
         {
