@@ -118,7 +118,6 @@ const int ADD_LIFE = 20;
 const int EXPLOSION_DAMAGE = 20;
 const int MIN_BOUND_BOMBS = 0; //Minimum number of bombs that a player can have.
 
-
 //-----float const section-----
 const float PLAYER_FRAME_TIME = 0.1f; //seconds per frame for the player animation
 const float CHANGE_DIRECTION_TIME = 0.f;
@@ -134,7 +133,6 @@ const float FIRE_COOLDOWN = 0.5f;
 const float PROJECTILE_AIR_TIME = 1.0f;
 const float EXPLOSION_RADIUS = 80.f;
 const float EXPLOSION_TIME = 2.f;
-
 
 //-----music and sound effects const section-----
 const std::string MENU_MUSIC = "menu";
