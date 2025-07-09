@@ -33,7 +33,7 @@ protected:
 	int m_numberOfFrames; //Number of frames for animation.
 
 	virtual void updateFrames(const sf::Vector2f& direction, const float frameTime, const int numberOfFrames);
-	void set_frames(const int framesNumber, const sf::Vector2f position);
+	virtual void set_frames(const int framesNumber, const sf::Vector2f position);
 
 private:
 	sf::Clock m_rotationClock;
