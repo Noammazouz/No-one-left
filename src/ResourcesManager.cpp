@@ -67,8 +67,8 @@ void ResourcesManager::loadTexture()
         {SMART_ENEMY_RIFLE, "smart_enemy_rifle.png"},
         {BFS_ENEMY_RIFLE, "bfs_enemy_rifle.png"},
         {PLAYER_DEATH, "player_death.png"},
-		    {SIMPLE_ENEMY_DEATH, "simple_enemy_death.png"},
-		    {SMART_ENEMY_DEATH, "smart_enemy_death.png"},
+		{SIMPLE_ENEMY_DEATH, "simple_enemy_death.png"},
+		{SMART_ENEMY_DEATH, "smart_enemy_death.png"},
         {BFS_ENEMY_DEATH, "bfs_enemy_death.png"},
         {LIFE_ICON, "life.png"},
         {BULLETS_ICON, "bulletIcon.png"},
@@ -79,7 +79,7 @@ void ResourcesManager::loadTexture()
         {LOSE_SCREEN_BACKGROUND, "lose_screen.png"},
         {START_MENU_BUTTON, "home.png"},
         {WIN_SCREEN_BACKGROUND, "win screen background.png"},
-        {PROJECTILE_NAME, "Sprite_Effects_Exhaust_02_000.png"},
+        {PROJECTILE_NAME, "bullet_from_gun.png"},
         {RIFLE_NAME, "rifle.png"},
         {MED_KIT_NAME, "medkit.png"},
         {BULLETS_NAME, "Bullet.png"},
@@ -90,7 +90,8 @@ void ResourcesManager::loadTexture()
         {EXPLOSION_NAME, "Effect_Explosion.png"},
         {ENEMIES_ICON, "enemiesIcon.png"},
         {MACHINE_GUN_NAME, "machine_gun.png"},
-        {BAZOOKA_NAME, "Bazooka-sized.png"}
+        {BAZOOKA_NAME, "Bazooka-sized.png"},
+		{BAZOOKA_MISLE_NAME, "bazooka_misle.png"}
     };
 
     for (const auto& [name, filePath] : textures)

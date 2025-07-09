@@ -14,7 +14,7 @@ Bomb::Bomb(sf::Vector2f position, GamePlay* gameplay)
 void Bomb::update(sf::Time deltaTime, sf::Vector2f /*playerPos*/)
 {
 	m_timer -= deltaTime;
-	updateFrames(DEFAULT_BOMB_DIRECTION, BOMB_FRAME_TIME, m_numberOfFrames);
+	updateFrames(DEFAULT_DIRECTION, BOMB_FRAME_TIME, m_numberOfFrames);
 	if (m_timer <= sf::Time::Zero)
 	{
 		m_gameplay->addExplosion(this->getPosition());
