@@ -30,9 +30,7 @@ enum LoseScreenButtons
 enum Present
 {
 	TIME,
-	KILL,
-	FREEZE,
-	DEFAULT
+	KILL
 };
 
 enum GameButtons
@@ -62,8 +60,6 @@ enum ObjectType
 	OBSTACLE2,
 	OBSTACLE3,
 	BULLET,
-	TREE,
-	BUILDING,
 	EXPLOSION,
 	PROJECTILE,
 	RIFLE,
@@ -80,7 +76,7 @@ enum BulletOwner
 	ENEMY
 };
 
-enum WinScreenButoons
+enum WinScreenButtons
 {
 	_EXIT = 1
 };
@@ -113,20 +109,29 @@ const int OBJECT_HEIGHT = 32; //Height of the player sprite.
 const int OBJECT_WIDTH = 25; //Width of the player sprite.
 const int OBJECT_DEATH_HEIGHT = 40; //Height of the player\enemy death sprite.
 const int OBJECT_DEATH_WIDTH = 28; //Width of the player\enemy death sprite.
+const int BOMB_HEIGHT = 30; //Width of the player sprite.
+const int BOMB_WIDTH = 30; //Width of the player sprite.
+const int EXPLOSION_HEIGHT = 257; //Width of the player sprite.
+const int EXPLOSION_WIDTH = 250; //Width of the player sprite.
 const int EXPLOSION_DEC_LIVES = 30;
 const int PROJECTILE_DAMAGE = 5;
 const int NUM_OF_LIFE_OBSTACLE = 3;
 const int ADD_LIFE = 20;
 const int EXPLOSION_DAMAGE = 20;
 const int MIN_BOUND_BOMBS = 0; //Minimum number of bombs that a player can have.
+const int NUM_OF_WEPEONS = 10;
+const int NUM_OF_PRESENTS = 20; //Number of different presents.
+
 
 //-----float const section-----
 const float PLAYER_FRAME_TIME = 0.1f; //seconds per frame for the player animation
 const float PLAYER_DEATH_FRAME_TIME = 0.6f; //seconds per frame for the player animation
 const float CHANGE_DIRECTION_TIME = 0.f;
+const float BOMB_FRAME_TIME = 0.7f; //seconds per frame for the bomb animation
+const float EXPLOSION_FRAME_TIME = 0.05f; //seconds per frame for the bomb animation
 const float PLAYER_SPEED = 250.f;
 const float ENEMY_SPEED = 100.f;
-const float BOMB_TIME = 2.f;
+const float BOMB_TIME = 2.5f;
 const float TIME_TO_REMOVE = 10.f;
 const float WINDOW_RATIO = 0.92f;
 const float ROTATION_SPEED = 135.f; //degrees per second.
@@ -137,15 +142,13 @@ const float PROJECTILE_AIR_TIME = 1.0f;
 const float EXPLOSION_RADIUS = 80.f;
 const float EXPLOSION_TIME = 2.f;
 
-//-----music and sound effects const section-----
-const std::string MENU_MUSIC = "menu";
-const std::string GAME_MUSIC = "game";
+//-----sound effects const section-----
 const std::string LOSING_SOUND = "death";
-const std::string WINNING_SOUND = "win sound effect";
 const std::string SHOOTING_SOUND = "shoot";
 const std::string EXPLOSION_SOUND = "explosion";
 const std::string GAIN_HEALTH_SOUND = "health";
 const std::string GAIN_PRESENT_SOUND = "present";
+const std::string HIT_SOUND = "hit";
 
 //-----Buttons const section-----
 const std::string RETURN_BUTTON = "return";
@@ -185,8 +188,13 @@ const std::string BAZOOKA_MISLE_NAME = "bazooka_misle";
 const std::string BOMB_NAME = "bomb";
 const std::string EXPLOSION_NAME = "explosion";
 
-//-----Warning const section-----
-const std::string STARIC_OBJECTS_WARNING = "[WARN] No static objects were loaded are you sure your CSV has entries?\n";
+const std::string OBSTACLE1_NAME = "obstacle1";
+const std::string OBSTACLE2_NAME = "obstacle2";
+const std::string OBSTACLE3_NAME = "obstacle3";
+const std::string WALL_NAME = "wall";
+
+//-----warning const section-----
+const std::string STATIC_OBJECTS_WARNING = "[WARN] No static objects were loaded are you sure your CSV has entries?\n";
 
 //-----Background const section-----
 const std::string START_SCREEN_BACKGROUND = "startScreen";
@@ -207,6 +215,8 @@ const sf::Color FONT_COLOR = sf::Color(128, 0, 128);
 
 //-----sf::Vector2f const section-----
 const sf::Vector2f FIRST_PLAYER_POSITION(2500.f, 100.f); //Initial position of the player.
+const sf::Vector2f DEFAULT_BOMB_DIRECTION(1.f, 1.f); //Default direction of the bomb.
+const sf::Vector2f DEFAULT_VECTOR(0.f, 0.f); //Default direction of the projectile.
 
 //-----Font const section-----
 const std::string FONT_NAME = "ARCADE_N.TTF"; //Name of the font file.

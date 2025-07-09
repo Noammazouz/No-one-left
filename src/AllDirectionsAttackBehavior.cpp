@@ -4,7 +4,7 @@
 
 //-----functions section------
 //-----------------------------------------------------------------------------
-std::vector<sf::Vector2f> AllDirectionsAttackBehavior::Attack(sf::Vector2f position)
+std::vector<sf::Vector2f> AllDirectionsAttackBehavior::Attack(sf::Vector2f /*position*/)
 {
     //Use static const vector to avoid repeated allocations
     static const std::vector<sf::Vector2f> directions = {

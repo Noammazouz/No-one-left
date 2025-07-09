@@ -51,7 +51,7 @@ void Player::setDirection()
 {
 	if (!checkDirection())
 	{
-		m_direction = sf::Vector2f(0, 0);
+		m_direction = DEFAULT_VECTOR;
 		this->setRotation(m_direction);
 		return;
 	}
@@ -64,7 +64,7 @@ void Player::setDirection()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) newDir.y += 1.f;
 
 	//Normalize direction if moving diagonally.
-	if (newDir != sf::Vector2f(0.f, 0.f))
+	if (newDir != DEFAULT_VECTOR)
 	{
 		newDir /= std::sqrt(newDir.x * newDir.x + newDir.y * newDir.y);
     
@@ -103,6 +103,7 @@ bool Player::checkDirection()
 //-----------------------------------------------------------------------------
 void Player::decLife(int decLives)
 {
+	m_gamePlay->playHitSound();
 	m_lives -= decLives;
 }
 
@@ -129,18 +130,6 @@ void Player::incLife(int addLives)
 {
 	if (m_lives < NUM_OF_LIVES) m_lives += addLives;
 	if (m_lives > NUM_OF_LIVES) m_lives = NUM_OF_LIVES;
-}
-
-//------------------------------------------------------------------------------
-int Player::getScore()
-{
-	return m_score;
-}
-
-//------------------------------------------------------------------------------
-void Player::setScore(int score)
-{
-	m_score += score;
 }
 
 //-----------------------------------------------------------------------------

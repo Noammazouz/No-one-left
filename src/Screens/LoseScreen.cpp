@@ -25,10 +25,11 @@ void LoseScreen::draw(sf::RenderWindow& window)
 //-----------------------------------------------------------------------------
 void LoseScreen::activate(sf::Clock& /*clock*/, int& /*state*/) 
 {
-	// Ensure menu music is playing
-	if (getCurrentMusicState() != MusicState::MENU)
+	// Ensure lose music is playing
+	auto& musicManager = MusicManager::getInstance();
+	if (musicManager.getCurrentMusicType() != MusicManager::MusicType::LOSE)
 	{
-		setMusicState(MusicState::MENU);
+		musicManager.setCurrentMusic(MusicManager::MusicType::LOSE);
 	}
 }
 
@@ -50,6 +51,7 @@ void LoseScreen::handleMouseClick(const sf::Vector2f& clickPos, int& screenState
 				case HOME:
 				{
 					screenState = START_SCREEN;
+					MusicManager::getInstance().setCurrentMusic(MusicManager::MusicType::MENU);
 					break;
 				}
 				case EXIT:

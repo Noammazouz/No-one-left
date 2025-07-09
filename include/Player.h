@@ -36,8 +36,6 @@ public:
 	virtual void update(sf::Time deltaTime, sf::Vector2f playerPos) override;
 	void setWin(bool win);
 	bool getWin() const;
-    int getScore();
-	void setScore(int score);
 	void decLife(int decLives = 1);
 	void incLife(int addLives);
 	int getLife();
@@ -66,7 +64,6 @@ private:
 
 	sf::Vector2f m_direction;
 	int m_lives;
-	int m_score;
 	int m_bulletCount;
 	bool m_win = false;
 	std::unique_ptr<AttackBehavior> m_attackBehavior;

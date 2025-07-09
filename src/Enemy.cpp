@@ -102,11 +102,6 @@ void handleEnemyWallCollision(GameObject& obj1, GameObject& obj2)
         enemy->SetDirection(-enemy->getDirection()); //Reverse direction
         return;
     }
-    else 
-    {
-        std::cout << "Enemy-Wall collision not handled properly!" << std::endl;
-        return;
-	}
 }
 
 //-----------------------------------------------------------------------------

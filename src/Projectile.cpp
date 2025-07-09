@@ -42,7 +42,7 @@ Projectile::Projectile(sf::Vector2f position, sf::Vector2f direction,
 }
 
 //-----------------------------------------------------------------------------
-void Projectile::update(sf::Time deltaTime, sf::Vector2f playerPos)
+void Projectile::update(sf::Time deltaTime, sf::Vector2f /*playerPos*/)
 {
     if (!isActive) return;
     m_pic.move(m_direction * PROJECTILE_SPEED * deltaTime.asSeconds());
@@ -198,10 +198,8 @@ void handleBulletWallCollision(GameObject& obj1, GameObject& obj2)
 
     if (bulletPtr && wallPtr)
     {
-        bulletPtr->setActive(false); //All bullets are stopped by walls
+        bulletPtr->setActive(false); // All bullets are stopped by walls
         bulletPtr->setLife(true);
-        if(bulletPtr->getOwner() == _PLAYER)
-		wallPtr->setLife(true); //Mark wall as destroyed (if needed)
     }
 }
 

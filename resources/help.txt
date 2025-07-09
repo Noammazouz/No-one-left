@@ -22,6 +22,8 @@
  - Use the environment to your advantage -- don't rush!
  - Predict and trap enemies.
  - Strategy, timing and patience Are the key to winning the fight.
+ - Use bombs to destroy obstacles and enemies but use them wisely because you have 
+   only 10 of them.
 
 
  GOOD LUCK!

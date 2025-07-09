@@ -46,7 +46,7 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
             continue;
         }
 
-        if (type == "wall")
+        if (type == WALL_NAME)
         {
             m_staticObj.emplace_back(
                 std::make_unique<Wall>(key, sf::Vector2f{ x,y })
@@ -75,13 +75,15 @@ void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingOb
     
     constexpr float WALL_MARGIN = 50.f;
     constexpr int maxTries = 10;
-    ////random_device is a seed maker.
-    ////mt19937 is a random engine.
+
+    //random_device is a seed maker.
+    //mt19937 is a random engine.
     std::mt19937 rng{ std::random_device{}() };
     float thirdH = MAP_HEIGHT / 3.f;
 
     std::uniform_real_distribution<float> randX(WALL_MARGIN, MAP_WIDTH - WALL_MARGIN);
-    //// getting a random y value in a specific third
+
+    // getting a random y value in a specific third
     auto randYIn = [&](int region)
         {
             return std::uniform_real_distribution<float>(
@@ -108,7 +110,7 @@ void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingOb
     // first third (5 simple + 5 smart)
     for (int i = 0; i < NUM_OF_STUPID_ENEMY; ++i)
     {
-        //tryPlaceEnemy(ObjectType::BFSENEMY, FIRST_SECTION);
+        tryPlaceEnemy(ObjectType::SIMPLEENEMY, FIRST_SECTION);
         tryPlaceEnemy(ObjectType::SMARTENEMY, FIRST_SECTION);
     }
 
@@ -188,13 +190,13 @@ void Map::loadPresents(std::vector<std::unique_ptr<StaticObject>>& m_staticObj,
             }
         };
 
-    for (int i = 0; i < 10; ++i) tryPlaceObstacle(ObjectType::RIFLE);
-    for (int i = 0; i < 10; ++i) tryPlaceObstacle(ObjectType::MACHINE_GUN);
-    for (int i = 0; i < 10; ++i) tryPlaceObstacle(ObjectType::BAZOOKA);
-    for (int i = 0; i < 10; ++i) tryPlaceObstacle(ObjectType::BULLET);
-    for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::MEDKIT);
-    for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::REMOVE_ENEMY);
-    for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::REMOVE_TIME);
+    for (int i = 0; i < NUM_OF_WEPEONS; ++i) tryPlaceObstacle(ObjectType::RIFLE);
+    for (int i = 0; i < NUM_OF_WEPEONS; ++i) tryPlaceObstacle(ObjectType::MACHINE_GUN);
+    for (int i = 0; i < NUM_OF_WEPEONS; ++i) tryPlaceObstacle(ObjectType::BAZOOKA);
+    for (int i = 0; i < NUM_OF_PRESENTS; ++i) tryPlaceObstacle(ObjectType::BULLET);
+    for (int i = 0; i < NUM_OF_PRESENTS; ++i) tryPlaceObstacle(ObjectType::MEDKIT);
+    for (int i = 0; i < NUM_OF_PRESENTS; ++i) tryPlaceObstacle(ObjectType::REMOVE_ENEMY);
+    for (int i = 0; i < NUM_OF_PRESENTS; ++i) tryPlaceObstacle(ObjectType::REMOVE_TIME);
 }
 
 //-----------------------------------------------------------------------------
