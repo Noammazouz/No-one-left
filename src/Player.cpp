@@ -200,7 +200,7 @@ void Player::handleShooting()
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::B))
 	{
-		if (!m_bKeyPressed)  //Only create bomb on first press.
+		if (!m_bKeyPressed && isBombsAvailable())  //Only create bomb on first press.
 		{
 			m_gamePlay->addBomb(this->getPosition());
 			m_bKeyPressed = true;
