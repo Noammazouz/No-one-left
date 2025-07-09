@@ -415,7 +415,7 @@ void handlePlayerBazookaGiftCollision(GameObject& obj1, GameObject& obj2)
 			bazookaGift = tempBazookaGift;
 		}
 	}
-
+	
 	if (player && bazookaGift) 
 	{	
 		player->presentSound();
@@ -569,7 +569,7 @@ static bool g_playerCollisionRegistered = []() {
 	factory.registerTypedCollision<Player, Obstacles>(handlePlayerObstaclesCollision);
 	factory.registerTypedCollision<Player, RifleGift>(handlePlayerRifleGiftCollision);
 	factory.registerTypedCollision<Player, MachineGunGift>(handlePlayerMachineGunGiftCollision);
-	factory.registerTypedCollision<Player, BazookaGift>(handlePlayerRifleGiftCollision);
+	factory.registerTypedCollision<Player, BazookaGift>(handlePlayerBazookaGiftCollision);
 	factory.registerTypedCollision<Player, BulletsGift>(handlePlayerBulletsGiftCollision);
 	factory.registerTypedCollision<Player, MedkitGift>(handlePlayerMedkitGiftCollision);
 	factory.registerTypedCollision<Player, RemoveTime>(handlePlayerRemoveTimeGiftCollision);
