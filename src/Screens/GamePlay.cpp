@@ -232,7 +232,7 @@ void GamePlay::handleInfobar()
 {
 	m_infoBar.updateTime(m_stopwatch);
 	m_infoBar.updateNumOfBullets(m_player.getNumOfBullets());
-	m_infoBar.updateNumOfBombs(10);
+	m_infoBar.updateNumOfBombs(m_player.getNumOfBombs());
 	m_infoBar.updateLives(m_player.getLife());
 	m_infoBar.updateNumOfEnemiesAlive();
 }
