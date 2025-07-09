@@ -16,12 +16,12 @@ public:
 
 	static ResourcesManager& getInstance();
 
-
 	const sf::Texture& getTexture(std::string name) const;
 	const sf::Font& getFont() const;
 	sf::SoundBuffer& getSound(std::string name);
 	void show() const;
 	std::vector<sf::Text> getHelpText() const;
+
 private:
 	ResourcesManager();
 	ResourcesManager(const ResourcesManager&) = delete;

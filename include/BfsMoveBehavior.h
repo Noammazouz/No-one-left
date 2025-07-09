@@ -13,7 +13,7 @@ struct MapSection
 {
     int sectionX, sectionY;
     std::vector<std::vector<bool>> localGrid;
-    bool isWalkable; // Can this entire section be entered?
+    bool isWalkable; //Can this entire section be entered?
 
     MapSection(int x, int y, int localSize)
         : sectionX(x), sectionY(y), isWalkable(true) 
@@ -33,8 +33,8 @@ public:
     void ClearAvoidance();
 
 private:
-    bool m_preferHorizontal = true;   // primary chase axis
+    bool m_preferHorizontal = true;  //primary chase axis
     sf::Vector2f m_avoidDirection = { 0.f, 0.f };
     bool m_avoiding = false;
-    sf::Vector2f m_lastDir;// direction that caused collision
+    sf::Vector2f m_lastDir; //direction that caused collision
 };

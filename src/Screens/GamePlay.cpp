@@ -1,8 +1,8 @@
 //-----include section-----
 #include "GamePlay.h"
 
-
-// Static variables for death handling
+//-----static section------
+//Static variables for death handling
 static bool s_deathSoundStarted = false;
 static sf::Clock s_deathTimer;
 
@@ -49,7 +49,13 @@ void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 	//Handle game over states first (both stop normal game processing)
 	if (m_player.getLife() <= END_GAME)
 	{
+		static bool s_dyingStarted = false;
+	    if (!s_dyingStarted) m_player.beginDying(OBJECT_DEATH_WIDTH, OBJECT_DEATH_HEIGHT, 
+			                                     PLAYER_DEATH_FRAME_TIME, PLAYER_DEATH); //Prevent multiple calls
+		s_dyingStarted = true;
+		if(m_player.isDead())
 		handleDeathState(m_currentScreen);
+		else m_player.handleDeath();
 		return; //STOP all game processing when dead
 	}
 
@@ -132,7 +138,7 @@ void GamePlay::move(sf::Clock& clock)
 		{
 			if (e->wantsToFire())
 			{
-				addProjectile(e->getPosition(), e->getShottingDirections(), ENEMY);
+				addProjectile(e->getPosition(), e->getShottingDirections(), ENEMY, PROJECTILE_NAME);
 				e->clearFireFlag();
 			}
 		}
@@ -169,13 +175,10 @@ void GamePlay::handleCollision()
 		}
 		if (!collided) 
 		{
-			// Dynamic-cast to Enemy (or UpdateableObject) and call ClearAvoidance()
+			//Dynamic-cast to Enemy (or UpdateableObject) and call ClearAvoidance()
 			if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get()))
- {
-				if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get())) 
-				{
-					enemy->OnSuccessfulMove();
-				}
+			{
+				enemy->OnSuccessfulMove();
 			}
 		}
 	}
@@ -357,7 +360,10 @@ void GamePlay::resetGameOverStates()
 }
 
 //-----------------------------------------------------------------------------
-void GamePlay::addProjectile(const sf::Vector2f& pos, std::vector<sf::Vector2f> directions, BulletOwner owner)
+void GamePlay::addProjectile(const sf::Vector2f& pos, 
+							 std::vector<sf::Vector2f> directions, 
+							 BulletOwner owner,
+							 const std::string& weaponName)
 {
 	m_sound.setBuffer(ResourcesManager::getInstance().getSound(SHOOTING_SOUND));
 	m_sound.setVolume(100.f);
@@ -366,9 +372,10 @@ void GamePlay::addProjectile(const sf::Vector2f& pos, std::vector<sf::Vector2f> 
 
 	for (int index = 0; index < directions.size(); ++index)
 	{
-		m_movingObj.push_back(std::make_unique<Projectile>(pos, directions[index], owner));
+		m_movingObj.push_back(std::make_unique<Projectile>(pos, directions[index], owner, weaponName));
 	}
 }
+
 //-----------------------------------------------------------------------------
 void GamePlay::addExplosion(const sf::Vector2f& pos)
 {
@@ -378,6 +385,7 @@ void GamePlay::addExplosion(const sf::Vector2f& pos)
 	m_sound.play();
 	m_movingObj.push_back(std::make_unique<Explosion>(pos));
 }
+
 //-----------------------------------------------------------------------------
 void GamePlay::addBomb(const sf::Vector2f& pos)
 {

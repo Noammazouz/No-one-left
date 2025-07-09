@@ -11,7 +11,7 @@ Bomb::Bomb(sf::Vector2f position, GamePlay* gameplay)
 	set_frames(m_numberOfFrames, position, BOMB_WIDTH, BOMB_HEIGHT);
 }
 
-void Bomb::update(sf::Time deltaTime, sf::Vector2f playerPos)
+void Bomb::update(sf::Time deltaTime, sf::Vector2f /*playerPos*/)
 {
 	m_timer -= deltaTime;
 	updateFrames(DEFAULT_BOMB_DIRECTION, BOMB_FRAME_TIME, m_numberOfFrames);

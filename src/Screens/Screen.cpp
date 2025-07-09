@@ -3,7 +3,6 @@
 #include <iostream>
 
 //-----functions section------
-
 //-----------------------------------------------------------------------------
 Screen::Screen()
 	: m_previousScreen(START_SCREEN)
@@ -28,7 +27,6 @@ Screen::Screen()
 //-----------------------------------------------------------------------------
 void Screen::run(sf::RenderWindow& window, int& currentScreen)
 {
-
 	for (auto event = sf::Event{}; window.pollEvent(event);)
 	{
 		switch (event.type)
@@ -70,14 +68,14 @@ void Screen::handleKeyPressed(sf::Event::KeyEvent event, int& currentScreen)
 	
 	if (event.code == sf::Keyboard::M)
 	{
-		handleMuting(currentScreen);
+		handleMuting();
 	}
 }
 
 
 
 //-----------------------------------------------------------------------------
-void Screen::handleMuting(int currentScreen)
+void Screen::handleMuting()
 {
 	auto& musicManager = MusicManager::getInstance();
 	if (!musicManager.isMuted())

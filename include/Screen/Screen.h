@@ -23,7 +23,7 @@ protected:
 	virtual void handleMouseClick(const sf::Vector2f& clickPos, int& screenState) = 0;
 	virtual void initButtons() = 0;
 	virtual void drawButtons(sf::RenderWindow& window);
-	void handleMuting(int currrentScreen);
+	void handleMuting();
 	void handleKeyPressed(sf::Event::KeyEvent event, int& currentScreen);
 
 	int m_previousScreen;

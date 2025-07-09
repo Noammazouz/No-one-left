@@ -66,6 +66,10 @@ void ResourcesManager::loadTexture()
         {SIMPLE_ENEMY_RIFLE, "simple_enemy_rifle.png"},
         {SMART_ENEMY_RIFLE, "smart_enemy_rifle.png"},
         {BFS_ENEMY_RIFLE, "bfs_enemy_rifle.png"},
+        {PLAYER_DEATH, "player_death.png"},
+		    {SIMPLE_ENEMY_DEATH, "simple_enemy_death.png"},
+		    {SMART_ENEMY_DEATH, "smart_enemy_death.png"},
+        {BFS_ENEMY_DEATH, "bfs_enemy_death.png"},
         {LIFE_ICON, "life.png"},
         {BULLETS_ICON, "bulletIcon.png"},
         {CLOCK_ICON, "clock.png"},
@@ -126,7 +130,7 @@ void ResourcesManager::initializeSounds()
             throw std::runtime_error(errorMessage);
         }
 
-        // Insert the soundBuffer into the unordered_map
+        //Insert the soundBuffer into the unordered_map
         m_music[name] = sound;
     }
 }
