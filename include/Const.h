@@ -119,6 +119,9 @@ const int NUM_OF_LIFE_OBSTACLE = 3;
 const int ADD_LIFE = 20;
 const int EXPLOSION_DAMAGE = 20;
 const int MIN_BOUND_BOMBS = 0; //Minimum number of bombs that a player can have.
+const int NUM_OF_WOPENS = 10;
+const int NUM_OF_PRESENTS = 20; //Number of different presents.
+
 
 //-----float const section-----
 const float PLAYER_FRAME_TIME = 0.1f; //seconds per frame for the player animation
@@ -180,6 +183,11 @@ const std::string REMOVE_TIME_NAME = "remove time";
 const std::string PROJECTILE_NAME = "projectile";
 const std::string BOMB_NAME = "bomb";
 const std::string EXPLOSION_NAME = "explosion";
+const std::string OBSTACLE1_NAME = "obstacle1";
+const std::string OBSTACLE2_NAME = "obstacle2";
+const std::string OBSTACLE3_NAME = "obstacle3";
+const std::string WALL_NAME = "wall";
+
 //-----warning const section-----
 const std::string STARIC_OBJECTS_WARNING = "[WARN] No static objects were loaded are you sure your CSV has entries?\n";
 
@@ -202,6 +210,8 @@ const sf::Color FONT_COLOR = sf::Color(128, 0, 128);
 
 //-----sf::Vector2f const section-----
 const sf::Vector2f FIRST_PLAYER_POSITION(2500.f, 100.f); //Initial position of the player.
+const sf::Vector2f DEFAULT_BOMB_DIRECTION(1.f, 1.f); //Default direction of the bomb.
+const sf::Vector2f DEFAULT_VECTOR(0.f, 0.f); //Default direction of the projectile.
 
 //-----Font const section-----
 const std::string FONT_NAME = "ARCADE_N.TTF"; //Name of the font file.

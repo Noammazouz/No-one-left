@@ -46,7 +46,7 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
             continue;
         }
 
-        if (type == "wall")
+        if (type == WALL_NAME)
         {
             m_staticObj.emplace_back(
                 std::make_unique<Wall>(key, sf::Vector2f{ x,y })
@@ -183,13 +183,13 @@ void Map::loadPresents(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, 
             }
         };
 
-    for (int i = 0; i < 100; ++i) tryPlaceObstacle(ObjectType::RIFLE);
-    for (int i = 0; i < 100; ++i) tryPlaceObstacle(ObjectType::MACHINE_GUN);
-    for (int i = 0; i < 100; ++i) tryPlaceObstacle(ObjectType::BAZOOKA);
-    for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::BULLET);
-    for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::MEDKIT);
-    for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::REMOVE_ENEMY);
-    for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::REMOVE_TIME);
+    for (int i = 0; i < NUM_OF_WOPENS; ++i) tryPlaceObstacle(ObjectType::RIFLE);
+    for (int i = 0; i < NUM_OF_WOPENS; ++i) tryPlaceObstacle(ObjectType::MACHINE_GUN);
+    for (int i = 0; i < NUM_OF_WOPENS; ++i) tryPlaceObstacle(ObjectType::BAZOOKA);
+    for (int i = 0; i < NUM_OF_PRESENTS; ++i) tryPlaceObstacle(ObjectType::BULLET);
+    for (int i = 0; i < NUM_OF_PRESENTS; ++i) tryPlaceObstacle(ObjectType::MEDKIT);
+    for (int i = 0; i < NUM_OF_PRESENTS; ++i) tryPlaceObstacle(ObjectType::REMOVE_ENEMY);
+    for (int i = 0; i < NUM_OF_PRESENTS; ++i) tryPlaceObstacle(ObjectType::REMOVE_TIME);
 
 }
 
