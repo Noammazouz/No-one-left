@@ -20,7 +20,6 @@ public:
 	void draw(sf::RenderWindow& window);
 
 private:
-
 	void initializeLives();
 	void initializeBullets();
 	void initializeTime();

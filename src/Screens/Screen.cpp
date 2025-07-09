@@ -2,13 +2,12 @@
 #include "Screen.h"
 #include <iostream>
 
-//-----functions section------
-
-//-----------------------------------------------------------------------------
-// Static member initialization
+//-----static section------
+//Static member initialization
 Screen::MusicState Screen::s_currentMusicState = Screen::MusicState::MENU;
 bool Screen::s_musicMuted = false;
 
+//-----functions section------
 //-----------------------------------------------------------------------------
 Screen::Screen()
 	: m_previousScreen(START_SCREEN)
@@ -20,7 +19,6 @@ Screen::Screen()
 //-----------------------------------------------------------------------------
 void Screen::run(sf::RenderWindow& window, int& currentScreen)
 {
-
 	for (auto event = sf::Event{}; window.pollEvent(event);)
 	{
 		switch (event.type)

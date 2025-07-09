@@ -15,8 +15,7 @@ Obstacles::Obstacles(const sf::Vector2f& position, std::string name)
 //-----------------------------------------------------------------------------
 void Obstacles::decLife()
 {
-    if (m_life > 0) --m_life;
-            
+    if (m_life > 0) --m_life;     
 
     if (m_life == 0) this->setLife(true); //Mark for removal in GamePlay::handleErasing()
 }
@@ -30,7 +29,7 @@ void handleObstacleEnemyCollision(GameObject& obj1, GameObject& obj2)
 
     if (enemy && obs) 
     {
-        // revert position and reverse direction
+        //revert position and reverse direction
         enemy->NotifyCollision();
     }
 }

@@ -68,7 +68,7 @@ void Player::setDirection()
 	{
 		newDir /= std::sqrt(newDir.x * newDir.x + newDir.y * newDir.y);
     
-		m_facingDirection = newDir; // Update facing direction when moving
+		m_facingDirection = newDir; //Update facing direction when moving.
 		this->setRotation(m_facingDirection);
 	}
 
@@ -199,12 +199,12 @@ void Player::handleShooting()
 									  _PLAYER,
 									  getCurrentWeaponName());
 			decBullets();
-			m_shootClock.restart(); //Reset timer
+			m_shootClock.restart(); //Reset timer.
 		}
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::B))
 	{
-		if (!m_bKeyPressed && isBombsAvailable())  //Only create bomb on first press.
+		if (!m_bKeyPressed && isBombsAvailable()) //Only create bomb on first press.
 		{
 			m_gamePlay->addBomb(this->getPosition());
 			m_bKeyPressed = true;
@@ -213,7 +213,7 @@ void Player::handleShooting()
 	}
 	else
 	{
-		m_bKeyPressed = false;  //Reset when key is released.
+		m_bKeyPressed = false; //Reset when key is released.
 	}
 }
 

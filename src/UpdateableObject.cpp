@@ -123,6 +123,13 @@ void UpdateableObject::set_frames(const int framesNumber, const sf::Vector2f pos
 }
 
 //-----------------------------------------------------------------------------
+void UpdateableObject::startDying(const std::string& name, 
+                                  const int widthFrame, const int heightFrame)
+{
+    changeSpriteAnimation(name, widthFrame, heightFrame);
+}
+
+//-----------------------------------------------------------------------------
 void UpdateableObject::changeSpriteAnimation(const std::string& name, 
                                              const int frameWidth, 
                                              const int frameHeight)
@@ -133,4 +140,27 @@ void UpdateableObject::changeSpriteAnimation(const std::string& name,
     m_numberOfFrames = m_pic.getTexture()->getSize().x / frameWidth; //Calculate number of frames based on texture width.
     m_pic.setRotation(180.f); //Set initial rotation to face down.
     set_frames(m_numberOfFrames, samePosition, frameWidth, frameHeight);
+}
+
+void UpdateableObject::handleDeath()
+{
+	if (m_animClock.getElapsedTime().asSeconds() >= m_deathDuration)
+	{
+		this->setLife(true); //Set life to true to indicate death is complete.
+	}
+}
+
+void UpdateableObject::resetClock()
+{
+    m_animClock.restart();
+}
+
+//-----------------------------------------------------------------------------
+void UpdateableObject::beginDying(int width, int height, int frameTime, const std::string& name)
+{
+    resetClock();
+    m_numberOfFrames = m_pic.getTexture()->getSize().x / width;
+    //Calculate number of frames based on texture width.
+    this->updateFrames({ 1,1 }, frameTime, m_numberOfFrames);
+    this->startDying(name, width, height);
 }

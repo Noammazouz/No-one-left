@@ -128,7 +128,10 @@ void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingOb
     }
 }
 
-void Map::loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj,Player& player)
+//-----------------------------------------------------------------------------
+void Map::loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, 
+                        std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj,
+                        Player& player)
 {
     constexpr float WALL_MARGIN = 50.f;
     constexpr int maxTries = 10;
@@ -156,7 +159,6 @@ void Map::loadObstacles(std::vector<std::unique_ptr<StaticObject>>& m_staticObj,
     for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::OBSTACLE1);
     for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::OBSTACLE2);
     for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::OBSTACLE3);
-
 }
 
 //-----------------------------------------------------------------------------

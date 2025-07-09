@@ -1,8 +1,8 @@
 //-----include section-----
 #include "GamePlay.h"
 
-
-// Static variables for death handling
+//-----static section------
+//Static variables for death handling
 static bool s_deathSoundStarted = false;
 static sf::Clock s_deathTimer;
 static bool s_winSoundStarted = false;
@@ -50,7 +50,13 @@ void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 	//Handle game over states first (both stop normal game processing)
 	if (m_player.getLife() <= END_GAME)
 	{
+		static bool s_dyingStarted = false;
+	    if (!s_dyingStarted) m_player.beginDying(OBJECT_DEATH_WIDTH, OBJECT_DEATH_HEIGHT, 
+			                                     PLAYER_DEATH_FRAME_TIME, PLAYER_DEATH); //Prevent multiple calls
+		s_dyingStarted = true;
+		if(m_player.isDead())
 		handleDeathState(m_currentScreen);
+		else m_player.handleDeath();
 		return; //STOP all game processing when dead
 	}
 

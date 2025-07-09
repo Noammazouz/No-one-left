@@ -18,6 +18,8 @@ public:
 
 	sf::Vector2f getPrevLocation() const;
 	sf::Vector2f getStartingPosition() const;
+	void handleDeath();
+	void beginDying(int width, int height, int frameTime, const std::string& name);
 
 	void changeSpriteAnimation(const std::string& name,
 							   const int frameWidth,
@@ -27,6 +29,7 @@ protected:
 	void setPrevLocation(const sf::Vector2f& position);
 	void updatePosition(const sf::Vector2f& direction);
 	void setRotation(const sf::Vector2f& direction);
+	void resetClock();
 
 	std::vector<sf::IntRect> m_frames;
 	sf::Clock m_animClock;
@@ -36,6 +39,10 @@ protected:
 	virtual void updateFrames(const sf::Vector2f& direction, const float frameTime, const int numberOfFrames);
 	void set_frames(const int framesNumber, const sf::Vector2f position,
 				    const int frameWidth, const int frameHeight);
+
+	float m_deathDuration = 0.5f; //Time to play the animation.
+
+	void startDying(const std::string& name, const int widthFrame, const int heightFrame);
 
 private:
 	sf::Clock m_rotationClock;

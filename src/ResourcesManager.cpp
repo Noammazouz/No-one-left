@@ -64,8 +64,12 @@ void ResourcesManager::loadTexture()
         {"help screen", "help screen.png"},
         {"return", "return.png"},
         {SIMPLE_ENEMY_RIFLE, "simple_enemy_rifle.png"},
-        {"smart_enemy_rifle", "smart_enemy_rifle.png"},
-        {"bfs_enemy_rifle", "bfs_enemy_rifle.png"},
+        {SMART_ENEMY_RIFLE, "smart_enemy_rifle.png"},
+        {BFS_ENEMY_RIFLE, "bfs_enemy_rifle.png"},
+        {PLAYER_DEATH, "player_death.png"},
+		{SIMPLE_ENEMY_DEATH, "simple_enemy_death.png"},
+		{SMART_ENEMY_DEATH, "smart_enemy_death.png"},
+        {BFS_ENEMY_DEATH, "bfs_enemy_death.png"},
         {"life", "life.png"},
         {"bulletIcon", "bulletIcon.png"},
         {"clock", "clock.png"},
@@ -141,7 +145,7 @@ void ResourcesManager::initializeMusic()
             throw std::runtime_error(errorMessage);
         }
 
-        // Insert the soundBuffer into the unordered_map
+        //Insert the soundBuffer into the unordered_map
         m_music[name] = sound;
     }
 }

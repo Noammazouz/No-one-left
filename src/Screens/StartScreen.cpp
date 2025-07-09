@@ -24,7 +24,7 @@ void StartScreen::draw(sf::RenderWindow& window)
 //-----------------------------------------------------------------------------
 void StartScreen::activate(sf::Clock& /*clocking*/, int& /*m_currentScreen*/)
 {
-	// Menu music should already be playing - just ensure it's correct
+	//Menu music should already be playing - just ensure it's correct.
 	ensureCorrectMusicPlaying();
 }
 

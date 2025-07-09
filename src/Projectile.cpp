@@ -21,7 +21,7 @@ Projectile::Projectile(sf::Vector2f position, sf::Vector2f direction,
         m_direction.y /= length;
     }
 
-	int addedAngle = 0;
+	int addedAngle = 90;
 
     if (m_weaponName == RIFLE_NAME || m_weaponName == MACHINE_GUN_NAME)
     {
@@ -85,6 +85,12 @@ bool Projectile::isExpired() const
     return m_elapsedTime >= PROJECTILE_AIR_TIME;
 }
 
+//-----------------------------------------------------------------------------
+BulletOwner Projectile::getOwner() const
+{
+    return m_owner;
+}
+
 //-----------------------------------------------------------------------------  
 //Collision handler for Bullet vs Enemy - Order independent.  
 void handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2)  
@@ -120,7 +126,8 @@ void handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2)
            bulletPtr->setLife(true);
            if (!enemyPtr->isAlive())
            {
-               enemyPtr->setLife(true); //Mark enemy as dead  
+               enemyPtr->beginDying(OBJECT_DEATH_WIDTH, OBJECT_DEATH_HEIGHT, PLAYER_DEATH_FRAME_TIME,
+                   enemyPtr->getDeathName()); //Mark enemy as dead
            }
        }  
    }  
@@ -184,19 +191,17 @@ void handleBulletWallCollision(GameObject& obj1, GameObject& obj2)
     {
       if (auto* wall = dynamic_cast<Wall*>(&obj1)) 
       {
-            wallPtr = wall;
-            bulletPtr = bullet;
-	   }
-        
+		  wallPtr = wall;
+          bulletPtr = bullet;
+	  }        
     }
 
     if (bulletPtr && wallPtr)
     {
-        //std::cout << "Bullet hit wall - Bullet destroyed" << std::endl;
-        bulletPtr->setActive(false); // All bullets are stopped by walls
+        bulletPtr->setActive(false); //All bullets are stopped by walls
         bulletPtr->setLife(true);
         if(bulletPtr->getOwner() == _PLAYER)
-		wallPtr->setLife(true); // Mark wall as destroyed (if needed)
+		wallPtr->setLife(true); //Mark wall as destroyed (if needed)
     }
 }
 
@@ -241,13 +246,13 @@ void Projectile::registerBulletCollisions()
 
     auto& collisionFactory = CollisionFactory::getInstance();
 
-    // Register bullet-enemy collisions (handles both player and enemy bullets)
+    //Register bullet-enemy collisions (handles both player and enemy bullets)
     collisionFactory.registerTypedCollision<Projectile, Enemy>(handlePlayerBulletEnemyCollision);
 
-    // Register bullet-player collisions (handles both player and enemy bullets)
+    //Register bullet-player collisions (handles both player and enemy bullets)
     collisionFactory.registerTypedCollision<Projectile, Player>(handleEnemyBulletPlayerCollision);
 
-    // Register bullet-wall collisions (all bullets are stopped by walls)
+    //Register bullet-wall collisions (all bullets are stopped by walls)
     collisionFactory.registerTypedCollision<Projectile, Wall>(handleBulletWallCollision);
 
     collisionFactory.registerTypedCollision<Projectile, Obstacles>(handleBulletObstacleCollision);
@@ -262,9 +267,3 @@ bool g_bulletCollisionRegistered = []()
         Projectile::registerBulletCollisions();
         return true;
     }();
-
-//-----------------------------------------------------------------------------
-BulletOwner Projectile::getOwner() const
-{
-    return m_owner;
-}
