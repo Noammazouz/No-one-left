@@ -131,18 +131,6 @@ void Player::incLife(int addLives)
 	if (m_lives > NUM_OF_LIVES) m_lives = NUM_OF_LIVES;
 }
 
-//------------------------------------------------------------------------------
-int Player::getScore()
-{
-	return m_score;
-}
-
-//------------------------------------------------------------------------------
-void Player::setScore(int score)
-{
-	m_score += score;
-}
-
 //-----------------------------------------------------------------------------
 int Player::getNumOfBullets()
 {

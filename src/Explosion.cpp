@@ -15,10 +15,10 @@ Explosion::Explosion(sf::Vector2f position)
 
 }
 
-void Explosion::update(sf::Time deltaTime, sf::Vector2f playerPos)
+void Explosion::update(sf::Time deltaTime, sf::Vector2f /*playerPos*/)
 {
     m_timer -= deltaTime;
-    updateFrames({ 1,1 }, EXPLOSION_FRAME_TIME, m_numberOfFrames);
+    updateFrames(DEFAULT_BOMB_DIRECTION, EXPLOSION_FRAME_TIME, m_numberOfFrames);
     if (m_timer <= sf::Time::Zero)
     {
         this->setLife(true);
@@ -79,7 +79,6 @@ void handleExplosionPlayerCollision(GameObject& obj1, GameObject& obj2)
 
 void handleExplosionObstacleCollision(GameObject& obj1, GameObject& obj2)
 {
-	std::cout << "inside explo obstacle" << std::endl;
     Explosion* expoPtr = nullptr;
     Obstacles* ObstPtr = nullptr;
     if (auto* expo = dynamic_cast<Explosion*>(&obj1))
@@ -100,9 +99,7 @@ void handleExplosionObstacleCollision(GameObject& obj1, GameObject& obj2)
     }
     if (expoPtr && ObstPtr)
     {
-		std::cout << "before obstacle delete" << std::endl;
         ObstPtr->setLife(true);  // if obstacle has lives
-		std::cout << "after obstacle delete" << std::endl;
     }
 }
 

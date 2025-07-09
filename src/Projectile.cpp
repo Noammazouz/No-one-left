@@ -24,7 +24,7 @@ Projectile::Projectile(sf::Vector2f position, sf::Vector2f direction, BulletOwne
 }
 
 //-----------------------------------------------------------------------------
-void Projectile::update(sf::Time deltaTime, sf::Vector2f playerPos)
+void Projectile::update(sf::Time deltaTime, sf::Vector2f /*playerPos*/)
 {
     if (!isActive) return;
     m_pic.move(m_direction * PROJECTILE_SPEED * deltaTime.asSeconds());
