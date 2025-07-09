@@ -37,11 +37,11 @@ void handleExplosionEnemyCollision(GameObject& obj1, GameObject& obj2)
             enemyPtr = enemy;
         }
     }
-    else if (auto* expo = dynamic_cast<Explosion*>(&obj2))
+    else if (auto* expo1 = dynamic_cast<Explosion*>(&obj2))
     {
         if (auto* enemy = dynamic_cast<Enemy*>(&obj1))
         {
-            expoPtr = expo;
+            expoPtr = expo1;
             enemyPtr = enemy;
         }
     }
@@ -341,12 +341,12 @@ void handleExplosionWallCollision(GameObject& obj1, GameObject& obj2)
 		}
 
 	}
-	else if (auto* explosion = dynamic_cast<Explosion*>(&obj2))
+	else if (auto* explosion1 = dynamic_cast<Explosion*>(&obj2))
 	{
 		if (auto* wall = dynamic_cast<Wall*>(&obj1))
 		{
 			wallPtr = wall;
-			expoPtr = explosion;
+			expoPtr = explosion1;
 		}
 
 	}

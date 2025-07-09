@@ -70,14 +70,14 @@ void Screen::handleKeyPressed(sf::Event::KeyEvent event, int& currentScreen)
 	
 	if (event.code == sf::Keyboard::M)
 	{
-		handleMuting(currentScreen);
+		handleMuting();
 	}
 }
 
 
 
 //-----------------------------------------------------------------------------
-void Screen::handleMuting(int currentScreen)
+void Screen::handleMuting()
 {
 	auto& musicManager = MusicManager::getInstance();
 	if (!musicManager.isMuted())

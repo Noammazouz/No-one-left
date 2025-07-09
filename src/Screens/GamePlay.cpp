@@ -171,11 +171,8 @@ void GamePlay::handleCollision()
 		{
 			// Dynamic-cast to Enemy (or UpdateableObject) and call ClearAvoidance()
 			if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get()))
- {
-				if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get())) 
-				{
-					enemy->OnSuccessfulMove();
-				}
+			{
+				enemy->OnSuccessfulMove();
 			}
 		}
 	}
