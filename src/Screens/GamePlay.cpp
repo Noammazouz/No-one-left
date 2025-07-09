@@ -384,6 +384,21 @@ void GamePlay::addProjectile(const sf::Vector2f& pos, std::vector<sf::Vector2f> 
 		m_movingObj.push_back(std::make_unique<Projectile>(pos, directions[index], owner));
 	}
 }
+//-----------------------------------------------------------------------------
+void GamePlay::addExplosion(const sf::Vector2f& pos)
+{
+	m_movingObj.push_back(std::make_unique<Explosion>(pos));
+}
+//-----------------------------------------------------------------------------
+void GamePlay::addBomb(const sf::Vector2f& pos)
+{
+	/*m_sound.setBuffer(ResourcesManager::getInstance().getSound(BOMB_SOUND));
+	m_sound.setVolume(100.f);
+	m_sound.setPlayingOffset(sf::seconds(0.2f));
+	m_sound.play();*/
+
+	m_movingObj.push_back(std::make_unique<Bomb>(pos,this));
+}
 
 //----------------------------------------------------------------------------
 void GamePlay::playPresentSound()

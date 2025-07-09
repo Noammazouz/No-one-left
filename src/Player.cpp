@@ -188,7 +188,11 @@ void Player::handleShooting()
 			decBullets();
 			m_shootClock.restart();  // Reset timer
 		}
-	}	
+	}
+	else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::B)))
+	{
+		m_gamePlay->addBomb(this->getPosition());
+	}
 }
 
 //-----------------------------------------------------------------------------

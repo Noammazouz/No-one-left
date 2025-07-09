@@ -57,6 +57,7 @@ enum ObjectType
 	SIMPLEENEMY,
 	SMARTENEMY,
 	BFSENEMY,
+	BOMB,
 	OBSTACLE1,
 	OBSTACLE2,
 	OBSTACLE3,
@@ -114,13 +115,15 @@ const int EXPLOSION_DEC_LIVES = 30;
 const int PROJECTILE_DAMAGE = 5;
 const int NUM_OF_LIFE_OBSTACLE = 3;
 const int ADD_LIFE = 20;
+const int EXPLOSION_DAMAGE = 20;
+
 
 //-----float const section-----
 const float PLAYER_FRAME_TIME = 0.1f; //seconds per frame for the player animation
 const float CHANGE_DIRECTION_TIME = 0.f;
 const float PLAYER_SPEED = 250.f;
 const float ENEMY_SPEED = 100.f;
-const float BOMB_TIME = 4.f;
+const float BOMB_TIME = 2.f;
 const float TIME_TO_REMOVE = 10.f;
 const float WINDOW_RATIO = 0.92f;
 const float ROTATION_SPEED = 135.f; //degrees per second.
@@ -128,6 +131,9 @@ const float PROJECTILE_SPEED = 750.f;
 const float DISTANCE = 90000.0f;
 const float FIRE_COOLDOWN = 0.5f;
 const float PROJECTILE_AIR_TIME = 1.0f;
+const float EXPLOSION_RADIUS = 80.f;
+const float EXPLOSION_TIME = 2.f;
+
 
 //-----music and sound effects const section-----
 const std::string MENU_MUSIC = "menu";
@@ -170,7 +176,8 @@ const std::string REMOVE_TIME_NAME = "remove time";
 
 //-----texture names const section-----
 const std::string PROJECTILE_NAME = "projectile";
-
+const std::string BOMB_NAME = "bomb";
+const std::string EXPLOSION_NAME = "explosion";
 //-----warning const section-----
 const std::string STARIC_OBJECTS_WARNING = "[WARN] No static objects were loaded are you sure your CSV has entries?\n";
 
