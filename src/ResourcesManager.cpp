@@ -75,7 +75,7 @@ void ResourcesManager::loadTexture()
         {LOSE_SCREEN_BACKGROUND, "lose_screen.png"},
         {START_MENU_BUTTON, "home.png"},
         {WIN_SCREEN_BACKGROUND, "win screen background.png"},
-        {PROJECTILE_NAME, "Sprite_Effects_Exhaust_02_000.png"},
+        {PROJECTILE_NAME, "bullet_from_gun.png"},
         {RIFLE_NAME, "rifle.png"},
         {MED_KIT_NAME, "medkit.png"},
         {BULLETS_NAME, "Bullet.png"},
@@ -83,7 +83,7 @@ void ResourcesManager::loadTexture()
         {REMOVE_ENEMY_NAME, "skull.png"},
         {BOMB_NAME, "bomb_animation.png"},
         {BOMBS_ICON, "bombIcon.png"},
-        {EXPLOSION_NAME, "Explosion.png"},
+        {EXPLOSION_NAME, "Effect_Explosion.png"},
         {ENEMIES_ICON, "enemiesIcon.png"},
         {MACHINE_GUN_NAME, "machine_gun.png"},
         {BAZOOKA_NAME, "Bazooka-sized.png"}

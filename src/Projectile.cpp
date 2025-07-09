@@ -20,7 +20,7 @@ Projectile::Projectile(sf::Vector2f position, sf::Vector2f direction, BulletOwne
 
     float angleRadians = std::atan2(m_direction.y, m_direction.x);
     float angleDegrees = angleRadians * 180.0f / std::numbers::pi;
-    m_pic.setRotation(angleDegrees + 90.0f);
+    m_pic.setRotation(angleDegrees);
 }
 
 //-----------------------------------------------------------------------------
