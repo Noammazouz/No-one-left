@@ -1,12 +1,10 @@
 //-----include section-----
 #include "GamePlay.h"
 
-
-// Static variables for death handling
+//-----static section------
+//Static variables for death handling
 static bool s_deathSoundStarted = false;
 static sf::Clock s_deathTimer;
-static bool s_winSoundStarted = false;
-static sf::Clock s_winTimer;
 
 //-----functions section------
 //-----------------------------------------------------------------------------
@@ -17,14 +15,13 @@ GamePlay::GamePlay()
 	handleLoadingLevel();
 	if (m_staticObj.empty()) 
 	{
-		std::cerr << STARIC_OBJECTS_WARNING;
+		std::cerr << STATIC_OBJECTS_WARNING;
 	}
 }
 
 //-----------------------------------------------------------------------------
 void GamePlay::run(sf::RenderWindow& window, int& m_currentScreen)
 {
-	if (m_newGame) resetGame();
 	Screen::run(window, m_currentScreen);
 	m_view.setCenter(m_player.getPosition());
 	m_view.setCenter(clampViewPosition(worldBounds));
@@ -35,28 +32,40 @@ void GamePlay::run(sf::RenderWindow& window, int& m_currentScreen)
 void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 {
 	if (m_paused) return;
+	if (m_newGame) resetGame();
 
 	//Always ensure game music is playing when in gameplay
-	if (getCurrentMusicState() != MusicState::GAME)
+	auto& musicManager = MusicManager::getInstance();
+	if (musicManager.getCurrentMusicType() != MusicManager::MusicType::GAME)
 	{
-		setMusicState(MusicState::GAME);
+		musicManager.setCurrentMusic(MusicManager::MusicType::GAME);
 	}
 
 	if (m_staticObj.empty()) 
 	{
-		std::cerr << STARIC_OBJECTS_WARNING;
+		std::cerr << STATIC_OBJECTS_WARNING;
 	}
 
 	//Handle game over states first (both stop normal game processing)
 	if (m_player.getLife() <= END_GAME)
 	{
+		static bool s_dyingStarted = false;
+	    if (!s_dyingStarted) m_player.beginDying(OBJECT_DEATH_WIDTH, OBJECT_DEATH_HEIGHT, 
+			                                     PLAYER_DEATH_FRAME_TIME, PLAYER_DEATH); //Prevent multiple calls
+		s_dyingStarted = true;
+		if(m_player.isDead())
 		handleDeathState(m_currentScreen);
+		else m_player.handleDeath();
 		return; //STOP all game processing when dead
 	}
 
 	if (Enemy::getNumOfEnemiesAlive() <= END_GAME)
 	{
-		handleWinState(m_currentScreen);
+		if (!m_winStateHandled)
+		{
+			handleWinState(m_currentScreen);
+			m_winStateHandled = true;
+		}
 		return; //STOP all game processing when won
 	}
 
@@ -64,7 +73,7 @@ void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 	move(clock);
 	handleCollision();
 	handleErasing();
-	handleScoreBoard();
+	handleInfobar();
 }
 
 //-----------------------------------------------------------------------------
@@ -129,7 +138,7 @@ void GamePlay::move(sf::Clock& clock)
 		{
 			if (e->wantsToFire())
 			{
-				addProjectile(e->getPosition(), e->getShottingDirections(), ENEMY);
+				addProjectile(e->getPosition(), e->getShottingDirections(), ENEMY, PROJECTILE_NAME);
 				e->clearFireFlag();
 			}
 		}
@@ -166,13 +175,10 @@ void GamePlay::handleCollision()
 		}
 		if (!collided) 
 		{
-			// Dynamic-cast to Enemy (or UpdateableObject) and call ClearAvoidance()
+			//Dynamic-cast to Enemy (or UpdateableObject) and call ClearAvoidance()
 			if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get()))
- {
-				if (auto* enemy = dynamic_cast<Enemy*>(movingObj.get())) 
-				{
-					enemy->OnSuccessfulMove();
-				}
+			{
+				enemy->OnSuccessfulMove();
 			}
 		}
 	}
@@ -184,9 +190,6 @@ void GamePlay::handleCollision()
 
 		if (m_player.checkCollision(*movingObj))
 		{
-			/*m_sound.setBuffer(ResourcesManager::getInstance().getSound("death"));
-			m_sound.setVolume(100.f);
-			m_sound.play();*/
 			collisionHandler.processCollision(m_player, *movingObj);
 			break;
 		}
@@ -228,10 +231,11 @@ void GamePlay::handleLoadingLevel()
 }
 
 //-----------------------------------------------------------------------------
-void GamePlay::handleScoreBoard()
+void GamePlay::handleInfobar()
 {
 	m_infoBar.updateTime(m_stopwatch);
 	m_infoBar.updateNumOfBullets(m_player.getNumOfBullets());
+	m_infoBar.updateNumOfBombs(m_player.getNumOfBombs());
 	m_infoBar.updateLives(m_player.getLife());
 	m_infoBar.updateNumOfEnemiesAlive();
 }
@@ -251,7 +255,9 @@ void GamePlay::removeEnemy()
 void GamePlay::resetGame()
 {
 	m_newGame = false;
+	m_winStateHandled = false;
 	m_sound.stop();
+	Enemy::resetNumOfEnemeis();
 	handleLoadingLevel();
 	resetGameOverStates();
 }
@@ -276,7 +282,7 @@ void GamePlay::handleMouseClick(const sf::Vector2f& clickPos, int& screenState)
 		if (m_buttons[PAUSE].getBounds().contains(clickPos))
 		{
 			m_paused = true;
-			setMusicState(MusicState::MENU); //Switch to menu music when pausing
+			MusicManager::getInstance().setCurrentMusic(MusicManager::MusicType::MENU); //Switch to menu music when pausing
 			return;
 		}
 		return; //If not paused, ignore other clicks
@@ -290,7 +296,7 @@ void GamePlay::handleMouseClick(const sf::Vector2f& clickPos, int& screenState)
 				case RESUME:
 				{
 					m_paused = false;
-					setMusicState(MusicState::GAME); //Switch back to game music when resuming
+					MusicManager::getInstance().setCurrentMusic(MusicManager::MusicType::GAME); //Switch back to game music when resuming
 					break;
 				}
 				case _HELP:
@@ -317,8 +323,8 @@ void GamePlay::handleDeathState(int& m_currentScreen)
 {
 	if (!s_deathSoundStarted)
 	{
-		// Play death sound once and stop game music
-		setMusicState(MusicState::MENU);
+		// Switch to lose music and play death sound
+		MusicManager::getInstance().setCurrentMusic(MusicManager::MusicType::LOSE);
 		m_sound.setBuffer(ResourcesManager::getInstance().getSound(LOSING_SOUND));
 		m_sound.setVolume(100.f);
 		m_sound.setPlayingOffset(sf::seconds(0.2f));
@@ -328,7 +334,7 @@ void GamePlay::handleDeathState(int& m_currentScreen)
 	}
 	else if (s_deathTimer.getElapsedTime().asSeconds() >= 0.8f || m_sound.getStatus() != sf::Sound::Playing)
 	{
-		// Go to lose screen after 0.8 seconds OR when sound finishes playing
+		// Go to lose screen
 		m_sound.stop();
 		m_currentScreen = LOSE_SCREEN;
 		m_newGame = true;
@@ -339,23 +345,10 @@ void GamePlay::handleDeathState(int& m_currentScreen)
 //---------------------------------------------------------------------------------------------------
 void GamePlay::handleWinState(int& m_currentScreen)
 {
-	if (!s_winSoundStarted)
-	{
-		// Play win sound once
-		m_sound.setBuffer(ResourcesManager::getInstance().getSound(WINNING_SOUND));
-		m_sound.setVolume(200.f);
-		m_sound.play();
-		s_winSoundStarted = true;
-		s_winTimer.restart();
-	}
-	else if (s_winTimer.getElapsedTime().asSeconds() >= 1.0f || m_sound.getStatus() != sf::Sound::Playing)
-	{
-		// Go to win screen after 1 second OR when sound finishes playing
-		m_sound.stop();
-		m_currentScreen = WIN_SCREEN;
-		m_newGame = true;
-		s_winSoundStarted = false; // Reset for next time
-	}
+	// Switch to win music and go to win screen immediately
+	MusicManager::getInstance().setCurrentMusic(MusicManager::MusicType::WIN);
+	m_currentScreen = WIN_SCREEN;
+	m_newGame = true;
 }
 
 //-----------------------------------------------------------------------------
@@ -364,14 +357,13 @@ void GamePlay::resetGameOverStates()
 	// Reset death sound state
 	s_deathSoundStarted = false;
 	s_deathTimer.restart();
-
-	// Reset win sound state
-	s_winSoundStarted = false;
-	s_winTimer.restart();
 }
 
 //-----------------------------------------------------------------------------
-void GamePlay::addProjectile(const sf::Vector2f& pos, std::vector<sf::Vector2f> directions, BulletOwner owner)
+void GamePlay::addProjectile(const sf::Vector2f& pos, 
+							 std::vector<sf::Vector2f> directions, 
+							 BulletOwner owner,
+							 const std::string& weaponName)
 {
 	m_sound.setBuffer(ResourcesManager::getInstance().getSound(SHOOTING_SOUND));
 	m_sound.setVolume(100.f);
@@ -380,8 +372,24 @@ void GamePlay::addProjectile(const sf::Vector2f& pos, std::vector<sf::Vector2f> 
 
 	for (int index = 0; index < directions.size(); ++index)
 	{
-		m_movingObj.push_back(std::make_unique<Projectile>(pos, directions[index], owner));
+		m_movingObj.push_back(std::make_unique<Projectile>(pos, directions[index], owner, weaponName));
 	}
+}
+
+//-----------------------------------------------------------------------------
+void GamePlay::addExplosion(const sf::Vector2f& pos)
+{
+	m_sound.setBuffer(ResourcesManager::getInstance().getSound(EXPLOSION_SOUND));
+	m_sound.setVolume(100.f);
+	m_sound.setPlayingOffset(sf::seconds(0.2f));
+	m_sound.play();
+	m_movingObj.push_back(std::make_unique<Explosion>(pos));
+}
+
+//-----------------------------------------------------------------------------
+void GamePlay::addBomb(const sf::Vector2f& pos)
+{
+	m_movingObj.push_back(std::make_unique<Bomb>(pos,this));
 }
 
 //----------------------------------------------------------------------------
@@ -393,9 +401,19 @@ void GamePlay::playPresentSound()
 	m_sound.play();
 }
 
+//-----------------------------------------------------------------------------
 void GamePlay::playMedkitSound()
 {
 	m_sound.setBuffer(ResourcesManager::getInstance().getSound(GAIN_HEALTH_SOUND));
+	m_sound.setVolume(100.f);
+	m_sound.setPlayingOffset(sf::seconds(0.2f));
+	m_sound.play();
+}
+
+//-----------------------------------------------------------------------------
+void GamePlay::playHitSound()
+{
+	m_sound.setBuffer(ResourcesManager::getInstance().getSound(HIT_SOUND));
 	m_sound.setVolume(100.f);
 	m_sound.setPlayingOffset(sf::seconds(0.2f));
 	m_sound.play();

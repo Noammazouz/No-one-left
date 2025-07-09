@@ -30,9 +30,10 @@ void HelpScreen::draw(sf::RenderWindow& window)
 void HelpScreen::activate(sf::Clock& /*clockin*/, int& /*m_currrentScreen*/)
 {
 	// Ensure menu music is playing
-	if (getCurrentMusicState() != MusicState::MENU)
+	auto& musicManager = MusicManager::getInstance();
+	if (musicManager.getCurrentMusicType() != MusicManager::MusicType::MENU)
 	{
-		setMusicState(MusicState::MENU);
+		musicManager.setCurrentMusic(MusicManager::MusicType::MENU);
 	}
 }
 

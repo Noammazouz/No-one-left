@@ -4,9 +4,10 @@
 #include "MoveBehavior.h"
 
 //-----class section-----
-class AxisMoveBehavior : public MoveBehavior {
+class AxisMoveBehavior : public MoveBehavior 
+{
 public:
-    AxisMoveBehavior();
+    AxisMoveBehavior() = default;
     ~AxisMoveBehavior() override = default;
 
     // Compute movement direction: will side?step when avoiding, else chase
@@ -17,7 +18,7 @@ public:
     void ClearAvoidance();
 
 private:
-    bool m_preferHorizontal = true;   // primary chase axis
-    bool m_avoiding = false;  // currently side stepping
-    sf::Vector2f m_lastDir;                  // direction that caused collision
+    bool m_preferHorizontal = true; //primary chase axis
+    bool m_avoiding = false; //currently side stepping
+    sf::Vector2f m_lastDir; //direction that caused collision
 };

@@ -7,7 +7,7 @@
 ResourcesManager::ResourcesManager()
 {
     loadTexture();
-    initializeMusic();
+    initializeSounds();
     initializeFont();
     intializeHelpText();
 }
@@ -49,40 +49,49 @@ void ResourcesManager::loadTexture()
 {
     std::vector<std::pair<std::string, std::string>> textures =
     {
-        {"background","gamebackground.png"},
-        {"player_machine_gun", "player_machine_gun.png"},
-        {"player_rifle", "player_rifle.png"},
-        {"player_bazooka", "player_bazooka.png"},
-        {"simple_enemy_machine_gun", "simple_enemy_machine_gun.png"},
-        {"wall","wall.png"},
-        {"startScreen", "startScreen.png"},
-        {"start game", "start game.png"},
-        {"exit", "exit.png"},
-        {"help", "help.png"},
-        {"help game screen", "help2.png"},
-        {"pause", "pauseButton.png"},
-        {"resume", "resume.png"},
-        {"help screen", "help screen.png"},
-        {"return", "return.png"},
-        {"simple_enemy_rifle", "simple_enemy_rifle.png"},
-        {"smart_enemy_rifle", "smart_enemy_rifle.png"},
-        {"bfs_enemy_rifle", "bfs_enemy_rifle.png"},
-        {"life", "life.png"},
-        {"bulletIcon", "bulletIcon.png"},
-        {"clock", "clock.png"},
-        {"obstacle1","obstacle1.png"},
-        {"obstacle2","obstacle2.png"},
-        {"obstacle3","obstacle3.png"},
-        {"game over", "lose_screen.png"},
-        {"start menu", "home.png"},
-        {"winning screen", "win screen background.png"},
-        {"projectile", "Sprite_Effects_Exhaust_02_000.png"},
-        {"rifle", "rifle.png"},
-        {"medkit", "medkit.png"},
-        {"Bullet", "Bullet.png"},
-        {"remove time", "clock.png"},
-        {"remove enemy", "skull.png"},
-        {"enemeis icon", "enemiesIcon.png"}
+        {GAME_BACKGROUND,"gamebackground.png"},
+        {PLAYER_MACHINE_GUN, "player_machine_gun.png"},
+        {PLAYER_RIFLE, "player_rifle.png"},
+        {PLAYER_BAZOOKA, "player_bazooka.png"},
+        {WALL_NAME,"wall.png"},
+        {START_SCREEN_BACKGROUND, "startScreen.png"},
+        {START_NEW_GAME_BUTTON, "start game.png"},
+        {EXIT_BUTTON, "exit.png"},
+        {HELP_MENU_BUTTON, "help.png"},
+        {HELP_MENU_BUTTON_FOR_PAUSE, "help2.png"},
+        {PAUSE_BUTTON, "pauseButton.png"},
+        {RESUME_BUTTON, "resume.png"},
+        {HELP_SCREEN_BACKGROUND, "helpScreen.png"},
+        {RETURN_BUTTON, "return.png"},
+        {SIMPLE_ENEMY_RIFLE, "simple_enemy_rifle.png"},
+        {SMART_ENEMY_RIFLE, "smart_enemy_rifle.png"},
+        {BFS_ENEMY_RIFLE, "bfs_enemy_rifle.png"},
+        {PLAYER_DEATH, "player_death.png"},
+		{SIMPLE_ENEMY_DEATH, "simple_enemy_death.png"},
+		{SMART_ENEMY_DEATH, "smart_enemy_death.png"},
+        {BFS_ENEMY_DEATH, "bfs_enemy_death.png"},
+        {LIFE_ICON, "life.png"},
+        {BULLETS_ICON, "bulletIcon.png"},
+        {CLOCK_ICON, "clock.png"},
+        {OBSTACLE1_NAME,"Broken_tree1.png"},
+        {OBSTACLE2_NAME,"Broken_tree2.png"},
+        {OBSTACLE3_NAME,"Rock.png"},
+        {LOSE_SCREEN_BACKGROUND, "lose_screen.png"},
+        {START_MENU_BUTTON, "home.png"},
+        {WIN_SCREEN_BACKGROUND, "win_screen_background.png"},
+        {PROJECTILE_NAME, "bullet_from_gun.png"},
+        {RIFLE_NAME, "rifle.png"},
+        {MED_KIT_NAME, "medkit.png"},
+        {BULLETS_NAME, "Bullet.png"},
+        {REMOVE_TIME_NAME, "clock.png"},
+        {REMOVE_ENEMY_NAME, "skull.png"},
+        {BOMB_NAME, "bomb_animation.png"},
+        {BOMBS_ICON, "bombIcon.png"},
+        {EXPLOSION_NAME, "Effect_Explosion.png"},
+        {ENEMIES_ICON, "enemiesIcon.png"},
+        {MACHINE_GUN_NAME, "machine_gun.png"},
+        {BAZOOKA_NAME, "Bazooka-sized.png"},
+		{BAZOOKA_MISLE_NAME, "bazooka_misle.png"}
     };
 
     for (const auto& [name, filePath] : textures)
@@ -100,34 +109,20 @@ void ResourcesManager::loadTexture()
 }
 
 //------------------------------------------------------------------------------
-void ResourcesManager::initializeMusic()
+void ResourcesManager::initializeSounds()
 { 
-    if (!m_menuMusic.openFromFile("menuMusic.ogg"))
+    // Load sound effects (not music - that's handled by MusicManager now)
+    std::vector<std::pair<std::string, std::string>> sounds =
     {
-        throw std::runtime_error("Error loading menu music");
-    }
-    
-    if (!m_gameMusic.openFromFile("gameMusic.ogg"))
-    {
-        throw std::runtime_error("Error loading game music");
-    }
-    
-    m_menuMusic.setLoop(true);
-    m_gameMusic.setLoop(true);
-    m_menuMusic.setVolume(50.f);
-    m_gameMusic.setVolume(50.f);
-
-
-    std::vector<std::pair<std::string, std::string>> music =
-    {
-        {"present", "present.ogg"},
-        {"shoot", "shoot.ogg"},
-        {"death", "death.ogg"},
-        {"health", "addHealth.ogg"},
-        {"win sound effect", "win.ogg"}
+        {GAIN_PRESENT_SOUND, "present.ogg"},
+        {SHOOTING_SOUND, "shoot.ogg"},
+        {LOSING_SOUND, "death.ogg"},
+        {GAIN_HEALTH_SOUND, "addHealth.ogg"},
+        {HIT_SOUND, "hit.ogg"},
+		{EXPLOSION_SOUND, "explosion.ogg"}
     };
 
-    for (const auto& [name, filePath] : music)
+    for (const auto& [name, filePath] : sounds)
     {
         std::string errorMessage = "Failed to load sound: " + filePath;
         sf::SoundBuffer sound;
@@ -136,25 +131,12 @@ void ResourcesManager::initializeMusic()
             throw std::runtime_error(errorMessage);
         }
 
-        // Insert the soundBuffer into the unordered_map
+        //Insert the soundBuffer into the unordered_map
         m_music[name] = sound;
     }
 }
 
-//------------------------------------------------------------------------------
-sf::Music& ResourcesManager::getMusic(std::string name)
-{
-    if (name == "menu")
-    {
-        return m_menuMusic;
-    }
-    else if (name == "game")
-    {
-        return m_gameMusic;
-    }
 
-    return m_menuMusic;
-}
 
 //------------------------------------------------------------------------------
 void ResourcesManager::initializeFont()

@@ -1,11 +1,14 @@
+//-----includes section-----
 #include "WinScreen.h"
 
+//-----functions section------
+//-----------------------------------------------------------------------------
 WinScreen::WinScreen()
 {
 	initButtons();
 }
 
-//--------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void WinScreen::draw(sf::RenderWindow& window)
 {
 	window.setView(window.getDefaultView());
@@ -18,17 +21,18 @@ void WinScreen::draw(sf::RenderWindow& window)
 	drawButtons(window);
 }
 
-//--------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void WinScreen::activate(sf::Clock& /*clockin*/, int& /*m_currrentScreen*/)
 {
-	// Ensure menu music is playing
-	if (getCurrentMusicState() != MusicState::MENU)
+	// Ensure win music is playing
+	auto& musicManager = MusicManager::getInstance();
+	if (musicManager.getCurrentMusicType() != MusicManager::MusicType::WIN)
 	{
-		setMusicState(MusicState::MENU);
+		musicManager.setCurrentMusic(MusicManager::MusicType::WIN);
 	}
 }
 
-//--------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void WinScreen::handleMouseClick(const sf::Vector2f& clickPos, int& screenState)
 {
 	for (int index = 0; index < m_buttons.size(); ++index)
@@ -39,7 +43,8 @@ void WinScreen::handleMouseClick(const sf::Vector2f& clickPos, int& screenState)
 			{
 			case START_GAME:
 			{
-				screenState = GAME_SCREEN;
+				screenState = START_SCREEN;
+				MusicManager::getInstance().setCurrentMusic(MusicManager::MusicType::MENU);
 				return;
 			}
 			case _EXIT:
@@ -52,7 +57,7 @@ void WinScreen::handleMouseClick(const sf::Vector2f& clickPos, int& screenState)
 	}
 }
 
-//--------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void WinScreen::initButtons()
 {
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();

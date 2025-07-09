@@ -36,17 +36,15 @@ public:
 	virtual void update(sf::Time deltaTime, sf::Vector2f playerPos) override;
 	void setWin(bool win);
 	bool getWin() const;
-    int getScore();
-	void setScore(int score);
 	void decLife(int decLives = 1);
 	void incLife(int addLives);
 	int getLife();
 	void initialization(sf::Vector2f pos, std::string name, GamePlay* gamePlay);
 
-	static int getNumOfBullets();
-	static void addBullets(int bullets);
-	static void decBullets();
-	static bool isBulletsAvailable();
+	int getNumOfBullets();
+	void addBullets(int bullets);
+	void decBullets();
+	bool isBulletsAvailable();
 	sf::Vector2f getCurrentDirection() const;
 	void handleShooting();
 	void setAttackBehavior(std::unique_ptr<AttackBehavior> attackBehavior);
@@ -55,6 +53,10 @@ public:
 	void setShootCooldown(const std::string& weaponName);
 	void removeEnemyGift();
 	void removeTimeGift();
+	bool isBombsAvailable();
+	int getNumOfBombs() const;
+	std::string getCurrentWeaponName() const;
+	void setCurrentWeapon(const std::string& weapon);
 
 private:
 	bool checkDirection();
@@ -62,10 +64,8 @@ private:
 
 	sf::Vector2f m_direction;
 	int m_lives;
-	static int m_score;
-	static int m_bulletCount;
+	int m_bulletCount;
 	bool m_win = false;
-	bool m_isShooting = false;
 	std::unique_ptr<AttackBehavior> m_attackBehavior;
 	GamePlay* m_gamePlay;
 	sf::Vector2f m_facingDirection = sf::Vector2f(0.f, -1.f); //Default facing up.
@@ -80,4 +80,8 @@ private:
 
 	sf::Clock m_shootClock;
 	sf::Time m_shootCooldown;
+
+	int m_bombsCount;
+	bool m_bKeyPressed; 
+	std::string m_currentWeapon;
 };

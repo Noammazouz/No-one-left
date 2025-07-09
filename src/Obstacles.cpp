@@ -15,8 +15,7 @@ Obstacles::Obstacles(const sf::Vector2f& position, std::string name)
 //-----------------------------------------------------------------------------
 void Obstacles::decLife()
 {
-    if (m_life > 0) --m_life;
-            
+    if (m_life > 0) --m_life;     
 
     if (m_life == 0) this->setLife(true); //Mark for removal in GamePlay::handleErasing()
 }
@@ -30,7 +29,7 @@ void handleObstacleEnemyCollision(GameObject& obj1, GameObject& obj2)
 
     if (enemy && obs) 
     {
-        // revert position and reverse direction
+        //revert position and reverse direction
         enemy->NotifyCollision();
     }
 }
@@ -39,19 +38,19 @@ void handleObstacleEnemyCollision(GameObject& obj1, GameObject& obj2)
 static bool regObs1 = Factory<StaticObject>::instance().registerType(
     ObjectType::OBSTACLE1,
     [](const sf::Vector2f& pos) -> std::unique_ptr<StaticObject> {
-        return std::make_unique<Obstacles>(pos, "obstacle1");
+        return std::make_unique<Obstacles>(pos, OBSTACLE1_NAME);
     });
 
 static bool regObs2 = Factory<StaticObject>::instance().registerType(
     ObjectType::OBSTACLE2,
     [](const sf::Vector2f& pos) -> std::unique_ptr<StaticObject> {
-        return std::make_unique<Obstacles>(pos, "obstacle2");
+        return std::make_unique<Obstacles>(pos, OBSTACLE2_NAME);
     });
 
 static bool regObs3 = Factory<StaticObject>::instance().registerType(
     ObjectType::OBSTACLE3,
     [](const sf::Vector2f& pos) -> std::unique_ptr<StaticObject> {
-        return std::make_unique<Obstacles>(pos, "obstacle3");
+        return std::make_unique<Obstacles>(pos, OBSTACLE3_NAME);
     });
 
 static bool regObsColl = []() {

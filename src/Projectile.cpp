@@ -8,23 +8,37 @@
 
 //-----functions section------
 //-----------------------------------------------------------------------------
-Projectile::Projectile(sf::Vector2f position, sf::Vector2f direction, BulletOwner owner)
-    : UpdateableObject(position, PROJECTILE_NAME), isActive(true), m_elapsedTime(0.0f), m_direction(direction), m_owner(owner)
+Projectile::Projectile(sf::Vector2f position, sf::Vector2f direction, 
+                       BulletOwner owner, const std::string& weaponName)
+    : UpdateableObject(position, PROJECTILE_NAME), isActive(true), 
+	  m_elapsedTime(0.0f), m_direction(direction), m_owner(owner), 
+      m_weaponName(weaponName)
 {
-    float length = std::sqrt(m_direction.x * m_direction.x + m_direction.y * m_direction.y); // to get same speed for all directions
+    float length = std::sqrt(m_direction.x * m_direction.x + m_direction.y * m_direction.y); //to get same speed for all directions
     if (length > 0)
     {
         m_direction.x /= length;
         m_direction.y /= length;
     }
 
+    if (m_weaponName == RIFLE_NAME || m_weaponName == MACHINE_GUN_NAME)
+    {
+        m_pic.setTexture(ResourcesManager::getInstance().getTexture(PROJECTILE_NAME));
+    }
+    else if (m_weaponName == BAZOOKA_NAME)
+    {
+        m_pic.setTexture(ResourcesManager::getInstance().getTexture(BAZOOKA_MISLE_NAME));
+        m_pic.setOrigin(m_pic.getTexture()->getSize().x * 0.5f,
+                        m_pic.getTexture()->getSize().y * 0.5f);
+    }
+
     float angleRadians = std::atan2(m_direction.y, m_direction.x);
     float angleDegrees = angleRadians * 180.0f / std::numbers::pi;
-    m_pic.setRotation(angleDegrees + 90.0f);
+    m_pic.setRotation(angleDegrees);
 }
 
 //-----------------------------------------------------------------------------
-void Projectile::update(sf::Time deltaTime, sf::Vector2f playerPos)
+void Projectile::update(sf::Time deltaTime, sf::Vector2f /*playerPos*/)
 {
     if (!isActive) return;
     m_pic.move(m_direction * PROJECTILE_SPEED * deltaTime.asSeconds());
@@ -67,15 +81,20 @@ bool Projectile::isExpired() const
     return m_elapsedTime >= PROJECTILE_AIR_TIME;
 }
 
+//-----------------------------------------------------------------------------
+BulletOwner Projectile::getOwner() const
+{
+    return m_owner;
+}
+
 //-----------------------------------------------------------------------------  
 //Collision handler for Bullet vs Enemy - Order independent.  
 void handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2)  
 {  
-    //std::cout << "in PlayerBulletEnemyCollision" << std::endl;
    Projectile* bulletPtr = nullptr;  
    Enemy* enemyPtr = nullptr;  
 
-   // Check both parameter orders  
+   //Check both parameter orders  
    if (auto* bullet = dynamic_cast<Projectile*>(&obj1)) 
    {  
        if (auto* enemy = dynamic_cast<Enemy*>(&obj2)) 
@@ -101,9 +120,11 @@ void handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2)
            enemyPtr->takeDamage(1);
            bulletPtr->setActive(false); //Deactivate bullet  
            bulletPtr->setLife(true);
+
            if (!enemyPtr->isAlive())
            {
-               enemyPtr->setLife(true); //Mark enemy as dead  
+               enemyPtr->beginDying(OBJECT_DEATH_WIDTH, OBJECT_DEATH_HEIGHT, PLAYER_DEATH_FRAME_TIME,
+                   enemyPtr->getDeathName()); //Mark enemy as dead
            }
        }  
    }  
@@ -116,7 +137,7 @@ void handleEnemyBulletPlayerCollision(GameObject& obj1, GameObject& obj2)
     Projectile* bulletPtr = nullptr;
     Player* playerPtr = nullptr;
 
-    // Check both parameter orders
+    //Check both parameter orders
     if (auto* bullet = dynamic_cast<Projectile*>(&obj1)) 
     {
         if (auto* player = dynamic_cast<Player*>(&obj2)) 
@@ -136,12 +157,11 @@ void handleEnemyBulletPlayerCollision(GameObject& obj1, GameObject& obj2)
 
     if (bulletPtr && playerPtr)
     {
-        // Only enemy bullets can hurt player
+        //Only enemy bullets can hurt player
         if (bulletPtr->getOwner() == ENEMY)
         {
-            //std::cout << "Enemy bullet hit player!" << std::endl;
             playerPtr->decLife(PROJECTILE_DAMAGE);
-            bulletPtr->setActive(false); // Deactivate bullet
+            bulletPtr->setActive(false); //Deactivate bullet
             bulletPtr->setLife(true);
         }
     }
@@ -168,19 +188,15 @@ void handleBulletWallCollision(GameObject& obj1, GameObject& obj2)
     {
       if (auto* wall = dynamic_cast<Wall*>(&obj1)) 
       {
-            wallPtr = wall;
-            bulletPtr = bullet;
-	   }
-        
+		  wallPtr = wall;
+          bulletPtr = bullet;
+	  }        
     }
 
     if (bulletPtr && wallPtr)
     {
-        //std::cout << "Bullet hit wall - Bullet destroyed" << std::endl;
         bulletPtr->setActive(false); // All bullets are stopped by walls
         bulletPtr->setLife(true);
-        if(bulletPtr->getOwner() == _PLAYER)
-		wallPtr->setLife(true); // Mark wall as destroyed (if needed)
     }
 }
 
@@ -225,13 +241,13 @@ void Projectile::registerBulletCollisions()
 
     auto& collisionFactory = CollisionFactory::getInstance();
 
-    // Register bullet-enemy collisions (handles both player and enemy bullets)
+    //Register bullet-enemy collisions (handles both player and enemy bullets)
     collisionFactory.registerTypedCollision<Projectile, Enemy>(handlePlayerBulletEnemyCollision);
 
-    // Register bullet-player collisions (handles both player and enemy bullets)
+    //Register bullet-player collisions (handles both player and enemy bullets)
     collisionFactory.registerTypedCollision<Projectile, Player>(handleEnemyBulletPlayerCollision);
 
-    // Register bullet-wall collisions (all bullets are stopped by walls)
+    //Register bullet-wall collisions (all bullets are stopped by walls)
     collisionFactory.registerTypedCollision<Projectile, Wall>(handleBulletWallCollision);
 
     collisionFactory.registerTypedCollision<Projectile, Obstacles>(handleBulletObstacleCollision);
@@ -246,9 +262,3 @@ bool g_bulletCollisionRegistered = []()
         Projectile::registerBulletCollisions();
         return true;
     }();
-
-//-----------------------------------------------------------------------------
-BulletOwner Projectile::getOwner() const
-{
-    return m_owner;
-}

@@ -3,6 +3,7 @@
  CONTROLS:
  - Movement: Use Arrow Keys (Left, Right, Up, Down).
  - To Shoot: Press 'S' button.
+ - To Place a Bomb: Press 'B' button.
  - To Pause: Press The Button In The Top Left Corner.
  - Music: Press M to mute/unmute.
  - Back to Menu: Press Escape.
@@ -21,6 +22,8 @@
  - Use the environment to your advantage -- don't rush!
  - Predict and trap enemies.
  - Strategy, timing and patience Are the key to winning the fight.
+ - Use bombs to destroy obstacles and enemies but use them wisely because you have 
+   only 10 of them.
 
 
  GOOD LUCK!

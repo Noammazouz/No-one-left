@@ -24,13 +24,19 @@ Enemy::Enemy(sf::Vector2f position, std::string name, int numOfLives)
     m_numOfEnemiesAlive++;
     m_numberOfFrames = m_pic.getTexture()->getSize().x / OBJECT_WIDTH; //Calculate number of frames based on texture width.
     m_pic.setRotation(180.f); //Set initial rotation to face down.
-    set_frames(m_numberOfFrames, position);
+    set_frames(m_numberOfFrames, position, OBJECT_WIDTH, OBJECT_HEIGHT);
 }
 
 //-----------------------------------------------------------------------------
 Enemy::~Enemy()
 {
     m_numOfEnemiesAlive--;
+}
+
+//-------------------------------------
+void Enemy::resetNumOfEnemeis()
+{
+    m_numOfEnemies = 0;
 }
 
 //-----------------------------------------------------------------------------
@@ -43,6 +49,18 @@ void Enemy::takeDamage(int damage)
 bool Enemy::isAlive() const
 {
     return m_numOfLives > 0;
+}
+
+//-----------------------------------------------------------------------------
+void Enemy::setDeathName(const std::string& name)
+{
+	m_deathName = name;
+}
+
+//-----------------------------------------------------------------------------
+std::string Enemy::getDeathName() const
+{
+    return m_deathName;
 }
 
 //-----------------------------------------------------------------------------
@@ -84,11 +102,6 @@ void handleEnemyWallCollision(GameObject& obj1, GameObject& obj2)
         enemy->SetDirection(-enemy->getDirection()); //Reverse direction
         return;
     }
-    else 
-    {
-        std::cout << "Enemy-Wall collision not handled properly!" << std::endl;
-        return;
-	}
 }
 
 //-----------------------------------------------------------------------------
@@ -131,6 +144,7 @@ static auto regSimple = Factory<UpdateableObject>::instance().registerType(
         auto enemy = std::make_unique<Enemy>(pos, SIMPLE_ENEMY_RIFLE, 1);
         enemy->SetMoveBehavior(std::make_unique<RandomMoveBehavior>());
         enemy->SetAttackBehavior(std::make_unique<OneDirectionAttackBehavior>());
+		enemy->setDeathName(SIMPLE_ENEMY_DEATH);
         return enemy;
     });
 
@@ -140,6 +154,7 @@ static auto regSmart = Factory<UpdateableObject>::instance().registerType(
         auto enemy = std::make_unique<Enemy>(pos, SMART_ENEMY_RIFLE, 2);
         enemy->SetMoveBehavior(std::make_unique<AxisMoveBehavior>());
         enemy->SetAttackBehavior(std::make_unique<OneDirectionAttackBehavior>());
+        enemy->setDeathName(SMART_ENEMY_DEATH);
         return enemy;
     });
 
@@ -149,12 +164,17 @@ static auto regBfs = Factory<UpdateableObject>::instance().registerType(
         auto enemy = std::make_unique<Enemy>(pos, BFS_ENEMY_RIFLE, 3);
         enemy->SetMoveBehavior(std::make_unique<BfsMoveBehavior>());
         enemy->SetAttackBehavior(std::make_unique<AllDirectionsAttackBehavior>());
+        enemy->setDeathName(BFS_ENEMY_DEATH);
         return enemy;
     });
 
 //-----------------------------------------------------------------------------
 void Enemy::update(sf::Time deltaTime, sf::Vector2f playerPos)
 {
+    if (!isAlive())
+    {
+		return; // If dead, skip further updates
+    }
     m_direction = m_MoveBehavior->Move(playerPos, deltaTime, this->getPosition());
     this->setRotation(m_direction);
 	this->setPrevLocation(this->getPosition());
@@ -225,8 +245,13 @@ void Enemy::OnSuccessfulMove()
 }
 
 //-----------------------------------------------------------------------------
-bool Enemy::wantsToFire() const
+bool Enemy::wantsToFire() 
 {
+    if (!isAlive())
+    {
+        this->handleDeath();
+        return false; // If dead, skip further updates
+    }
     return m_shouldFire;
 }
 
@@ -240,10 +265,4 @@ void Enemy::clearFireFlag()
 int Enemy::getNumOfEnemiesAlive()
 {
     return m_numOfEnemiesAlive;
-}
-
-//-----------------------------------------------------------------------------
-int Enemy::getNumOfStartingEnemies(const std::vector<std::unique_ptr<UpdateableObject>>& movingObjs)
-{
-    return static_cast<int>(movingObjs.size());
 }

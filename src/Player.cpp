@@ -8,15 +8,11 @@
 #include "Wall.h"
 #include "GamePlay.h"
 
-//-----static member initialization-----
-//Defines the static members.
-int Player::m_score = 0;
-int Player::m_bulletCount = NUM_OF_BULLETS;
-
 //-----functions section------
 //-----------------------------------------------------------------------------
 Player::Player()
-	: UpdateableObject(), m_isShooting(false), m_lives(NUM_OF_LIVES)
+	: UpdateableObject(), m_lives(NUM_OF_LIVES), m_bulletCount(NUM_OF_BULLETS), 
+      m_bombsCount(NUM_OF_BOMBS), m_bKeyPressed(false)
 {}
 
 //-----------------------------------------------------------------------------
@@ -26,14 +22,19 @@ void Player::initialization(sf::Vector2f position, std::string name, GamePlay* g
 	m_pic.setTexture(texture);
 	m_numberOfFrames = m_pic.getTexture()->getSize().x / OBJECT_WIDTH; //Calculate number of frames based on texture width.
 	m_pic.setRotation(180.f); //Set initial rotation to face down.
-	set_frames(m_numberOfFrames, position);
+	set_frames(m_numberOfFrames, position, OBJECT_WIDTH, OBJECT_HEIGHT);
 
+	setCurrentWeapon(RIFLE_NAME); //Set default weapon to Rifle.
 	setShootCooldown(RIFLE_NAME); //Set the shoot cooldown based on the weapon name.
 
 	m_attackBehavior = std::move(std::make_unique<OneDirectionAttackBehavior>());
 	m_lives = NUM_OF_LIVES;
 
 	m_gamePlay = gamePlay;
+
+	m_bulletCount = NUM_OF_BULLETS;
+	m_bombsCount = NUM_OF_BOMBS;
+	m_bKeyPressed = false;
 }
 
 //-----------------------------------------------------------------------------
@@ -50,7 +51,7 @@ void Player::setDirection()
 {
 	if (!checkDirection())
 	{
-		m_direction = sf::Vector2f(0, 0);
+		m_direction = DEFAULT_VECTOR;
 		this->setRotation(m_direction);
 		return;
 	}
@@ -63,11 +64,11 @@ void Player::setDirection()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) newDir.y += 1.f;
 
 	//Normalize direction if moving diagonally.
-	if (newDir != sf::Vector2f(0.f, 0.f))
+	if (newDir != DEFAULT_VECTOR)
 	{
 		newDir /= std::sqrt(newDir.x * newDir.x + newDir.y * newDir.y);
     
-		m_facingDirection = newDir; // Update facing direction when moving
+		m_facingDirection = newDir; //Update facing direction when moving.
 		this->setRotation(m_facingDirection);
 	}
 
@@ -102,6 +103,7 @@ bool Player::checkDirection()
 //-----------------------------------------------------------------------------
 void Player::decLife(int decLives)
 {
+	m_gamePlay->playHitSound();
 	m_lives -= decLives;
 }
 
@@ -128,18 +130,6 @@ void Player::incLife(int addLives)
 {
 	if (m_lives < NUM_OF_LIVES) m_lives += addLives;
 	if (m_lives > NUM_OF_LIVES) m_lives = NUM_OF_LIVES;
-}
-
-//------------------------------------------------------------------------------
-int Player::getScore()
-{
-	return m_score;
-}
-
-//------------------------------------------------------------------------------
-void Player::setScore(int score)
-{
-	m_score += score;
 }
 
 //-----------------------------------------------------------------------------
@@ -171,6 +161,16 @@ bool Player::isBulletsAvailable()
 }
 
 //-----------------------------------------------------------------------------
+bool Player::isBombsAvailable()
+{
+	if (m_bombsCount > MIN_BOUND_BOMBS)
+	{
+		return true;
+	}
+	return false;
+}
+
+//-----------------------------------------------------------------------------
 sf::Vector2f Player::getCurrentDirection() const
 {
 	return m_direction;
@@ -183,12 +183,27 @@ void Player::handleShooting()
 	{
 		if (m_shootClock.getElapsedTime() >= m_shootCooldown && isBulletsAvailable())
 		{
-			m_gamePlay->addProjectile(this->getPosition(), m_attackBehavior->Attack(m_facingDirection), _PLAYER);
-			m_isShooting = true;
+			m_gamePlay->addProjectile(this->getPosition(), 
+									  m_attackBehavior->Attack(m_facingDirection), 
+									  _PLAYER,
+									  getCurrentWeaponName());
 			decBullets();
-			m_shootClock.restart();  // Reset timer
+			m_shootClock.restart(); //Reset timer.
 		}
-	}	
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::B))
+	{
+		if (!m_bKeyPressed && isBombsAvailable()) //Only create bomb on first press.
+		{
+			m_gamePlay->addBomb(this->getPosition());
+			m_bKeyPressed = true;
+			m_bombsCount--;
+		}
+	}
+	else
+	{
+		m_bKeyPressed = false; //Reset when key is released.
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -219,6 +234,24 @@ void Player::removeEnemyGift()
 void Player::removeTimeGift()
 {
 	m_gamePlay->decTime();
+}
+
+//------------------------------------------------------------------------------
+int Player::getNumOfBombs() const
+{
+	return m_bombsCount;
+}
+
+//------------------------------------------------------------------------------
+std::string Player::getCurrentWeaponName() const
+{
+	return m_currentWeapon;
+}
+
+//------------------------------------------------------------------------------
+void Player::setCurrentWeapon(const std::string& weapon)
+{
+	m_currentWeapon = weapon;
 }
 
 //------------------------------------------------------------------------------
@@ -345,7 +378,8 @@ void handlePlayerRifleGiftCollision(GameObject& obj1, GameObject& obj2)
 	if(player && rifleGift) 
 	{
 		player->presentSound();
-		player->changeSpriteAnimation(PLAYER_RIFLE);
+		player->changeSpriteAnimation(PLAYER_RIFLE, OBJECT_WIDTH, OBJECT_HEIGHT);
+		player->setCurrentWeapon(RIFLE_NAME); //Set the current weapon to rifle.
 		player->setShootCooldown(RIFLE_NAME); //Set the shoot cooldown for rifle.
 		rifleGift->setLife(true); //Mark the gift as collected.
 		return;
@@ -380,7 +414,8 @@ void handlePlayerMachineGunGiftCollision(GameObject& obj1, GameObject& obj2)
 	if (player && machineGunGift)
 	{
 		player->presentSound();
-		player->changeSpriteAnimation(PLAYER_MACHINE_GUN);
+		player->changeSpriteAnimation(PLAYER_MACHINE_GUN, OBJECT_WIDTH, OBJECT_HEIGHT);
+		player->setCurrentWeapon(MACHINE_GUN_NAME); //Set the current weapon to machine-gun.
 		player->setShootCooldown(MACHINE_GUN_NAME); //Set the shoot cooldown for machine-gun.
 		machineGunGift->setLife(true); //Mark the gift as collected.
 		return;
@@ -411,11 +446,12 @@ void handlePlayerBazookaGiftCollision(GameObject& obj1, GameObject& obj2)
 			bazookaGift = tempBazookaGift;
 		}
 	}
-
+	
 	if (player && bazookaGift) 
 	{	
 		player->presentSound();
-		player->changeSpriteAnimation(PLAYER_BAZOOKA);
+		player->changeSpriteAnimation(PLAYER_BAZOOKA, OBJECT_WIDTH, OBJECT_HEIGHT);
+		player->setCurrentWeapon(BAZOOKA_NAME); //Set the current weapon to bazooka.
 		player->setShootCooldown(BAZOOKA_NAME); //Set the shoot cooldown for bazooka.
 		bazookaGift->setLife(true); //Mark the gift as collected.
 		return;
@@ -556,7 +592,6 @@ void handlePlayerRemoveEnemyGiftCollision(GameObject& obj1, GameObject& obj2)
 	}
 }
 
-
 //------------------------------------------------------------------------------
 static bool g_playerCollisionRegistered = []() {
 	auto& factory = CollisionFactory::getInstance();
@@ -565,7 +600,7 @@ static bool g_playerCollisionRegistered = []() {
 	factory.registerTypedCollision<Player, Obstacles>(handlePlayerObstaclesCollision);
 	factory.registerTypedCollision<Player, RifleGift>(handlePlayerRifleGiftCollision);
 	factory.registerTypedCollision<Player, MachineGunGift>(handlePlayerMachineGunGiftCollision);
-	factory.registerTypedCollision<Player, BazookaGift>(handlePlayerRifleGiftCollision);
+	factory.registerTypedCollision<Player, BazookaGift>(handlePlayerBazookaGiftCollision);
 	factory.registerTypedCollision<Player, BulletsGift>(handlePlayerBulletsGiftCollision);
 	factory.registerTypedCollision<Player, MedkitGift>(handlePlayerMedkitGiftCollision);
 	factory.registerTypedCollision<Player, RemoveTime>(handlePlayerRemoveTimeGiftCollision);
