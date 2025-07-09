@@ -8,7 +8,7 @@ class AxisMoveBehavior : public MoveBehavior
 {
 public:
     AxisMoveBehavior() = default;
-    ~AxisMoveBehavior() override = default;
+    ~AxisMoveBehavior() = default;
 
     // Compute movement direction: will side?step when avoiding, else chase
     sf::Vector2f Move(sf::Vector2f playerPos, sf::Time /*dt*/, sf::Vector2f enemyPos) override;

@@ -1,3 +1,4 @@
+//-----include section-----
 #include "Explosion.h"
 #include "ResourcesManager.h"
 #include "GamePlay.h"
@@ -6,25 +7,24 @@
 #include "Wall.h"
 #include "Player.h"
 
-
+//-----functions section------
+//-----------------------------------------------------------------------------
 Explosion::Explosion(sf::Vector2f position)
 	:UpdateableObject(position, EXPLOSION_NAME)
 {
     m_numberOfFrames = m_pic.getTexture()->getSize().x / EXPLOSION_WIDTH;
     set_frames(m_numberOfFrames, position, EXPLOSION_WIDTH, EXPLOSION_HEIGHT);
-
 }
 
+//-----------------------------------------------------------------------------
 void Explosion::update(sf::Time deltaTime, sf::Vector2f /*playerPos*/)
 {
     m_timer -= deltaTime;
     updateFrames(DEFAULT_DIRECTION, EXPLOSION_FRAME_TIME, m_numberOfFrames);
-    if (m_timer <= sf::Time::Zero)
-    {
-        this->setLife(true);
-    }
+    if (m_timer <= sf::Time::Zero) this->setLife(true);
 }
 
+//-----------------------------------------------------------------------------
 void handleExplosionEnemyCollision(GameObject& obj1, GameObject& obj2)
 {
     Explosion* expoPtr = nullptr;
@@ -51,6 +51,7 @@ void handleExplosionEnemyCollision(GameObject& obj1, GameObject& obj2)
     }
 }
 
+//-----------------------------------------------------------------------------
 void handleExplosionPlayerCollision(GameObject& obj1, GameObject& obj2)
 {
     Explosion* expoPtr = nullptr;
@@ -73,10 +74,11 @@ void handleExplosionPlayerCollision(GameObject& obj1, GameObject& obj2)
     }
     if (expoPtr && playerPtr)
     {
-        playerPtr->decLife(EXPLOSION_DAMAGE);  // you can define EXPLOSION_DAMAGE as a const
+        playerPtr->decLife(EXPLOSION_DAMAGE);
     }
 }
 
+//-----------------------------------------------------------------------------
 void handleExplosionObstacleCollision(GameObject& obj1, GameObject& obj2)
 {
     Explosion* expoPtr = nullptr;
@@ -103,6 +105,7 @@ void handleExplosionObstacleCollision(GameObject& obj1, GameObject& obj2)
     }
 }
 
+//-----------------------------------------------------------------------------
 void handleExplosionRifleGiftCollision(GameObject& obj1, GameObject& obj2)
 {
 	Explosion* expoPtr = nullptr;
@@ -375,12 +378,10 @@ void Explosion::registerExplosionCollisions()
     factory.registerTypedCollision<Explosion, RemoveEnemy>(handleExplosionRemoveEnemyGiftCollision);
     factory.registerTypedCollision<Explosion, Wall>(handleExplosionWallCollision);
 
-    
-
     registered = true;
 }
 
-
+//-----------------------------------------------------------------------------
 bool g_explosionCollisionRegistered = []()
     {
         Explosion::registerExplosionCollisions();

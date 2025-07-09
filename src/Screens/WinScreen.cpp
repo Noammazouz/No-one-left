@@ -22,7 +22,7 @@ void WinScreen::draw(sf::RenderWindow& window)
 }
 
 //-----------------------------------------------------------------------------
-void WinScreen::activate(sf::Clock& /*clockin*/, int& /*m_currrentScreen*/)
+void WinScreen::activate(sf::Clock& /*clocking*/, int& /*m_currentScreen*/)
 {
 	// Ensure win music is playing
 	auto& musicManager = MusicManager::getInstance();

@@ -29,7 +29,7 @@ private:
 	void loadTexture();
 	void initializeSounds();
 	void initializeFont();
-	void intializeHelpText();
+	void initializeHelpText();
 
 	sf::Font m_font;
 	std::vector<sf::Text> m_helpText;

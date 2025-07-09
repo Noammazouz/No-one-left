@@ -69,7 +69,7 @@ Players must use strategy, quick reflexes, and resource management to survive an
 - **RemoveTime.h**: Declares items that reduce mission timer 
 - **Map.h**: Contains the `Map` class for level loading and management.
 - **Controller.h**: Contains the `Controller` class for game state management.
-- **Infobar.h**: Manages the game's user interface displaying health, ammunition, bombs, enemies, and timer.
+- **InfoBar.h**: Manages the game's user interface displaying health, ammunition, bombs, enemies, and timer.
 - **ResourcesManager.h**: Manages loading and storage of game resources including textures, sounds, and fonts.
 - **MusicManager.h**: Manages background music with fade transitions, different music types, and volume control.
 - **Screen/**: Directory containing all screen management classes.
@@ -91,7 +91,7 @@ Players must use strategy, quick reflexes, and resource management to survive an
 - **Explosion.cpp**: Implements explosion effects, area damage, and comprehensive collision with all object types.
 - **Map.cpp**: Implements hybrid level loading with CSV walls and random object placement algorithms.
 - **Controller.cpp**: Main game loop and state management.
-- **Infobar.cpp**: Implements the UI information bar with real-time game statistics and icon display.
+- **InfoBar.cpp**: Implements the UI information bar with real-time game statistics and icon display.
 - **ResourcesManager.cpp**: Resource loading implementation with texture mapping and sound effect management.
 - **MusicManager.cpp**: Complete audio system with fade transitions, menu/game/win/lose music types.
 - **CollisionFactory.cpp**: Collision detection and response system using type-index based lookup tables.
@@ -149,7 +149,7 @@ Players must use strategy, quick reflexes, and resource management to survive an
 ### Level System
 
 The game uses a hybrid approach for level creation:
-- **Walls**: Loaded from Level1.csv file with format: wall,wall,x_coordinate,y_coordinate
+- **Walls**: Loaded from Level_Info.csv file with format: wall,wall,x_coordinate,y_coordinate
 - **Enemies**: Strategically distributed across three map sections:
   - First section: 5 Simple + 5 Smart enemies
   - Second section: 1 Simple + 10 Smart enemies  
@@ -196,10 +196,10 @@ Currently implemented objects:
 **Texture Mappings (ResourcesManager.cpp):**
 - **Player Sprites**: player_rifle.png, player_machine_gun.png, player_bazooka.png
 - **Enemy Sprites**: simple_enemy_rifle.png, smart_enemy_rifle.png, bfs_enemy_rifle.png
-- **Environment**: gamebackground.png, wall.png, Broken_tree1.png, Broken_tree2.png, Rock1_1.png
-- **Effects**: Sprite_Effects_Exhaust_02_000.png (projectiles), Effect_Explosion.png (explosions)
+- **Environment**: gameBackground.png, wall.png, Broken_tree1.png, Broken_tree2.png, Rock1_1.png
+- **Effects**: Sprite_Effects_Exhaust.png (projectiles), Effect_Explosion.png (explosions)
 - **UI Elements**: Various button and icon textures for interface
-- **Weapons/Items**: rifle.png, machine_gun.png, Bazooka-sized.png, medkit.png, Bullet.png
+- **Weapons/Items**: rifle.png, machine_gun.png, Bazooka_sized.png, medkit.png, Bullet.png
 
 **Sound Effects:**
 - **Combat**: shoot.ogg, explosion.ogg, hit.ogg

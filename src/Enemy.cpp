@@ -33,8 +33,8 @@ Enemy::~Enemy()
     m_numOfEnemiesAlive--;
 }
 
-//-------------------------------------
-void Enemy::resetNumOfEnemeis()
+//-----------------------------------------------------------------------------
+void Enemy::resetNumOfEnemies()
 {
     m_numOfEnemies = 0;
 }
@@ -171,16 +171,13 @@ static auto regBfs = Factory<UpdateableObject>::instance().registerType(
 //-----------------------------------------------------------------------------
 void Enemy::update(sf::Time deltaTime, sf::Vector2f playerPos)
 {
-    if (!isAlive())
-    {
-		return; // If dead, skip further updates
-    }
+    if (!isAlive()) return; //If dead, skip further updates
     m_direction = m_MoveBehavior->Move(playerPos, deltaTime, this->getPosition());
     this->setRotation(m_direction);
 	this->setPrevLocation(this->getPosition());
 	this->updatePosition(m_direction * ENEMY_SPEED * deltaTime.asSeconds());
     this->updateFrames(m_direction, PLAYER_FRAME_TIME, m_numberOfFrames);
-    // Calculate Euclidean distance between enemy and player
+    //Calculate Euclidean distance between enemy and player
     sf::Vector2f enemyPos = this->getPosition();
     float deltaX = playerPos.x - enemyPos.x;
     float deltaY = playerPos.y - enemyPos.y;
@@ -191,7 +188,7 @@ void Enemy::update(sf::Time deltaTime, sf::Vector2f playerPos)
     if (squaredDistance <= DISTANCE && m_fireTimer >= FIRE_COOLDOWN) 
     {
         m_shouldFire = true;
-        m_fireTimer = 0.0f; // Reset timer
+        m_fireTimer = 0.0f; //Reset timer
     }
     else m_shouldFire = false;
 }
@@ -239,9 +236,9 @@ void Enemy::NotifyCollision()
 //-----------------------------------------------------------------------------
 void Enemy::OnSuccessfulMove() 
 {
-    // Only clear avoidance if the current move behavior supports it
+    //Only clear avoidance if the current move behavior supports it
     m_MoveBehavior->ClearAvoidance();
-    // (No need to know which concrete type it is)
+    //(No need to know which concrete type it is)
 }
 
 //-----------------------------------------------------------------------------

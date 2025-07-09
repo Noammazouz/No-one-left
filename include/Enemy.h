@@ -29,7 +29,7 @@ public:
 
 	static int getNumOfEnemiesAlive();
 	static int getNumOfEnemiesAtTheStart();
-	static void resetNumOfEnemeis();
+	static void resetNumOfEnemies();
 
 private:
 	std::unique_ptr<AttackBehavior>	m_AttackBehavior;

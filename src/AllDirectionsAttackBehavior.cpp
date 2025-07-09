@@ -1,6 +1,5 @@
 //-----include section-----
 #include "AllDirectionsAttackBehavior.h"
-#include <iostream>
 
 //-----functions section------
 //-----------------------------------------------------------------------------
