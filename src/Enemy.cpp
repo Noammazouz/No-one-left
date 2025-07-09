@@ -24,7 +24,7 @@ Enemy::Enemy(sf::Vector2f position, std::string name, int numOfLives)
     m_numOfEnemiesAlive++;
     m_numberOfFrames = m_pic.getTexture()->getSize().x / OBJECT_WIDTH; //Calculate number of frames based on texture width.
     m_pic.setRotation(180.f); //Set initial rotation to face down.
-    set_frames(m_numberOfFrames, position);
+    set_frames(m_numberOfFrames, position, OBJECT_WIDTH, OBJECT_HEIGHT);
 }
 
 //-----------------------------------------------------------------------------

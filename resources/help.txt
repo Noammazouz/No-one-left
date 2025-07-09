@@ -3,6 +3,7 @@
  CONTROLS:
  - Movement: Use Arrow Keys (Left, Right, Up, Down).
  - To Shoot: Press 'S' button.
+ - To Place a Bomb: Press 'B' button.
  - To Pause: Press The Button In The Top Left Corner.
  - Music: Press M to mute/unmute.
  - Back to Menu: Press Escape.

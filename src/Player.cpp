@@ -12,7 +12,7 @@
 //-----------------------------------------------------------------------------
 Player::Player()
 	: UpdateableObject(), m_lives(NUM_OF_LIVES), m_bulletCount(NUM_OF_BULLETS), 
-      m_bombsCount(10), m_bKeyPressed(false)
+      m_bombsCount(NUM_OF_BOMBS), m_bKeyPressed(false)
 {}
 
 //-----------------------------------------------------------------------------
@@ -22,7 +22,7 @@ void Player::initialization(sf::Vector2f position, std::string name, GamePlay* g
 	m_pic.setTexture(texture);
 	m_numberOfFrames = m_pic.getTexture()->getSize().x / OBJECT_WIDTH; //Calculate number of frames based on texture width.
 	m_pic.setRotation(180.f); //Set initial rotation to face down.
-	set_frames(m_numberOfFrames, position);
+	set_frames(m_numberOfFrames, position, OBJECT_WIDTH, OBJECT_HEIGHT);
 
 	setShootCooldown(RIFLE_NAME); //Set the shoot cooldown based on the weapon name.
 
@@ -32,7 +32,7 @@ void Player::initialization(sf::Vector2f position, std::string name, GamePlay* g
 	m_gamePlay = gamePlay;
 
 	m_bulletCount = NUM_OF_BULLETS;
-	m_bombsCount = 10;
+	m_bombsCount = NUM_OF_BOMBS;
 	m_bKeyPressed = false;
 }
 
@@ -200,7 +200,7 @@ void Player::handleShooting()
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::B))
 	{
-		if (!m_bKeyPressed)  //Only create bomb on first press.
+		if (!m_bKeyPressed && isBombsAvailable())  //Only create bomb on first press.
 		{
 			m_gamePlay->addBomb(this->getPosition());
 			m_bKeyPressed = true;
@@ -373,7 +373,7 @@ void handlePlayerRifleGiftCollision(GameObject& obj1, GameObject& obj2)
 	if(player && rifleGift) 
 	{
 		player->presentSound();
-		player->changeSpriteAnimation(PLAYER_RIFLE);
+		player->changeSpriteAnimation(PLAYER_RIFLE, OBJECT_WIDTH, OBJECT_HEIGHT);
 		player->setShootCooldown(RIFLE_NAME); //Set the shoot cooldown for rifle.
 		rifleGift->setLife(true); //Mark the gift as collected.
 		return;
@@ -408,7 +408,7 @@ void handlePlayerMachineGunGiftCollision(GameObject& obj1, GameObject& obj2)
 	if (player && machineGunGift)
 	{
 		player->presentSound();
-		player->changeSpriteAnimation(PLAYER_MACHINE_GUN);
+		player->changeSpriteAnimation(PLAYER_MACHINE_GUN, OBJECT_WIDTH, OBJECT_HEIGHT);
 		player->setShootCooldown(MACHINE_GUN_NAME); //Set the shoot cooldown for machine-gun.
 		machineGunGift->setLife(true); //Mark the gift as collected.
 		return;
@@ -443,7 +443,7 @@ void handlePlayerBazookaGiftCollision(GameObject& obj1, GameObject& obj2)
 	if (player && bazookaGift) 
 	{	
 		player->presentSound();
-		player->changeSpriteAnimation(PLAYER_BAZOOKA);
+		player->changeSpriteAnimation(PLAYER_BAZOOKA, OBJECT_WIDTH, OBJECT_HEIGHT);
 		player->setShootCooldown(BAZOOKA_NAME); //Set the shoot cooldown for bazooka.
 		bazookaGift->setLife(true); //Mark the gift as collected.
 		return;
@@ -583,7 +583,6 @@ void handlePlayerRemoveEnemyGiftCollision(GameObject& obj1, GameObject& obj2)
 		return;
 	}
 }
-
 
 //------------------------------------------------------------------------------
 static bool g_playerCollisionRegistered = []() {
