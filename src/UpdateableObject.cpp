@@ -116,7 +116,6 @@ void UpdateableObject::set_frames(const int framesNumber, const sf::Vector2f pos
     {
         m_frames.emplace_back(sf::IntRect(frameNumber * frameWidth, 0, frameWidth, frameHeight));
     }
-
     m_pic.setTextureRect(m_frames[m_currentObjectFrame]); //set for the first frame at first.
     m_pic.setOrigin(frameWidth / 2, frameHeight / 2); //Set origin to center.
     m_pic.setPosition(position);
