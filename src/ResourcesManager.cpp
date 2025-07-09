@@ -79,7 +79,7 @@ void ResourcesManager::loadTexture()
         {LOSE_SCREEN_BACKGROUND, "lose_screen.png"},
         {START_MENU_BUTTON, "home.png"},
         {WIN_SCREEN_BACKGROUND, "win screen background.png"},
-        {PROJECTILE_NAME, "Sprite_Effects_Exhaust_02_000.png"},
+        {PROJECTILE_NAME, "bullet_from_gun.png"},
         {RIFLE_NAME, "rifle.png"},
         {MED_KIT_NAME, "medkit.png"},
         {BULLETS_NAME, "Bullet.png"},

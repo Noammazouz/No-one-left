@@ -21,24 +21,20 @@ Projectile::Projectile(sf::Vector2f position, sf::Vector2f direction,
         m_direction.y /= length;
     }
 
-	int addedAngle = 90;
-
     if (m_weaponName == RIFLE_NAME || m_weaponName == MACHINE_GUN_NAME)
     {
         m_pic.setTexture(ResourcesManager::getInstance().getTexture(PROJECTILE_NAME));
-		addedAngle = 90; //Rifle and Machine Gun bullets face up.
     }
     else if (m_weaponName == BAZOOKA_NAME)
     {
         m_pic.setTexture(ResourcesManager::getInstance().getTexture(BAZOOKA_MISLE_NAME));
         m_pic.setOrigin(m_pic.getTexture()->getSize().x * 0.5f,
                         m_pic.getTexture()->getSize().y * 0.5f);
-		addedAngle = 0; //Bazooka bullets face right.
     }
 
     float angleRadians = std::atan2(m_direction.y, m_direction.x);
     float angleDegrees = angleRadians * 180.0f / std::numbers::pi;
-    m_pic.setRotation(angleDegrees + addedAngle);
+    m_pic.setRotation(angleDegrees);
 }
 
 //-----------------------------------------------------------------------------
