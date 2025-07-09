@@ -215,7 +215,7 @@ const sf::Color FONT_COLOR = sf::Color(128, 0, 128);
 
 //-----sf::Vector2f const section-----
 const sf::Vector2f FIRST_PLAYER_POSITION(2500.f, 100.f); //Initial position of the player.
-const sf::Vector2f DEFAULT_BOMB_DIRECTION(1.f, 1.f); //Default direction of the bomb.
+const sf::Vector2f DEFAULT_DIRECTION(1.f, 1.f); //Default direction of the bomb.
 const sf::Vector2f DEFAULT_VECTOR(0.f, 0.f); //Default direction of the projectile.
 
 //-----Font const section-----

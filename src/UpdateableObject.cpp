@@ -141,6 +141,7 @@ void UpdateableObject::changeSpriteAnimation(const std::string& name,
     set_frames(m_numberOfFrames, samePosition, frameWidth, frameHeight);
 }
 
+//-----------------------------------------------------------------------------
 void UpdateableObject::handleDeath()
 {
 	if (m_animClock.getElapsedTime().asSeconds() >= m_deathDuration)
@@ -149,6 +150,7 @@ void UpdateableObject::handleDeath()
 	}
 }
 
+//-----------------------------------------------------------------------------
 void UpdateableObject::resetClock()
 {
     m_animClock.restart();
@@ -158,8 +160,10 @@ void UpdateableObject::resetClock()
 void UpdateableObject::beginDying(int width, int height, int frameTime, const std::string& name)
 {
     resetClock();
+    auto& texture = ResourcesManager::getInstance().getTexture(name);
+    m_pic.setTexture(texture);
     m_numberOfFrames = m_pic.getTexture()->getSize().x / width;
     //Calculate number of frames based on texture width.
-    this->updateFrames({ 1,1 }, frameTime, m_numberOfFrames);
+    this->updateFrames(DEFAULT_DIRECTION, frameTime, m_numberOfFrames);
     this->startDying(name, width, height);
 }
