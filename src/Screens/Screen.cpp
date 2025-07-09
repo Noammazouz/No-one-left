@@ -3,7 +3,6 @@
 #include <iostream>
 
 //-----functions section------
-
 //-----------------------------------------------------------------------------
 Screen::Screen()
 	: m_previousScreen(START_SCREEN)
@@ -28,7 +27,6 @@ Screen::Screen()
 //-----------------------------------------------------------------------------
 void Screen::run(sf::RenderWindow& window, int& currentScreen)
 {
-
 	for (auto event = sf::Event{}; window.pollEvent(event);)
 	{
 		switch (event.type)

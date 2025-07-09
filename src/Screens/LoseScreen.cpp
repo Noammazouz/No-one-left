@@ -1,7 +1,7 @@
 //-----include section-----
 #include "LoseScreen.h"
 
-// LoseScreen.cpp
+//LoseScreen.cpp
 //-----functions section------
 //-----------------------------------------------------------------------------
 LoseScreen::LoseScreen()

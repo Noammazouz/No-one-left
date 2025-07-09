@@ -107,6 +107,8 @@ const int NUM_OF_BOMBS = 10; //Maximum number of bullets that a gun have.
 const int MIN_BOUND_BULLETS = 0; //Minimum number of bullets that a gun have.
 const int OBJECT_HEIGHT = 32; //Height of the player sprite.
 const int OBJECT_WIDTH = 25; //Width of the player sprite.
+const int OBJECT_DEATH_HEIGHT = 40; //Height of the player\enemy death sprite.
+const int OBJECT_DEATH_WIDTH = 28; //Width of the player\enemy death sprite.
 const int BOMB_HEIGHT = 30; //Width of the player sprite.
 const int BOMB_WIDTH = 30; //Width of the player sprite.
 const int EXPLOSION_HEIGHT = 257; //Width of the player sprite.
@@ -123,6 +125,8 @@ const int NUM_OF_PRESENTS = 20; //Number of different presents.
 
 //-----float const section-----
 const float PLAYER_FRAME_TIME = 0.1f; //seconds per frame for the player animation
+const float PLAYER_DEATH_FRAME_TIME = 0.6f; //seconds per frame for the player animation
+const float CHANGE_DIRECTION_TIME = 0.f;
 const float BOMB_FRAME_TIME = 0.7f; //seconds per frame for the bomb animation
 const float EXPLOSION_FRAME_TIME = 0.05f; //seconds per frame for the bomb animation
 const float PLAYER_SPEED = 250.f;
@@ -146,7 +150,7 @@ const std::string GAIN_HEALTH_SOUND = "health";
 const std::string GAIN_PRESENT_SOUND = "present";
 const std::string HIT_SOUND = "hit";
 
-//-----buttons const section-----
+//-----Buttons const section-----
 const std::string RETURN_BUTTON = "return";
 const std::string PAUSE_BUTTON = "pause";
 const std::string RESUME_BUTTON = "resume";
@@ -157,13 +161,17 @@ const std::string START_MENU_BUTTON = "start menu";
 const std::string EXIT_BUTTON = "exit";
 const std::string HELP_MENU_BUTTON = "help";
 
-//-----player and enemy sprite sheets const names section-----
+//-----Player and enemy sprite sheets const names section-----
 const std::string PLAYER_RIFLE = "player_rifle";
 const std::string PLAYER_MACHINE_GUN = "player_machine_gun";
 const std::string PLAYER_BAZOOKA = "player_bazooka";
 const std::string SIMPLE_ENEMY_RIFLE = "simple_enemy_rifle";
 const std::string SMART_ENEMY_RIFLE = "smart_enemy_rifle";
 const std::string BFS_ENEMY_RIFLE = "bfs_enemy_rifle";
+const std::string PLAYER_DEATH = "player_death";
+const std::string SIMPLE_ENEMY_DEATH = "simple_enemy_death";
+const std::string SMART_ENEMY_DEATH = "smart_enemy_death";
+const std::string BFS_ENEMY_DEATH = "bfs_enemy_death";
 
 //-----Items const section-----
 const std::string RIFLE_NAME = "rifle";
@@ -173,12 +181,13 @@ const std::string BULLETS_NAME = "Bullet";
 const std::string MED_KIT_NAME = "medkit";
 const std::string REMOVE_ENEMY_NAME = "remove enemy";
 const std::string REMOVE_TIME_NAME = "remove time";
- 
 
-//-----texture names const section-----
+//-----Texture names const section-----
 const std::string PROJECTILE_NAME = "projectile";
+const std::string BAZOOKA_MISLE_NAME = "bazooka_misle";
 const std::string BOMB_NAME = "bomb";
 const std::string EXPLOSION_NAME = "explosion";
+
 const std::string OBSTACLE1_NAME = "obstacle1";
 const std::string OBSTACLE2_NAME = "obstacle2";
 const std::string OBSTACLE3_NAME = "obstacle3";
@@ -187,7 +196,7 @@ const std::string WALL_NAME = "wall";
 //-----warning const section-----
 const std::string STATIC_OBJECTS_WARNING = "[WARN] No static objects were loaded are you sure your CSV has entries?\n";
 
-//-----background const section-----
+//-----Background const section-----
 const std::string START_SCREEN_BACKGROUND = "startScreen";
 const std::string GAME_BACKGROUND = "background";
 const std::string HELP_SCREEN_BACKGROUND = "help screen";

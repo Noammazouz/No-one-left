@@ -1,8 +1,11 @@
 #pragma once
-#include "UpdateableObject.h"
+
+//-----include section-----
 #include <SFML/System.hpp>
+#include "UpdateableObject.h"
 #include "Const.h"
 
+//-----class section-----
 class Explosion : public UpdateableObject
 {
 public:

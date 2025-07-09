@@ -6,7 +6,7 @@
 //-----------------------------------------------------------------------------
 std::vector<sf::Vector2f> AllDirectionsAttackBehavior::Attack(sf::Vector2f /*position*/)
 {
-    // Use static const vector to avoid repeated allocations
+    //Use static const vector to avoid repeated allocations
     static const std::vector<sf::Vector2f> directions = {
         sf::Vector2f(0, -1),    // up
         sf::Vector2f(1, -1),    // right and up
