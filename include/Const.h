@@ -30,9 +30,7 @@ enum LoseScreenButtons
 enum Present
 {
 	TIME,
-	KILL,
-	FREEZE,
-	DEFAULT
+	KILL
 };
 
 enum GameButtons
@@ -62,8 +60,6 @@ enum ObjectType
 	OBSTACLE2,
 	OBSTACLE3,
 	BULLET,
-	TREE,
-	BUILDING,
 	EXPLOSION,
 	PROJECTILE,
 	RIFLE,
@@ -80,7 +76,7 @@ enum BulletOwner
 	ENEMY
 };
 
-enum WinScreenButoons
+enum WinScreenButtons
 {
 	_EXIT = 1
 };
@@ -119,14 +115,13 @@ const int NUM_OF_LIFE_OBSTACLE = 3;
 const int ADD_LIFE = 20;
 const int EXPLOSION_DAMAGE = 20;
 const int MIN_BOUND_BOMBS = 0; //Minimum number of bombs that a player can have.
-const int NUM_OF_WOPENS = 10;
+const int NUM_OF_WEPEONS = 10;
 const int NUM_OF_PRESENTS = 20; //Number of different presents.
 
 
 //-----float const section-----
 const float PLAYER_FRAME_TIME = 0.1f; //seconds per frame for the player animation
 const float BOMB_FRAME_TIME = 0.7f; //seconds per frame for the bomb animation
-const float CHANGE_DIRECTION_TIME = 0.f;
 const float PLAYER_SPEED = 250.f;
 const float ENEMY_SPEED = 100.f;
 const float BOMB_TIME = 2.5f;
@@ -142,11 +137,11 @@ const float EXPLOSION_TIME = 2.f;
 
 //-----sound effects const section-----
 const std::string LOSING_SOUND = "death";
-const std::string WINNING_SOUND = "winning";
 const std::string SHOOTING_SOUND = "shoot";
 const std::string EXPLOSION_SOUND = "explosion";
 const std::string GAIN_HEALTH_SOUND = "health";
 const std::string GAIN_PRESENT_SOUND = "present";
+const std::string HIT_SOUND = "hit";
 
 //-----buttons const section-----
 const std::string RETURN_BUTTON = "return";
@@ -187,7 +182,7 @@ const std::string OBSTACLE3_NAME = "obstacle3";
 const std::string WALL_NAME = "wall";
 
 //-----warning const section-----
-const std::string STARIC_OBJECTS_WARNING = "[WARN] No static objects were loaded are you sure your CSV has entries?\n";
+const std::string STATIC_OBJECTS_WARNING = "[WARN] No static objects were loaded are you sure your CSV has entries?\n";
 
 //-----background const section-----
 const std::string START_SCREEN_BACKGROUND = "startScreen";

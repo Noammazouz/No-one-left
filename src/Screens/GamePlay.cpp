@@ -15,7 +15,7 @@ GamePlay::GamePlay()
 	handleLoadingLevel();
 	if (m_staticObj.empty()) 
 	{
-		std::cerr << STARIC_OBJECTS_WARNING;
+		std::cerr << STATIC_OBJECTS_WARNING;
 	}
 }
 
@@ -43,7 +43,7 @@ void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 
 	if (m_staticObj.empty()) 
 	{
-		std::cerr << STARIC_OBJECTS_WARNING;
+		std::cerr << STATIC_OBJECTS_WARNING;
 	}
 
 	//Handle game over states first (both stop normal game processing)
@@ -187,9 +187,6 @@ void GamePlay::handleCollision()
 
 		if (m_player.checkCollision(*movingObj))
 		{
-			/*m_sound.setBuffer(ResourcesManager::getInstance().getSound("death"));
-			m_sound.setVolume(100.f);
-			m_sound.play();*/
 			collisionHandler.processCollision(m_player, *movingObj);
 			break;
 		}
@@ -254,7 +251,6 @@ void GamePlay::removeEnemy()
 //-----------------------------------------------------------------------------
 void GamePlay::resetGame()
 {
-	std::cout << "Resetting game..." << std::endl;
 	m_newGame = false;
 	m_winStateHandled = false;
 	m_sound.stop();
@@ -397,9 +393,19 @@ void GamePlay::playPresentSound()
 	m_sound.play();
 }
 
+//-----------------------------------------------------------------------------
 void GamePlay::playMedkitSound()
 {
 	m_sound.setBuffer(ResourcesManager::getInstance().getSound(GAIN_HEALTH_SOUND));
+	m_sound.setVolume(100.f);
+	m_sound.setPlayingOffset(sf::seconds(0.2f));
+	m_sound.play();
+}
+
+//-----------------------------------------------------------------------------
+void GamePlay::playHitSound()
+{
+	m_sound.setBuffer(ResourcesManager::getInstance().getSound(HIT_SOUND));
 	m_sound.setVolume(100.f);
 	m_sound.setPlayingOffset(sf::seconds(0.2f));
 	m_sound.play();

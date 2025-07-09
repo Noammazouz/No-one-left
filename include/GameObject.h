@@ -6,9 +6,6 @@
 #include "Const.h"
 #include "ResourcesManager.h"
 
-class Door;
-class Explosion;
-class Presents;
 class Player;
 class Wall;
 class Enemy;
@@ -34,9 +31,5 @@ protected:
 	sf::Sprite m_pic;
 
 private:
-	bool checkDirection();
-
-	sf::Vector2f m_direction; 
 	bool m_isDead = false;
-	bool m_facingRight = true;
 };

@@ -111,7 +111,7 @@ void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingOb
     for (int i = 0; i < NUM_OF_STUPID_ENEMY; ++i)
     {
         tryPlaceEnemy(ObjectType::SIMPLEENEMY, FIRST_SECTION);
-        //tryPlaceEnemy(ObjectType::SMARTENEMY, FIRST_SECTION);
+        tryPlaceEnemy(ObjectType::SMARTENEMY, FIRST_SECTION);
     }
 
     // second third (1 simple, 10 smart)
@@ -185,9 +185,9 @@ void Map::loadPresents(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, 
             }
         };
 
-    for (int i = 0; i < NUM_OF_WOPENS; ++i) tryPlaceObstacle(ObjectType::RIFLE);
-    for (int i = 0; i < NUM_OF_WOPENS; ++i) tryPlaceObstacle(ObjectType::MACHINE_GUN);
-    for (int i = 0; i < NUM_OF_WOPENS; ++i) tryPlaceObstacle(ObjectType::BAZOOKA);
+    for (int i = 0; i < NUM_OF_WEPEONS; ++i) tryPlaceObstacle(ObjectType::RIFLE);
+    for (int i = 0; i < NUM_OF_WEPEONS; ++i) tryPlaceObstacle(ObjectType::MACHINE_GUN);
+    for (int i = 0; i < NUM_OF_WEPEONS; ++i) tryPlaceObstacle(ObjectType::BAZOOKA);
     for (int i = 0; i < NUM_OF_PRESENTS; ++i) tryPlaceObstacle(ObjectType::BULLET);
     for (int i = 0; i < NUM_OF_PRESENTS; ++i) tryPlaceObstacle(ObjectType::MEDKIT);
     for (int i = 0; i < NUM_OF_PRESENTS; ++i) tryPlaceObstacle(ObjectType::REMOVE_ENEMY);

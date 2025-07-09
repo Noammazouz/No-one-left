@@ -36,6 +36,7 @@ public:
 	void addBomb(const sf::Vector2f& pos);
 	void playPresentSound();
 	void playMedkitSound();
+	void playHitSound();
 	void removeEnemy();
 	void decTime();
 

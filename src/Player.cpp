@@ -102,6 +102,7 @@ bool Player::checkDirection()
 //-----------------------------------------------------------------------------
 void Player::decLife(int decLives)
 {
+	m_gamePlay->playHitSound();
 	m_lives -= decLives;
 }
 
