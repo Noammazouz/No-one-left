@@ -5,7 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include "Const.h"
 #include "Button.h"
-#include "ResourcesManager.h"
+#include "MusicManager.h"
 
 //-----class section-----
 class Screen
@@ -25,16 +25,7 @@ protected:
 	virtual void drawButtons(sf::RenderWindow& window);
 	void handleMuting(int currrentScreen);
 	void handleKeyPressed(sf::Event::KeyEvent event, int& currentScreen);
-	// New music management system
-	enum class MusicState { MENU, GAME };
-	static void setMusicState(MusicState newState);
-	static MusicState getCurrentMusicState();
-	static void ensureCorrectMusicPlaying();
 
 	int m_previousScreen;
-	
-	// Static music state
-	static MusicState s_currentMusicState;
-	static bool s_musicMuted;
 	std::vector<Button> m_buttons;
 };

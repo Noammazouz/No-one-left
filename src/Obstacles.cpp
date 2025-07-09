@@ -39,19 +39,19 @@ void handleObstacleEnemyCollision(GameObject& obj1, GameObject& obj2)
 static bool regObs1 = Factory<StaticObject>::instance().registerType(
     ObjectType::OBSTACLE1,
     [](const sf::Vector2f& pos) -> std::unique_ptr<StaticObject> {
-        return std::make_unique<Obstacles>(pos, "obstacle1");
+        return std::make_unique<Obstacles>(pos, OBSTACLE1_NAME);
     });
 
 static bool regObs2 = Factory<StaticObject>::instance().registerType(
     ObjectType::OBSTACLE2,
     [](const sf::Vector2f& pos) -> std::unique_ptr<StaticObject> {
-        return std::make_unique<Obstacles>(pos, "obstacle2");
+        return std::make_unique<Obstacles>(pos, OBSTACLE2_NAME);
     });
 
 static bool regObs3 = Factory<StaticObject>::instance().registerType(
     ObjectType::OBSTACLE3,
     [](const sf::Vector2f& pos) -> std::unique_ptr<StaticObject> {
-        return std::make_unique<Obstacles>(pos, "obstacle3");
+        return std::make_unique<Obstacles>(pos, OBSTACLE3_NAME);
     });
 
 static bool regObsColl = []() {
