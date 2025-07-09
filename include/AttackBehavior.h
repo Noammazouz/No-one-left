@@ -5,8 +5,7 @@
 #include <vector>  
 #include <memory>  
 #include "Const.h"
-
-//---forward declaration---  
+ 
 class Projectile;  
 
 //-----class section-----

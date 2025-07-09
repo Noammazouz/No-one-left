@@ -24,6 +24,7 @@ void Player::initialization(sf::Vector2f position, std::string name, GamePlay* g
 	m_pic.setRotation(180.f); //Set initial rotation to face down.
 	set_frames(m_numberOfFrames, position, OBJECT_WIDTH, OBJECT_HEIGHT);
 
+	setCurrentWeapon(RIFLE_NAME); //Set default weapon to Rifle.
 	setShootCooldown(RIFLE_NAME); //Set the shoot cooldown based on the weapon name.
 
 	m_attackBehavior = std::move(std::make_unique<OneDirectionAttackBehavior>());
@@ -67,7 +68,7 @@ void Player::setDirection()
 	{
 		newDir /= std::sqrt(newDir.x * newDir.x + newDir.y * newDir.y);
     
-		m_facingDirection = newDir; // Update facing direction when moving
+		m_facingDirection = newDir; //Update facing direction when moving.
 		this->setRotation(m_facingDirection);
 	}
 
@@ -182,14 +183,17 @@ void Player::handleShooting()
 	{
 		if (m_shootClock.getElapsedTime() >= m_shootCooldown && isBulletsAvailable())
 		{
-			m_gamePlay->addProjectile(this->getPosition(), m_attackBehavior->Attack(m_facingDirection), _PLAYER);
+			m_gamePlay->addProjectile(this->getPosition(), 
+									  m_attackBehavior->Attack(m_facingDirection), 
+									  _PLAYER,
+									  getCurrentWeaponName());
 			decBullets();
-			m_shootClock.restart(); //Reset timer
+			m_shootClock.restart(); //Reset timer.
 		}
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::B))
 	{
-		if (!m_bKeyPressed && isBombsAvailable())  //Only create bomb on first press.
+		if (!m_bKeyPressed && isBombsAvailable()) //Only create bomb on first press.
 		{
 			m_gamePlay->addBomb(this->getPosition());
 			m_bKeyPressed = true;
@@ -198,7 +202,7 @@ void Player::handleShooting()
 	}
 	else
 	{
-		m_bKeyPressed = false;  //Reset when key is released.
+		m_bKeyPressed = false; //Reset when key is released.
 	}
 }
 
@@ -236,6 +240,18 @@ void Player::removeTimeGift()
 int Player::getNumOfBombs() const
 {
 	return m_bombsCount;
+}
+
+//------------------------------------------------------------------------------
+std::string Player::getCurrentWeaponName() const
+{
+	return m_currentWeapon;
+}
+
+//------------------------------------------------------------------------------
+void Player::setCurrentWeapon(const std::string& weapon)
+{
+	m_currentWeapon = weapon;
 }
 
 //------------------------------------------------------------------------------
@@ -363,6 +379,7 @@ void handlePlayerRifleGiftCollision(GameObject& obj1, GameObject& obj2)
 	{
 		player->presentSound();
 		player->changeSpriteAnimation(PLAYER_RIFLE, OBJECT_WIDTH, OBJECT_HEIGHT);
+		player->setCurrentWeapon(RIFLE_NAME); //Set the current weapon to rifle.
 		player->setShootCooldown(RIFLE_NAME); //Set the shoot cooldown for rifle.
 		rifleGift->setLife(true); //Mark the gift as collected.
 		return;
@@ -398,6 +415,7 @@ void handlePlayerMachineGunGiftCollision(GameObject& obj1, GameObject& obj2)
 	{
 		player->presentSound();
 		player->changeSpriteAnimation(PLAYER_MACHINE_GUN, OBJECT_WIDTH, OBJECT_HEIGHT);
+		player->setCurrentWeapon(MACHINE_GUN_NAME); //Set the current weapon to machine-gun.
 		player->setShootCooldown(MACHINE_GUN_NAME); //Set the shoot cooldown for machine-gun.
 		machineGunGift->setLife(true); //Mark the gift as collected.
 		return;
@@ -433,6 +451,7 @@ void handlePlayerBazookaGiftCollision(GameObject& obj1, GameObject& obj2)
 	{	
 		player->presentSound();
 		player->changeSpriteAnimation(PLAYER_BAZOOKA, OBJECT_WIDTH, OBJECT_HEIGHT);
+		player->setCurrentWeapon(BAZOOKA_NAME); //Set the current weapon to bazooka.
 		player->setShootCooldown(BAZOOKA_NAME); //Set the shoot cooldown for bazooka.
 		bazookaGift->setLife(true); //Mark the gift as collected.
 		return;

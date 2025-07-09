@@ -3,7 +3,6 @@
 #include <iostream>
 
 //-----functions section------
-
 //-----------------------------------------------------------------------------
 MusicManager& MusicManager::getInstance()
 {

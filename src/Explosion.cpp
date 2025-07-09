@@ -18,7 +18,7 @@ Explosion::Explosion(sf::Vector2f position)
 void Explosion::update(sf::Time deltaTime, sf::Vector2f /*playerPos*/)
 {
     m_timer -= deltaTime;
-    updateFrames(DEFAULT_BOMB_DIRECTION, EXPLOSION_FRAME_TIME, m_numberOfFrames);
+    updateFrames(DEFAULT_DIRECTION, EXPLOSION_FRAME_TIME, m_numberOfFrames);
     if (m_timer <= sf::Time::Zero)
     {
         this->setLife(true);

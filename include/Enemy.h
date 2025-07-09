@@ -1,10 +1,11 @@
 #pragma once
 
-//-----constants section-----
+//-----include section-----
 #include "UpdateableObject.h"
 #include "AttackBehavior.h"
 #include "MoveBehavior.h"
 
+//-----class section-----
 class Enemy : public UpdateableObject
 {
 public:
@@ -12,7 +13,6 @@ public:
 	~Enemy();
 
 	void update(sf::Time deltaTime, sf::Vector2f playerPos) override;
-	virtual void Display() {};
 	void SetMoveBehavior(std::unique_ptr<MoveBehavior>	pMoveBehavior);
 	void SetAttackBehavior(std::unique_ptr<AttackBehavior>	pAttackBehavior);
 	void SetDirection(sf::Vector2f direction);
@@ -20,9 +20,10 @@ public:
 	std::vector<sf::Vector2f> getShottingDirections();
 	void NotifyCollision();
 	void OnSuccessfulMove();
-	bool wantsToFire() const;
+	bool wantsToFire();
 	void clearFireFlag();
-
+	void setDeathName(const std::string& name);
+	std::string getDeathName() const;
 	void takeDamage(int damage);
 	bool isAlive() const;
 
@@ -31,15 +32,15 @@ public:
 	static void resetNumOfEnemeis();
 
 private:
-	//void checktimer();
 	std::unique_ptr<AttackBehavior>	m_AttackBehavior;
 	std::unique_ptr<MoveBehavior>	m_MoveBehavior;
 	static int m_numOfEnemies;
 	static int m_numOfEnemiesAlive;
 	int m_numOfLives;
 	float m_fireTimer = 0.0f;
-	bool m_shouldFire=false;
+	bool m_shouldFire = false;
+	bool m_dead = false;
+	std::string m_deathName;
 	sf::Vector2f m_direction;
 	sf::Vector2f m_prevlocation;
-	//sf::Time m_freezeTime;
 };
