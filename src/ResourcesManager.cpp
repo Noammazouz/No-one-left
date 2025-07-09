@@ -83,7 +83,7 @@ void ResourcesManager::loadTexture()
         {REMOVE_ENEMY_NAME, "skull.png"},
         {"bomb", "bomb_animation.png"},
         {BOMBS_ICON, "bombIcon.png"},
-        {"explosion", "Explosion.png"},
+        {"explosion", "Effect_Explosion.png"},
         {"enemeis icon", "enemiesIcon.png"},
         {"machine gun", "machine_gun.png"},
         {"bazooka", "Bazooka-sized.png"}

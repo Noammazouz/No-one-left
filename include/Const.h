@@ -113,6 +113,8 @@ const int OBJECT_HEIGHT = 32; //Height of the player sprite.
 const int OBJECT_WIDTH = 25; //Width of the player sprite.
 const int BOMB_HEIGHT = 30; //Width of the player sprite.
 const int BOMB_WIDTH = 30; //Width of the player sprite.
+const int EXPLOSION_HEIGHT = 257; //Width of the player sprite.
+const int EXPLOSION_WIDTH = 250; //Width of the player sprite.
 const int EXPLOSION_DEC_LIVES = 30;
 const int PROJECTILE_DAMAGE = 5;
 const int NUM_OF_LIFE_OBSTACLE = 3;
@@ -123,6 +125,7 @@ const int MIN_BOUND_BOMBS = 0; //Minimum number of bombs that a player can have.
 //-----float const section-----
 const float PLAYER_FRAME_TIME = 0.1f; //seconds per frame for the player animation
 const float BOMB_FRAME_TIME = 0.7f; //seconds per frame for the bomb animation
+const float EXPLOSION_FRAME_TIME = 0.05f; //seconds per frame for the bomb animation
 const float CHANGE_DIRECTION_TIME = 0.f;
 const float PLAYER_SPEED = 250.f;
 const float ENEMY_SPEED = 100.f;
