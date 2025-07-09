@@ -8,15 +8,11 @@
 #include "Wall.h"
 #include "GamePlay.h"
 
-//-----static member initialization-----
-//Defines the static members.
-int Player::m_score = 0;
-int Player::m_bulletCount = NUM_OF_BULLETS;
-
 //-----functions section------
 //-----------------------------------------------------------------------------
 Player::Player()
-	: UpdateableObject(), m_lives(NUM_OF_LIVES)
+	: UpdateableObject(), m_lives(NUM_OF_LIVES), m_bulletCount(NUM_OF_BULLETS), 
+      m_bombsCount(10), m_bKeyPressed(false)
 {}
 
 //-----------------------------------------------------------------------------
@@ -34,6 +30,10 @@ void Player::initialization(sf::Vector2f position, std::string name, GamePlay* g
 	m_lives = NUM_OF_LIVES;
 
 	m_gamePlay = gamePlay;
+
+	m_bulletCount = NUM_OF_BULLETS;
+	m_bombsCount = 10;
+	m_bKeyPressed = false;
 }
 
 //-----------------------------------------------------------------------------
@@ -171,6 +171,16 @@ bool Player::isBulletsAvailable()
 }
 
 //-----------------------------------------------------------------------------
+bool Player::isBombsAvailable()
+{
+	if (m_bombsCount > MIN_BOUND_BOMBS)
+	{
+		return true;
+	}
+	return false;
+}
+
+//-----------------------------------------------------------------------------
 sf::Vector2f Player::getCurrentDirection() const
 {
 	return m_direction;
@@ -185,12 +195,21 @@ void Player::handleShooting()
 		{
 			m_gamePlay->addProjectile(this->getPosition(), m_attackBehavior->Attack(m_facingDirection), _PLAYER);
 			decBullets();
-			m_shootClock.restart();  // Reset timer
+			m_shootClock.restart(); //Reset timer
 		}
 	}
-	else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::B)))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::B))
 	{
-		m_gamePlay->addBomb(this->getPosition());
+		if (!m_bKeyPressed)  //Only create bomb on first press.
+		{
+			m_gamePlay->addBomb(this->getPosition());
+			m_bKeyPressed = true;
+			m_bombsCount--;
+		}
+	}
+	else
+	{
+		m_bKeyPressed = false;  //Reset when key is released.
 	}
 }
 
@@ -222,6 +241,12 @@ void Player::removeEnemyGift()
 void Player::removeTimeGift()
 {
 	m_gamePlay->decTime();
+}
+
+//------------------------------------------------------------------------------
+int Player::getNumOfBombs() const
+{
+	return m_bombsCount;
 }
 
 //------------------------------------------------------------------------------
@@ -414,7 +439,7 @@ void handlePlayerBazookaGiftCollision(GameObject& obj1, GameObject& obj2)
 			bazookaGift = tempBazookaGift;
 		}
 	}
-
+	
 	if (player && bazookaGift) 
 	{	
 		player->presentSound();
@@ -568,7 +593,7 @@ static bool g_playerCollisionRegistered = []() {
 	factory.registerTypedCollision<Player, Obstacles>(handlePlayerObstaclesCollision);
 	factory.registerTypedCollision<Player, RifleGift>(handlePlayerRifleGiftCollision);
 	factory.registerTypedCollision<Player, MachineGunGift>(handlePlayerMachineGunGiftCollision);
-	factory.registerTypedCollision<Player, BazookaGift>(handlePlayerRifleGiftCollision);
+	factory.registerTypedCollision<Player, BazookaGift>(handlePlayerBazookaGiftCollision);
 	factory.registerTypedCollision<Player, BulletsGift>(handlePlayerBulletsGiftCollision);
 	factory.registerTypedCollision<Player, MedkitGift>(handlePlayerMedkitGiftCollision);
 	factory.registerTypedCollision<Player, RemoveTime>(handlePlayerRemoveTimeGiftCollision);

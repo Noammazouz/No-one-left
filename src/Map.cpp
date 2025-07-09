@@ -183,9 +183,9 @@ void Map::loadPresents(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, 
             }
         };
 
-    for (int i = 0; i < 10; ++i) tryPlaceObstacle(ObjectType::RIFLE);
-    for (int i = 0; i < 10; ++i) tryPlaceObstacle(ObjectType::MACHINE_GUN);
-    for (int i = 0; i < 10; ++i) tryPlaceObstacle(ObjectType::BAZOOKA);
+    for (int i = 0; i < 100; ++i) tryPlaceObstacle(ObjectType::RIFLE);
+    for (int i = 0; i < 100; ++i) tryPlaceObstacle(ObjectType::MACHINE_GUN);
+    for (int i = 0; i < 100; ++i) tryPlaceObstacle(ObjectType::BAZOOKA);
     for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::BULLET);
     for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::MEDKIT);
     for (int i = 0; i < 20; ++i) tryPlaceObstacle(ObjectType::REMOVE_ENEMY);
@@ -193,6 +193,7 @@ void Map::loadPresents(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, 
 
 }
 
+//-----------------------------------------------------------------------------
 bool Map::isPositionFree(const sf::FloatRect& newBounds,
     const std::vector<std::unique_ptr<StaticObject>>& staticObjs,
     const std::vector<std::unique_ptr<UpdateableObject>>& movingObjs,

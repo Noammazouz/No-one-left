@@ -116,6 +116,7 @@ const int PROJECTILE_DAMAGE = 5;
 const int NUM_OF_LIFE_OBSTACLE = 3;
 const int ADD_LIFE = 20;
 const int EXPLOSION_DAMAGE = 20;
+const int MIN_BOUND_BOMBS = 0; //Minimum number of bombs that a player can have.
 
 
 //-----float const section-----
