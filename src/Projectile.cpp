@@ -24,7 +24,7 @@ Projectile::Projectile(sf::Vector2f position, sf::Vector2f direction, BulletOwne
 }
 
 //-----------------------------------------------------------------------------
-void Projectile::update(sf::Time deltaTime, sf::Vector2f playerPos)
+void Projectile::update(sf::Time deltaTime, sf::Vector2f /*playerPos*/)
 {
     if (!isActive) return;
     m_pic.move(m_direction * PROJECTILE_SPEED * deltaTime.asSeconds());
@@ -71,7 +71,6 @@ bool Projectile::isExpired() const
 //Collision handler for Bullet vs Enemy - Order independent.  
 void handlePlayerBulletEnemyCollision(GameObject& obj1, GameObject& obj2)  
 {  
-    //std::cout << "in PlayerBulletEnemyCollision" << std::endl;
    Projectile* bulletPtr = nullptr;  
    Enemy* enemyPtr = nullptr;  
 
@@ -139,7 +138,6 @@ void handleEnemyBulletPlayerCollision(GameObject& obj1, GameObject& obj2)
         // Only enemy bullets can hurt player
         if (bulletPtr->getOwner() == ENEMY)
         {
-            //std::cout << "Enemy bullet hit player!" << std::endl;
             playerPtr->decLife(PROJECTILE_DAMAGE);
             bulletPtr->setActive(false); // Deactivate bullet
             bulletPtr->setLife(true);
@@ -176,11 +174,8 @@ void handleBulletWallCollision(GameObject& obj1, GameObject& obj2)
 
     if (bulletPtr && wallPtr)
     {
-        //std::cout << "Bullet hit wall - Bullet destroyed" << std::endl;
         bulletPtr->setActive(false); // All bullets are stopped by walls
         bulletPtr->setLife(true);
-        if(bulletPtr->getOwner() == _PLAYER)
-		wallPtr->setLife(true); // Mark wall as destroyed (if needed)
     }
 }
 
