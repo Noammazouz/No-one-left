@@ -179,8 +179,6 @@ void handleBulletWallCollision(GameObject& obj1, GameObject& obj2)
         //std::cout << "Bullet hit wall - Bullet destroyed" << std::endl;
         bulletPtr->setActive(false); // All bullets are stopped by walls
         bulletPtr->setLife(true);
-        if(bulletPtr->getOwner() == _PLAYER)
-		wallPtr->setLife(true); // Mark wall as destroyed (if needed)
     }
 }
 
