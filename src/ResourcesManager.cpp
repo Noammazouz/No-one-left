@@ -86,7 +86,7 @@ void ResourcesManager::loadTexture()
         {EXPLOSION_NAME, "Explosion.png"},
         {ENEMIES_ICON, "enemiesIcon.png"},
         {MACHINE_GUN_NAME, "machine_gun.png"},
-        {BAZOOKA_NAME, "Bazooka-sized.png"},
+        {BAZOOKA_NAME, "Bazooka-sized.png"}
     };
 
     for (const auto& [name, filePath] : textures)
