@@ -66,6 +66,7 @@ private:
 
 	bool m_paused = false;
 	bool m_newGame = false;
+	bool m_winStateHandled = false;
 	std::vector<std::unique_ptr<UpdateableObject>> m_movingObj;
 	std::vector<std::unique_ptr<StaticObject>> m_staticObj;
 };

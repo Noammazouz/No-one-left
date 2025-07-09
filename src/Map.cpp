@@ -75,13 +75,15 @@ void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingOb
     
     constexpr float WALL_MARGIN = 50.f;
     constexpr int maxTries = 10;
-    ////random_device is a seed maker.
-    ////mt19937 is a random engine.
+
+    //random_device is a seed maker.
+    //mt19937 is a random engine.
     std::mt19937 rng{ std::random_device{}() };
     float thirdH = MAP_HEIGHT / 3.f;
 
     std::uniform_real_distribution<float> randX(WALL_MARGIN, MAP_WIDTH - WALL_MARGIN);
-    //// getting a random y value in a specific third
+
+    // getting a random y value in a specific third
     auto randYIn = [&](int region)
         {
             return std::uniform_real_distribution<float>(

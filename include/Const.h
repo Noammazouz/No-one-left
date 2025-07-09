@@ -140,11 +140,9 @@ const float PROJECTILE_AIR_TIME = 1.0f;
 const float EXPLOSION_RADIUS = 80.f;
 const float EXPLOSION_TIME = 2.f;
 
-//-----music and sound effects const section-----
-const std::string MENU_MUSIC = "menu";
-const std::string GAME_MUSIC = "game";
+//-----sound effects const section-----
 const std::string LOSING_SOUND = "death";
-const std::string WINNING_SOUND = "win sound effect";
+const std::string WINNING_SOUND = "winning";
 const std::string SHOOTING_SOUND = "shoot";
 const std::string EXPLOSION_SOUND = "explosion";
 const std::string GAIN_HEALTH_SOUND = "health";

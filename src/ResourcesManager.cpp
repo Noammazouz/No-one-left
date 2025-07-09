@@ -7,7 +7,7 @@
 ResourcesManager::ResourcesManager()
 {
     loadTexture();
-    initializeMusic();
+    initializeSounds();
     initializeFont();
     intializeHelpText();
 }
@@ -69,9 +69,9 @@ void ResourcesManager::loadTexture()
         {LIFE_ICON, "life.png"},
         {BULLETS_ICON, "bulletIcon.png"},
         {CLOCK_ICON, "clock.png"},
-        {OBSTACLE1_NAME,"obstacle1.png"},
-        {OBSTACLE2_NAME,"obstacle2.png"},
-        {OBSTACLE3_NAME,"obstacle3.png"},
+        {OBSTACLE1_NAME,"Broken_tree1.png"},
+        {OBSTACLE2_NAME,"Broken_tree2.png"},
+        {OBSTACLE3_NAME,"Rock1_1.png"},
         {LOSE_SCREEN_BACKGROUND, "lose_screen.png"},
         {START_MENU_BUTTON, "home.png"},
         {WIN_SCREEN_BACKGROUND, "win screen background.png"},
@@ -104,35 +104,20 @@ void ResourcesManager::loadTexture()
 }
 
 //------------------------------------------------------------------------------
-void ResourcesManager::initializeMusic()
+void ResourcesManager::initializeSounds()
 { 
-    if (!m_menuMusic.openFromFile("menuMusic.ogg"))
-    {
-        throw std::runtime_error("Error loading menu music");
-    }
-    
-    if (!m_gameMusic.openFromFile("gameMusic.ogg"))
-    {
-        throw std::runtime_error("Error loading game music");
-    }
-    
-    m_menuMusic.setLoop(true);
-    m_gameMusic.setLoop(true);
-    m_menuMusic.setVolume(50.f);
-    m_gameMusic.setVolume(50.f);
-
-
-    std::vector<std::pair<std::string, std::string>> music =
+    // Load sound effects (not music - that's handled by MusicManager now)
+    std::vector<std::pair<std::string, std::string>> sounds =
     {
         {GAIN_PRESENT_SOUND, "present.ogg"},
         {SHOOTING_SOUND, "shoot.ogg"},
         {LOSING_SOUND, "death.ogg"},
         {GAIN_HEALTH_SOUND, "addHealth.ogg"},
-        {WINNING_SOUND, "win.ogg"},
+        {WINNING_SOUND, "winning.ogg"},
 		{EXPLOSION_SOUND, "explosion.ogg"}
     };
 
-    for (const auto& [name, filePath] : music)
+    for (const auto& [name, filePath] : sounds)
     {
         std::string errorMessage = "Failed to load sound: " + filePath;
         sf::SoundBuffer sound;
@@ -146,20 +131,7 @@ void ResourcesManager::initializeMusic()
     }
 }
 
-//------------------------------------------------------------------------------
-sf::Music& ResourcesManager::getMusic(std::string name)
-{
-    if (name == MENU_MUSIC)
-    {
-        return m_menuMusic;
-    }
-    else if (name == GAME_MUSIC)
-    {
-        return m_gameMusic;
-    }
 
-    return m_menuMusic;
-}
 
 //------------------------------------------------------------------------------
 void ResourcesManager::initializeFont()
