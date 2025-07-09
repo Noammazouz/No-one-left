@@ -327,6 +327,38 @@ void handleExplosionRemoveEnemyGiftCollision(GameObject& obj1, GameObject& obj2)
 	}
 }
 
+//-----------------------------------------------------------------------------
+//Collision handler for Bullet vs Wall - Order independent.
+void handleExplosionWallCollision(GameObject& obj1, GameObject& obj2)
+{
+	Explosion* expoPtr = nullptr;
+	Wall* wallPtr = nullptr;
+
+	//Check both parameter orders.
+	if (auto* explosion = dynamic_cast<Explosion*>(&obj1))
+	{
+		if (auto* wall = dynamic_cast<Wall*>(&obj2))
+		{
+			expoPtr = explosion;
+			wallPtr = wall;
+		}
+
+	}
+	else if (auto* explosion = dynamic_cast<Explosion*>(&obj2))
+	{
+		if (auto* wall = dynamic_cast<Wall*>(&obj1))
+		{
+			wallPtr = wall;
+			expoPtr = explosion;
+		}
+
+	}
+
+	if (expoPtr && wallPtr)
+	{
+		wallPtr->setLife(true);
+	}
+}
 
 void Explosion::registerExplosionCollisions()
 {
@@ -344,6 +376,7 @@ void Explosion::registerExplosionCollisions()
     factory.registerTypedCollision<Explosion, MedkitGift>(handleExplosionMedkitGiftCollision);
     factory.registerTypedCollision<Explosion, RemoveTime>(handleExplosionRemoveTimeGiftCollision);
     factory.registerTypedCollision<Explosion, RemoveEnemy>(handleExplosionRemoveEnemyGiftCollision);
+    factory.registerTypedCollision<Explosion, Wall>(handleExplosionWallCollision);
 
     
 
