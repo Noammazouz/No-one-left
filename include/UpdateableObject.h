@@ -31,7 +31,7 @@ protected:
 
 	std::vector<sf::IntRect> m_frames;
 	sf::Clock m_animClock;
-	int m_currentObjectFrame=0;
+	int m_currentObjectFrame = 0;
 	int m_numberOfFrames; //Number of frames for animation.
 
 	virtual void updateFrames(const sf::Vector2f& direction, const float frameTime, const int numberOfFrames);
