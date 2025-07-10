@@ -6,11 +6,11 @@
 #include <SFML/Graphics.hpp>
 
 //-----class section-----
-class Infobar
+class InfoBar
 {
 public:
-	Infobar();
-	~Infobar() = default;
+	InfoBar();
+	~InfoBar() = default;
 
 	void updateLives(int numberOfLives);
 	void updateNumOfBullets(int BulletsAmount);

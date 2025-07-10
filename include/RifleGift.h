@@ -1,8 +1,8 @@
 #pragma once
 
 //-----include section-----
-#include "WeaponsGift.h"
 #include <SFML/Graphics.hpp>
+#include "WeaponsGift.h"
 
 //-----class section-----
 class RifleGift : public WeaponsGift

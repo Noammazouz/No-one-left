@@ -15,7 +15,7 @@ public:
 	virtual ~Screen() = default;
 
 	virtual void draw(sf::RenderWindow& window) = 0;
-	virtual void activate(sf::Clock& clockin, int& m_currentScreen) = 0;
+	virtual void activate(sf::Clock& clocking, int& m_currentScreen) = 0;
 	virtual void run(sf::RenderWindow& window, int& m_currentScreen);
 	void setPreviousScreen(int previousScreen);
 

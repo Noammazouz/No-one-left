@@ -16,10 +16,10 @@
 //-----------------------------------------------------------------------------
 void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player, GamePlay* gamePlay)
 {
-    std::ifstream file("Level1.csv");
+    std::ifstream file(CSV_FILE_NAME);
     if (!file.is_open()) 
     {
-        throw std::runtime_error("[ERROR] Cannot open Level1.csv");
+        throw std::runtime_error("[ERROR] Cannot open Level_Info.csv");
         return;
     }
     std::string line;
@@ -58,8 +58,9 @@ void Map::loadFromCSV(std::vector<std::unique_ptr<StaticObject>>& m_staticObj, P
 }
 
 //-----------------------------------------------------------------------------
-void Map::loadlevelobj(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj, 
-                       std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player, GamePlay* gamePlay)
+void Map::loadLevelObj(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj,
+                       std::vector<std::unique_ptr<StaticObject>>& m_staticObj, 
+                       Player& player, GamePlay* gamePlay)
 {
     m_staticObj.clear();
     m_movingObj.clear();
@@ -70,7 +71,9 @@ void Map::loadlevelobj(std::vector<std::unique_ptr<UpdateableObject>>& m_movingO
 }
 
 //-----------------------------------------------------------------------------
-void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj, std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player)
+void Map::loadEnemies(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj, 
+                      std::vector<std::unique_ptr<StaticObject>>& m_staticObj, 
+                      Player& player)
 {
     
     constexpr float WALL_MARGIN = 50.f;

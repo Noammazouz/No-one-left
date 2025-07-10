@@ -5,7 +5,6 @@
 #include "ResourcesManager.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-#include <iostream>
 #include <cstdlib>
 #include <string>
 #include <cctype>

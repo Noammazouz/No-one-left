@@ -11,7 +11,7 @@ public:
 	~WinScreen() = default;
 
 	virtual void draw(sf::RenderWindow& window) override;
-	virtual void activate(sf::Clock& clockin, int& m_currrentScreen) override;
+	virtual void activate(sf::Clock& clocking, int& m_currentScreen) override;
 
 protected:
 	virtual void handleMouseClick(const sf::Vector2f& clickPos, int& screenState) override;

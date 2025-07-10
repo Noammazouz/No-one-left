@@ -51,12 +51,12 @@ void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 	{
 		static bool s_dyingStarted = false;
 	    if (!s_dyingStarted) m_player.beginDying(OBJECT_DEATH_WIDTH, OBJECT_DEATH_HEIGHT, 
-			                                     PLAYER_DEATH_FRAME_TIME, PLAYER_DEATH); //Prevent multiple calls
+			                                     PLAYER_DEATH_FRAME_TIME, PLAYER_DEATH); //Prevent multiple calls.
 		s_dyingStarted = true;
 		if(m_player.isDead())
 		handleDeathState(m_currentScreen);
 		else m_player.handleDeath();
-		return; //STOP all game processing when dead
+		return; //STOP all game processing when dead.
 	}
 
 	if (Enemy::getNumOfEnemiesAlive() <= END_GAME)
@@ -73,7 +73,7 @@ void GamePlay::activate(sf::Clock& clock, int& m_currentScreen)
 	move(clock);
 	handleCollision();
 	handleErasing();
-	handleInfobar();
+	handleInfoBar();
 }
 
 //-----------------------------------------------------------------------------
@@ -87,7 +87,7 @@ void GamePlay::initButtons()
 	for (int index = 0; index < buttonNames.size(); ++index)
 	{
 		sf::Vector2f position(static_cast<float>(desktop.width * WINDOW_RATIO / 2),
-			static_cast<float>(desktop.height * WINDOW_RATIO / 5 + 300 * index));
+							  static_cast<float>(desktop.height * WINDOW_RATIO / 5 + 300 * index));
 		m_buttons.emplace_back(buttonNames[index], position);
 	}
 }
@@ -96,28 +96,25 @@ void GamePlay::initButtons()
 void GamePlay::draw(sf::RenderWindow& window)
 {
 	// Draw game world
-	sf::Sprite backround;
-	sf::Texture texure = ResourcesManager::getInstance().getTexture(GAME_BACKGROUND);
-	texure.setRepeated(true);
+	sf::Sprite background;
+	sf::Texture texture = ResourcesManager::getInstance().getTexture(GAME_BACKGROUND);
+	texture.setRepeated(true);
 
-	backround.setTexture(texure);
-	backround.setTextureRect(sf::IntRect(0, 0, MAP_WIDTH, MAP_HEIGHT));
-	window.draw(backround);
+	background.setTexture(texture);
+	background.setTextureRect(sf::IntRect(0, 0, MAP_WIDTH, MAP_HEIGHT));
+	window.draw(background);
 
-	for (auto& obj : m_staticObj) 
-		obj->draw(window);
-	for (auto& enemy : m_movingObj)
-		enemy->draw(window);
+	for (auto& obj : m_staticObj) obj->draw(window);
+	for (auto& enemy : m_movingObj) enemy->draw(window);
 
 	m_player.draw(window);
 
-	
 	window.setView(window.getDefaultView());
 
 	m_infoBar.draw(window);
 
-	if (m_paused) drawButtons(window); // Menu buttons
-	else m_buttons[PAUSE].draw(window); // Only pause button
+	if (m_paused) drawButtons(window);   //Menu buttons
+	else m_buttons[PAUSE].draw(window); //Only pause button
 }
 
 //-----------------------------------------------------------------------------
@@ -151,7 +148,7 @@ void GamePlay::handleCollision()
 {
 	auto& collisionHandler = CollisionFactory::getInstance();
 	
-	// Player vs Static Objects (walls)
+	//Player vs Static Objects (walls)
 	for (const auto& staticObj : m_staticObj)
 	{
 		if (m_player.checkCollision(*staticObj))
@@ -160,7 +157,7 @@ void GamePlay::handleCollision()
 		}
 	}
 
-	// Moving Objects vs Static Objects (enemies vs walls)
+	//Moving Objects vs Static Objects (enemies vs walls)
 	for (const auto& movingObj : m_movingObj)
 	{
 		bool collided = false;
@@ -184,7 +181,7 @@ void GamePlay::handleCollision()
 	}
 
 
-	// Player vs Enemies
+	//Player vs Enemies
 	for (const auto& movingObj : m_movingObj)
 	{
 
@@ -213,11 +210,9 @@ void GamePlay::handleCollision()
 //-----------------------------------------------------------------------------
 void GamePlay::handleErasing()
 {
-	std::erase_if(m_movingObj, [](const auto& item)
-		{return item->isDead(); });
+	std::erase_if(m_movingObj, [](const auto& item) {return item->isDead(); });
 
-	std::erase_if(m_staticObj, [](const auto& item)
-		{return item->isDead(); });
+	std::erase_if(m_staticObj, [](const auto& item) {return item->isDead(); });
 }
 
 //-----------------------------------------------------------------------------
@@ -226,12 +221,12 @@ void GamePlay::handleLoadingLevel()
 	m_movingObj.clear();
 	m_staticObj.clear();
 	
-	m_map.loadlevelobj(m_movingObj,m_staticObj, m_player, this);
+	m_map.loadLevelObj(m_movingObj,m_staticObj, m_player, this);
 	m_stopwatch = sf::seconds(0);
 }
 
 //-----------------------------------------------------------------------------
-void GamePlay::handleInfobar()
+void GamePlay::handleInfoBar()
 {
 	m_infoBar.updateTime(m_stopwatch);
 	m_infoBar.updateNumOfBullets(m_player.getNumOfBullets());
@@ -257,7 +252,7 @@ void GamePlay::resetGame()
 	m_newGame = false;
 	m_winStateHandled = false;
 	m_sound.stop();
-	Enemy::resetNumOfEnemeis();
+	Enemy::resetNumOfEnemies();
 	handleLoadingLevel();
 	resetGameOverStates();
 }
@@ -334,18 +329,18 @@ void GamePlay::handleDeathState(int& m_currentScreen)
 	}
 	else if (s_deathTimer.getElapsedTime().asSeconds() >= 0.8f || m_sound.getStatus() != sf::Sound::Playing)
 	{
-		// Go to lose screen
+		//Go to lose screen
 		m_sound.stop();
 		m_currentScreen = LOSE_SCREEN;
 		m_newGame = true;
-		s_deathSoundStarted = false; // Reset for next time
+		s_deathSoundStarted = false; //Reset for next time
 	}
 }
 
 //---------------------------------------------------------------------------------------------------
 void GamePlay::handleWinState(int& m_currentScreen)
 {
-	// Switch to win music and go to win screen immediately
+	//Switch to win music and go to win screen immediately
 	MusicManager::getInstance().setCurrentMusic(MusicManager::MusicType::WIN);
 	m_currentScreen = WIN_SCREEN;
 	m_newGame = true;
@@ -354,7 +349,7 @@ void GamePlay::handleWinState(int& m_currentScreen)
 //-----------------------------------------------------------------------------
 void GamePlay::resetGameOverStates()
 {
-	// Reset death sound state
+	//Reset death sound state
 	s_deathSoundStarted = false;
 	s_deathTimer.restart();
 }

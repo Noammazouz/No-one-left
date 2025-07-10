@@ -27,13 +27,15 @@ class BfsMoveBehavior : public MoveBehavior
 {
 public:
     BfsMoveBehavior();
+	~BfsMoveBehavior() = default;
+
     sf::Vector2f Move(sf::Vector2f playerPos, sf::Time deltaTime, sf::Vector2f enemyPos);
-    // Note: Obstacle management methods removed - using collision-based approach instead
+    //Note: Obstacle management methods removed - using collision-based approach instead
     void OnCollision();
     void ClearAvoidance();
 
 private:
-    bool m_preferHorizontal = true;  //primary chase axis
+    bool m_preferHorizontal = true; //primary chase axis
     sf::Vector2f m_avoidDirection = { 0.f, 0.f };
     bool m_avoiding = false;
     sf::Vector2f m_lastDir; //direction that caused collision

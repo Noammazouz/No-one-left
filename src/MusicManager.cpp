@@ -12,23 +12,23 @@ MusicManager& MusicManager::getInstance()
 
 //-----------------------------------------------------------------------------
 MusicManager::MusicManager()
-    : m_currentMusicType(MusicType::GAME) // Start with different type to force first music to actually start
-    , m_isMuted(false)
-    , m_isPaused(false)
-    , m_isInitialized(false)
-    , m_masterVolume(100.0f)
+    : m_currentMusicType(MusicType::GAME), //Start with different type to force first music to actually start
+      m_isMuted(false),
+      m_isPaused(false),
+      m_isInitialized(false),
+      m_masterVolume(100.0f)
 {
-    // Initialize music filenames mapping
+    //Initialize music filenames mapping
     m_musicFiles[MusicType::MENU] = "menuMusic.ogg";
     m_musicFiles[MusicType::GAME] = "gameMusic.ogg";
     m_musicFiles[MusicType::WIN] = "winMusic.ogg";
     m_musicFiles[MusicType::LOSE] = "loseMusic.ogg";
     
-    // Initialize default volumes for each music type
+    //Initialize default volumes for each music type
     m_musicVolumes[MusicType::MENU] = 50.0f;
     m_musicVolumes[MusicType::GAME] = 50.0f;
-    m_musicVolumes[MusicType::WIN] = 60.0f;   // Slightly louder for celebration
-    m_musicVolumes[MusicType::LOSE] = 40.0f;  // Quieter for somber mood
+    m_musicVolumes[MusicType::WIN] = 60.0f;   //Slightly louder for celebration
+    m_musicVolumes[MusicType::LOSE] = 40.0f;  //Quieter for somber mood
 }
 
 //-----------------------------------------------------------------------------
@@ -60,11 +60,11 @@ bool MusicManager::loadMusicFiles()
             throw std::runtime_error(errorMessage);
         }
 
-        // Configure music properties
+        //Configure music properties
         music->setLoop(true);
         music->setVolume(m_musicVolumes[musicType]);
         
-        // Store music in our storage
+        //Store music in our storage
         m_musicTracks[musicType] = std::move(music);
     }
     
@@ -76,29 +76,31 @@ void MusicManager::setCurrentMusic(MusicType musicType, TransitionType transitio
 {
     if (!m_isInitialized || m_isMuted) return;
     
-    if (m_currentMusicType == musicType) return; // Already playing
+    if (m_currentMusicType == musicType) return; //Already playing
     
     switch (transition)
     {
-        case TransitionType::IMMEDIATE:
-            stopAllMusic();
-            startMusic(musicType);
-            m_currentMusicType = musicType;
-            break;
-            
-        case TransitionType::FADE_OUT:
-            // Start fade out of current music
-            m_fadeState.isActive = true;
-            m_fadeState.targetMusic = musicType;
-            m_fadeState.fadeOutVolume = getMusic(m_currentMusicType).getVolume();
-            break;
-            
-        case TransitionType::CROSSFADE:
-            // TODO: Implement crossfade if needed
-            stopAllMusic();
-            startMusic(musicType);
-            m_currentMusicType = musicType;
-            break;
+    case TransitionType::IMMEDIATE:
+    {
+        stopAllMusic();
+        startMusic(musicType);
+        m_currentMusicType = musicType;
+        break;
+    }   
+    case TransitionType::FADE_OUT:
+    {   //Start fade out of current music
+        m_fadeState.isActive = true;
+        m_fadeState.targetMusic = musicType;
+        m_fadeState.fadeOutVolume = getMusic(m_currentMusicType).getVolume();
+        break;
+    }     
+    case TransitionType::CROSSFADE:
+    {
+        stopAllMusic();
+        startMusic(musicType);
+        m_currentMusicType = musicType;
+        break;
+    }
     }
 }
 
@@ -135,10 +137,7 @@ void MusicManager::unmuteMusic()
     if (!m_isInitialized || !m_isMuted) return;
     
     m_isMuted = false;
-    if (!m_isPaused)
-    {
-        startMusic(m_currentMusicType);
-    }
+    if (!m_isPaused) startMusic(m_currentMusicType);
 }
 
 //-----------------------------------------------------------------------------
@@ -158,7 +157,7 @@ void MusicManager::setMasterVolume(float volume)
 {
     m_masterVolume = std::max(0.0f, std::min(100.0f, volume));
     
-    // Update current playing music volume
+    //Update current playing music volume
     if (m_isInitialized && !m_isMuted)
     {
         float adjustedVolume = (m_musicVolumes[m_currentMusicType] * m_masterVolume) / 100.0f;
@@ -184,12 +183,12 @@ void MusicManager::update(float deltaTime)
 {
     if (!m_isInitialized || !m_fadeState.isActive) return;
     
-    // Handle fade out transition
+    //Handle fade out transition
     m_fadeState.fadeOutVolume -= m_fadeState.fadeSpeed * deltaTime;
     
     if (m_fadeState.fadeOutVolume <= 0.0f)
     {
-        // Fade out complete, switch to new music
+        //Fade out complete, switch to new music
         stopAllMusic();
         startMusic(m_fadeState.targetMusic);
         m_currentMusicType = m_fadeState.targetMusic;
@@ -197,7 +196,7 @@ void MusicManager::update(float deltaTime)
     }
     else
     {
-        // Update fading volume
+        //Update fading volume
         getMusic(m_currentMusicType).setVolume(m_fadeState.fadeOutVolume);
     }
 }
