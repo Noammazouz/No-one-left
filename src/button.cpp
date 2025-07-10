@@ -5,7 +5,7 @@
 //-----------------------------------------------------------------------------
 Button::Button(std::string buttonName, sf::Vector2f pos) : m_buttonType(buttonName)
 {
-	setSprite(pos);  //Initialize size when button is created
+	setSprite(pos); //Initialize size when button is created
 }
 
 //-----------------------------------------------------------------------------

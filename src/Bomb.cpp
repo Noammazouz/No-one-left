@@ -1,9 +1,12 @@
+//-----include section-----
 #include "Bomb.h"
 #include "ResourcesManager.h"
-#include "Const.h" // BOMB_TIME
+#include "Const.h" 
 #include <cmath>
 #include "GamePlay.h"
 
+//-----functions section------
+//-----------------------------------------------------------------------------
 Bomb::Bomb(sf::Vector2f position, GamePlay* gameplay)
 	:UpdateableObject(position, BOMB_NAME), m_timer(sf::seconds(BOMB_TIME)), m_gameplay(gameplay)
 {
@@ -11,6 +14,7 @@ Bomb::Bomb(sf::Vector2f position, GamePlay* gameplay)
 	set_frames(m_numberOfFrames, position, BOMB_WIDTH, BOMB_HEIGHT);
 }
 
+//-----------------------------------------------------------------------------
 void Bomb::update(sf::Time deltaTime, sf::Vector2f /*playerPos*/)
 {
 	m_timer -= deltaTime;

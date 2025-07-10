@@ -7,7 +7,7 @@
 //-----functions section------
 //-----------------------------------------------------------------------------
 RandomMoveBehavior::RandomMoveBehavior() 
-    : m_timer(sf::seconds(2))
+    : m_timer(sf::seconds(RANDOM_MOVE_BEHAVIOR_TIME))
 {
     static bool initial = false;
     if (!initial) 
@@ -23,10 +23,10 @@ sf::Vector2f RandomMoveBehavior::Move(sf::Vector2f /*playerPos*/, sf::Time delta
 {
     m_timer -= deltaTime;
 
-    if (m_timer <= sf::Time::Zero) // change direction every 2 seconds
+    if (m_timer <= sf::Time::Zero) //change direction every 2 seconds
     {
         chooseNewDirection();
-        m_timer = sf::seconds(2); // Reset timer
+        m_timer = sf::seconds(RANDOM_MOVE_BEHAVIOR_TIME); //Reset timer
     }
     
     return m_direction;
@@ -34,64 +34,56 @@ sf::Vector2f RandomMoveBehavior::Move(sf::Vector2f /*playerPos*/, sf::Time delta
 //-----------------------------------------------------------------------------
 void RandomMoveBehavior::OnCollision()
 {
-    m_timer = sf::seconds(2);   // restart the interval
-    chooseNewDirection(); // pick a fresh vector right now
+    m_timer = sf::seconds(2); //restart the interval
+    chooseNewDirection();    //pick a fresh vector right now
 }
 
 //-----------------------------------------------------------------------------
 void RandomMoveBehavior::chooseNewDirection()
 {
-    int random_directon = rand() % NUM_OF_DIRECTIONS;
+    int random_direction = rand() % NUM_OF_DIRECTIONS;
 
-    switch (random_directon)
+    switch (random_direction)
     {
-
         case 0:
         {
             m_direction = { 1, 0 };
-            break;  // right
+            break; //right
         }
-
         case 1:
         {
             m_direction = { -1, 0 };   
-            break;  // left
+            break; //left
         }
-
         case 2:
         {
             m_direction = { 0, 1 };   
-            break;  // down
+            break; //down
         }
-
         case 3:
         {
             m_direction = { 0, -1 };   
-            break;  // up
+            break; //up
         }
-
         case 4:
         {
             m_direction = { 1, 1 };    
-            break;  // right and down
+            break; //right and down
         }
-
         case 5:
         {
             m_direction = { 1, -1 };   
-            break;  // right and up
+            break; //right and up
         }
-
         case 6:
         {
             m_direction = { -1, 1 };   
-            break;  // left and down
+            break; //left and down
         }
-
         case 7:
         {
             m_direction = { -1, -1 };  
-            break;  // left and up
+            break; // left and up
         }
     }
 }

@@ -1,12 +1,11 @@
 #pragma once
 
 //-----include section-----
-#include "Screen.h"
 #include <vector> 
 #include <string>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-#include <stack>
+#include "Screen.h"
 #include "Map.h"
 #include "Player.h"
 #include "Enemy.h"
@@ -15,7 +14,7 @@
 #include "UpdateableObject.h"
 #include "StaticObject.h"
 #include "GameObject.h"
-#include "Infobar.h"
+#include "InfoBar.h"
 #include "CollisionFactory.h"
 #include "Projectile.h"
 #include "Bomb.h"
@@ -28,8 +27,8 @@ public:
 	GamePlay();
 
 	void draw(sf::RenderWindow& window) override;
-	virtual void activate(sf::Clock& clockin, int& m_currrentScreen) override;
-	virtual void run(sf::RenderWindow& window, int& m_currrentScreen) override;
+	virtual void activate(sf::Clock& clocking, int& m_currentScreen) override;
+	virtual void run(sf::RenderWindow& window, int& m_currentScreen) override;
 	virtual void handleMouseClick(const sf::Vector2f& clickPos, int& screenState) override;
 	void addProjectile(const sf::Vector2f& pos,
 					   std::vector<sf::Vector2f> directions,
@@ -52,7 +51,7 @@ private:
 	void handleErasing();
 	void setExpoDirection(int index);
 	void handleLoadingLevel();
-	void handleInfobar();
+	void handleInfoBar();
 	void resetGame();
 	void resetGameOverStates();
 	void handleWinState(int& m_currentScreen);
@@ -66,7 +65,7 @@ private:
 	sf::FloatRect worldBounds;
 	Map m_map;
 	Player m_player;
-	Infobar m_infoBar;
+	InfoBar m_infoBar;
 
 	bool m_paused = false;
 	bool m_newGame = false;
