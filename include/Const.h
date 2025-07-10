@@ -121,6 +121,7 @@ const int EXPLOSION_DAMAGE = 20;
 const int MIN_BOUND_BOMBS = 0; //Minimum number of bombs that a player can have.
 const int NUM_OF_WEPEONS = 10;
 const int NUM_OF_PRESENTS = 20; //Number of different presents.
+const int RANDOM_MOVE_BEHAVIOR_TIME = 2; //Time in seconds for the enemy to change direction when moving randomly.
 
 
 //-----float const section-----
@@ -184,10 +185,9 @@ const std::string REMOVE_TIME_NAME = "remove time";
 
 //-----Texture names const section-----
 const std::string PROJECTILE_NAME = "projectile";
-const std::string BAZOOKA_MISLE_NAME = "bazooka_misle";
+const std::string BAZOOKA_MISSILE_NAME = "bazooka_missile";
 const std::string BOMB_NAME = "bomb";
 const std::string EXPLOSION_NAME = "explosion";
-
 const std::string OBSTACLE1_NAME = "obstacle1";
 const std::string OBSTACLE2_NAME = "obstacle2";
 const std::string OBSTACLE3_NAME = "obstacle3";
@@ -207,7 +207,7 @@ const std::string WIN_SCREEN_BACKGROUND = "winning screen";
 const std::string LIFE_ICON = "life";
 const std::string BULLETS_ICON = "bulletIcon";
 const std::string CLOCK_ICON = "clock";
-const std::string ENEMIES_ICON = "enemeis icon";
+const std::string ENEMIES_ICON = "enemies icon";
 const std::string BOMBS_ICON = "bombs icon";
 
 //-----color const section-----
@@ -222,6 +222,7 @@ const sf::Vector2f DEFAULT_VECTOR(0.f, 0.f); //Default direction of the projecti
 const std::string FONT_NAME = "ARCADE_N.TTF"; //Name of the font file.
 
 //-----File Name const section-----
+const std::string CSV_FILE_NAME = "Level_Info.csv"; //Name of the CSV file with level information.
 const std::string HELP_FILE_NAME = "help.txt"; //Name of the help file.
 
 //-----Shooting Time const section-----

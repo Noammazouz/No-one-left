@@ -2,7 +2,6 @@
 
 //-----include section-----
 #include "GameObject.h"
-#include <iostream>
 #include <map>
 #include <string>
 #include <typeinfo>
@@ -18,7 +17,7 @@ struct UnknownCollision : public std::runtime_error
 };
 
 //-----class section-----
-//Collision Factory Singleton Class
+//Collision Factory, Singleton Class
 class CollisionFactory
 {
 public:

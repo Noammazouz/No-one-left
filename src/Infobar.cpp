@@ -1,9 +1,10 @@
-#include "Infobar.h"
+//-----include section-----
+#include "InfoBar.h"
 #include "Enemy.h"
-#include <iostream>
 
-
-Infobar::Infobar()
+//-----functions section------
+//-----------------------------------------------------------------------------
+InfoBar::InfoBar()
 {
 	initializeLives();
 	initializeBullets();
@@ -13,7 +14,7 @@ Infobar::Infobar()
 }
 
 //-----------------------------------------------------------------------------
-void Infobar::updateLives(int numberOfLives)
+void InfoBar::updateLives(int numberOfLives)
 {
 	if (numberOfLives < 0) return;
 	std::string temp = std::to_string(numberOfLives) + "%";
@@ -22,21 +23,21 @@ void Infobar::updateLives(int numberOfLives)
 }
 
 //-----------------------------------------------------------------------------
-void Infobar::updateNumOfBullets(int BulletsAmount)
+void InfoBar::updateNumOfBullets(int BulletsAmount)
 {
 	std::string temp = std::to_string(BulletsAmount) + "/" + std::to_string(NUM_OF_BULLETS);
 	m_amountOfBullets.setString(":" + temp);
 }
 
 //-----------------------------------------------------------------------------
-void Infobar::updateNumOfBombs(int AmountOfBombs)
+void InfoBar::updateNumOfBombs(int AmountOfBombs)
 {
 	std::string temp = std::to_string(AmountOfBombs) + "/" + std::to_string(NUM_OF_BOMBS);
 	m_amountOfBombs.setString(":" + temp);
 }
 
 //-----------------------------------------------------------------------------
-void Infobar::updateTime(sf::Time deltaTime)
+void InfoBar::updateTime(sf::Time deltaTime)
 {
 	int minutes = deltaTime.asSeconds() / 60,
 		seconds = int(deltaTime.asSeconds()) % 60;
@@ -52,14 +53,15 @@ void Infobar::updateTime(sf::Time deltaTime)
 	
 }
 
-void Infobar::updateNumOfEnemiesAlive()
+//-----------------------------------------------------------------------------
+void InfoBar::updateNumOfEnemiesAlive()
 {
 	std::string temp = std::to_string(Enemy::getNumOfEnemiesAlive()) + "/" + std::to_string(Enemy::getNumOfEnemiesAtTheStart());
 	m_enemies.setString(":" + temp);
 }
 
-//------------------------------------------------------------------------------------------
-void Infobar::initializeLives()
+//-----------------------------------------------------------------------------
+void InfoBar::initializeLives()
 {
 	int frameWidth = 33; 
 	int frameHeight = 80; 
@@ -82,8 +84,8 @@ void Infobar::initializeLives()
 	m_lifePercentages.setPosition(sf::Vector2f(25, 110));
 }
 
-//------------------------------------------------------------------------------------------
-void Infobar::initializeBullets()
+//-----------------------------------------------------------------------------
+void InfoBar::initializeBullets()
 {
 	m_bulletsIcon.setTexture(ResourcesManager::getInstance().getTexture(BULLETS_ICON));
 	m_bulletsIcon.setOrigin(m_bulletsIcon.getGlobalBounds().width / 2, m_bulletsIcon.getGlobalBounds().height / 2);
@@ -98,8 +100,8 @@ void Infobar::initializeBullets()
 	m_amountOfBullets.setPosition(sf::Vector2f(34, 170));
 }
 
-//------------------------------------------------------------------------------------------
-void Infobar::initializeBombs()
+//-----------------------------------------------------------------------------
+void InfoBar::initializeBombs()
 {
 	m_bombsIcon.setTexture(ResourcesManager::getInstance().getTexture(BOMBS_ICON));
 	m_bombsIcon.setOrigin(m_bombsIcon.getGlobalBounds().width / 2, m_bombsIcon.getGlobalBounds().height / 2);
@@ -113,13 +115,12 @@ void Infobar::initializeBombs()
 	m_amountOfBombs.setPosition(sf::Vector2f(38, 278));
 }
 
-//------------------------------------------------------------------------------------------
-void Infobar::initializeTime()
+//-----------------------------------------------------------------------------
+void InfoBar::initializeTime()
 {
 	m_timeIcon.setTexture(ResourcesManager::getInstance().getTexture(CLOCK_ICON));
 	m_timeIcon.setOrigin(m_timeIcon.getGlobalBounds().width / 2, m_timeIcon.getGlobalBounds().height / 2);
 	m_timeIcon.setPosition(sf::Vector2f(15, 57));
-
 
 	m_time.setCharacterSize(20);
 	m_time.setFont(ResourcesManager::getInstance().getFont());
@@ -130,11 +131,11 @@ void Infobar::initializeTime()
 }
 
 //-----------------------------------------------------------------------------
-void Infobar::initializeNumOfEnemies()
+void InfoBar::initializeNumOfEnemies()
 {
 	m_enemiesIcon.setTexture(ResourcesManager::getInstance().getTexture(ENEMIES_ICON));
 	m_enemiesIcon.setOrigin(m_bulletsIcon.getGlobalBounds().width / 2, m_bulletsIcon.getGlobalBounds().height / 2);
-	m_enemiesIcon.setScale(0.1f, 0.1f); // Adjust scale as needed
+	m_enemiesIcon.setScale(0.1f, 0.1f); //Adjust scale as needed
 	m_enemiesIcon.setPosition(sf::Vector2f(3, 200));
 
 	m_enemies.setCharacterSize(20);
@@ -146,7 +147,7 @@ void Infobar::initializeNumOfEnemies()
 }
 
 //-----------------------------------------------------------------------------
-void Infobar::draw(sf::RenderWindow& window)
+void InfoBar::draw(sf::RenderWindow& window)
 {
 	window.draw(m_timeIcon);
 	window.draw(m_time);
@@ -160,18 +161,18 @@ void Infobar::draw(sf::RenderWindow& window)
 	window.draw(m_bombsIcon);
 }
 
-//------------------------------------------------------------------------------------------
-void Infobar::decreaseLifeLevel(float lifePercentage) 
+//-----------------------------------------------------------------------------
+void InfoBar::decreaseLifeLevel(float lifePercentage)
 {
-    // Assuming batteryFrames.size() is the total number of frames
+    //Assuming batteryFrames.size() is the total number of frames
     int totalFrames = livesFrames.size();
     
-    // Calculate the frame index based on the life percentage
+    //Calculate the frame index based on the life percentage
     int frameIndex = static_cast<int>((lifePercentage / 100.0f) * totalFrames);
 
-    // Ensure the frame index is within bounds
+    //Ensure the frame index is within bounds
     frameIndex = std::max(0, std::min(frameIndex, totalFrames - 1));
 
-    // Set the texture rectangle to the calculated frame
+    //Set the texture rectangle to the calculated frame
     m_livesIcon.setTextureRect(livesFrames[frameIndex]);
 }

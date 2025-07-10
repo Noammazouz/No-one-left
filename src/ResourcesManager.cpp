@@ -9,7 +9,7 @@ ResourcesManager::ResourcesManager()
     loadTexture();
     initializeSounds();
     initializeFont();
-    intializeHelpText();
+    initializeHelpText();
 }
 
 //------------------------------------------------------------------------------
@@ -49,7 +49,7 @@ void ResourcesManager::loadTexture()
 {
     std::vector<std::pair<std::string, std::string>> textures =
     {
-        {GAME_BACKGROUND,"gamebackground.png"},
+        {GAME_BACKGROUND,"gameBackground.png"},
         {PLAYER_MACHINE_GUN, "player_machine_gun.png"},
         {PLAYER_RIFLE, "player_rifle.png"},
         {PLAYER_BAZOOKA, "player_bazooka.png"},
@@ -90,8 +90,8 @@ void ResourcesManager::loadTexture()
         {EXPLOSION_NAME, "Effect_Explosion.png"},
         {ENEMIES_ICON, "enemiesIcon.png"},
         {MACHINE_GUN_NAME, "machine_gun.png"},
-        {BAZOOKA_NAME, "Bazooka-sized.png"},
-		{BAZOOKA_MISLE_NAME, "bazooka_misle.png"}
+        {BAZOOKA_NAME, "Bazooka_sized.png"},
+		{BAZOOKA_MISSILE_NAME, "bazooka_missile.png"}
     };
 
     for (const auto& [name, filePath] : textures)
@@ -111,7 +111,7 @@ void ResourcesManager::loadTexture()
 //------------------------------------------------------------------------------
 void ResourcesManager::initializeSounds()
 { 
-    // Load sound effects (not music - that's handled by MusicManager now)
+    //Load sound effects (not music - that's handled by MusicManager now)
     std::vector<std::pair<std::string, std::string>> sounds =
     {
         {GAIN_PRESENT_SOUND, "present.ogg"},
@@ -135,8 +135,6 @@ void ResourcesManager::initializeSounds()
         m_music[name] = sound;
     }
 }
-
-
 
 //------------------------------------------------------------------------------
 void ResourcesManager::initializeFont()
@@ -167,7 +165,7 @@ sf::SoundBuffer& ResourcesManager::getSound(std::string name)
 }
 
 //------------------------------------------------------------------------------
-void ResourcesManager::intializeHelpText()
+void ResourcesManager::initializeHelpText()
 {
     std::ifstream file(HELP_FILE_NAME);
     if (!file) 
