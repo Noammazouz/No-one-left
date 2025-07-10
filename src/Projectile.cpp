@@ -27,7 +27,7 @@ Projectile::Projectile(sf::Vector2f position, sf::Vector2f direction,
     }
     else if (m_weaponName == BAZOOKA_NAME)
     {
-        m_pic.setTexture(ResourcesManager::getInstance().getTexture(BAZOOKA_MISLE_NAME));
+        m_pic.setTexture(ResourcesManager::getInstance().getTexture(BAZOOKA_MISSILE_NAME));
         m_pic.setOrigin(m_pic.getTexture()->getSize().x * 0.5f,
                         m_pic.getTexture()->getSize().y * 0.5f);
     }

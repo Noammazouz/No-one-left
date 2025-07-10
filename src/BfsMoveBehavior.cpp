@@ -1,6 +1,5 @@
 //-----includes section-----
 #include "BfsMoveBehavior.h"
-#include <iostream>
 #include <cmath>
 #include <algorithm>
 
@@ -12,9 +11,6 @@ BfsMoveBehavior::BfsMoveBehavior()
 //-----------------------------------------------------------------------------
 sf::Vector2f BfsMoveBehavior::Move(sf::Vector2f playerPos, sf::Time /*deltaTime*/, sf::Vector2f enemyPos) 
 {
-    //Simple approach: Use direct movement and let collision system handle walls
-    //This is much more reliable than complex pathfi
-    
     //Calculate direct direction to player
     sf::Vector2f direction = playerPos - enemyPos;
     float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
@@ -35,30 +31,26 @@ sf::Vector2f BfsMoveBehavior::Move(sf::Vector2f playerPos, sf::Time /*deltaTime*
     }
     else 
     {
-        /*If we're close enough, don't move*/
+        //If we're close enough, don't move
         if (distance < 50.0f)
         {
             return sf::Vector2f(0.0f, 0.0f);
         }
 
-        /*Return normalized direction - collision system will handle walls*/
+        //Return normalized direction - collision system will handle walls
         if (distance > 0.0f)
         {
             return sf::Vector2f(direction.x / distance, direction.y / distance);
         }
     }
-    //Always remember what we just tried
+
     m_lastDir = direction;
     return direction;
 }
 
- //Note: Obstacle management functions removed 
- //BFS now uses collision-based wall avoidance instead of pathfinding
-
 //-----------------------------------------------------------------------------
 void BfsMoveBehavior::OnCollision() 
 {
-    // Enter avoidance mode and flip primary axis for side?step logic
     m_avoiding = true;
     m_preferHorizontal = !m_preferHorizontal;
 }

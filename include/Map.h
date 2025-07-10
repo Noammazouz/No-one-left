@@ -19,7 +19,7 @@ public:
 	Map() = default;
 	~Map() = default;
 
-	void loadlevelobj(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj,
+	void loadLevelObj(std::vector<std::unique_ptr<UpdateableObject>>& m_movingObj,
 					  std::vector<std::unique_ptr<StaticObject>>& m_staticObj, Player& player, GamePlay* gamePlay);
 
 private:
@@ -33,5 +33,6 @@ private:
 						const std::vector<std::unique_ptr<StaticObject>>& staticObjs,
 						const std::vector<std::unique_ptr<UpdateableObject>>& movingObjs,
 						const Player& player);
+
 	std::vector<std::string> m_level;
 };

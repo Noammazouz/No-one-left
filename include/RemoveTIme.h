@@ -1,8 +1,8 @@
 #pragma once
 
 //-----include section-----
-#include "ItemsToCollect.h"
 #include <SFML/Graphics.hpp>
+#include "ItemsToCollect.h"
 
 //-----class section-----
 class RemoveTime : public ItemsToCollect
