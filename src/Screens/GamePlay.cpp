@@ -375,8 +375,8 @@ void GamePlay::addProjectile(const sf::Vector2f& pos,
 void GamePlay::addExplosion(const sf::Vector2f& pos)
 {
 	m_sound.setBuffer(ResourcesManager::getInstance().getSound(EXPLOSION_SOUND));
-	m_sound.setVolume(100.f);
-	m_sound.setPlayingOffset(sf::seconds(0.2f));
+	m_sound.setVolume(150.f);
+	m_sound.setPlayingOffset(sf::seconds(0.3f));
 	m_sound.play();
 	m_movingObj.push_back(std::make_unique<Explosion>(pos));
 }
