@@ -64,7 +64,6 @@ Players must use strategy, quick reflexes, and resource management to survive an
 - **BazookaGift.h**: Declares bazooka weapon upgrade items, inherits from WeaponsGift.
 - **BulletsGift.h**: Declares ammunition pickup items, inherits from ItemsToCollect.
 - **MedkitGift.h**: Declares health restoration items, inherits from ItemsToCollect.
-- **IncreasingLife.h**: Alternative health item implementation, inherits from ItemsToCollect.
 - **RemoveEnemy.h**: Declares special items that eliminate random enemies, inherits from ItemsToCollect.
 - **RemoveTime.h**: Declares items that reduce mission timer, inherits from ItemsToCollect.
 - **Map.h**: Contains the `Map` class for level loading and management.
@@ -127,7 +126,6 @@ Players must use strategy, quick reflexes, and resource management to survive an
     - **ItemsToCollect**: Base for all collectible items.
       - **WeaponsGift**: Base for weapon upgrades (RifleGift, MachineGunGift, BazookaGift).
       - **MedkitGift**: Health restoration items.
-      - **IncreasingLife**: Alternative health items.
       - **RemoveEnemy**: Enemy elimination items.
       - **RemoveTime**: Timer reduction items.
       - **BulletsGift**: Ammunition refill items.
